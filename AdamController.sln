@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController", "AdamController\AdamController.csproj", "{0D918664-5F27-4525-ABE4-0D1A1FB22761}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CCB5A70B-3F85-4D11-B774-365DF8A220F6} = {CCB5A70B-3F85-4D11-B774-365DF8A220F6}
+		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1} = {1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamControllerLibrary", "AdamControllerLibrary\AdamControllerLibrary.csproj", "{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0A650D34-3B1C-4EA6-8F8B-F5B6B21025E6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamBlocklyLibrary", "AdamBlocklyLibrary\AdamBlocklyLibrary.csproj", "{CCB5A70B-3F85-4D11-B774-365DF8A220F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1} = {1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.WebApi.Client", "AdamController.WebApi.Client\AdamController.WebApi.Client.csproj", "{157FE150-54A5-4D10-A052-580A5B4895DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D918664-5F27-4525-ABE4-0D1A1FB22761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D918664-5F27-4525-ABE4-0D1A1FB22761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D918664-5F27-4525-ABE4-0D1A1FB22761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D918664-5F27-4525-ABE4-0D1A1FB22761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCB5A70B-3F85-4D11-B774-365DF8A220F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCB5A70B-3F85-4D11-B774-365DF8A220F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCB5A70B-3F85-4D11-B774-365DF8A220F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCB5A70B-3F85-4D11-B774-365DF8A220F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{157FE150-54A5-4D10-A052-580A5B4895DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{157FE150-54A5-4D10-A052-580A5B4895DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{157FE150-54A5-4D10-A052-580A5B4895DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{157FE150-54A5-4D10-A052-580A5B4895DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D00A029C-930D-44A8-8257-721FCA9202F6}
+	EndGlobalSection
+EndGlobal
