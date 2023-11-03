@@ -203,7 +203,14 @@ namespace AdamController.ViewModels
             try
             {
                 if(ComunicateHelper.TcpClientIsConnected)
-                    executeResult = await BaseApi.PythonExecuteAsync(SourceTextEditor);
+                {
+                    var command = new WebApi.Client.v1.RequestModel.PythonCommand
+                    {
+                        Command = SourceTextEditor
+                    };
+                    executeResult = await BaseApi.PythonExecuteAsync(command);
+                }
+                
             }
             catch (Exception ex)
             {

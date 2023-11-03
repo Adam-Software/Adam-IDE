@@ -86,8 +86,8 @@ namespace AdamController.Views.HamburgerPage
             
             WebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
             
-            //WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
-            //WebView.CoreWebView2.Navigate("https://localhost/index.html");
+            WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
+            WebView.CoreWebView2.Navigate("https://localhost/index.html");
         }
         
         #region Func
