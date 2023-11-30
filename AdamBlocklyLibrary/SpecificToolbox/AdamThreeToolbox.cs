@@ -19,6 +19,8 @@ namespace AdamBlocklyLibrary.SpecificToolbox
                 Expanded = false,
                 CategoryStyle = CategoryStyle.list_category,
 
+
+
                 CategoryToolboxContents = new List<CategoryToolbox>
                 {
                     new CategoryToolbox
@@ -323,6 +325,26 @@ namespace AdamBlocklyLibrary.SpecificToolbox
                              },
 
                         }
+                    },
+                    
+                    new CategoryToolbox()
+                    {
+                        Hidden = false,
+                        Name = "LCD глаза",
+                        CategoryStyle = CategoryStyle.list_category,
+
+                        SimpleToolboxContents = new List<SimpleToolbox>
+                        {
+                            new SimpleToolbox()
+                            {
+                                Type = BlockType.common_eye_new_eye
+                            },
+                            
+                            new SimpleToolbox()
+                            {
+                                Type = BlockType.common_eye_run_anim
+                            }
+                        },
                     },
 
                     new CategoryToolbox

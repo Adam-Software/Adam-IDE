@@ -400,6 +400,13 @@
 
         #region Adam common bloks
 
+        #region lcd_eye
+        
+        common_eye_new_eye,
+        common_eye_run_anim,
+
+        #endregion
+
         #region eye
 
         common_eye_pack,
@@ -413,8 +420,6 @@
         common_simple_write_i2c_block_data,
 
         #endregion
-
-      
 
         #region music editor
 
