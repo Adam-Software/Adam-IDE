@@ -1,13 +1,12 @@
 ﻿using AdamBlocklyLibrary.Enum;
 using AdamController.Commands;
+using AdamController.Core.Helpers;
+using AdamController.Core.Model;
 using AdamController.Core.Properties;
-using AdamController.DataSource;
-using AdamController.Helpers;
-using AdamController.Model;
 using AdamController.Services;
-using AdamController.ViewModels.Common;
 using AdamController.WebApi.Client.v1;
 using MahApps.Metro.IconPacks;
+using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

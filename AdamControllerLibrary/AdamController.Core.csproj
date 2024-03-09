@@ -15,6 +15,7 @@
     <PackageReference Include="LibVLCSharp.WPF" Version="3.8.2" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="MessageDialogManagerLib" Version="1.0.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2365.46" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
@@ -24,10 +25,6 @@
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
     <PackageReference Include="Websocket.Client" Version="4.6.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dialog.ViewModels\" />
-    <Folder Include="Dialog.Views\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdamBlocklyLibrary\AdamBlocklyLibrary.csproj" />

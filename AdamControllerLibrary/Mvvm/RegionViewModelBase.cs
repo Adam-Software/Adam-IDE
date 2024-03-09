@@ -9,7 +9,6 @@ namespace AdamController.Core.Mvvm
     {
 
         #region private service
-
         protected IRegionManager RegionManager { get; }
         protected IDialogService DialogService { get; }
 

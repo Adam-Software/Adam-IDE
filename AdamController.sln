@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.MenuRegion", "Modules\AdamController.Modules.MenuRegion\AdamController.Modules.MenuRegion.csproj", "{6F12ECFD-3891-40AE-A18D-B3362C6A2946}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy", "Legacy", "{511F4919-C2FC-4775-92A4-C446E51B49DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{CCB5A70B-3F85-4D11-B774-365DF8A220F6} = {511F4919-C2FC-4775-92A4-C446E51B49DB}
+		{157FE150-54A5-4D10-A052-580A5B4895DA} = {511F4919-C2FC-4775-92A4-C446E51B49DB}
 		{8EF23718-8FE0-4711-BB00-04411C6B4787} = {BF38E868-9FEB-4645-9B2B-15AC47844075}
 		{6F12ECFD-3891-40AE-A18D-B3362C6A2946} = {BF38E868-9FEB-4645-9B2B-15AC47844075}
 	EndGlobalSection

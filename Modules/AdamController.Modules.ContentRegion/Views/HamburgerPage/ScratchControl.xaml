@@ -6,7 +6,7 @@
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
              xmlns:converters="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
-             xmlns:behaviors="clr-namespace:AdamController.Behaviors"
+             xmlns:behaviors="clr-namespace:AdamController.Core.Behaviors;assembly=AdamController.Core"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
