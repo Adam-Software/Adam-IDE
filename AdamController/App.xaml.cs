@@ -14,6 +14,8 @@ using Prism.Ioc;
 using Prism.DryIoc;
 using Prism.Modularity;
 using MahApps.Metro.Controls;
+using AdamController.Modules.MenuRegion;
+using AdamController.Modules.ContentRegion;
 
 #endregion
 
@@ -67,6 +69,11 @@ namespace AdamController
             containerRegistry.Register<Services.ITestService, Services.TestService>();
         }
 
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+        {
+            moduleCatalog.AddModule<MenuRegionModule>();
+            moduleCatalog.AddModule<ContentRegionModule>();
+        }
 
         private static void LoadHighlighting()
         {

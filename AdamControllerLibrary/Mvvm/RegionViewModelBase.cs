@@ -5,7 +5,7 @@ using System;
 
 namespace AdamController.Core.Mvvm
 {
-    internal class RegionViewModelBase : ViewModelBase, INavigationAware, IConfirmNavigationRequest
+    public class RegionViewModelBase : ViewModelBase, INavigationAware, IConfirmNavigationRequest
     {
 
         #region private service
