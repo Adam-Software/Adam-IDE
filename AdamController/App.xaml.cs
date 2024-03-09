@@ -9,10 +9,30 @@ using System.IO;
 using System.Windows;
 using System.Xml;
 
+#region prism
+
+using Prism.Ioc;
+using Prism.DryIoc;
+using Prism.Modularity;
+
+#endregion
+
 namespace AdamController
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
+
+        public App()
+        {
+
+        }
+
+        protected override Window CreateShell()
+        {
+            var w = Container.Resolve<MainWindow>();
+            return w;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             LoadHighlighting();
@@ -39,10 +59,15 @@ namespace AdamController
 
             WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
 
-          
-
             base.OnStartup(e);
         }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            //containerRegistry.Register<Services.ICustomerStore, Services.DbCustomerStore>();
+            // register other needed services here
+        }
+
 
         private static void LoadHighlighting()
         {
