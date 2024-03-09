@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Threading;
 
-namespace AdamController.Core.Converters
+namespace AdamController.Core.AdamComunicate
 {
     public class AdamTcpClient : NetCoreServer.TcpClient
     {

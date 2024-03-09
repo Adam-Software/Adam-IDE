@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AdamControllerLibrary.Collections
+namespace AdamController.Core.Collections
 {
     public static class CollectionUtils
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdamControllerLibrary.Model
+namespace AdamController.Core.Model
 {
     public class ExtendedCommandExecuteResult
     {

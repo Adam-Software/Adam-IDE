@@ -25,6 +25,5 @@
   <ItemGroup>
     <Folder Include="Dialog.ViewModels\" />
     <Folder Include="Dialog.Views\" />
-    <Folder Include="Новая папка\" />
   </ItemGroup>
 </Project>

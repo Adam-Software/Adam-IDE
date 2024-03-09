@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 
 
-namespace AdamControllerLibrary.Collections
+namespace AdamController.Core.Collections
 {
     public sealed class TrulyObservableCollection<T> : ObservableCollection<T>, ICollectionItemPropertyChanged<T> where T : INotifyPropertyChanged
     {

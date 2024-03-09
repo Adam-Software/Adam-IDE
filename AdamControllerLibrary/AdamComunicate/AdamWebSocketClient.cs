@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Websocket.Client;
 
-namespace AdamController.Core.Converters
+namespace AdamController.Core.AdamComunicate
 {
     public class AdamWebSocketClient : IDisposable
     {

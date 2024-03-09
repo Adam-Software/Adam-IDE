@@ -1,4 +1,4 @@
-﻿namespace AdamControllerLibrary.ExtendedComponentModel
+﻿namespace AdamController.Core.ExtendedComponentModel
 {
     public class ItemChangedEventArgs<T>
     {
