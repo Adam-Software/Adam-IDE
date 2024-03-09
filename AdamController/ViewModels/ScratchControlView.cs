@@ -100,7 +100,7 @@ namespace AdamController.ViewModels
         {
             PythonScriptExecuteHelper.OnExecuteStartEvent += (message) =>
             {
-                if (MainWindowView.GetSelectedPageIndex != 0)
+                if (MainWindowViewModels.GetSelectedPageIndex != 0)
                     return;
 
                 mIsWarningStackOwerflowAlreadyShow = false;
@@ -112,7 +112,7 @@ namespace AdamController.ViewModels
 
             PythonScriptExecuteHelper.OnStandartOutputEvent += (message) => 
             {
-                if (MainWindowView.GetSelectedPageIndex != 0)
+                if (MainWindowViewModels.GetSelectedPageIndex != 0)
                     return;
                 
                 if(ResultTextEditorLength > 10000)
@@ -134,7 +134,7 @@ namespace AdamController.ViewModels
 
             PythonScriptExecuteHelper.OnExecuteFinishEvent += (message) =>
             {
-                if (MainWindowView.GetSelectedPageIndex != 0)
+                if (MainWindowViewModels.GetSelectedPageIndex != 0)
                     return;
 
                 FinishExecuteProgram();

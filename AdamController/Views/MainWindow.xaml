@@ -15,7 +15,8 @@
                   mc:Ignorable="d"
                   WindowState="Maximized"
                   ShowIconOnTitleBar="True"
-                  
+                  xmlns:prism="http://prismlibrary.com/"
+                  prism:ViewModelLocator.AutoWireViewModel="True"
                   Title="{Binding WindowTitle}">
 
     <!--#region Window resources -->

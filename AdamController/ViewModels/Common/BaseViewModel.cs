@@ -17,7 +17,6 @@ namespace AdamController.ViewModels.Common
         /// Default window is modal. Ovverride this to false if window main.
         /// </summary>
         public virtual bool IsModal => true;
-        
         public virtual double Height => 1000;
         public virtual double Width => 1400;
 

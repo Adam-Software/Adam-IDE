@@ -17,7 +17,7 @@ using System.Windows.Threading;
 
 namespace AdamController.ViewModels
 {
-    public class MainWindowView : BaseViewModel
+    public class MainWindowViewModels : BindableBase//BaseViewModel
     {
         #region Const
 
@@ -31,7 +31,7 @@ namespace AdamController.ViewModels
 
         #endregion
 
-        public MainWindowView()
+        public MainWindowViewModels()
         {
             ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
             ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
@@ -662,16 +662,16 @@ namespace AdamController.ViewModels
 
         #region IWindowParam
 
-        public override string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
-        public override bool IsModal => false;
-        public override WindowState WindowState => WindowState.Maximized;
+        //public override string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
+        //public override bool IsModal => false;
+        //public override WindowState WindowState => WindowState.Maximized;
 
-        public override void OnClosed(Window window)
-        {
-            ComunicateHelper.DisconnectAllAndDestroy();
+        //public override void OnClosed(Window window)
+        //{
+        //    ComunicateHelper.DisconnectAllAndDestroy();
 
-            base.OnClosed(window);
-        }
+        //    base.OnClosed(window);
+        //}
 
         #endregion
     }

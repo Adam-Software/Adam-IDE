@@ -7,7 +7,6 @@ namespace AdamController.Helpers
 {
     public class WindowShowerHelpers
     {
-        private readonly MetroWindow mWindow;
         private readonly bool mIsModal;
 
         public WindowShowerHelpers(MetroWindow window, object dataContext)
@@ -15,17 +14,17 @@ namespace AdamController.Helpers
             IWindowParam param = dataContext as IWindowParam ?? new DefaultWindowParam();
             mIsModal = param.IsModal;
             
-            mWindow = window;
-            mWindow.DataContext = dataContext;
-            mWindow.Title = param.WindowTitle;
-            mWindow.Height = param.Height;
-            mWindow.Width = param.Width;
-            mWindow.ResizeMode = param.ResizeMode;
-            mWindow.WindowStartupLocation = param.WindowStartupLocation;
-            mWindow.TitleCharacterCasing = param.TitleCharacterCasing;
-            mWindow.WindowState = param.WindowState;
+            Window = window;
+            Window.DataContext = dataContext;
+            Window.Title = param.WindowTitle;
+            Window.Height = param.Height;
+            Window.Width = param.Width;
+            Window.ResizeMode = param.ResizeMode;
+            Window.WindowStartupLocation = param.WindowStartupLocation;
+            Window.TitleCharacterCasing = param.TitleCharacterCasing;
+            Window.WindowState = param.WindowState;
             
-            mWindow.Closed += (sender, e) => param.OnClosed(window);
+            Window.Closed += (sender, e) => param.OnClosed(window);
         }
 
         public WindowShowerHelpers(UserControl userControl, object dataContext)
@@ -48,8 +47,9 @@ namespace AdamController.Helpers
             };
 
             window.Closed += (sender, e) => param.OnClosed(window);
-            mWindow = window;
+            Window = window;
         }
+
 
         public WindowShowerHelpers(UserControl userControl, params object[] dataContext)
         {
@@ -70,14 +70,16 @@ namespace AdamController.Helpers
             };
 
             window.Closed += (sender, e) => param.OnClosed(window);
-            mWindow = window;
+            Window = window;
         }
+
+        public readonly MetroWindow Window;
 
         #region Show
 
         public void Show()
         {
-            if (mWindow == null)
+            if (Window == null)
             {
                 return;
             }
@@ -86,7 +88,7 @@ namespace AdamController.Helpers
             {
                 try
                 {
-                    _ = mWindow.ShowDialog();
+                    _ = Window.ShowDialog();
                 }
                 catch
                 {
@@ -98,7 +100,7 @@ namespace AdamController.Helpers
             {
                 try
                 {
-                    mWindow.Show();
+                    Window.Show();
                 }
                 catch
                 {

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace AdamController.ViewModels.HamburgerMenu
 {
 
-    public class HamburgerMenuView : MainWindowView
+    public class HamburgerMenuView : MainWindowViewModels
     {
         private ObservableCollection<HamburgerMenuItemView> mMenuItems;
         private ObservableCollection<HamburgerMenuItemView> mMenuOptionItems;

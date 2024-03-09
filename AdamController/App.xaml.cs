@@ -14,6 +14,7 @@ using System.Xml;
 using Prism.Ioc;
 using Prism.DryIoc;
 using Prism.Modularity;
+using MahApps.Metro.Controls;
 
 #endregion
 
@@ -29,19 +30,19 @@ namespace AdamController
 
         protected override Window CreateShell()
         {
-            var w = Container.Resolve<MainWindow>();
-            return w;
+            var window = Container.Resolve<MainWindow>();
+            return window;
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
+
             LoadHighlighting();
 
             // side menu context, MUST inherit from MainViewModel
             // HamburgerMenuView : MainWindowView
             // and MainWindowView  MUST inherit from BaseViewModel
             // MainWindowView : BaseViewModel
-            new WindowShowerHelpers(new MainWindow(), new HamburgerMenuView()).Show();
 
             _ = FolderHelper.CreateAppDataFolder();
 
