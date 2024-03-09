@@ -1,6 +1,5 @@
 ﻿using AdamController.Helpers;
 using AdamController.Properties;
-using AdamController.ViewModels.HamburgerMenu;
 using AdamController.Views;
 using ControlzEx.Theming;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -65,8 +64,7 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //containerRegistry.Register<Services.ICustomerStore, Services.DbCustomerStore>();
-            // register other needed services here
+            containerRegistry.Register<Services.ITestService, Services.TestService>();
         }
 
 

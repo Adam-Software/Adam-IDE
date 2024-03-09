@@ -1,4 +1,5 @@
 ﻿
+using AdamController.Services;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
 
@@ -10,7 +11,7 @@ namespace AdamController.ViewModels.HamburgerMenu
         private ObservableCollection<HamburgerMenuItemView> mMenuItems;
         private ObservableCollection<HamburgerMenuItemView> mMenuOptionItems;
 
-        public HamburgerMenuView()
+        public HamburgerMenuView(ITestService testService) : base(testService)
         {
             CreateMenuItems();
         }

@@ -4,12 +4,15 @@ using AdamController.DataSource;
 using AdamController.Helpers;
 using AdamController.Model;
 using AdamController.Properties;
+using AdamController.Services;
 using AdamController.ViewModels.Common;
 using AdamController.WebApi.Client.v1;
+using LibVLCSharp.Shared;
 using MahApps.Metro.IconPacks;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -30,8 +33,25 @@ namespace AdamController.ViewModels
 
         #endregion
 
-        public MainWindowViewModel()
+        #region Services
+
+        private Services.ITestService mTestService;
+
+        #endregion
+
+        #region Fields
+
+        public string WindowTitle { get; } //=> $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
+
+        #endregion
+
+        public MainWindowViewModel(ITestService testService)
         {
+
+            mTestService = testService;
+            WindowTitle = mTestService.GetMessage();
+
+
             ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
             ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
             ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
