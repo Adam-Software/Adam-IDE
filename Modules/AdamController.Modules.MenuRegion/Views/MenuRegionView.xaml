@@ -51,7 +51,7 @@
                       Style="{DynamicResource MahApps.Styles.MenuItem}"
                       Background="Transparent">
                 <MenuItem Header="Закрыть программу"
-                          Command="{Binding ExitAppCommand}"/>
+                          Command="{Binding CloseAppCommand}"/>
             </MenuItem>
 
             <MenuItem Header="Средства"
