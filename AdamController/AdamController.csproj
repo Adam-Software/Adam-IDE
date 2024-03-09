@@ -59,7 +59,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AdamBlocklyLibrary\AdamBlocklyLibrary.csproj" />
     <ProjectReference Include="..\AdamController.WebApi.Client\AdamController.WebApi.Client.csproj" />
-    <ProjectReference Include="..\AdamControllerLibrary\AdamControllerLibrary.csproj" />
+    <ProjectReference Include="..\AdamControllerLibrary\AdamController.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icons\AdamIconAndRGBPageIcon.ico" />

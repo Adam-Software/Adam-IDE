@@ -41,7 +41,7 @@ namespace AdamController.ViewModels
 
         #region Fields
 
-        public string WindowTitle { get; } //=> $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
+        public string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
 
         #endregion
 
@@ -49,7 +49,6 @@ namespace AdamController.ViewModels
         {
 
             mTestService = testService;
-            WindowTitle = mTestService.GetMessage();
 
 
             ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
