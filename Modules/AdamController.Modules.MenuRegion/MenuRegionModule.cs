@@ -15,7 +15,6 @@ namespace AdamController.Modules.MenuRegion
             mRegionManager = regionManager;
         }
 
-
         public void OnInitialized(IContainerProvider containerProvider)
         {
             mRegionManager.RequestNavigate(RegionNames.MenuRegion, nameof(MenuRegionView));

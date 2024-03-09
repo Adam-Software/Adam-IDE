@@ -5,10 +5,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
-             xmlns:uiConverter="clr-namespace:AdamController.Core;assembly=AdamController.Core"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:uiConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
              xmlns:properties="clr-namespace:AdamController.Properties"
              mc:Ignorable="d" 
-             xmlns:prism="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True" >
     
     
@@ -804,19 +805,19 @@
                 <!--  these are the templates for the view models  -->
 
                 <DataTemplate DataType="{x:Type viewModels:ScratchControlView}">
-                    <viewsHamburgerItem:ScratchControl  DataContext="{Binding}" />
+                    <!--<viewsHamburgerItem:ScratchControl  DataContext="{Binding}" />-->
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type viewModels:ScriptEditorControlView}">
-                    <viewsHamburgerItem:ScriptEditorControl DataContext="{Binding}" />
+                    <!--<viewsHamburgerItem:ScriptEditorControl DataContext="{Binding}" />-->
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type viewModels:ComputerVisionControlView}">
-                    <viewsHamburgerItem:ComputerVisionControl DataContext="{Binding}" />
+                    <!--<viewsHamburgerItem:ComputerVisionControl DataContext="{Binding}" />-->
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type viewModels:VisualSettingsControlView}">
-                    <viewsHamburgerItem:VisualSettingsControl DataContext="{Binding}" />
+                    <!--<viewsHamburgerItem:VisualSettingsControl DataContext="{Binding}" />-->
                 </DataTemplate>
 
             </Grid.Resources>

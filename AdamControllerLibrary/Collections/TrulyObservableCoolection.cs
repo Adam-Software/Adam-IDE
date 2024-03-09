@@ -1,4 +1,5 @@
-﻿using AdamControllerLibrary.ExtendedComponentModel;
+﻿
+using AdamController.Core.ExtendedComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

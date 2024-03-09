@@ -32,6 +32,7 @@
 
     <!--#endregion-->
     
+        
     <!--#region TitleTemplate -->
     
     <mah:MetroWindow.TitleTemplate>
@@ -60,10 +61,10 @@
     
     <!--#endregion-->
 
+    <Grid>
 
 
-        
-    <!--#region  Status bar -->
+        <!--#region  Status bar -->
         
         <StatusBar Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
                    Style="{StaticResource MahApps.Styles.StatusBar}">
