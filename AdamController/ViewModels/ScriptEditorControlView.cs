@@ -31,7 +31,7 @@ namespace AdamController.ViewModels
         {
             PythonScriptExecuteHelper.OnExecuteStartEvent += (message) =>
             {
-                if (MainWindowViewModels.GetSelectedPageIndex != 1)
+                if (MainWindowViewModel.GetSelectedPageIndex != 1)
                     return;
 
                 ResultTextEditor = string.Empty;
@@ -42,7 +42,7 @@ namespace AdamController.ViewModels
 
             PythonScriptExecuteHelper.OnStandartOutputEvent += (message) => 
             {
-                if (MainWindowViewModels.GetSelectedPageIndex != 1)
+                if (MainWindowViewModel.GetSelectedPageIndex != 1)
                     return;
 
                 if (ResultTextEditorLength > 10000)
@@ -64,7 +64,7 @@ namespace AdamController.ViewModels
             
             PythonScriptExecuteHelper.OnExecuteFinishEvent += (message) =>
             {
-                if (MainWindowViewModels.GetSelectedPageIndex != 1)
+                if (MainWindowViewModel.GetSelectedPageIndex != 1)
                     return;
 
                 IsCodeExecuted = false;

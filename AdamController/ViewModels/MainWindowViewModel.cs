@@ -10,14 +10,13 @@ using MahApps.Metro.IconPacks;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace AdamController.ViewModels
 {
-    public class MainWindowViewModels : BindableBase//BaseViewModel
+    public class MainWindowViewModel : BindableBase//BaseViewModel
     {
         #region Const
 
@@ -31,7 +30,7 @@ namespace AdamController.ViewModels
 
         #endregion
 
-        public MainWindowViewModels()
+        public MainWindowViewModel()
         {
             ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
             ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
