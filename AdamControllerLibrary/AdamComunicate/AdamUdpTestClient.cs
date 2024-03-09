@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace AdamControllerLibrary.AdamComunicate
+namespace AdamController.Core.Converters
 {
     public class AdamUdpTestClient : NetCoreServer.UdpClient
     {

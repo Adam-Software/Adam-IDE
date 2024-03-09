@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace AdamControllerLibrary.AdamComunicate
+namespace AdamController.Core.Converters
 {
     public class AdamUdpServer : UdpServer
     {

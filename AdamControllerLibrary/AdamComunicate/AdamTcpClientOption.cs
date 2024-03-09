@@ -1,4 +1,4 @@
-﻿namespace AdamControllerLibrary.AdamComunicate
+﻿namespace AdamController.Core.Converters
 {
     public class AdamTcpClientOption
     {

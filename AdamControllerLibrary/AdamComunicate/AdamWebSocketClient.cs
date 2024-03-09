@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Websocket.Client;
 
-namespace AdamControllerLibrary.AdamComunicate
+namespace AdamController.Core.Converters
 {
     public class AdamWebSocketClient : IDisposable
     {
