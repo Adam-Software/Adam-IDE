@@ -1,11 +1,10 @@
 ﻿using AdamController.ViewModels;
+using System;
 using System.Windows.Controls;
 
 namespace AdamController.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для MainMenu.xaml
-    /// </summary>
+    [Obsolete]
     public partial class MainMenu : UserControl
     {
         public MainMenu()
