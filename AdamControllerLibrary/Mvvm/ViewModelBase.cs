@@ -1,6 +1,4 @@
-﻿
-
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using Prism.Navigation;
 
 namespace AdamController.Core.Mvvm

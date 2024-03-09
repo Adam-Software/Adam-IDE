@@ -18,6 +18,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamBlocklyLibrary", "AdamB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.WebApi.Client", "AdamController.WebApi.Client\AdamController.WebApi.Client.csproj", "{157FE150-54A5-4D10-A052-580A5B4895DA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{BF38E868-9FEB-4645-9B2B-15AC47844075}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Modules.ContentRegion", "Modules\AdamController.Modules.ContentRegion\AdamController.Modules.ContentRegion.csproj", "{8EF23718-8FE0-4711-BB00-04411C6B4787}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,9 +44,16 @@ Global
 		{157FE150-54A5-4D10-A052-580A5B4895DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{157FE150-54A5-4D10-A052-580A5B4895DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{157FE150-54A5-4D10-A052-580A5B4895DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EF23718-8FE0-4711-BB00-04411C6B4787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EF23718-8FE0-4711-BB00-04411C6B4787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EF23718-8FE0-4711-BB00-04411C6B4787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EF23718-8FE0-4711-BB00-04411C6B4787}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8EF23718-8FE0-4711-BB00-04411C6B4787} = {BF38E868-9FEB-4645-9B2B-15AC47844075}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D00A029C-930D-44A8-8257-721FCA9202F6}

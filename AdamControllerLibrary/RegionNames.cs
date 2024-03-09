@@ -2,5 +2,6 @@
 {
     public class RegionNames
     {
+        public const string ContentRegion = $"{nameof(ContentRegion)}";
     }
 }
