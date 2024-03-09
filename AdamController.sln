@@ -11,11 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController", "AdamContr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Core", "AdamControllerLibrary\AdamController.Core.csproj", "{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0A650D34-3B1C-4EA6-8F8B-F5B6B21025E6}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamBlocklyLibrary", "AdamBlocklyLibrary\AdamBlocklyLibrary.csproj", "{CCB5A70B-3F85-4D11-B774-365DF8A220F6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1} = {1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}
