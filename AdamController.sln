@@ -5,24 +5,23 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController", "AdamController\AdamController.csproj", "{0D918664-5F27-4525-ABE4-0D1A1FB22761}"
 	ProjectSection(ProjectDependencies) = postProject
-		{CCB5A70B-3F85-4D11-B774-365DF8A220F6} = {CCB5A70B-3F85-4D11-B774-365DF8A220F6}
 		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1} = {1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Core", "AdamControllerLibrary\AdamController.Core.csproj", "{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CCB5A70B-3F85-4D11-B774-365DF8A220F6} = {CCB5A70B-3F85-4D11-B774-365DF8A220F6}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamBlocklyLibrary", "AdamBlocklyLibrary\AdamBlocklyLibrary.csproj", "{CCB5A70B-3F85-4D11-B774-365DF8A220F6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1} = {1FCB70D5-1BBC-414D-8DFB-4AEA7D45B1D1}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.WebApi.Client", "AdamController.WebApi.Client\AdamController.WebApi.Client.csproj", "{157FE150-54A5-4D10-A052-580A5B4895DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{BF38E868-9FEB-4645-9B2B-15AC47844075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Modules.ContentRegion", "Modules\AdamController.Modules.ContentRegion\AdamController.Modules.ContentRegion.csproj", "{8EF23718-8FE0-4711-BB00-04411C6B4787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.ContentRegion", "Modules\AdamController.Modules.ContentRegion\AdamController.Modules.ContentRegion.csproj", "{8EF23718-8FE0-4711-BB00-04411C6B4787}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Modules.MenuRegion", "Modules\AdamController.Modules.MenuRegion\AdamController.Modules.MenuRegion.csproj", "{6F12ECFD-3891-40AE-A18D-B3362C6A2946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.MenuRegion", "Modules\AdamController.Modules.MenuRegion\AdamController.Modules.MenuRegion.csproj", "{6F12ECFD-3891-40AE-A18D-B3362C6A2946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

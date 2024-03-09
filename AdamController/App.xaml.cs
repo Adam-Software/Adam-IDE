@@ -48,16 +48,16 @@ namespace AdamController
             _ = FolderHelper.CreateAppDataFolder();
 
             //TODO check theme before ChangeTheme
-            _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
+            _ = ThemeManager.Current.ChangeTheme(this, $"{Core.Properties.Settings.Default.BaseTheme}.{Core.Properties.Settings.Default.ThemeColorScheme}", false);
 
-            string ip = Settings.Default.ServerIP;
-            int port = Settings.Default.ApiPort;
+            string ip = Core.Properties.Settings.Default.ServerIP;
+            int port = Core.Properties.Settings.Default.ApiPort;
 
             Uri DefaultUri = new($"http://{ip}:{port}");
             WebApi.Client.v1.BaseApi.SetApiClientUri(DefaultUri);
 
-            string login = Settings.Default.ApiLogin;
-            string password = Settings.Default.ApiPassword;
+            string login = Core.Properties.Settings.Default.ApiLogin;
+            string password = Core.Properties.Settings.Default.ApiPassword;
 
             WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
 
@@ -92,9 +92,9 @@ namespace AdamController
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Settings.Default.BaseTheme = ThemeManager.Current.DetectTheme(Current).BaseColorScheme;
-            Settings.Default.ThemeColorScheme = ThemeManager.Current.DetectTheme(Current).ColorScheme;
-            Settings.Default.Save();
+            Core.Properties.Settings.Default.BaseTheme = ThemeManager.Current.DetectTheme(Current).BaseColorScheme;
+            Core.Properties.Settings.Default.ThemeColorScheme = ThemeManager.Current.DetectTheme(Current).ColorScheme;
+            Core.Properties.Settings.Default.Save();
 
             base.OnExit(e);
         }

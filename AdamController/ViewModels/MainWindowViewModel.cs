@@ -1,13 +1,12 @@
 ﻿using AdamBlocklyLibrary.Enum;
 using AdamController.Commands;
+using AdamController.Core.Properties;
 using AdamController.DataSource;
 using AdamController.Helpers;
 using AdamController.Model;
-using AdamController.Properties;
 using AdamController.Services;
 using AdamController.ViewModels.Common;
 using AdamController.WebApi.Client.v1;
-using LibVLCSharp.Shared;
 using MahApps.Metro.IconPacks;
 using System;
 using System.Collections.ObjectModel;
@@ -286,7 +285,7 @@ namespace AdamController.ViewModels
 
         public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = ThemesCollection.BlocklyThemes;
 
-        private BlocklyThemeModel selectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == Properties.Settings.Default.BlocklyTheme);
+        private BlocklyThemeModel selectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == Settings.Default.BlocklyTheme);
         public BlocklyThemeModel SelectedBlocklyTheme
         {
             get => selectedBlocklyTheme;
@@ -327,7 +326,7 @@ namespace AdamController.ViewModels
                 selectedBlocklyToolboxLanguage = value;
                 OnPropertyChanged(nameof(SelectedBlocklyToolboxLanguage));
 
-                Properties.Settings.Default.BlocklyToolboxLanguage = selectedBlocklyToolboxLanguage.BlocklyLanguage;
+                Settings.Default.BlocklyToolboxLanguage = selectedBlocklyToolboxLanguage.BlocklyLanguage;
             }
         }
 
@@ -639,7 +638,7 @@ namespace AdamController.ViewModels
 
             if (toogleSwitchState) return;
 
-            Settings.Default.BlocklyGridSpacing = 20;
+            Core.Properties.Settings.Default.BlocklyGridSpacing = 20;
         });
 
         private RelayCommand enableShowGridCommand;
@@ -672,7 +671,7 @@ namespace AdamController.ViewModels
 
             if (toogleSwitchState) return;
 
-            SelectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyWorkspaceLanguage);
+            SelectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Core.Properties.Settings.Default.BlocklyWorkspaceLanguage);
 
         });
 

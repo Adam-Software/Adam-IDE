@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 
 
-namespace AdamController.Behaviors
+namespace AdamController.Core.Behaviors
 {
     public class PutCursorAtEndTextBoxBehavior : Behavior<TextBox>
     {

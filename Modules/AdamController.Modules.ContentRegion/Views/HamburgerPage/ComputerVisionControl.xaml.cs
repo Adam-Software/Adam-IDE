@@ -1,6 +1,5 @@
-﻿using AdamController.Helpers;
-using AdamController.Properties;
-using LibVLCSharp.Shared;
+﻿using LibVLCSharp.Shared;
+using LibVLCSharp.WPF;
 using System;
 using System.Drawing;
 using System.Windows;
@@ -8,9 +7,7 @@ using System.Windows.Controls;
 
 namespace AdamController.Views.HamburgerPage
 {
-    /// <summary>
-    /// Логика взаимодействия для ComputerVisionControl.xaml
-    /// </summary>
+
     public partial class ComputerVisionControl : UserControl, IDisposable
     {
         private LibVLC mLibVLC;
@@ -52,8 +49,8 @@ namespace AdamController.Views.HamburgerPage
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string ip = Settings.Default.ServerIP;
-            string port = Settings.Default.VideoDataExchangePort;
+            string ip = Core.Properties.Settings.Default.ServerIP;
+            string port = Core.Properties.Settings.Default.VideoDataExchangePort;
 
             if (!VideoView.MediaPlayer.IsPlaying)
             {

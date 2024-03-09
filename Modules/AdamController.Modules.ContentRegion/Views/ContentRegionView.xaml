@@ -7,12 +7,12 @@
              xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:uiConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
-             xmlns:properties="clr-namespace:AdamController.Properties"
+             xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
              mc:Ignorable="d" 
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True" >
-    
-    
+
+
     <Grid>
         <mah:Flyout>
             <mah:FlyoutsControl>
@@ -771,6 +771,7 @@
                 <uiConverter:SelectedItemToContentConverter x:Key="SelectedItemToContentConverter" />
 
                 <!--  this is the template for the items (options too)  -->
+                
                 <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModelsHamburgerMenu:HamburgerMenuItemView}">
                     <Grid x:Name="RootGrid"
                       Height="48"
@@ -863,5 +864,7 @@
             </mah:HamburgerMenu>
 
             <!--#endregion-->
+            
         </Grid>
+    </Grid>
 </UserControl>

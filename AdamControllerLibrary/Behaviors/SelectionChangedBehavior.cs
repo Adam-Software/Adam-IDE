@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 //TODO refactor this
-namespace AdamController.Behaviors
+namespace AdamController.Core.Behaviors
 {
     /// <summary>
     /// Attached behaviour to implement a selection changed command on a Selector (combobox).
