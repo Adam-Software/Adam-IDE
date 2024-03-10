@@ -2,7 +2,7 @@
 using AdamController.WebApi.Client.Common;
 using AdamController.WebApi.Client.v1.ResponseModel;
 
-namespace AdamController.Helpers
+namespace AdamController.Core.Helpers
 {
     public class PythonScriptExecuteHelper
     {

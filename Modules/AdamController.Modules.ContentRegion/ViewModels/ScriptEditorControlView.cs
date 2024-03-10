@@ -1,7 +1,11 @@
-﻿using AdamController.ViewModels.HamburgerMenu;
+﻿using AdamController.Core.Helpers;
+using AdamController.Core.ViewModels.HamburgerMenu;
+using AdamController.Helpers;
+using AdamController.ViewModels.HamburgerMenu;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
-
+using MessageDialogManagerLib;
+using Prism.Commands;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +19,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private bool mIsWarningStackOwerflowAlreadyShow;
         private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlView(HamburgerMenuView hamburgerMenuView = null) : base(hamburgerMenuView)
+        public ScriptEditorControlView() 
         {
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
@@ -23,14 +27,23 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             PythonExecuteEvent();
         }
 
+
+        /*public ScriptEditorControlView(HamburgerMenuView hamburgerMenuView = null) : base(hamburgerMenuView)
+        {
+            IDialogManager = new MessageDialogManagerMahapps(Application.Current);
+
+            InitAction();
+            PythonExecuteEvent();
+        }*/
+
         #region Python execute event
 
         private void PythonExecuteEvent()
         {
             PythonScriptExecuteHelper.OnExecuteStartEvent += (message) =>
             {
-                if (MainWindowViewModel.GetSelectedPageIndex != 1)
-                    return;
+                //if (MainWindowViewModel.GetSelectedPageIndex != 1)
+                //    return;
 
                 ResultTextEditor = string.Empty;
                 IsCodeExecuted = true;
@@ -40,8 +53,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             PythonScriptExecuteHelper.OnStandartOutputEvent += (message) => 
             {
-                if (MainWindowViewModel.GetSelectedPageIndex != 1)
-                    return;
+                //if (MainWindowViewModel.GetSelectedPageIndex != 1)
+                //    return;
 
                 if (ResultTextEditorLength > 10000)
                 {
@@ -62,8 +75,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             
             PythonScriptExecuteHelper.OnExecuteFinishEvent += (message) =>
             {
-                if (MainWindowViewModel.GetSelectedPageIndex != 1)
-                    return;
+                //if (MainWindowViewModel.GetSelectedPageIndex != 1)
+                //    return;
 
                 IsCodeExecuted = false;
                 ResultTextEditor += message;
@@ -83,7 +96,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 if (value == sourceTextEditor) return;
 
                 sourceTextEditor = value;
-                OnPropertyChanged(nameof(SourceTextEditor));
+                SetProperty(ref sourceTextEditor, value);
             }
         }
 
@@ -96,7 +109,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 if (value == selectedText) return;
 
                 selectedText = value;
-                OnPropertyChanged(nameof(SelectedText));
+                SetProperty(ref selectedText, value);
             }
         }
 
@@ -127,7 +140,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 resultTextEditor = value;
                 ResultTextEditorLength = value.Length;
 
-                OnPropertyChanged(nameof(ResultTextEditor));
+                SetProperty(ref resultTextEditor, value);
             }
         }
 
@@ -144,7 +157,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 if (value == resultTextEditorLength) return;
 
                 resultTextEditorLength = value;
-                OnPropertyChanged(nameof(ResultTextEditorLength));
+                SetProperty (ref resultTextEditorLength, value);
             }
         }
 
@@ -159,9 +172,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set
             {
                 if (value == isCodeExecuted) return;
-
                 isCodeExecuted = value;
-                OnPropertyChanged(nameof(IsCodeExecuted));
+
+                SetProperty(ref isCodeExecuted, value);
             }
         }
 
@@ -182,7 +195,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 else
                     resultTextEditorError = value;
 
-                OnPropertyChanged(nameof(ResultTextEditorError));
+                SetProperty(ref resultTextEditorError, value);
             }
         }
 
@@ -192,8 +205,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Run code button
 
-        private RelayCommand runCode;
-        public RelayCommand RunCode => runCode ??= new RelayCommand(async obj =>
+        private DelegateCommand runCode;
+        public DelegateCommand RunCode => runCode ??= new DelegateCommand(async () =>
         {
             ResultTextEditorError = string.Empty;
             ExtendedCommandExecuteResult executeResult = new();
@@ -215,7 +228,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 ResultTextEditorError = ex.Message.ToString();
             }
 
-            if (Properties.Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
+            if (Core.Properties.Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
             {
                 ResultTextEditor += "Отчет о инициализации процесса программы\n" +
                  "======================\n" +
@@ -231,12 +244,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 ResultTextEditor += $"Ошибка: {executeResult?.StandardError}" +
                     "\n======================";
 
-        }, canExecute => !string.IsNullOrEmpty(SourceTextEditor));
+        }, () => !string.IsNullOrEmpty(SourceTextEditor));
 
         #endregion
 
-        private RelayCommand copyToClipboard;
-        public RelayCommand CopyToClipboard => copyToClipboard ??= new RelayCommand(obj =>
+        private DelegateCommand copyToClipboard;
+        public DelegateCommand CopyToClipboard => copyToClipboard ??= new DelegateCommand(() =>
         {
             if (SelectedText == null)
                 return;
@@ -244,8 +257,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             Clipboard.SetText(SelectedText);
         });
 
-        private RelayCommand cutToClipboard;
-        public RelayCommand CutToClipboard => cutToClipboard ??= new RelayCommand(obj =>
+        private DelegateCommand cutToClipboard;
+        public DelegateCommand CutToClipboard => cutToClipboard ??= new DelegateCommand(() =>
         {
             if (SourceTextEditor == null)
                 return;
@@ -254,15 +267,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             SourceTextEditor = string.Empty;
         });
 
-        private RelayCommand pasteFromClipboard;
-        public RelayCommand PasteFromClipboard => pasteFromClipboard ??= new RelayCommand(obj =>
+        private DelegateCommand pasteFromClipboard;
+        public DelegateCommand PasteFromClipboard => pasteFromClipboard ??= new DelegateCommand(() =>
         {
             string text = Clipboard.GetText();
             SourceTextEditor += text;
         });
 
-        private RelayCommand stopExecute;
-        public RelayCommand StopExecute => stopExecute ??= new RelayCommand(async obj =>
+        private DelegateCommand stopExecute;
+        public DelegateCommand StopExecute => stopExecute ??= new DelegateCommand(async () =>
         {
             try
             {
@@ -275,8 +288,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
            
         });
 
-        private RelayCommand cleanExecuteEditor;
-        public RelayCommand CleanExecuteEditor => cleanExecuteEditor ??= new RelayCommand(async obj =>
+        private DelegateCommand cleanExecuteEditor;
+        public DelegateCommand CleanExecuteEditor => cleanExecuteEditor ??= new DelegateCommand(async () =>
         {
             await Task.Run(() =>
             {
@@ -287,11 +300,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region OpenFileDialogCommand
 
-        private RelayCommand showOpenFileDialogCommand;
-        public RelayCommand ShowOpenFileDialogCommand => showOpenFileDialogCommand ??= new RelayCommand(async obj =>
+        private DelegateCommand showOpenFileDialogCommand;
+        public DelegateCommand ShowOpenFileDialogCommand => showOpenFileDialogCommand ??= new DelegateCommand(async () =>
         {
             if (IDialogManager.ShowFileBrowser("Выберите файл с исходным кодом программы", 
-                Properties.Settings.Default.SavedUserScriptsFolderPath, "PythonScript file (.py)|*.py|Все файлы|*.*"))
+                    Core.Properties.Settings.Default.SavedUserScriptsFolderPath, "PythonScript file (.py)|*.py|Все файлы|*.*"))
             {
                 string path = IDialogManager.FilePath;
                 if (path == "") return;
@@ -311,12 +324,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ShowSaveFileDialogCommand
 
-        private RelayCommand showSaveFileDialogCommand;
-        public RelayCommand ShowSaveFileDialogCommand => showSaveFileDialogCommand ??= new RelayCommand(async obj =>
+        private DelegateCommand showSaveFileDialogCommand;
+        public DelegateCommand ShowSaveFileDialogCommand => showSaveFileDialogCommand ??= new DelegateCommand(async () =>
         {
             string pythonProgram = SourceTextEditor;
 
-            if (IDialogManager.ShowSaveFileDialog("Сохранить файл программы", Properties.Settings.Default.SavedUserScriptsFolderPath,
+            if (IDialogManager.ShowSaveFileDialog("Сохранить файл программы", Core.Properties.Settings.Default.SavedUserScriptsFolderPath,
                 "new_program", ".py", "PythonScript file (.py)|*.py|Все файлы|*.*"))
             {
                 string path = IDialogManager.FilePathToSave;
@@ -328,7 +341,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 AppLogStatusBarAction("Файл не сохранен");
             }
-        }, canExecute => SourceTextEditor?.Length > 0);
+        }, () => SourceTextEditor?.Length > 0);
 
         #endregion
 

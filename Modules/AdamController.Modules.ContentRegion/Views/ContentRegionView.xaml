@@ -8,6 +8,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:uiConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
+             xmlns:viewModels="clr-namespace:AdamController.Modules.ContentRegion.ViewModels"
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True" >
 
@@ -771,7 +772,8 @@
 
                 <!--  this is the template for the items (options too)  -->
                 
-                <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModelsHamburgerMenu:HamburgerMenuItemView}">
+                <!--БЫЛО ТАК <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModelsHamburgerMenu:HamburgerMenuItemView}">-->
+                <DataTemplate x:Key="MenuItemTemplate">
                     <Grid x:Name="RootGrid"
                             Height="48"
                             Background="Transparent">

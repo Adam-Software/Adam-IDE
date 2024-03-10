@@ -4,7 +4,7 @@ using System.Reflection;
 using System.IO;
 using AdamController.Core.Properties;
 
-namespace AdamController.Helpers
+namespace AdamController.Core.Helpers
 {
     public static class FolderHelper
     {

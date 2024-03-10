@@ -1,7 +1,11 @@
 ﻿using AdamBlocklyLibrary.Enum;
+using AdamController.Core.DataSource;
+using AdamController.Core.Model;
+using AdamController.Core.Properties;
 using AdamController.Core.ViewModels.HamburgerMenu;
 using AdamController.ViewModels.HamburgerMenu;
 using ControlzEx.Theming;
+using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +15,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class VisualSettingsControlView : HamburgerMenuItemView
     {
-        public VisualSettingsControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView) {}
+        //public VisualSettingsControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView) {}
 
         public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = ThemesCollection.BlocklyThemes;
 
@@ -21,7 +25,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public static ObservableCollection<AppLanguageModel> LanguageApp { get; private set; } = LanguagesCollection.AppLanguageCollection;
 
-        private AppLanguageModel selectedLanguageApp = LanguageApp.FirstOrDefault(x => x.AppLanguage == Properties.Settings.Default.AppLanguage);
+        private AppLanguageModel selectedLanguageApp = LanguageApp.FirstOrDefault(x => x.AppLanguage == Settings.Default.AppLanguage);
         public AppLanguageModel SelectedLanguageApp
         {
             get => selectedLanguageApp;
@@ -34,8 +38,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
                 selectedLanguageApp = value;
 
-                OnPropertyChanged(nameof(SelectedLanguageApp));
-                Properties.Settings.Default.AppLanguage = selectedLanguageApp.AppLanguage;
+                SetProperty(ref selectedLanguageApp, value);
+
+                Settings.Default.AppLanguage = selectedLanguageApp.AppLanguage;
             }
         }
 
@@ -45,7 +50,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public static ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection { get; private set; } = LanguagesCollection.BlocklyLanguageCollection;
        
-        private BlocklyLanguageModel selectedBlocklyWorkspaceLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Properties.Settings.Default.BlocklyWorkspaceLanguage);
+        private BlocklyLanguageModel selectedBlocklyWorkspaceLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyWorkspaceLanguage);
         public BlocklyLanguageModel SelectedBlocklyWorkspaceLanguage
         {
             get => selectedBlocklyWorkspaceLanguage;
@@ -57,14 +62,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 }
 
                 selectedBlocklyWorkspaceLanguage = value;
-                OnPropertyChanged(nameof(SelectedBlocklyWorkspaceLanguage));
 
-                if (!Properties.Settings.Default.ChangeToolboxLanguageToggleSwitchState)
+                SetProperty(ref selectedBlocklyWorkspaceLanguage, value);
+
+                if (!Settings.Default.ChangeToolboxLanguageToggleSwitchState)
                 {
                     SetToolboxLanguage(selectedBlocklyWorkspaceLanguage);
                 }
 
-                Properties.Settings.Default.BlocklyWorkspaceLanguage = selectedBlocklyWorkspaceLanguage.BlocklyLanguage;
+                Settings.Default.BlocklyWorkspaceLanguage = selectedBlocklyWorkspaceLanguage.BlocklyLanguage;
             }
         }
 
@@ -90,7 +96,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 selectedColorScheme = value;
 
                 ChangeThemeColorScheme(selectedColorScheme);
-                OnPropertyChanged(nameof(SelectedColorScheme));
+
+                SetProperty(ref selectedColorScheme, value);
             }
         }
 
@@ -98,7 +105,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region BlocklyGridLenth settings
         //TODO unused this variable
-        private short blocklyGridLenth = Properties.Settings.Default.BlocklyGridLenth;
+        private short blocklyGridLenth = Settings.Default.BlocklyGridLenth;
         public short BlocklyGridLenth
         {
             get => blocklyGridLenth;
@@ -110,8 +117,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 }
 
                 blocklyGridLenth = value;
-                OnPropertyChanged(nameof(BlocklyGridLenth));
 
+                SetProperty(ref blocklyGridLenth, value);
                 Settings.Default.BlocklyGridLenth = BlocklyGridLenth;
             }
         }
@@ -129,21 +136,22 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 notificationOpacity = value;
 
                 ChangeNotificationOpacity(notificationOpacity);
-                OnPropertyChanged(nameof(NotificationOpacity));
+
+                SetProperty(ref notificationOpacity, value);
             }
         }
 
 
         #region Command
 
-        private RelayCommand openAdvancedBlocklySettingsCommand;
-        public RelayCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new RelayCommand(obj =>
+        private DelegateCommand openAdvancedBlocklySettingsCommand;
+        public DelegateCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new DelegateCommand(() =>
         {
             OpenAdvancedBlocklySettings(true);
         });
 
-        private RelayCommand<string> changeBaseColorTheme;
-        public RelayCommand<string> ChangeBaseColorTheme => changeBaseColorTheme ??= new RelayCommand<string>(obj =>
+        private DelegateCommand<string> changeBaseColorTheme;
+        public DelegateCommand<string> ChangeBaseColorTheme => changeBaseColorTheme ??= new DelegateCommand<string>(obj =>
         {
             string mainTheme = obj;
 

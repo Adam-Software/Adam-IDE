@@ -1,6 +1,4 @@
 ﻿using AdamController.Helpers;
-using AdamController.Model;
-using AdamController.ViewModels;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using System;

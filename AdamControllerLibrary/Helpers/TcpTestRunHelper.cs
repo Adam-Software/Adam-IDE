@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdamController.Core.AdamComunicate;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 

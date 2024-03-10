@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdamController.Core.Model;
+using System;
 using System.Text.RegularExpressions;
 
 namespace AdamController.Core.Helpers

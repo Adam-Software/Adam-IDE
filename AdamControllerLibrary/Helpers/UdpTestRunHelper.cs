@@ -100,12 +100,12 @@ namespace AdamController.Core.Helpers
 
         private static void InitTestParam()
         {
-            mAddress = Core.Properties.Settings.Default.BenchmarkTestServerIp;
-            mPort = Core.Properties.Settings.Default.BenchmarkUdpTestPort;
-            mClientsQty = Core.Properties.Settings.Default.BenchmarkTestUdpClientsQty;
-            mMessagesQty = Core.Properties.Settings.Default.BenchmarkTestUdpMessageQty;
-            mSize = Core.Properties.Settings.Default.BenchmarkUdpSizeByteArray;
-            mSeconds = Core.Properties.Settings.Default.BenchmarkTestUdpTime;
+            mAddress = Properties.Settings.Default.BenchmarkTestServerIp;
+            mPort = Properties.Settings.Default.BenchmarkUdpTestPort;
+            mClientsQty = Properties.Settings.Default.BenchmarkTestUdpClientsQty;
+            mMessagesQty = Properties.Settings.Default.BenchmarkTestUdpMessageQty;
+            mSize = Properties.Settings.Default.BenchmarkUdpSizeByteArray;
+            mSeconds = Properties.Settings.Default.BenchmarkTestUdpTime;
         }
 
         private static void ClearResultField()

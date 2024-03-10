@@ -6,8 +6,8 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:views="clr-namespace:AdamController.Views"
                   xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
-                  xmlns:uiConverter="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
-                  xmlns:properties="clr-namespace:AdamController.Properties"
+                  xmlns:uiConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
+                  xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
                   TitleCharacterCasing="Normal"
                   mc:Ignorable="d"
                   WindowState="Maximized"
@@ -61,138 +61,7 @@
     <Grid>
 
 
-        <!--#region  Status bar -->
         
-        <StatusBar Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
-                   Style="{StaticResource MahApps.Styles.StatusBar}">
-            
-            <!--#region  Item temlate -->
-            
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="1.7*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="1.7*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
-            
-            <!--#endregion-->
-            
-            <Separator Grid.Column="0" 
-                       Margin="10 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
-
-            <!--#region Compile status bar -->
-
-            <StatusBarItem Grid.Column="1"
-                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
-
-                <StackPanel Orientation="Horizontal">
-                    <mah:ProgressRing Width="Auto" Height="Auto"
-                                      Padding="5"
-                                      Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                      IsActive="{Binding ProgressRingStart}" />
-
-                    <TextBlock Margin="5 0 0 0"
-                               FontWeight="Medium"
-                               Text="{Binding CompileLogStatusBar }" 
-                               VerticalAlignment="Center"  
-                               HorizontalAlignment="Left"/>
-
-                </StackPanel>
-            </StatusBarItem>
-
-            <!--#endregion-->
-
-            <Separator Grid.Column="2" 
-                       Margin="10 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
-
-            <!--#region AppLog status bar -->
-
-            <StatusBarItem Grid.Column="3"
-                           FontWeight="Medium"
-                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                           Content="{Binding AppLogStatusBar}"/>
-
-            <!--#endregion--> 
-
-            <Separator Grid.Column="4" Margin="5 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
-
-            <!--#region Connect/Disconnect status bar-->
-
-            <StatusBarItem Grid.Column="5" 
-                           HorizontalContentAlignment="Stretch"
-                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="0.7*"/>
-                        <ColumnDefinition Width="0.35*"/>
-                    </Grid.ColumnDefinitions>
-                    <iconPacks:PackIconModern Margin="10 0 10 0"
-                                              Grid.Column="0"
-                                              VerticalAlignment="Center"
-                            Kind="{Binding ConnectIcon, Mode=TwoWay}"
-                                              Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-
-                    <TextBlock Grid.Column="1"
-                               VerticalAlignment="Center"
-                               FontWeight="Medium"
-                               Text="{Binding TextOnStatusConnectToolbar, Mode=TwoWay}" />
-                </Grid>
-            </StatusBarItem>
-
-            <!--#endregion-->
-   
-            <Separator Grid.Column="6" 
-                       Margin="5 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
-
-            <StatusBarItem  Grid.Column="7" Margin="5 0 5 0">
-
-                <mah:Badged Padding="0 -7 1 0"
-                            Margin="0 8 5 0"
-                            BadgeBackground="Red"
-                            BadgePlacementMode="TopRight"
-                            Badge="{Binding NotificationBadge}">
-                    
-                    <Button Padding="3"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Command="{Binding OpenNotificationPanel}"
-                            CommandParameter="{Binding ElementName=NotificationFlayouts, Path=IsOpen}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                            Style="{StaticResource MahApps.Styles.Button.ToolBar}">
-                        <iconPacks:PackIconBootstrapIcons Kind="Bell" />
-                    </Button>
-                </mah:Badged>
-            </StatusBarItem>
-
-            <Separator Grid.Column="8" Margin="5 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
-
-        </StatusBar>
-        
-        <!--#endregion-->
         
     </Grid>
     

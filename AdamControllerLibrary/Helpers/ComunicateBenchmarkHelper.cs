@@ -1,4 +1,5 @@
 ﻿using AdamController.Core.AdamComunicate;
+using AdamController.Core.Properties;
 using System.Threading;
 
 namespace AdamController.Core.Helpers

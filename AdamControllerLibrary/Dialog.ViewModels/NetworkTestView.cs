@@ -5,7 +5,9 @@ using AdamController.WebApi.Client.v1.RequestModel;
 using MahApps.Metro.IconPacks;
 using MessageDialogManagerLib;
 using NetCoreServer;
+using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -15,7 +17,7 @@ using System.Windows.Threading;
 
 namespace AdamController.Core.Dialog.ViewModels
 {
-    public class NetworkTestView : BindableBase
+    public class NetworkTestView : BindableBase, IDialogAware
     {
         #region Const
 
@@ -54,13 +56,34 @@ namespace AdamController.Core.Dialog.ViewModels
 
             if (Properties.Settings.Default.AutoStartTestTcpConnect)
             {
-                ConnectButtonComand.Execute(null);
+                ConnectButtonComand.Execute();
             }
             else
             {
                 //init fields if autorun off
                 OnTcpDisconnected();
             }
+        }
+
+        #endregion
+
+        #region Navigation
+
+        public string Title => throw new NotImplementedException();
+
+        public bool CanCloseDialog()
+        {
+            return true;
+        }
+
+        public void OnDialogClosed()
+        {
+            
+        }
+
+        public void OnDialogOpened(IDialogParameters parameters)
+        {
+            
         }
 
         #endregion
@@ -78,10 +101,9 @@ namespace AdamController.Core.Dialog.ViewModels
             set
             {
                 if (value == networkWindowActivated) return;
-
                 networkWindowActivated = value;
-                OnPropertyChanged(nameof(NetworkWindowActivated));
-
+                
+                SetProperty(ref networkWindowActivated, value);
             }
         }
 
@@ -135,7 +157,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == isTcpClientConnected) return;
 
                 isTcpClientConnected = value;
-                OnPropertyChanged(nameof(IsTcpClientConnected));
+
+                SetProperty(ref isTcpClientConnected, value);
             }
         }
 
@@ -154,7 +177,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == publishTcpResultCount) return;
                 publishTcpResultCount = value;
 
-                OnPropertyChanged(nameof(PublishTcpResultCount));
+                SetProperty(ref publishTcpResultCount, value);
             }
         }
 
@@ -171,7 +194,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == publishUdpResultCount) return;
                 publishUdpResultCount = value;
 
-                OnPropertyChanged(nameof(PublishUdpResultCount));
+                SetProperty(ref publishTcpResultCount, value);
             }
         }
 
@@ -192,7 +215,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == startTcpTestTime) return;
 
                 startTcpTestTime = value;
-                OnPropertyChanged(nameof(StartTcpTestTime));
+
+                SetProperty(ref startTcpTestTime, value);
             }
         }
 
@@ -209,7 +233,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == startUdpTestTime) return;
 
                 startUdpTestTime = value;
-                OnPropertyChanged(nameof(StartUdpTestTime));
+
+                SetProperty (ref startUdpTestTime, value);
             }
         }
 
@@ -230,7 +255,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == finishTcpTestTime) return;
 
                 finishTcpTestTime = value;
-                OnPropertyChanged(nameof(FinishTcpTestTime));
+
+                SetProperty(ref finishTcpTestTime, value);
             }
         }
 
@@ -247,7 +273,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == finishUdpTestTime) return;
 
                 finishUdpTestTime = value;
-                OnPropertyChanged(nameof(FinishUdpTestTime));
+
+                SetProperty(ref finishUdpTestTime, value);
             }
         }
 
@@ -266,7 +293,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == totalTimeTcpTest) return;
 
                 totalTimeTcpTest = value;
-                OnPropertyChanged(nameof(TotalTimeTcpTest));
+                
+                SetProperty(ref totalTimeTcpTest, value);
             }
         }
 
@@ -283,7 +311,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == totalTimeUdpTest) return;
 
                 totalTimeUdpTest = value;
-                OnPropertyChanged(nameof(TotalTimeUdpTest));
+                
+                SetProperty (ref totalTimeUdpTest, value);
             }
         }
 
@@ -306,7 +335,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == dataTcpCounter) return;
                 dataTcpCounter = value;
 
-                OnPropertyChanged(nameof(DataTcpCounter));
+                SetProperty(ref dataTcpCounter, value);
             }
         }
 
@@ -321,9 +350,10 @@ namespace AdamController.Core.Dialog.ViewModels
             set
             {
                 if (value == dataUdpCounter) return;
+
                 dataUdpCounter = value;
 
-                OnPropertyChanged(nameof(DataUdpCounter));
+                SetProperty(ref dataUdpCounter, value);
             }
         }
 
@@ -344,7 +374,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == messageTcpCounter) return;
 
                 messageTcpCounter = value;
-                OnPropertyChanged(nameof(MessageTcpCounter));
+
+                SetProperty(ref messageTcpCounter, value);
             }
         }
 
@@ -361,7 +392,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == messageUdpCounter) return;
 
                 messageUdpCounter = value;
-                OnPropertyChanged(nameof(MessageUdpCounter));
+                
+                SetProperty(ref messageUdpCounter, value);
             }
         }
 
@@ -382,7 +414,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == dataTcpThroughput) return;
                 dataTcpThroughput = value;
 
-                OnPropertyChanged(nameof(DataTcpThroughput));
+                SetProperty (ref dataTcpThroughput, value);
             }
         }
 
@@ -399,7 +431,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == dataUdpThroughput) return;
                 dataUdpThroughput = value;
 
-                OnPropertyChanged(nameof(DataUdpThroughput));
+                SetProperty(ref dataUdpThroughput, value);
             }
         }
 
@@ -420,7 +452,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == messageTcpLatency) return;
                 messageTcpLatency = value;
 
-                OnPropertyChanged(nameof(MessageTcpLatency));
+                SetProperty(ref messageTcpLatency, value);
             }
         }
 
@@ -437,7 +469,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == messageUdpLatency) return;
                 messageUdpLatency = value;
 
-                OnPropertyChanged(nameof(MessageUdpLatency));
+                SetProperty(ref messageUdpLatency, value);
             }
         }
 
@@ -458,7 +490,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == messageTcpThroughput) return;
                 messageTcpThroughput = value;
 
-                OnPropertyChanged(nameof(MessageTcpThroughput));
+                SetProperty(ref messageTcpThroughput, value);
             }
         }
 
@@ -475,7 +507,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == messageUdpThroughput) return;
                 messageUdpThroughput = value;
 
-                OnPropertyChanged(nameof(MessageUdpThroughput));
+                SetProperty(ref messageUdpThroughput, value);
             }
         }
 
@@ -496,7 +528,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == errorTcpCounter) return;
                 errorTcpCounter = value;
 
-                OnPropertyChanged(nameof(ErrorTcpCounter));
+                SetProperty(ref errorTcpCounter, value);
             }
         }
 
@@ -513,7 +545,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == errorUdpCounter) return;
                 errorUdpCounter = value;
 
-                OnPropertyChanged(nameof(ErrorUdpCounter));
+                SetProperty(ref errorUdpCounter, value);
             }
         }
 
@@ -534,7 +566,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == errorTcpMessage) return;
                 errorTcpMessage = value;
 
-                OnPropertyChanged(nameof(ErrorTcpMessage));
+                SetProperty(ref errorTcpMessage, value);
             }
         }
 
@@ -551,7 +583,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == errorUdpMessage) return;
                 errorUdpMessage = value;
 
-                OnPropertyChanged(nameof(ErrorUdpMessage));
+                SetProperty(ref errorUdpMessage, value);
             }
         }
 
@@ -572,7 +604,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == progressRingTcp) return;
 
                 progressRingTcp = value;
-                OnPropertyChanged(nameof(ProgressRingTcp));
+                
+                SetProperty(ref progressRingTcp, value);
             }
         }
 
@@ -589,7 +622,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == progressRingUdp) return;
 
                 progressRingUdp = value;
-                OnPropertyChanged(nameof(ProgressRingUdp));
+                
+                SetProperty(ref progressRingUdp, value);
             }
         }
 
@@ -606,7 +640,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == reconnectProgressRing) return;
 
                 reconnectProgressRing = value;
-                OnPropertyChanged(nameof(ReconnectProgressRing));
+                
+                SetProperty (ref reconnectProgressRing, value);
             }
         }
 
@@ -626,7 +661,8 @@ namespace AdamController.Core.Dialog.ViewModels
                     return;
 
                 selectedTabIndex = value;
-                OnPropertyChanged(nameof(SelectedTabIndex));
+                
+                SetProperty(ref selectedTabIndex, value);
             }
         }
 
@@ -658,7 +694,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == textOnStatusConnectButton) return;
 
                 textOnStatusConnectButton = value;
-                OnPropertyChanged(nameof(TextOnStatusConnectButton));
+                SetProperty(ref textOnStatusConnectButton, value);
             }
         }
 
@@ -671,7 +707,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == connectIcon) return;
 
                 connectIcon = value;
-                OnPropertyChanged(nameof(ConnectIcon));
+                SetProperty(ref connectIcon, value);
             }
         }
 
@@ -688,7 +724,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == textOnTcpStatusTest) return;
 
                 textOnTcpStatusTest = value;
-                OnPropertyChanged(nameof(TextOnTcpStatusTest));
+
+                SetProperty(ref textOnTcpStatusTest, value);
             }
         }
 
@@ -701,7 +738,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == tcpTestIcon) return;
 
                 tcpTestIcon = value;
-                OnPropertyChanged(nameof(TcpTestIcon));
+                
+                SetProperty(ref tcpTestIcon, value);
             }
         }
 
@@ -718,7 +756,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == textOnUdpStatusTest) return;
 
                 textOnUdpStatusTest = value;
-                OnPropertyChanged(nameof(TextOnUdpStatusTest));
+
+                SetProperty(ref textOnUdpStatusTest, value);
             }
         }
 
@@ -731,7 +770,8 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == udpTestIcon) return;
 
                 udpTestIcon = value;
-                OnPropertyChanged(nameof(UdpTestIcon));
+
+                SetProperty(ref udpTestIcon, value);
             }
         }
 
@@ -754,7 +794,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == serverIpTcpBoxIsEnabled) return;
                 serverIpTcpBoxIsEnabled = value;
 
-                OnPropertyChanged(nameof(ServerIpTcpBoxIsEnabled));
+                SetProperty (ref serverIpTcpBoxIsEnabled, value);
             }
         }
         #endregion
@@ -774,7 +814,7 @@ namespace AdamController.Core.Dialog.ViewModels
                 if (value == serverIpUdpBoxIsEnabled) return;
                 serverIpUdpBoxIsEnabled = value;
 
-                OnPropertyChanged(nameof(ServerIpUdpBoxIsEnabled));
+                SetProperty(ref serverIpUdpBoxIsEnabled, value);
             }
         }
 
@@ -1101,20 +1141,20 @@ namespace AdamController.Core.Dialog.ViewModels
 
         #region TCP commands
 
-        private RelayCommand stopTcpBenchmarkTest;
-        public RelayCommand StopTcpBenchmarkTest => stopTcpBenchmarkTest ??= new RelayCommand(obj =>
+        private DelegateCommand stopTcpBenchmarkTest;
+        public DelegateCommand StopTcpBenchmarkTest => stopTcpBenchmarkTest ??= new DelegateCommand(() =>
         {
             TcpTestRunHelper.AbortTest();
         });
 
-        private RelayCommand clearTcpTestResult;
-        public RelayCommand ClearTcpTestResult => clearTcpTestResult ??= new RelayCommand(obj =>
+        private DelegateCommand clearTcpTestResult;
+        public DelegateCommand ClearTcpTestResult => clearTcpTestResult ??= new DelegateCommand(() =>
         {
             ClearTcpResultField();
-        }, canExecute => PublishTcpResultCount > 0);
+        }, () => PublishTcpResultCount > 0);
 
-        private RelayCommand startTcpBenchmarkTest;
-        public RelayCommand StartTcpBenchmarkTest => startTcpBenchmarkTest ??= new RelayCommand(async obj =>
+        private DelegateCommand startTcpBenchmarkTest;
+        public DelegateCommand StartTcpBenchmarkTest => startTcpBenchmarkTest ??= new DelegateCommand(async () =>
         {
             TcpStatusBarManager(true);
 
@@ -1122,26 +1162,26 @@ namespace AdamController.Core.Dialog.ViewModels
             await Task.Run (() => TcpTestRunHelper.Run());
             
             PublishTcpResults();
-        }, canExecute => IsTcpClientConnected == true);
+        }, () => IsTcpClientConnected == true);
 
         #endregion
 
         #region UDP commands
 
-        private RelayCommand stopUdpBenchmarkTest;
-        public RelayCommand StopUdpBenchmarkTest => stopUdpBenchmarkTest ??= new RelayCommand(obj =>
+        private DelegateCommand stopUdpBenchmarkTest;
+        public DelegateCommand StopUdpBenchmarkTest => stopUdpBenchmarkTest ??= new DelegateCommand(() =>
         {
             UdpTestRunHelper.AbortTest();
         });
 
-        private RelayCommand clearUdpTestResult;
-        public RelayCommand ClearUdpTestResult => clearUdpTestResult ??= new RelayCommand(obj =>
+        private DelegateCommand clearUdpTestResult;
+        public DelegateCommand ClearUdpTestResult => clearUdpTestResult ??= new DelegateCommand(() =>
         {
             ClearUdpResultField();
-        }, canExecute => PublishUdpResultCount > 0);
+        }, () => PublishUdpResultCount > 0);
 
-        private RelayCommand startUdpBenchmarkTest;
-        public RelayCommand StartUdpBenchmarkTest => startUdpBenchmarkTest ??= new RelayCommand(async obj =>
+        private DelegateCommand startUdpBenchmarkTest;
+        public DelegateCommand StartUdpBenchmarkTest => startUdpBenchmarkTest ??= new DelegateCommand(async () =>
         {
             UdpStatusBarManager(true);
 
@@ -1149,27 +1189,15 @@ namespace AdamController.Core.Dialog.ViewModels
             await Task.Run(() => UdpTestRunHelper.Run());
 
             PublishUdpResults();
-        }, canExecute => IsTcpClientConnected == true);
+        }, () => IsTcpClientConnected == true);
 
-
-        #endregion
-
-        #region Common comands
-
-        private RelayCommand closeWindowCommand;
-        public RelayCommand CloseWindowCommand => closeWindowCommand ??= new RelayCommand(obj =>
-        {
-            OnCloseWindow();
-
-            ((Window)obj).Close();
-        });
 
         #endregion
 
         #region Test client connect commands
 
-        private RelayCommand connectButtonComand;
-        public RelayCommand ConnectButtonComand => connectButtonComand ??= new RelayCommand(async obj =>
+        private DelegateCommand connectButtonComand;
+        public DelegateCommand ConnectButtonComand => connectButtonComand ??= new DelegateCommand(async () =>
         {
             await Dispatcher.Yield(DispatcherPriority.Normal);
 
@@ -1190,8 +1218,8 @@ namespace AdamController.Core.Dialog.ViewModels
 
         #region Saved/Copy buttons commands
 
-        private RelayCommand copyResults;
-        public RelayCommand CopyResults => copyResults ??= new RelayCommand(obj => 
+        private DelegateCommand copyResults;
+        public DelegateCommand CopyResults => copyResults ??= new DelegateCommand(() => 
         {
             IList<string> envParamsShort = null;
             
@@ -1229,8 +1257,11 @@ namespace AdamController.Core.Dialog.ViewModels
             }
         });
 
-        private RelayCommand saveResults;
-        public RelayCommand SaveResults => saveResults ??= new RelayCommand(obj => 
+        private DelegateCommand saveResults;
+
+        public event Action<IDialogResult> RequestClose;
+
+        public DelegateCommand SaveResults => saveResults ??= new DelegateCommand(() => 
         {
             IList<string> envParamsShort = null;
 
@@ -1269,6 +1300,8 @@ namespace AdamController.Core.Dialog.ViewModels
 
         });
 
+       
+
         private async void FileSaveDialog(string file, string title, string fileName)
         {
 
@@ -1287,20 +1320,5 @@ namespace AdamController.Core.Dialog.ViewModels
 
         #endregion
 
-        #region IWindowParam
-
-        public override string WindowTitle => @"Тест сети";
-        public override double Width => 1000;
-        public override double Height => 550;
-        public override bool IsModal => false;
-
-        public override void OnClosed(Window window)
-        {
-            OnCloseWindow();
-
-            base.OnClosed(window);
-        }
-
-        #endregion
     }
 }

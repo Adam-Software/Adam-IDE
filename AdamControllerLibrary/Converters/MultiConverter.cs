@@ -17,6 +17,7 @@ namespace AdamController.Core.Converters
             }
             return true;
         }
+
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
