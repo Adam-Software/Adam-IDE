@@ -1,9 +1,9 @@
-﻿using AdamController.Commands;
-using MessageDialogManagerLib;
+﻿using MessageDialogManagerLib;
+using Prism.Commands;
 using System;
 using System.Threading.Tasks;
 
-namespace AdamController.ViewModels
+namespace AdamController.Core.Dialog.ViewModels
 {
     [Obsolete("Use it as example")]
     public class MetroDialogView
@@ -13,25 +13,23 @@ namespace AdamController.ViewModels
         public MetroDialogView(IMessageDialogManager messageDialogManager)
         {
             IDialogManager = messageDialogManager;
-            ShowFolderBrowserSingleCommand = new RelayCommand(obj => ShowFolderBrowserSingleCommandExecute(), obj =>  ShowFolderBrowserSingleCommandCanExecute());
-            ShowFileBrowserSingleCommand = new RelayCommand(obj => ShowFileBrowserSingleCommandExecute(), obj =>  ShowFileBrowserSingleCommandCanExecute());
-            ShowFolderBrowserMultipleCommand = new RelayCommand(obj => ShowFolderBrowserMultipleCommandExecute(), obj => ShowFolderBrowserMultipleCommandCanExecute());
-            ShowFileBrowserMultipleCommand = new RelayCommand(obj => ShowFileBrowserMultipleCommandExecute(), obj => ShowFileBrowserMultipleCommandCanExecute());
-            ShowInfoDialogCommand = new RelayCommand(obj => ShowInfoDialogCommandExecute(), obj => ShowInfoDialogCommandCanExecute());
-            ShowProgressCommand = new RelayCommand(obj => ShowProgressCommandExecute(), obj => ShowProgressCommandCanExecute());
-            ShowSaveFileDialogCommand = new RelayCommand(obj => ShowSaveFileDialogCommandExecute(), obj => ShowSaveFileDialogCommandCanExecute());
-
-           
+            ShowFolderBrowserSingleCommand = new DelegateCommand(ShowFolderBrowserSingleCommandExecute, ShowFolderBrowserSingleCommandCanExecute);
+            ShowFileBrowserSingleCommand = new DelegateCommand(ShowFileBrowserSingleCommandExecute, ShowFileBrowserSingleCommandCanExecute);
+            ShowFolderBrowserMultipleCommand = new DelegateCommand(ShowFolderBrowserMultipleCommandExecute, ShowFolderBrowserMultipleCommandCanExecute);
+            ShowFileBrowserMultipleCommand = new DelegateCommand(ShowFileBrowserMultipleCommandExecute, ShowFileBrowserMultipleCommandCanExecute);
+            ShowInfoDialogCommand = new DelegateCommand(ShowInfoDialogCommandExecute, ShowInfoDialogCommandCanExecute);
+            ShowProgressCommand = new DelegateCommand(ShowProgressCommandExecute, ShowProgressCommandCanExecute);
+            ShowSaveFileDialogCommand = new DelegateCommand(ShowSaveFileDialogCommandExecute, ShowSaveFileDialogCommandCanExecute);
         }
 
         public static Action<string> AppLogStatusBarAction { get; set; }
-        public RelayCommand ShowFolderBrowserSingleCommand { get; private set; }
-        public RelayCommand ShowFileBrowserSingleCommand { get; private set; }
-        public RelayCommand ShowFolderBrowserMultipleCommand { get; private set; }
-        public RelayCommand ShowFileBrowserMultipleCommand { get; private set; }
-        public RelayCommand ShowInfoDialogCommand { get; private set; }
-        public RelayCommand ShowProgressCommand { get; private set; }
-        public RelayCommand ShowSaveFileDialogCommand { get; private set; }
+        public DelegateCommand ShowFolderBrowserSingleCommand { get; private set; }
+        public DelegateCommand ShowFileBrowserSingleCommand { get; private set; }
+        public DelegateCommand ShowFolderBrowserMultipleCommand { get; private set; }
+        public DelegateCommand ShowFileBrowserMultipleCommand { get; private set; }
+        public DelegateCommand ShowInfoDialogCommand { get; private set; }
+        public DelegateCommand ShowProgressCommand { get; private set; }
+        public DelegateCommand ShowSaveFileDialogCommand { get; private set; }
 
         private bool ShowFolderBrowserSingleCommandCanExecute()
         {
