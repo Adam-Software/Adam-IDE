@@ -1,5 +1,4 @@
 ﻿
-using AdamController.Properties;
 using AdamController.Views;
 using ControlzEx.Theming;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -17,6 +16,7 @@ using MahApps.Metro.Controls;
 using AdamController.Modules.MenuRegion;
 using AdamController.Modules.ContentRegion;
 using AdamController.Core.Helpers;
+using AdamController.Services;
 
 #endregion
 
@@ -67,13 +67,14 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<Services.ITestService, Services.TestService>();
+            containerRegistry.Register<ITestService, TestService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             moduleCatalog.AddModule<MenuRegionModule>();
             moduleCatalog.AddModule<ContentRegionModule>();
+
         }
 
         private static void LoadHighlighting()
