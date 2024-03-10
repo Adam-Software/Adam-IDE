@@ -1,8 +1,9 @@
-﻿using System;
+﻿using AdamController.Services.AdamTcpClientDependency;
+using System;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace AdamController.Core.AdamComunicate
+namespace AdamController.Services
 {
     public class AdamTcpClient : NetCoreServer.TcpClient
     {

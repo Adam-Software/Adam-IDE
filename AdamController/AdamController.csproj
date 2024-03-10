@@ -39,6 +39,7 @@
     <ProjectReference Include="..\AdamControllerLibrary\AdamController.Core.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.ContentRegion\AdamController.Modules.ContentRegion.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.MenuRegion\AdamController.Modules.MenuRegion.csproj" />
+    <ProjectReference Include="..\Modules\AdamController.Modules.StatusBar\AdamController.Modules.StatusBar.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icons\AdamIconAndRGBPageIcon.ico" />
@@ -50,7 +51,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MessageDialogManagerLib" Version="1.0.3" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>

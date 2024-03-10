@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace AdamController.Core.AdamComunicate
+namespace AdamController.Services
 {
     public class AdamTestTcpClient : NetCoreServer.TcpClient
     {
