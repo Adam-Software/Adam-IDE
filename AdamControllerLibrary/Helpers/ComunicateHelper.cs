@@ -1,5 +1,6 @@
-﻿using AdamController.Core.AdamComunicate;
-using AdamController.Core.Properties;
+﻿using AdamController.Core.Properties;
+using AdamController.Services;
+using AdamController.Services.AdamTcpClientDependency;
 using System;
 using System.Net;
 using System.Net.Sockets;

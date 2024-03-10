@@ -35,7 +35,7 @@ namespace AdamController.ViewModels
 
         #region Services
 
-        private Services.ITestService mTestService;
+       
 
         #endregion
 
@@ -45,12 +45,8 @@ namespace AdamController.ViewModels
 
         #endregion
 
-        public MainWindowViewModel(ITestService testService)
+        public MainWindowViewModel()
         {
-
-            mTestService = testService;
-
-
             ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
             ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
             ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;

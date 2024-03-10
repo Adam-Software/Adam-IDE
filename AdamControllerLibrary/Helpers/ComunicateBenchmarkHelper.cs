@@ -1,5 +1,7 @@
-﻿using AdamController.Core.AdamComunicate;
+﻿
 using AdamController.Core.Properties;
+using AdamController.Services;
+using AdamController.Services.AdamTcpClientDependency;
 using System.Threading;
 
 namespace AdamController.Core.Helpers

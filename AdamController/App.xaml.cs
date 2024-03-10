@@ -17,6 +17,7 @@ using AdamController.Modules.MenuRegion;
 using AdamController.Modules.ContentRegion;
 using AdamController.Core.Helpers;
 using AdamController.Services;
+using AdamController.Modules.StatusBar;
 
 #endregion
 
@@ -67,14 +68,14 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<ITestService, TestService>();
+            //containerRegistry.Register<ITestService, TestService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             moduleCatalog.AddModule<MenuRegionModule>();
             moduleCatalog.AddModule<ContentRegionModule>();
-
+            moduleCatalog.AddModule<StatusBarModule>();
         }
 
         private static void LoadHighlighting()
