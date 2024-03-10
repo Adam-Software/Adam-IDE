@@ -1,4 +1,4 @@
-﻿using AdamController.Helpers;
+﻿
 using AdamController.Properties;
 using AdamController.Views;
 using ControlzEx.Theming;
@@ -16,6 +16,7 @@ using Prism.Modularity;
 using MahApps.Metro.Controls;
 using AdamController.Modules.MenuRegion;
 using AdamController.Modules.ContentRegion;
+using AdamController.Core.Helpers;
 
 #endregion
 

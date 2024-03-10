@@ -93,9 +93,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private float sliderValue;
 
-        public ComputerVisionControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView)
-        {
-        }
+        //public ComputerVisionControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView)
+        //{
+        //}
 
         public float SliderValue 
         {

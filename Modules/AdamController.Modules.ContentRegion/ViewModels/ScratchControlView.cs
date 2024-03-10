@@ -5,11 +5,13 @@ using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
 using AdamController.Core.Helpers;
 using AdamController.Core.Model;
+using AdamController.Core.Properties;
 using AdamController.Core.ViewModels.HamburgerMenu;
+using AdamController.Modules.ContentRegion.Views.HamburgerPage;
 using AdamController.ViewModels.HamburgerMenu;
-using AdamController.Views.HamburgerPage;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
+using MessageDialogManagerLib;
 using Newtonsoft.Json;
 using Prism.Commands;
 using System;
@@ -36,7 +38,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IMessageDialogManager IDialogManager;
         private bool mIsWarningStackOwerflowAlreadyShow;
 
-        public ScratchControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView)
+        public ScratchControlView()
+        //public ScratchControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView)
         {
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
@@ -75,7 +78,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 PythonWorkDir = string.Empty;
                 return;
             }
-                
+
             PythonVersion = pythonVersion;
             PythonBinPath = $"[{pythonBinPath}]";
             PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
@@ -98,22 +101,22 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             PythonScriptExecuteHelper.OnExecuteStartEvent += (message) =>
             {
-                if (MainWindowViewModel.GetSelectedPageIndex != 0)
-                    return;
+                //if (MainWindowViewModel.GetSelectedPageIndex != 0)
+                //    return;
 
                 mIsWarningStackOwerflowAlreadyShow = false;
 
                 StartExecuteProgram();
-                
+
                 ResultTextEditor += message;
             };
 
-            PythonScriptExecuteHelper.OnStandartOutputEvent += (message) => 
+            PythonScriptExecuteHelper.OnStandartOutputEvent += (message) =>
             {
-                if (MainWindowViewModel.GetSelectedPageIndex != 0)
-                    return;
-                
-                if(ResultTextEditorLength > 10000)
+                //if (MainWindowViewModel.GetSelectedPageIndex != 0)
+                //    return;
+
+                if (ResultTextEditorLength > 10000)
                 {
                     if (!mIsWarningStackOwerflowAlreadyShow)
                     {
@@ -132,8 +135,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             PythonScriptExecuteHelper.OnExecuteFinishEvent += (message) =>
             {
-                if (MainWindowViewModel.GetSelectedPageIndex != 0)
-                    return;
+                //if (MainWindowViewModel.GetSelectedPageIndex != 0)
+                //    return;
 
                 FinishExecuteProgram();
                 ResultTextEditor += message;
@@ -151,8 +154,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             IsEnabledStopExecuteButton = true;
             ResultTextEditor = string.Empty;
             ProgressRingStartAction(true);
-            
-            if (!Properties.Settings.Default.ShadowWorkspaceInDebug) return;
+
+            if (!Settings.Default.ShadowWorkspaceInDebug) return;
 
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
@@ -181,10 +184,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #endregion
 
         private void WebMessageReceived(WebMessageJsonReceived results)
-        { 
+        {
             if (results.Action == "sendSourceCode")
             {
-               SourceTextEditor = results.Data;
+                SourceTextEditor = results.Data;
             }
         }
 
@@ -197,9 +200,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set
             {
                 if (value == isEnabledStopExecuteButton) return;
-
                 isEnabledStopExecuteButton = value;
-                OnPropertyChanged(nameof(IsEnabledStopExecuteButton));
+
+                SetProperty(ref isEnabledStopExecuteButton, value);
             }
         }
 
@@ -210,9 +213,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set
             {
                 if (value == isEnabledShowOpenDialogButton) return;
-
                 isEnabledShowOpenDialogButton = value;
-                OnPropertyChanged(nameof(IsEnabledShowOpenDialogButton));
+
+                SetProperty(ref isEnabledShowOpenDialogButton, value);
             }
         }
 
@@ -246,10 +249,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     {
                         _ = await ScratchControl.ExecuteScript(Scripts.RestoreSavedBlocks);
                     }
-                        
-                    
+
+
                 }));
-                
+
                 AppLogStatusBarAction("Загрузка скретч-редактора закончена");
             }
             catch
@@ -367,7 +370,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 {
                     Hidden = !Settings.Default.BlocklyAdamThreeCategoryState,
                     AlternateName = Settings.Default.BlocklyAdamThreeCategoryAlternateName
-                } 
+                }
             }.Toolbox;
 
             return toolbox;
@@ -383,7 +386,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 Scripts.BlocksCompressedSrc,
                 Scripts.JavascriptCompressedSrc,
-                Scripts.PythonCompressedSrc,          
+                Scripts.PythonCompressedSrc,
             });
 
             string loadLocalAdamBlockSrc = Scripts.SerealizeObject("loadSrcs", new object[]
@@ -394,8 +397,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 Scripts.AdamThreeBlockSrc,
                 Scripts.AdamTwoBlockSrc,
                 Scripts.AdamCommonBlockSrc,
-            }); 
-            
+            });
+
 
             string loadLocalAdamPythonGenSrc = Scripts.SerealizeObject("loadSrcs", new object[]
             {
@@ -458,8 +461,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
                 resultTextEditor = value;
                 ResultTextEditorLength = value.Length;
-                
-                OnPropertyChanged(nameof(ResultTextEditor));
+
+                SetProperty(ref resultTextEditor, value);
             }
         }
 
@@ -474,9 +477,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set
             {
                 if (value == resultTextEditorLength) return;
-
                 resultTextEditorLength = value;
-                OnPropertyChanged(nameof(ResultTextEditorLength));
+
+                SetProperty(ref resultTextEditorLength, value);
             }
         }
 
@@ -498,20 +501,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 else
                     resultTextEditorError = value;
 
-                OnPropertyChanged(nameof(ResultTextEditorError));
+                SetProperty(ref resultTextEditorError, value);
             }
         }
 
-        private string pythonVersion; 
+        private string pythonVersion;
         public string PythonVersion
         {
             get => pythonVersion;
             set
             {
                 if (value == pythonVersion) return;
-
                 pythonVersion = value;
-                OnPropertyChanged(nameof(PythonVersion));
+
+                SetProperty(ref pythonVersion, value);
             }
         }
 
@@ -522,9 +525,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set
             {
                 if (value == pythonBinPath) return;
-
                 pythonBinPath = value;
-                OnPropertyChanged(nameof(PythonBinPath));
+
+                SetProperty(ref pythonBinPath, value);
             }
         }
 
@@ -535,9 +538,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set
             {
                 if (value == pythonWorkDir) return;
-
                 pythonWorkDir = value;
-                OnPropertyChanged(nameof(PythonWorkDir));
+
+                SetProperty(ref pythonWorkDir, value);
             }
         }
 
@@ -552,9 +555,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set
             {
                 if (value == sourceTextEditor) return;
-
                 sourceTextEditor = value;
-                OnPropertyChanged(nameof(SourceTextEditor));
+
+                SetProperty(ref sourceTextEditor, value);
             }
         }
 
@@ -563,14 +566,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Command
 
         private DelegateCommand reloadWebViewCommand;
-        public DelegateCommand ReloadWebViewCommand => reloadWebViewCommand ??= new DelegateCommand(() => 
+        public DelegateCommand ReloadWebViewCommand => reloadWebViewCommand ??= new DelegateCommand(() =>
         {
             SourceTextEditor = string.Empty;
             ReloadWebView();
         });
 
         private DelegateCommand sendToExternalSourceEditor;
-        public DelegateCommand SendToExternalSourceEditor => sendToExternalSourceEditor ??= new DelegateCommand(() => 
+        public DelegateCommand SendToExternalSourceEditor => sendToExternalSourceEditor ??= new DelegateCommand(() =>
         {
             SetSelectedPageIndex(1);
             SendSourceToScriptEditor(SourceTextEditor);
@@ -597,9 +600,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         });
 
         private DelegateCommand showOpenFileDialogCommand;
-        public DelegateCommand ShowOpenFileDialogCommand => showOpenFileDialogCommand ??= new DelegateCommand(async obj =>
+        public DelegateCommand ShowOpenFileDialogCommand => showOpenFileDialogCommand ??= new DelegateCommand(async () =>
             {
-                if (IDialogManager.ShowFileBrowser("Выберите сохранененную рабочую область", Properties.Settings.Default.SavedUserWorkspaceFolderPath, "XML documents(.xml) | *.xml"))
+                if (IDialogManager.ShowFileBrowser("Выберите сохранененную рабочую область", Settings.Default.SavedUserWorkspaceFolderPath, "XML documents(.xml) | *.xml"))
                 {
                     string path = IDialogManager.FilePath;
                     if (path == "") return;
@@ -619,7 +622,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public DelegateCommand RunCode => runCode ??= new DelegateCommand(async () =>
         {
             ResultTextEditorError = string.Empty;
-            ExtendedCommandExecuteResult executeResult = new();
+            WebApi.Client.v1.ResponseModel.ExtendedCommandExecuteResult executeResult = new();
 
             try
             {
@@ -712,7 +715,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 AppLogStatusBarAction("Файл не сохранен");
             }
-        }, canExecute => SourceTextEditor?.Length > 0);
+        }, () => SourceTextEditor?.Length > 0);
 
         #endregion
 

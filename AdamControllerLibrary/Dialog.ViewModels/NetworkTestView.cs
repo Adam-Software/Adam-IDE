@@ -1,5 +1,4 @@
 ﻿using AdamController.Core.Helpers;
-using AdamController.Helpers;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.RequestModel;
 using MahApps.Metro.IconPacks;

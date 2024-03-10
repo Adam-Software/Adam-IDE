@@ -1,8 +1,10 @@
 ﻿using AdamBlocklyLibrary.Enum;
 using AdamController.Commands;
+using AdamController.Core.DataSource;
 using AdamController.Core.Helpers;
 using AdamController.Core.Model;
 using AdamController.Core.Properties;
+using AdamController.Modules.ContentRegion.ViewModels;
 using AdamController.Services;
 using AdamController.WebApi.Client.v1;
 using MahApps.Metro.IconPacks;
@@ -101,7 +103,7 @@ namespace AdamController.ViewModels
                 selectedPageIndex = value;
                 GetSelectedPageIndex = value;
 
-                OnPropertyChanged(nameof(SelectedPageIndex));
+                SetProperty(ref value, selectedPageIndex);
             }
         }
 
@@ -236,7 +238,7 @@ namespace AdamController.ViewModels
                 }
 
                 appLogStatusBar = value;
-                OnPropertyChanged(nameof(AppLogStatusBar));
+                SetProperty(ref appLogStatusBar, value);
             }
         }
 
@@ -256,7 +258,7 @@ namespace AdamController.ViewModels
                 }
 
                 compileLogStatusBar = value;
-                OnPropertyChanged(nameof(CompileLogStatusBar));
+                SetProperty(ref compileLogStatusBar, value);
             }
         }
 
@@ -273,7 +275,7 @@ namespace AdamController.ViewModels
                 if (value == progressRingStart) return;
 
                 progressRingStart = value;
-                OnPropertyChanged(nameof(ProgressRingStart));
+                SetProperty(ref progressRingStart, value);
             }
         }
 
@@ -296,7 +298,7 @@ namespace AdamController.ViewModels
                 }
 
                 selectedBlocklyTheme = value;
-                OnPropertyChanged(nameof(SelectedBlocklyTheme));
+                SetProperty(ref selectedBlocklyTheme, value);
 
                 Settings.Default.BlocklyTheme = selectedBlocklyTheme.BlocklyTheme;
 
@@ -311,7 +313,7 @@ namespace AdamController.ViewModels
 
         public static ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection { get; private set; } = LanguagesCollection.BlocklyLanguageCollection;
 
-        private BlocklyLanguageModel selectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Properties.Settings.Default.BlocklyToolboxLanguage);
+        private BlocklyLanguageModel selectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyToolboxLanguage);
         public BlocklyLanguageModel SelectedBlocklyToolboxLanguage
         {
             get => selectedBlocklyToolboxLanguage;
@@ -323,7 +325,8 @@ namespace AdamController.ViewModels
                 }
 
                 selectedBlocklyToolboxLanguage = value;
-                OnPropertyChanged(nameof(SelectedBlocklyToolboxLanguage));
+
+                SetProperty(ref selectedBlocklyToolboxLanguage, value);
 
                 Settings.Default.BlocklyToolboxLanguage = selectedBlocklyToolboxLanguage.BlocklyLanguage;
             }
@@ -333,7 +336,7 @@ namespace AdamController.ViewModels
 
         #region BlocklyGridColour settings
 
-        private Color? selectedBlocklyGridColour = MahApps.Metro.Controls.ColorHelper.ColorFromString(Properties.Settings.Default.BlocklyGridColour);
+        private Color? selectedBlocklyGridColour = MahApps.Metro.Controls.ColorHelper.ColorFromString(Settings.Default.BlocklyGridColour);
         public Color? SelectedBlocklyGridColour
         {
             get => selectedBlocklyGridColour;
@@ -343,10 +346,9 @@ namespace AdamController.ViewModels
                 {
                     return;
                 }
-
                 selectedBlocklyGridColour = value;
-                OnPropertyChanged(nameof(SelectedBlocklyGridColour));
 
+                SetProperty(ref selectedBlocklyGridColour, value);
                 Settings.Default.BlocklyGridColour = selectedBlocklyGridColour.ToString();
             }
         }
@@ -366,7 +368,7 @@ namespace AdamController.ViewModels
                 if (value == advancedBlocklySettingsFlayoutsIsOpen) return;
                 
                 advancedBlocklySettingsFlayoutsIsOpen = value;
-                OnPropertyChanged(nameof(AdvancedBlocklySettingsFlayoutsIsOpen));
+                SetProperty(ref advancedBlocklySettingsFlayoutsIsOpen, value);
             }
         }
 
@@ -383,7 +385,7 @@ namespace AdamController.ViewModels
                 if (value == notificationFlayoutsIsOpen) return;
 
                 notificationFlayoutsIsOpen = value;
-                OnPropertyChanged(nameof(NotificationFlayoutsIsOpen));
+                SetProperty (ref notificationFlayoutsIsOpen, value);
             }
         }
 
@@ -402,7 +404,7 @@ namespace AdamController.ViewModels
                 if (value == noNewNotificationMessageVisibility) return;
 
                 noNewNotificationMessageVisibility = value;
-                OnPropertyChanged(nameof(NoNewNotificationMessageVisibility));
+                SetProperty(ref noNewNotificationMessageVisibility, value);
 
             }
         }
@@ -421,7 +423,7 @@ namespace AdamController.ViewModels
                     NoNewNotificationMessageVisibility = Visibility.Visible;
 
                 failConnectMessageVisibility = value;
-                OnPropertyChanged(nameof(FailConnectMessageVisibility));
+                SetProperty(ref failConnectMessageVisibility, value);
             }
         }
 
@@ -458,7 +460,7 @@ namespace AdamController.ViewModels
                 if (value == notificationBadge) return;
 
                 notificationBadge = value;
-                OnPropertyChanged(nameof(NotificationBadge));
+                SetProperty(ref notificationBadge, value);
             }
         }
 
@@ -482,7 +484,7 @@ namespace AdamController.ViewModels
 
                 notificationOpacity = value;
 
-                OnPropertyChanged(nameof(NotificationOpacity));
+                SetProperty(ref notificationOpacity, value);
             }
         }
 
@@ -499,7 +501,7 @@ namespace AdamController.ViewModels
                 if (value == textOnConnectFlayotButton) return;
 
                 textOnConnectFlayotButton = value;
-                OnPropertyChanged(nameof(TextOnConnectFlayotButton));
+                SetProperty(ref textOnConnectFlayotButton, value);
             }
         }
 
@@ -512,7 +514,7 @@ namespace AdamController.ViewModels
                 if (value == iconOnConnectFlayoutButton) return;
 
                 iconOnConnectFlayoutButton = value;
-                OnPropertyChanged(nameof(IconOnConnectFlayoutButton));
+                SetProperty(ref iconOnConnectFlayoutButton, value);
             }
         }
 
@@ -529,7 +531,7 @@ namespace AdamController.ViewModels
                 if (value == textOnStatusConnectToolbar) return;
 
                 textOnStatusConnectToolbar = value;
-                OnPropertyChanged(nameof(TextOnStatusConnectToolbar));
+                SetProperty (ref textOnStatusConnectToolbar, value);
             }
         }
 
@@ -542,7 +544,7 @@ namespace AdamController.ViewModels
                 if (value == connectIcon) return;
 
                 connectIcon = value;
-                OnPropertyChanged(nameof(ConnectIcon));
+                SetProperty(ref connectIcon, value);
             }
         }
 

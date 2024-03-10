@@ -23,19 +23,22 @@ namespace AdamController.Core.ViewModels.HamburgerMenu
         {
             MenuItems = new ObservableCollection<HamburgerMenuItemView>
             {
-                new ScratchControlView(this)
+                //new ScratchControlView(this)
+                new ScratchControlView()
                 {
                     Icon = new PackIconSimpleIcons() {Kind = PackIconSimpleIconsKind.Scratch },
                     Label = "Cкретч",
                     ToolTip = "Скретч редактор"
                 },
-                new ScriptEditorControlView(this)
+                //new ScriptEditorControlView(this)
+                new ScriptEditorControlView()
                 {
                     Icon = new PackIconModern() {Kind = PackIconModernKind.PageEdit},
                     Label = "Редактор",
                     ToolTip = "Редактор скриптов"
                 },
-                new ComputerVisionControlView(this)
+                //new ComputerVisionControlView(this)
+                new ComputerVisionControlView()
                 {
                     Icon = new PackIconModern() { Kind = PackIconModernKind.Video },
                     Label = "Компьютерное зрение",
@@ -45,7 +48,8 @@ namespace AdamController.Core.ViewModels.HamburgerMenu
 
             MenuOptionItems = new ObservableCollection<HamburgerMenuItemView>
             {
-                new VisualSettingsControlView(this)
+                //new VisualSettingsControlView(this)
+                new VisualSettingsControlView()
                 {
                     Icon = new PackIconMaterial() {Kind = PackIconMaterialKind.Cog},
                     Label = "Настройки",

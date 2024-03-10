@@ -1,10 +1,10 @@
-﻿using AdamController.ViewModels;
+﻿using AdamController.Modules.ContentRegion.ViewModels;
 using ControlzEx.Theming;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AdamController.Views.HamburgerPage
+namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
 {
 
     public partial class VisualSettingsControl : UserControl

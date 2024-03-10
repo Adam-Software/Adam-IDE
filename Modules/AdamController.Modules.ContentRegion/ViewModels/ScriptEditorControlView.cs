@@ -1,6 +1,4 @@
 ﻿using AdamController.Core.Helpers;
-using AdamController.Core.ViewModels.HamburgerMenu;
-using AdamController.Helpers;
 using AdamController.ViewModels.HamburgerMenu;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;

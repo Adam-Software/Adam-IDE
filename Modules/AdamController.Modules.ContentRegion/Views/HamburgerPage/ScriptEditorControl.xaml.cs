@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 
 
-namespace AdamController.Views.HamburgerPage
+namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
 {
     public partial class ScriptEditorControl : UserControl
 	{

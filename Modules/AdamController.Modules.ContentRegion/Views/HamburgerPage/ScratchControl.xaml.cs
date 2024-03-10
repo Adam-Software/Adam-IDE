@@ -1,4 +1,8 @@
-﻿using AdamController.Helpers;
+﻿
+using AdamController.Core.Helpers;
+using AdamController.Core.Model;
+using AdamController.Core.Properties;
+using AdamController.Modules.ContentRegion.ViewModels;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using System;
@@ -8,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace AdamController.Views.HamburgerPage
+namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
 {
     public partial class ScratchControl : UserControl
     {
@@ -80,7 +84,7 @@ namespace AdamController.Views.HamburgerPage
         private void WebViewCoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             WebView.CoreWebView2.Settings.AreDevToolsEnabled = true; 
-            WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Properties.Settings.Default.DontShowBrowserMenuInBlockly;
+            WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Settings.Default.DontShowBrowserMenuInBlockly;
             
             WebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
             
