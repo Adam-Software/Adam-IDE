@@ -24,8 +24,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Const
 
-
-
         private const string mConnectButtonStatusDisconnected = "Подключить";
         private const string mConnectButtonStatusConnected = "Отключить";
         private const string mConnectButtonStatusReconnected = "Подождите";
@@ -34,9 +32,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public ContentRegionViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
-            string s = "";
+            
         }
 
+        #region Navigation
+
+        #endregion
 
         private void ComunicateHelperOnAdamUdpReceived(string message)
         {
