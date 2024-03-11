@@ -70,7 +70,7 @@ namespace AdamController.Modules.StatusBar.ViewModels
 
         #endregion
 
-        private PackIconModernKind connectIcon;
+        private PackIconModernKind connectIcon = PackIconModernKind.Connect;
         public PackIconModernKind ConnectIcon
         {
             get => connectIcon;
