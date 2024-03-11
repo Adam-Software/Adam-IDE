@@ -5,41 +5,55 @@ using System.Threading;
 
 namespace AdamController.Services
 {
-    public class AdamTcpClient : NetCoreServer.TcpClient
+
+    #region Events
+
+    public delegate void TcpCientConnected(object sender);
+    public delegate void TcpCientSent(object sender, long sent, long pending);
+    public delegate void TcpClientDisconnect(object sender);
+    public delegate void TcpClientError(object sender, SocketError error);
+    public delegate void TcpClientReceived(object sender, byte[] buffer, long offset, long size);
+    public delegate void TcpClientReconnected(object sender, int reconnectCount);
+
+    #endregion
+
+    public interface IAdamTcpClient
     {
-        #region DelegateAndEvent
+        #region Events
 
-        public delegate void OnTcpCientConnected();
-        public event OnTcpCientConnected TcpCientConnected;
-
-        public delegate void OnTcpCientSent(long sent, long pending);
-        public event OnTcpCientSent TcpCientSent;
-
-        public delegate void OnTcpClientDisconnect();
-        public event OnTcpClientDisconnect TcpClientDisconnected;
-
-        public delegate void OnTcpClientError(SocketError error);
-        public event OnTcpClientError TcpClientError;
-
-        public delegate void OnTcpClientReceived(byte[] buffer, long offset, long size);
-        public event OnTcpClientReceived TcpClientReceived;
-
-        public delegate void OnTcpClientReconnected(int reconnectCount);
-        public event OnTcpClientReconnected TcpClientReconnected;
+        public event TcpCientConnected RaiseTcpCientConnected;
+        public event TcpCientSent RaiseTcpCientSent;
+        public event TcpClientDisconnect RaiseTcpClientDisconnected;
+        public event TcpClientError RaiseTcpClientError;
+        public event TcpClientReceived RaiseTcpClientReceived;
+        public event TcpClientReconnected RaiseTcpClientReconnected;
 
         #endregion
-
-        #region Public field
 
         /// <summary>
         /// The number of reconnections when the connection is lost
         /// </summary>
-        public int ReconnectCount { get;  private set; }
+        public int ReconnectCount { get; }
 
         /// <summary>
         /// Reconnection timeout
         /// </summary>
-        public int ReconnectTimeout { get; private set; }
+        public int ReconnectTimeout { get; }
+
+        public void DisconnectAndStop();
+
+    }
+
+    public class AdamTcpClient : NetCoreServer.TcpClient, IAdamTcpClient
+    {
+        #region Events
+
+        public event TcpCientConnected RaiseTcpCientConnected;
+        public event TcpCientSent RaiseTcpCientSent;
+        public event TcpClientDisconnect RaiseTcpClientDisconnected;
+        public event TcpClientError RaiseTcpClientError;
+        public event TcpClientReceived RaiseTcpClientReceived;
+        public event TcpClientReconnected RaiseTcpClientReconnected;
 
         #endregion
 
@@ -67,6 +81,22 @@ namespace AdamController.Services
 
         #endregion
 
+        #region Public field
+
+        /// <summary>
+        /// The number of reconnections when the connection is lost
+        /// </summary>
+        public int ReconnectCount { get; }
+
+        /// <summary>
+        /// Reconnection timeout
+        /// </summary>
+        public int ReconnectTimeout { get; }
+
+        #endregion
+
+        #region Public methods
+
         public void DisconnectAndStop()
         {
             mTokenSource.Cancel();
@@ -83,6 +113,10 @@ namespace AdamController.Services
             }
         }
 
+        #endregion
+
+        #region Private methods
+
         /// <summary>
         /// Need update varible on connected because clients in helper class static
         /// </summary>
@@ -97,7 +131,6 @@ namespace AdamController.Services
             if (!updateReconnect) return;
             //it must be in renew variable  in all method, but this called while connecting create inifinity update variable on reconnecting
             mReconnectCount = ReconnectCount;
-
         }
 
         protected override void OnDisconnected()
@@ -107,7 +140,7 @@ namespace AdamController.Services
                 if (!mDisconnectAlreadyInvoke)
                 {
                     mDisconnectAlreadyInvoke = true;
-                    TcpClientDisconnected?.Invoke();
+                    OnRaiseTcpClientDisconnected();
                 }
                 
                 return; 
@@ -120,7 +153,7 @@ namespace AdamController.Services
                 if (!mDisconnectAlreadyInvoke)
                 {
                     mDisconnectAlreadyInvoke = true;
-                    TcpClientDisconnected?.Invoke();
+                    OnRaiseTcpClientDisconnected();
                 }
                 
                 RenewVariable(true);
@@ -139,7 +172,8 @@ namespace AdamController.Services
         {          
             if (!tokenSource.IsCancellationRequested)
             {
-                TcpClientReconnected?.Invoke(mReconnectCount--);
+                OnRaiseTcpClientReconnected(mReconnectCount--);
+
                 _ = tokenSource.Token.WaitHandle.WaitOne(TimeSpan.FromSeconds(mReconnectTimeout));
                 _ = ConnectAsync();
             }
@@ -151,7 +185,7 @@ namespace AdamController.Services
 
         protected override void OnConnected()
         {
-            TcpCientConnected?.Invoke();
+            OnRaiseTcpCientConnected();
             RenewVariable(false);
             
             base.OnConnected();
@@ -159,17 +193,60 @@ namespace AdamController.Services
 
         protected override void OnSent(long sent, long pending)
         {
-            TcpCientSent?.Invoke(sent, pending);
+            OnRaiseTcpCientSent(sent, pending);
         }
 
         protected override void OnError(SocketError error)
         {
-            TcpClientError?.Invoke(error);
+            OnRaiseTcpClientError(error);
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            TcpClientReceived?.Invoke(buffer, offset, size);
+            OnRaiseTcpClientReceived(buffer, offset, size);
+            
         }
+
+        #endregion
+
+        #region RaiseEvents
+
+        public virtual void OnRaiseTcpCientConnected()
+        {
+            TcpCientConnected raiseEvent = RaiseTcpCientConnected;
+            raiseEvent?.Invoke(this);
+        }
+
+        public virtual void OnRaiseTcpCientSent(long sent, long pending)
+        {
+            TcpCientSent raiseEvent = RaiseTcpCientSent;
+            raiseEvent?.Invoke(this, sent, pending);
+        }
+
+        public virtual void OnRaiseTcpClientDisconnected()
+        {
+            TcpClientDisconnect raiseEvent = RaiseTcpClientDisconnected;
+            raiseEvent?.Invoke(this);
+        }
+
+        public virtual void OnRaiseTcpClientError(SocketError socketError)
+        {
+            TcpClientError raiseEvent = RaiseTcpClientError;
+            raiseEvent?.Invoke(this, socketError);
+        }
+
+        public virtual void OnRaiseTcpClientReceived(byte[] buffer, long offset, long size)
+        {
+            TcpClientReceived raiseEvent = RaiseTcpClientReceived;
+            raiseEvent?.Invoke(this, buffer, offset, size);
+        }
+        
+        public virtual void OnRaiseTcpClientReconnected(int reconnectCount)
+        {
+            TcpClientReconnected raiseEvent = RaiseTcpClientReconnected;
+            raiseEvent?.Invoke(this, reconnectCount);
+        }
+
+        #endregion
     }
 }

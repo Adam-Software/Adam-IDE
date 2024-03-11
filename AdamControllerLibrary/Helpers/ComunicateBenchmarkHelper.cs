@@ -72,26 +72,26 @@ namespace AdamController.Core.Helpers
                 mAdamTcpClient = new(Settings.Default.BenchmarkTestServerIp, Settings.Default.BenchmarkTcpConnectStatePort, option);
             }
             
-            mAdamTcpClient.TcpCientConnected += TcpCientConnected;
-            mAdamTcpClient.TcpClientDisconnected += TcpClientDisconnected;
-            mAdamTcpClient.TcpClientReconnected += TcpClientReconnected;
+            mAdamTcpClient.RaiseTcpCientConnected += TcpCientConnected;
+            mAdamTcpClient.RaiseTcpClientDisconnected += TcpClientDisconnected;
+            mAdamTcpClient.RaiseTcpClientReconnected += TcpClientReconnected;
         }
 
         #endregion
 
         #region Client events
 
-        private static void TcpClientDisconnected()
+        private static void TcpClientDisconnected(object sender)
         {
             OnTcpDisconnected?.Invoke();
         }
 
-        private static void TcpCientConnected()
+        private static void TcpCientConnected(object sender)
         {
             OnTcpConnected?.Invoke();
         }
 
-        private static void TcpClientReconnected(int reconnectCount)
+        private static void TcpClientReconnected(object sender, int reconnectCount)
         {
             OnTcpReconnected?.Invoke(reconnectCount);
         }
@@ -120,9 +120,9 @@ namespace AdamController.Core.Helpers
             
             if(mAdamTcpClient != null)
             {
-                mAdamTcpClient.TcpCientConnected -= TcpCientConnected;
-                mAdamTcpClient.TcpClientDisconnected -= TcpClientDisconnected;
-                mAdamTcpClient.TcpClientReconnected -= TcpClientReconnected;
+                mAdamTcpClient.RaiseTcpCientConnected -= TcpCientConnected;
+                mAdamTcpClient.RaiseTcpClientDisconnected -= TcpClientDisconnected;
+                mAdamTcpClient.RaiseTcpClientReconnected -= TcpClientReconnected;
                 mAdamTcpClient = null;
             }
         }

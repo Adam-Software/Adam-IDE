@@ -76,11 +76,11 @@ namespace AdamController.Core.Helpers
 #endif
 
 
-            mAdamTcpClient.TcpCientConnected += TcpCientConnected;
-            mAdamTcpClient.TcpClientDisconnected += TcpClientDisconnected;
-            mAdamTcpClient.TcpClientError += TcpClientError;
-            mAdamTcpClient.TcpClientReceived += TcpClientReceived;
-            mAdamTcpClient.TcpClientReconnected += TcpClientReconnected;
+            mAdamTcpClient.RaiseTcpCientConnected += TcpCientConnected;
+            mAdamTcpClient.RaiseTcpClientDisconnected += TcpClientDisconnected;
+            mAdamTcpClient.RaiseTcpClientError += TcpClientError;
+            mAdamTcpClient.RaiseTcpClientReceived += TcpClientReceived;
+            mAdamTcpClient.RaiseTcpClientReconnected += TcpClientReconnected;
 
             mAdamWebSocketClient.WebSocketConnectedEvent += WebSocketConnectedEvent;
             mAdamWebSocketClient.WebSocketClientReceivedEvent += WebSocketClientReceived;
@@ -125,11 +125,11 @@ namespace AdamController.Core.Helpers
 
         #region TCP Client events
 
-        private static void TcpClientReceived(byte[] buffer, long offset, long size) {}
+        private static void TcpClientReceived(object sender, byte[] buffer, long offset, long size) {}
 
-        private static void TcpClientError(SocketError error) {}
+        private static void TcpClientError(object sender, SocketError error) {}
 
-        private static void TcpClientDisconnected()
+        private static void TcpClientDisconnected(object sender)
         {
             OnAdamTcpDisconnectedEvent?.Invoke();
 
@@ -146,7 +146,7 @@ namespace AdamController.Core.Helpers
             }
         }
 
-        private static void TcpCientConnected()
+        private static void TcpCientConnected(object sender)
         {
             OnAdamTcpConnectedEvent?.Invoke();
             
@@ -157,7 +157,7 @@ namespace AdamController.Core.Helpers
             mAdamWebSocketClient.ConnectAsync();
         }
 
-        private static void TcpClientReconnected(int reconnectCount)
+        private static void TcpClientReconnected(object sender, int reconnectCount)
         {
             OnAdamTcpReconnected?.Invoke(reconnectCount);
         }
@@ -195,11 +195,11 @@ namespace AdamController.Core.Helpers
             
             if(mAdamTcpClient != null)
             {
-                mAdamTcpClient.TcpCientConnected -= TcpCientConnected;
-                mAdamTcpClient.TcpClientDisconnected -= TcpClientDisconnected;
-                mAdamTcpClient.TcpClientError -= TcpClientError;
-                mAdamTcpClient.TcpClientReceived -= TcpClientReceived;
-                mAdamTcpClient.TcpClientReconnected -= TcpClientReconnected;
+                mAdamTcpClient.RaiseTcpCientConnected -= TcpCientConnected;
+                mAdamTcpClient.RaiseTcpClientDisconnected -= TcpClientDisconnected;
+                mAdamTcpClient.RaiseTcpClientError -= TcpClientError;
+                mAdamTcpClient.RaiseTcpClientReceived -= TcpClientReceived;
+                mAdamTcpClient.RaiseTcpClientReconnected -= TcpClientReconnected;
                 
                 mAdamTcpClient = null;
             }
