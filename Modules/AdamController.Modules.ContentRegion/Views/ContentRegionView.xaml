@@ -415,9 +415,10 @@
                                           OnContent="Вручную"
                                           OffContent="Автоматически"
                                           VerticalAlignment="Bottom"
-                                          Command="{Binding ChangeToolboxLanguageToggleSwitchCommand}"
+                                          
                                           CommandParameter="{Binding ElementName=ChangeToolboxLanguage, Path=IsOn}"
                                           IsOn="{Binding ChangeToolboxLanguageToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                                          <!--Command="{Binding ChangeToolboxLanguageToggleSwitchCommand}"-->
 
                             <mah:SplitButton Grid.Row="10" Grid.Column="1"
                                          IsEnabled="{Binding ElementName=ChangeToolboxLanguage, Path=IsOn}"
@@ -456,10 +457,11 @@
                                           OnContent="Вручную"
                                           OffContent="Автоматически"
                                           VerticalAlignment="Bottom"
-                                          Command="{Binding ChangeGridColorToggleSwitchCommand}"
+                                          
                                           CommandParameter="{Binding ElementName=ChangeGridColorSwitch, Path=IsOn}"
                                           IsEnabled="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                                           IsOn="{Binding ChangeGridColorSwitchToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                                          <!--Command="{Binding ChangeGridColorToggleSwitchCommand}"-->
 
                             <mah:ColorPalette Grid.Row="12" Grid.Column="1"
                                           Padding="0 0 0 10"
@@ -497,8 +499,9 @@
                                           VerticalAlignment="Bottom"
                                           IsOn="{Binding  ChangeSpacingSwitchToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                                           IsEnabled="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-                                          Command="{Binding ChangeSpacingToggleSwitchCommand}"
+                                          
                                           CommandParameter="{Binding ElementName=ChangeSpacingSwitch, Path=IsOn}"/>
+                                          <!--Command="{Binding ChangeSpacingToggleSwitchCommand}"-->
 
                             <mah:NumericUpDown Grid.Row="13" Grid.Column="1"
                                            Value="{Binding BlocklyGridSpacing, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
@@ -545,9 +548,10 @@
                                           OnContent="Вручную"
                                           OffContent="Автоматически"
                                           VerticalAlignment="Bottom"
-                                          Command="{Binding ChangeBlocklyThemeToogleSwitchCommand}"
+                                          
                                           CommandParameter="{Binding ElementName=ChangeBlocklyTheme, Path=IsOn}"
                                           IsOn="{Binding ChangeBlocklyThemeToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                                          <!--Command="{Binding ChangeBlocklyThemeToogleSwitchCommand}"-->
 
                             <mah:SplitButton Grid.Row="14" Grid.Column="1"
                                          IsEnabled="{Binding ElementName=ChangeBlocklyTheme, Path=IsOn}"

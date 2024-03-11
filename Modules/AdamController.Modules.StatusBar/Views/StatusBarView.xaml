@@ -4,14 +4,16 @@
              xmlns:local="clr-namespace:AdamController.Modules.StatusBar.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:prism="http://prismlibrary.com/" xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True" >
     <Grid>
 
         <!--#region  Status bar -->
 
         <StatusBar Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
-           Style="{StaticResource MahApps.Styles.StatusBar}">
+                   Style="{StaticResource MahApps.Styles.StatusBar}">
 
             <!--#region  Item temlate -->
 
@@ -36,9 +38,9 @@
             <!--#endregion-->
 
             <Separator Grid.Column="0" 
-               Margin="10 0 5 0"
-               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-               Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+                       Margin="10 0 5 0"
+                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
+                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
 
             <!--#region Compile status bar -->
 
@@ -47,15 +49,15 @@
 
                 <StackPanel Orientation="Horizontal">
                     <mah:ProgressRing Width="Auto" Height="Auto"
-                              Padding="5"
-                              Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                              IsActive="{Binding ProgressRingStart}" />
+                                      Padding="5"
+                                      Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                      IsActive="{Binding ProgressRingStart}" />
 
                     <TextBlock Margin="5 0 0 0"
-                       FontWeight="Medium"
-                       Text="{Binding CompileLogStatusBar }" 
-                       VerticalAlignment="Center"  
-                       HorizontalAlignment="Left"/>
+                               FontWeight="Medium"
+                               Text="{Binding CompileLogStatusBar }" 
+                               VerticalAlignment="Center"  
+                               HorizontalAlignment="Left"/>
 
                 </StackPanel>
             </StatusBarItem>
@@ -70,32 +72,33 @@
             <!--#region AppLog status bar -->
 
             <StatusBarItem Grid.Column="3"
-                   FontWeight="Medium"
-                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                   Content="{Binding AppLogStatusBar}"/>
+                           FontWeight="Medium"
+                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
+                           Content="{Binding AppLogStatusBar}"/>
 
             <!--#endregion-->
 
             <Separator Grid.Column="4" Margin="5 0 5 0"
-               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-               Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
+                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
 
             <!--#region Connect/Disconnect status bar-->
 
             <StatusBarItem Grid.Column="5" 
-                   HorizontalContentAlignment="Stretch"
-                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
+                           HorizontalContentAlignment="Stretch"
+                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="0.7*"/>
                         <ColumnDefinition Width="0.35*"/>
                     </Grid.ColumnDefinitions>
+                    
                     <iconPacks:PackIconModern Margin="10 0 10 0"
-                                      Grid.Column="0"
-                                      VerticalAlignment="Center"
-                    Kind="{Binding ConnectIcon, Mode=TwoWay}"
-                                      Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
+                                              Grid.Column="0"
+                                              VerticalAlignment="Center"
+                                              Kind="{Binding ConnectIcon, Mode=TwoWay}"
+                                              Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
 
 
                     <TextBlock Grid.Column="1"

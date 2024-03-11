@@ -44,11 +44,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             try
             {
                 SyslogMessage syslogMessage = SyslogParseMessage.Parse(message);
-                CompileLogStatusBar = $"{syslogMessage.TimeStamp:T} {syslogMessage.Message}";
+                //CompileLogStatusBar = $"{syslogMessage.TimeStamp:T} {syslogMessage.Message}";
             }
             catch (Exception ex)
             {
-                CompileLogStatusBar = $"Error reading udp log with exception {ex.Message}";
+                //CompileLogStatusBar = $"Error reading udp log with exception {ex.Message}";
             }
         }
 
@@ -82,16 +82,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private void OnTcpDisconnected()
         {
             //если центр уведомлений закрыт, обновляем счетчик уведомлений
-            if (!NotificationFlayoutsIsOpen && Settings.Default.IsMessageShowOnAbortMainConnection)
-            {
-                BadgeCounter++;
-                FailConnectMessageVisibility = Visibility.Visible;
-            }
+            //if (!NotificationFlayoutsIsOpen && Settings.Default.IsMessageShowOnAbortMainConnection)
+            //{
+                //BadgeCounter++;
+                //FailConnectMessageVisibility = Visibility.Visible;
+            //}
 
             TextOnConnectFlayotButton = mConnectButtonStatusDisconnected;
-            TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
+            //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
 
-            ConnectIcon = PackIconModernKind.Connect;
+            //ConnectIcon = PackIconModernKind.Connect;
             IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
         }
 
@@ -100,18 +100,18 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             _ = BaseApi.StopPythonExecute();
 
             TextOnConnectFlayotButton = mConnectButtonStatusConnected;
-            TextOnStatusConnectToolbar = mToolbarStatusClientConnected;
+            //TextOnStatusConnectToolbar = mToolbarStatusClientConnected;
 
-            ConnectIcon = PackIconModernKind.Disconnect;
+            //ConnectIcon = PackIconModernKind.Disconnect;
             IconOnConnectFlayoutButton = PackIconMaterialKind.Robot;
         }
 
         private void OnTcpReconnected(int reconnectCount)
         {
             TextOnConnectFlayotButton = $"{mConnectButtonStatusReconnected} {reconnectCount}";
-            TextOnStatusConnectToolbar = $"{mToolbarStatusClientReconnected} {reconnectCount}";
+            //TextOnStatusConnectToolbar = $"{mToolbarStatusClientReconnected} {reconnectCount}";
 
-            ConnectIcon = PackIconModernKind.TransitConnectionDeparture;
+            //ConnectIcon = PackIconModernKind.TransitConnectionDeparture;
             IconOnConnectFlayoutButton = PackIconMaterialKind.RobotConfused;
         }
 
@@ -166,84 +166,26 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             //send message to status app log
             if (ScratchControlView.AppLogStatusBarAction == null)
             {
-                ScratchControlView.AppLogStatusBarAction = new Action<string>(log => AppLogStatusBar = log);
+                //ScratchControlView.AppLogStatusBarAction = new Action<string>(log => AppLogStatusBar = log);
             }
 
             //send message to status complile log
             if (ScratchControlView.CompileLogStatusBarAction == null)
             {
-                ScratchControlView.CompileLogStatusBarAction = new Action<string>(log => CompileLogStatusBar = log);
+                //ScratchControlView.CompileLogStatusBarAction = new Action<string>(log => CompileLogStatusBar = log);
             }
 
             //start process ring
             if (ScratchControlView.ProgressRingStartAction == null)
             {
-                ScratchControlView.ProgressRingStartAction = new Action<bool>(start => ProgressRingStart = start);
+                //ScratchControlView.ProgressRingStartAction = new Action<bool>(start => ProgressRingStart = start);
             }
 
             if (ScriptEditorControlView.AppLogStatusBarAction == null)
             {
-                ScriptEditorControlView.AppLogStatusBarAction = new Action<string>(log => AppLogStatusBar = log);
+                //ScriptEditorControlView.AppLogStatusBarAction = new Action<string>(log => AppLogStatusBar = log);
             }
         }
-
-        #endregion
-
-        #region AppStatusBar field
-
-        private string appLogStatusBar = "Лог приложения";
-        public string AppLogStatusBar
-        {
-            get => appLogStatusBar;
-            set
-            {
-                if (value == appLogStatusBar)
-                {
-                    return;
-                }
-
-                appLogStatusBar = value;
-                SetProperty(ref appLogStatusBar, value);
-            }
-        }
-
-        #endregion
-
-        #region CompileLogStatusBar field
-
-        private string compileLogStatusBar = "Лог робота";
-        public string CompileLogStatusBar
-        {
-            get => compileLogStatusBar;
-            set
-            {
-                if (value == compileLogStatusBar)
-                {
-                    return;
-                }
-
-                compileLogStatusBar = value;
-                SetProperty(ref compileLogStatusBar, value);
-            }
-        }
-
-        #endregion
-
-        #region ProgressRing field
-
-        private bool progressRingStart = false;
-        public bool ProgressRingStart
-        {
-            get => progressRingStart;
-            set
-            {
-                if (value == progressRingStart) return;
-
-                progressRingStart = value;
-                SetProperty(ref progressRingStart, value);
-            }
-        }
-
 
         #endregion
 
@@ -339,22 +281,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-        #region Open NotificationFlayouts
 
-        private bool notificationFlayoutsIsOpen;
-        public bool NotificationFlayoutsIsOpen
-        {
-            get { return notificationFlayoutsIsOpen; }
-            set
-            {
-                if (value == notificationFlayoutsIsOpen) return;
-
-                notificationFlayoutsIsOpen = value;
-                SetProperty(ref notificationFlayoutsIsOpen, value);
-            }
-        }
-
-        #endregion
 
         #endregion
 
@@ -396,42 +323,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region NotificationBadge
 
-        private int badgeCounter = 0;
-        private int BadgeCounter
-        {
-            get => badgeCounter;
-            set
-            {
-                if (value == badgeCounter) return;
-                if (value == 0)
-                {
-                    badgeCounter = value;
-                    NotificationBadge = "";
-                    return;
-                }
 
-                badgeCounter = value;
 
-                NotificationBadge = $"{BadgeCounter}";
-            }
-        }
-
-        private string notificationBadge;
-        public string NotificationBadge
-        {
-            get => notificationBadge;
-            set
-            {
-                if (value == notificationBadge) return;
-
-                notificationBadge = value;
-                SetProperty(ref notificationBadge, value);
-            }
-        }
 
         private void ClearNotification()
         {
-            BadgeCounter = 0;
+            //BadgeCounter = 0;
             FailConnectMessageVisibility = Visibility.Collapsed;
         }
 
@@ -487,31 +384,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Connect/Disconnect toolbar
 
-        private string textOnStatusConnectToolbar;
-        public string TextOnStatusConnectToolbar
-        {
-            get => textOnStatusConnectToolbar;
-            set
-            {
-                if (value == textOnStatusConnectToolbar) return;
-
-                textOnStatusConnectToolbar = value;
-                SetProperty(ref textOnStatusConnectToolbar, value);
-            }
-        }
-
-        private PackIconModernKind connectIcon;
-        public PackIconModernKind ConnectIcon
-        {
-            get => connectIcon;
-            set
-            {
-                if (value == connectIcon) return;
-
-                connectIcon = value;
-                SetProperty(ref connectIcon, value);
-            }
-        }
 
         private DelegateCommand connectButtonComand;
         public DelegateCommand ConnectButtonComand => connectButtonComand ??= new DelegateCommand(async () =>
@@ -520,7 +392,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             if (isNotifyButton)
             {
                 ClearNotification();
-                NotificationFlayoutsIsOpen = false;
+                //NotificationFlayoutsIsOpen = false;
             }
 
             await Dispatcher.Yield(DispatcherPriority.Normal);
@@ -578,14 +450,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand closeNotificationFlayots;
         public DelegateCommand CloseNotificationFlayots => closeNotificationFlayots ??= new DelegateCommand(() =>
         {
-            NotificationFlayoutsIsOpen = false;
+            //NotificationFlayoutsIsOpen = false;
         });
 
-        private DelegateCommand<bool?> openNotificationPanel;
-        public DelegateCommand<bool?> OpenNotificationPanel => openNotificationPanel ??= new DelegateCommand<bool?>(obj =>
-        {
-            NotificationFlayoutsIsOpen = !NotificationFlayoutsIsOpen;
-        });
+
 
         private DelegateCommand<bool?> changeGridColorToggleSwitchCommand;
         public DelegateCommand<bool?> ChangeGridColorToggleSwitchCommand => changeGridColorToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
