@@ -24,9 +24,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Const
 
-        private const string mToolbarStatusClientDisconnected = "Робот Адам: отключен";
-        private const string mToolbarStatusClientConnected = "Робот Адам: подключен";
-        private const string mToolbarStatusClientReconnected = "Робот Адам: переподключение";
+
 
         private const string mConnectButtonStatusDisconnected = "Подключить";
         private const string mConnectButtonStatusConnected = "Отключить";
@@ -36,6 +34,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public ContentRegionViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
+            string s = "";
         }
 
 

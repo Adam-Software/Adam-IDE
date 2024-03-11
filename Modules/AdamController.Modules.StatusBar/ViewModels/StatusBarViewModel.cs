@@ -6,10 +6,15 @@ using Prism.Services.Dialogs;
 
 namespace AdamController.Modules.StatusBar.ViewModels
 {
-    public class StatusBarViewModels : RegionViewModelBase
+    public class StatusBarViewModel : RegionViewModelBase
     {
-        public StatusBarViewModels(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        private const string mToolbarStatusClientDisconnected = "Робот Адам: отключен";
+        private const string mToolbarStatusClientConnected = "Робот Адам: подключен";
+        private const string mToolbarStatusClientReconnected = "Робот Адам: переподключение";
+
+        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
+            
         }
 
         #region ProgressRing field
