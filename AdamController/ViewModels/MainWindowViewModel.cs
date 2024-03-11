@@ -47,27 +47,27 @@ namespace AdamController.ViewModels
 
         public MainWindowViewModel()
         {
-            ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
-            ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
-            ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
-            ComunicateHelper.OnAdamLogServerUdpReceivedEvent += ComunicateHelperOnAdamUdpReceived;
+            //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
+            //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
+            //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
+            //ComunicateHelper.OnAdamLogServerUdpReceivedEvent += ComunicateHelperOnAdamUdpReceived;
             
 
-            InitAction();
+            //InitAction();
 
-            if (Settings.Default.AutoStartTcpConnect)
-            {
-                ConnectButtonComand.Execute(null);
-            }
-            else
-            {
+            //if (Settings.Default.AutoStartTcpConnect)
+            //{
+            //    ConnectButtonComand.Execute(null);
+            //}
+            //else
+            //{
                 //init fields if autorun off
-                TextOnConnectFlayotButton = mConnectButtonStatusDisconnected;
-                TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
+                //TextOnConnectFlayotButton = mConnectButtonStatusDisconnected;
+                //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
 
-                ConnectIcon = PackIconModernKind.Connect;
-                IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
-            }
+                //ConnectIcon = PackIconModernKind.Connect;
+                //IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
+            //}
         }
 
         private void ComunicateHelperOnAdamUdpReceived(string message)
@@ -674,19 +674,5 @@ namespace AdamController.ViewModels
 
         #endregion
 
-        #region IWindowParam
-
-        //public override string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
-        //public override bool IsModal => false;
-        //public override WindowState WindowState => WindowState.Maximized;
-
-        //public override void OnClosed(Window window)
-        //{
-        //    ComunicateHelper.DisconnectAllAndDestroy();
-
-        //    base.OnClosed(window);
-        //}
-
-        #endregion
     }
 }

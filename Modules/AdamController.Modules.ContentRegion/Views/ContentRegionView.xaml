@@ -476,12 +476,12 @@
                                 <Color>White</Color>
                                 <Color>Gray</Color>
 
-                                <mah:ColorPalette.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource MultiConverter}">
-                                        <Binding ElementName="ChangeGridColorSwitch" Path="IsOn"/>
-                                        <Binding ElementName="ChangeGridColorSwitch" Path="IsEnabled"/>
-                                    </MultiBinding>
-                                </mah:ColorPalette.IsEnabled>
+                                <!--<mah:ColorPalette.IsEnabled>-->
+                                    <!--<MultiBinding Converter="{StaticResource MultiConverter}">-->
+                                <!--<Binding ElementName="ChangeGridColorSwitch" Path="IsOn"/>-->
+                                <!--<Binding ElementName="ChangeGridColorSwitch" Path="IsEnabled"/>-->
+                                <!--</MultiBinding>-->
+                                <!--</mah:ColorPalette.IsEnabled>-->
                             </mah:ColorPalette>
 
                             <!--#endregion-->
@@ -511,12 +511,12 @@
                                            TextAlignment="Right"
                                            Margin="5 20 20 5">
 
-                                <mah:NumericUpDown.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource MultiConverter}">
-                                        <Binding ElementName="ChangeSpacingSwitch" Path="IsOn"/>
-                                        <Binding ElementName="ChangeSpacingSwitch" Path="IsEnabled"/>
-                                    </MultiBinding>
-                                </mah:NumericUpDown.IsEnabled>
+                                <!--<mah:NumericUpDown.IsEnabled>-->
+                                    <!--<MultiBinding Converter="{StaticResource MultiConverter}">-->
+                                    <!--   <Binding ElementName="ChangeSpacingSwitch" Path="IsOn"/>-->
+                                    <!--<Binding ElementName="ChangeSpacingSwitch" Path="IsEnabled"/>-->
+                                    <!--</MultiBinding>-->
+                                <!--</mah:NumericUpDown.IsEnabled>-->
 
                             </mah:NumericUpDown>
 

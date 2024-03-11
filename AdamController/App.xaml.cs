@@ -68,7 +68,8 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //containerRegistry.Register<ITestService, TestService>();
+            //here must be ip/port
+            containerRegistry.Register<IAdamTcpClient, AdamTcpClient>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
