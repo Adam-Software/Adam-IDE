@@ -5,5 +5,7 @@
         public const string ContentRegion = $"{nameof(ContentRegion)}";
         public const string MenuRegion = $"{nameof(MenuRegion)}";
         public const string StatusBarRegion = $"{nameof(StatusBarRegion)}";
+
+
     }
 }

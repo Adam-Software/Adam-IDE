@@ -1,0 +1,592 @@
+﻿<UserControl x:Class="AdamController.Modules.ContentRegion.Views.Flayouts.AdvancedBlocklySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdamController.Modules.ContentRegion.Views.Flayouts" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
+    <Grid>
+
+
+        <!--#region Flayouts Advanced blockly settings -->
+
+        <mah:Flyout IsOpen="{Binding AdvancedBlocklySettingsFlayoutsIsOpen}"
+             AnimateOpacity="True"
+             Position="Right"
+             Theme="Adapt"
+             AreAnimationsEnabled="True"
+             AnimateOnPositionChange="True"
+             ExternalCloseButton="Left"
+             CloseButtonVisibility="Visible"
+             IsModal="True"
+             Header="Продвинутые настройки скретч-редактора"
+             ContentTemplate="{Binding ElementName=FlayoutBlocklySettingsTemplate}">
+
+            <ScrollViewer HorizontalScrollBarVisibility="Visible"
+                          Style="{DynamicResource MahApps.Styles.ScrollViewer}">
+
+                <Grid x:Name="FlayoutBlocklySettingsTemplate" Width="Auto" Margin="20 0 0 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="210"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Grid.ColumnSpan="4"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Margin="0 20 0 10"
+                               Text="Настройки панели инструментов"/>
+
+                    <!--#region logic category-->
+
+                    <mah:ToggleSwitch Grid.Row="2" Grid.Column="0"
+                                      IsEnabled="False"
+                                      Margin="7 0 0 0"
+                                      x:Name="LogicSwitch"
+                                      Header="Цвет категории логические"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      IsOn="{Binding BlocklyLogicCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                      VerticalAlignment="Bottom"/>
+
+                    <mah:ColorPalette Grid.Row="2" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=LogicSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}" >
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="2" Grid.Column="3"
+                             Text="{Binding BlocklyLogicCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+                      
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region color category-->
+
+                    <mah:ToggleSwitch Grid.Row="3" Grid.Column="0"
+                                      IsEnabled="False"
+                                      Margin="7 0 0 0"
+                                      x:Name="ColourSwitch"
+                                      Header="Цвет категории цвета"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      IsOn="{Binding BlocklyColorCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                      VerticalAlignment="Bottom"/>
+
+                    <mah:ColorPalette Grid.Row="3" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=ColourSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}" >
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="3" Grid.Column="3"
+                             Text="{Binding BlocklyColourCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+              
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region lists category-->
+
+                    <mah:ToggleSwitch Grid.Row="4" Grid.Column="0"
+                                      IsEnabled="False"
+                                      Margin="7 0 0 0"
+                                      x:Name="ListsSwitch"
+                                      Header="Цвет категория cписки"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding BlocklyListsCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <mah:ColorPalette Grid.Row="4" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=ListsSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}" >
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="4" Grid.Column="3"
+                             Text="{Binding BlocklyListsCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region loop category-->
+
+                    <mah:ToggleSwitch Grid.Row="5" Grid.Column="0"
+                                      IsEnabled="False"
+                                      Margin="7 0 0 0"
+                                      x:Name="LoopSwitch"
+                                      Header="Цвет категории циклы"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding BlocklyLoopCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <mah:ColorPalette Grid.Row="5" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=LoopSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}">
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="5" Grid.Column="3"
+                             Text="{Binding BlocklyLoopCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+          
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region math category-->
+
+                    <mah:ToggleSwitch Grid.Row="6" Grid.Column="0"
+                                      IsEnabled="False"
+                                      Margin="7 0 0 0"
+                                      x:Name="MathSwitch"
+                                      Header="Цвет категории математические"                                          
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding BlocklyMathCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <mah:ColorPalette Grid.Row="6" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=MathSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}">
+
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="6" Grid.Column="3"
+                             Text="{Binding BlocklyMathCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region procedure category-->
+
+                    <mah:ToggleSwitch Grid.Row="7" Grid.Column="0"
+                                      IsEnabled="False"
+                                      Margin="7 0 0 0"
+                                      x:Name="ProcedureSwitch"
+                                      Header="Цвет категории процедуры"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding BlocklyProcedureCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <mah:ColorPalette Grid.Row="7" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=ProcedureSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}">
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="7" Grid.Column="3"
+                             Text="{Binding BlocklyProcedureCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region dynamic variable category-->
+
+                    <mah:ToggleSwitch Grid.Row="8" Grid.Column="0"
+                                      IsEnabled="False"
+                                      Margin="7 0 20 0"
+                                      x:Name="DynamicVariableSwitch"
+                                      Header="Цвет категории динамические переменные"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding BlocklyDynamicVariableCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <mah:ColorPalette Grid.Row="8" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=DynamicVariableSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      Margin="0 0 0 3"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}">
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="8" Grid.Column="3"
+                             Text="{Binding BlocklyDynamicVariableCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+                  
+                  mah:TextBoxHelper.ClearTextButton="True"
+                  mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region variable category-->
+
+                    <mah:ToggleSwitch Grid.Row="9"
+                                      IsEnabled="False"
+                                      Margin="7 0 0 0"
+                                      x:Name="VariableSwitch"
+                                      Header="Цвет категории переменные"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding BlocklyVariableCategoryStateD, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <mah:ColorPalette Grid.Row="9" Grid.Column="1"
+                                      IsEnabled="{Binding ElementName=VariableSwitch, Path=IsEnabled}"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Center"
+                                      Margin="0 0 0 3"
+                                      SelectedItem="{Binding BlocklyGridColour}"
+                                      Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}">
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+                    </mah:ColorPalette>
+
+
+                    <TextBox Grid.Row="9" Grid.Column="3"
+                             Text="{Binding BlocklyVariableCategoryAlternateName, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                             FontWeight="Bold"
+                             VerticalAlignment="Bottom" 
+                             HorizontalAlignment="Left" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox.Window.QuickLaunch.VisualStudio}"
+                             Margin="0 0 20 0"
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Альтернативное название"/>
+
+                    <!--#endregion-->
+
+                    <!--#region language toolbox settings-->
+
+                    <mah:ToggleSwitch Grid.Row="10" Grid.Column="0"
+                                      Margin="7 0 0 0"
+                                      x:Name="ChangeToolboxLanguage"
+                                      Header="Язык панели инструментов"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                           
+                                      CommandParameter="{Binding ElementName=ChangeToolboxLanguage, Path=IsOn}"
+                                      IsOn="{Binding ChangeToolboxLanguageToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                    <!--Command="{Binding ChangeToolboxLanguageToggleSwitchCommand}"-->
+
+                    <mah:SplitButton Grid.Row="10" Grid.Column="1"
+                          IsEnabled="{Binding ElementName=ChangeToolboxLanguage, Path=IsOn}"
+                          Margin="5 20 20 5"
+                          DisplayMemberPath="LanguageName"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Left"
+                          
+                          FontWeight="Normal"
+                          ItemsSource="{Binding BlocklyLanguageCollection}"
+                          SelectedItem="{Binding SelectedBlocklyToolboxLanguage}">
+
+                        <mah:SplitButton.Icon>
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFeatherIcons Kind="Globe" Margin="5 0 5 0"/>
+                            </StackPanel>
+                        </mah:SplitButton.Icon>
+                    </mah:SplitButton>
+
+                    <!--#endregion-->
+
+                    <TextBlock Grid.Row="11" Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Margin="0 20 0 10"
+                               Text="Настройки рабочей области"/>
+
+                    <!--#region grid color -->
+
+                    <mah:ToggleSwitch Grid.Row="12" Grid.Column="0"
+                           Margin="7 0 0 0"
+                           x:Name="ChangeGridColorSwitch"
+                           Header="Цвет сетки"
+                           OnContent="Вручную"
+                           OffContent="Автоматически"
+                           VerticalAlignment="Bottom"
+                           
+                           CommandParameter="{Binding ElementName=ChangeGridColorSwitch, Path=IsOn}"
+                           IsEnabled="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                           IsOn="{Binding ChangeGridColorSwitchToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                    <!--Command="{Binding ChangeGridColorToggleSwitchCommand}"-->
+
+                    <mah:ColorPalette Grid.Row="12" Grid.Column="1"
+                           Padding="0 0 0 10"
+                           VerticalAlignment="Bottom"
+                           HorizontalAlignment="Center"
+                           SelectedItem="{Binding SelectedBlocklyGridColour}"
+                           Style="{DynamicResource MahApps.Styles.ListBox.HamburgerMenu}">
+
+                        <Color>Red</Color>
+                        <Color>Green</Color>
+                        <Color>Blue</Color>
+                        <Color>Black</Color>
+                        <Color>Yellow</Color>
+                        <Color>White</Color>
+                        <Color>Gray</Color>
+
+                        <!--<mah:ColorPalette.IsEnabled>-->
+                        <!--<MultiBinding Converter="{StaticResource MultiConverter}">-->
+                        <!--<Binding ElementName="ChangeGridColorSwitch" Path="IsOn"/>-->
+                        <!--<Binding ElementName="ChangeGridColorSwitch" Path="IsEnabled"/>-->
+                        <!--</MultiBinding>-->
+                        <!--</mah:ColorPalette.IsEnabled>-->
+                    </mah:ColorPalette>
+
+                    <!--#endregion-->
+
+                    <!--#region Grid Spacing -->
+
+                    <mah:ToggleSwitch Grid.Row="13" Grid.Column="0"
+                                      Margin="7 0 0 0"
+                                      x:Name="ChangeSpacingSwitch"
+                                      Header="Размер ячейки"
+                                      OnContent="Вручную"
+                                      OffContent="Автоматически"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding  ChangeSpacingSwitchToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                      IsEnabled="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                           
+                                      CommandParameter="{Binding ElementName=ChangeSpacingSwitch, Path=IsOn}"/>
+                    <!--Command="{Binding ChangeSpacingToggleSwitchCommand}"-->
+
+                    <mah:NumericUpDown Grid.Row="13" Grid.Column="1"
+                                       Value="{Binding BlocklyGridSpacing, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                       Padding="0 0 4 0"
+                                       Minimum="5"
+                                       Maximum="50"
+                                       Interval="5"
+                            
+                                       FontWeight="Medium"
+                                       TextAlignment="Right"
+                                       Margin="5 20 20 5">
+
+                        <!--<mah:NumericUpDown.IsEnabled>-->
+                        <!--<MultiBinding Converter="{StaticResource MultiConverter}">-->
+                        <!--   <Binding ElementName="ChangeSpacingSwitch" Path="IsOn"/>-->
+                        <!--<Binding ElementName="ChangeSpacingSwitch" Path="IsEnabled"/>-->
+                        <!--</MultiBinding>-->
+                        <!--</mah:NumericUpDown.IsEnabled>-->
+
+                    </mah:NumericUpDown>
+
+                    <!--#endregion-->
+
+                    <TextBlock Grid.Row="12" Grid.Column="3"
+                               Grid.RowSpan="2"
+                               TextWrapping="WrapWithOverflow"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontWeight="Bold"
+                               Margin="0 20 20 10"
+                               mah:VisibilityHelper.IsHidden= "{Binding ElementName=ChangeGridColorSwitch, Path=IsEnabled}">Отображение сетки отключено в <LineBreak/>основных настройках. 
+                                    <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding EnableShowGridCommand}"> Включить...</Hyperlink>
+                    </TextBlock>
+
+                    <!--#region blockly theme settings -->
+
+                    <mah:ToggleSwitch Grid.Row="14" Grid.Column="0"
+                           Margin="7 0 0 0"
+                           x:Name="ChangeBlocklyTheme"
+                           Header="Тема рабочей области"
+                           OnContent="Вручную"
+                           OffContent="Автоматически"
+                           VerticalAlignment="Bottom"
+                           
+                           CommandParameter="{Binding ElementName=ChangeBlocklyTheme, Path=IsOn}"
+                           IsOn="{Binding ChangeBlocklyThemeToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                    <!--Command="{Binding ChangeBlocklyThemeToogleSwitchCommand}"-->
+
+                    <mah:SplitButton Grid.Row="14" Grid.Column="1"
+                          IsEnabled="{Binding ElementName=ChangeBlocklyTheme, Path=IsOn}"
+                          Margin="5 20 20 5"
+                          DisplayMemberPath="BlocklyThemeName"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Left"
+                          
+                          FontWeight="Normal"
+                          ItemsSource="{Binding BlocklyThemes}"
+                          SelectedItem="{Binding SelectedBlocklyTheme}">
+
+                        <mah:SplitButton.Icon>
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconEvaIcons Kind="ColorPalette" Margin="5 0 5 0"/>
+                            </StackPanel>
+                        </mah:SplitButton.Icon>
+                    </mah:SplitButton>
+
+                    <!--#endregion-->
+
+                    <TextBlock Grid.Row="15" Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Margin="0 20 0 10"
+                               Text="Настройки области вывода результатов"/>
+
+                    <mah:ToggleSwitch Grid.Row="16" Grid.Column="0"
+                                      Margin="7 0 0 0"
+                                      Header="Показывать в области выполнения"
+                                      OnContent="Отчет о запуске и результат выполнения"
+                                      OffContent="Только результат выполнения"
+                                      VerticalAlignment="Bottom"
+                                      IsOn="{Binding ChangeExtendedExecuteReportToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <CheckBox Grid.Row="16" Grid.Column="1"
+                              Grid.ColumnSpan="2"
+                              IsChecked="True"
+                              Content="Использовать так же для редактора скриптов"
+                              IsEnabled="False"
+                              HorizontalAlignment="Center"/>
+                </Grid>
+            </ScrollViewer>
+        </mah:Flyout>
+
+
+        <!--#endregion-->
+
+    </Grid>
+</UserControl>

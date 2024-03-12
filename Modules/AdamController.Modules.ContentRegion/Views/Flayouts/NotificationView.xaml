@@ -1,0 +1,170 @@
+﻿<UserControl x:Class="AdamController.Modules.ContentRegion.Views.Flayouts.NotificationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdamController.Modules.ContentRegion.Views.Flayouts" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
+    <Grid>
+        <!--#region Flayouts notification-->
+
+        <mah:Flyout x:Name="NotificationFlayouts"
+                    Width="400"
+                    Margin="0 30.4 0 30.5"
+                    IsOpen="{Binding NotificationFlayoutsIsOpen, Mode=TwoWay}"
+                    CloseCommand="{Binding CloseNotificationFlayots}"
+                    AnimateOpacity="True"
+                    Position="Right"
+                    Theme="Inverse"
+                    AreAnimationsEnabled="True"
+                    AnimateOnPositionChange="True"
+                    CloseButtonVisibility="Visible"
+                    Header="Центр уведомлений"
+                    Opacity="{Binding NotificationOpacity, Mode=TwoWay}"
+  
+                    ContentTemplate="{Binding ElementName=FlayoutNotificationTemplate}">
+
+            <ScrollViewer 
+                    HorizontalScrollBarVisibility="Visible"
+                    Style="{DynamicResource MahApps.Styles.ScrollViewer}">
+
+                <Grid Width="Auto" Margin="20 0 0 0" x:Name="FlayoutNotificationTemplate" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <TextBlock Grid.Row="0" 
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"
+                               Text="Новых уведомлений нет"
+                               Visibility="{Binding NoNewNotificationMessageVisibility}"/>
+
+                    <!--#region FailConnect Notify -->
+
+                    <Border Grid.Row="0" 
+                            Visibility="{Binding FailConnectMessageVisibility}"
+                            BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" 
+                            BorderThickness="3">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1.5*"/>
+                                <RowDefinition Height="1.5*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+
+                            <TextBlock Grid.Row="0"
+                                       Width="Auto" Height="Auto"
+                                       Margin="10 20 0 0"
+                                       FontStyle="Normal"
+                                       FontWeight="Bold"
+                                       FontSize="18"
+                                       Text="Робот Адам отключен!" />
+
+                            <TextBlock Grid.Row="1"
+                                       Width="Auto" Height="Auto"
+                                       Margin="10"
+                                       FontStyle="Normal"
+                                       FontWeight="Bold"
+                                       FontSize="14"
+                                       Text="Проверьте связь и нажмите переподключить" />
+
+                            <Button Grid.Row="2" Width="Auto"
+                                    Margin="10 5 10 10"
+                                    mah:ControlsHelper.ContentCharacterCasing="Upper"
+                                    Content="Переподключить" 
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Command="{Binding ConnectButtonComand}"
+                                    CommandParameter="IsNotificationButtonCalling"
+                                    Style="{StaticResource MahApps.Styles.Button.MetroSquare}"></Button>
+                        </Grid>
+                    </Border>
+
+                    <!--#endregion-->
+
+                    <TextBlock Grid.Row="4"
+                               Margin="0 0 10 20"
+                               TextWrapping="WrapWithOverflow"
+                               VerticalAlignment="Bottom"
+                               HorizontalAlignment="Right"
+                               FontWeight="Bold">
+            <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ClearNotifications}">
+                Очистить уведомления
+            </Hyperlink>
+
+                    </TextBlock>
+
+                    <!--#region  Buttons -->
+
+                    <Grid Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                    Width="100"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding ConnectButtonComand}"
+                    Background="Transparent"
+                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                    Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
+            
+                    mah:ControlsHelper.ContentCharacterCasing="Upper"
+                    mah:ControlsHelper.CornerRadius="0">
+
+                            <StackPanel Orientation="Vertical">
+                                
+                                <iconPacks:PackIconMaterial Margin="5 0 5 0"  
+                                                            Width="Auto" 
+                                                            Height="Auto"
+                                                            Kind="{Binding IconOnConnectFlayoutButton}" />
+
+                                <Label Padding="0 5 0 0"
+                                       Width="Auto" 
+                                       Height="Auto" 
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Bottom"
+                                       FontSize="10"
+                                       FontWeight="Medium"
+                                       mah:ControlsHelper.ContentCharacterCasing="Upper"
+                                       Content="{Binding TextOnConnectFlayotButton}" />
+                            </StackPanel>
+
+                        </Button>
+
+                        <!--#endregion-->
+
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </mah:Flyout>
+
+        <!--#endregion-->
+
+    </Grid>
+</UserControl>

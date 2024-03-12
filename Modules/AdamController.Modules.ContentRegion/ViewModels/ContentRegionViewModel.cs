@@ -323,9 +323,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region NotificationBadge
 
-
-
-
         private void ClearNotification()
         {
             //BadgeCounter = 0;
