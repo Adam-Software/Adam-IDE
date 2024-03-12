@@ -61,7 +61,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
 
         #endregion
 
-
         #region NotificationOpacity
 
         private double notificationOpacity = Settings.Default.NotificationOpacity;

@@ -1,11 +1,12 @@
 ﻿using AdamBlocklyLibrary.Enum;
 using AdamController.Core.DataSource;
 using AdamController.Core.Model;
+using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
-using AdamController.Core.ViewModels.HamburgerMenu;
-using AdamController.ViewModels.HamburgerMenu;
 using ControlzEx.Theming;
 using Prism.Commands;
+using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,8 +14,12 @@ using System.Windows;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class VisualSettingsControlView : HamburgerMenuItemView
+    public class VisualSettingsControlViewModel : RegionViewModelBase //: HamburgerMenuItemView
     {
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        {
+        }
+
         //public VisualSettingsControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView) {}
 
         public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = ThemesCollection.BlocklyThemes;
@@ -151,6 +156,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         });
 
         private DelegateCommand<string> changeBaseColorTheme;
+
         public DelegateCommand<string> ChangeBaseColorTheme => changeBaseColorTheme ??= new DelegateCommand<string>(obj =>
         {
             string mainTheme = obj;

@@ -7,6 +7,8 @@
         /// </summary>
         public const string InsideConentRegion = $"{nameof(InsideConentRegion)}";
 
+        public const string SubRegionHamburgerMenu = $"{nameof(SubRegionHamburgerMenu)}";
+
         public const string SubRegionScratch = $"{nameof(SubRegionScratch)}";
 
         public const string SubRegionScriptEditor = $"{nameof(SubRegionScriptEditor)}";

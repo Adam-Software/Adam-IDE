@@ -1,27 +1,25 @@
-﻿using AdamController.Modules.ContentRegion.ViewModels;
-using ControlzEx.Theming;
-using System;
+﻿using ControlzEx.Theming;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
+namespace AdamController.Modules.ContentRegion.Views
 {
 
-    public partial class VisualSettingsControl : UserControl
+    public partial class VisualSettingsControlView : UserControl
     {
-        public VisualSettingsControl()
+        public VisualSettingsControlView()
         {
             InitializeComponent();
 
-            if (VisualSettingsControlView.ChangeBaseTheme == null)
-            {
-                VisualSettingsControlView.ChangeBaseTheme = new Action<string>(theme => ChangeBaseTheme(theme));
-            }
+            //if (VisualSettingsControlView.ChangeBaseTheme == null)
+            //{
+             //   VisualSettingsControlView.ChangeBaseTheme = new Action<string>(theme => ChangeBaseTheme(theme));
+            //}
 
-            if (VisualSettingsControlView.ChangeThemeColorScheme == null)
-            {
-                VisualSettingsControlView.ChangeThemeColorScheme = new Action<string>(scheme => ChangeThemeColorScheme(scheme));
-            }   
+            //if (VisualSettingsControlView.ChangeThemeColorScheme == null)
+            //{
+            //    VisualSettingsControlView.ChangeThemeColorScheme = new Action<string>(scheme => ChangeThemeColorScheme(scheme));
+            //}   
         }
 
         private void ChangeBaseTheme(string theme)

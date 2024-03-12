@@ -66,16 +66,21 @@
     
     <!--#endregion-->
 
+
+    <mah:MetroWindow.Flyouts>
+        <mah:FlyoutsControl>
+            <ContentControl prism:RegionManager.RegionName="{x:Static core:FlayoutsRegionNames.FlayoutsRegion}" />
+        </mah:FlyoutsControl>
+    </mah:MetroWindow.Flyouts>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
+            
         <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
     </Grid>
-
-
 
 </mah:MetroWindow>

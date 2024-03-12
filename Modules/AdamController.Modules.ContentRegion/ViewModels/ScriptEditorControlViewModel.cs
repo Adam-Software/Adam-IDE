@@ -1,38 +1,30 @@
 ﻿using AdamController.Core.Helpers;
-using AdamController.ViewModels.HamburgerMenu;
+using AdamController.Core.Mvvm;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using MessageDialogManagerLib;
 using Prism.Commands;
+using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class ScriptEditorControlView : HamburgerMenuItemView
+    public class ScriptEditorControlViewModel : RegionViewModelBase //: HamburgerMenuItemView
     {
         public static Action<string> AppLogStatusBarAction { get; set; }
 
         private bool mIsWarningStackOwerflowAlreadyShow;
         private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlView() 
+        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
-
             InitAction();
             PythonExecuteEvent();
         }
-
-
-        /*public ScriptEditorControlView(HamburgerMenuView hamburgerMenuView = null) : base(hamburgerMenuView)
-        {
-            IDialogManager = new MessageDialogManagerMahapps(Application.Current);
-
-            InitAction();
-            PythonExecuteEvent();
-        }*/
 
         #region Python execute event
 
@@ -117,9 +109,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void InitAction()
         {
-            if(ScratchControlView.SendSourceToScriptEditor == null)
+            if(ScratchControlViewModel.SendSourceToScriptEditor == null)
             {
-                ScratchControlView.SendSourceToScriptEditor = new Action<string>(source => SourceTextEditor = source);
+                ScratchControlViewModel.SendSourceToScriptEditor = new Action<string>(source => SourceTextEditor = source);
             }
         }
 
@@ -323,6 +315,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region ShowSaveFileDialogCommand
 
         private DelegateCommand showSaveFileDialogCommand;
+
         public DelegateCommand ShowSaveFileDialogCommand => showSaveFileDialogCommand ??= new DelegateCommand(async () =>
         {
             string pythonProgram = SourceTextEditor;

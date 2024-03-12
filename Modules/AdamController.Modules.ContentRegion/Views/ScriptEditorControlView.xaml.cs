@@ -1,27 +1,25 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 
-namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
+namespace AdamController.Modules.ContentRegion.Views
 {
-    public partial class ScriptEditorControl : UserControl
+    public partial class ScriptEditorControlView : UserControl
 	{
-		public ScriptEditorControl()
+		public ScriptEditorControlView()
 		{
 			InitializeComponent();
 			//LoadHighlighting();
 
-			TextResulEditor.TextChanged += TextResulEditorTextChanged;
+			//TextResulEditor.TextChanged += TextResulEditorTextChanged;
 		}
 
 		private void TextResulEditorTextChanged(object sender, EventArgs e)
 		{
-			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-			{
-				TextResulEditor.ScrollToEnd();
-			}));
+			//Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+			//{
+			//	TextResulEditor.ScrollToEnd();
+			//}));
 	
 		}
 		

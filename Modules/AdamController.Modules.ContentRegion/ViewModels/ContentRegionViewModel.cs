@@ -1,20 +1,9 @@
-﻿using AdamBlocklyLibrary.Enum;
-using AdamController.Core.DataSource;
-using AdamController.Core.Helpers;
+﻿using AdamController.Core.Helpers;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
-using AdamController.Core.Properties;
-using AdamController.WebApi.Client.v1;
-using MahApps.Metro.IconPacks;
 using Prism.Regions;
 using Prism.Services.Dialogs;
-using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Windows;
 using System;
-using System.Linq;
-using Prism.Commands;
-using System.Windows.Threading;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {

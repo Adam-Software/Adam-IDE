@@ -8,126 +8,13 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:uiConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
-             xmlns:viewModels="clr-namespace:AdamController.Modules.ContentRegion.ViewModels"
+             
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True" >
 
 
     <Grid>
-        <mah:Flyout>
-            <mah:FlyoutsControl>
+   
 
-               
-
-                
-
-            </mah:FlyoutsControl>
-
-        </mah:Flyout>
-
-        <!--#region Hamburger menu-->
-
-        <Grid>
-            <Grid.Resources>
-
-                <uiConverter:SelectedItemToContentConverter x:Key="SelectedItemToContentConverter" />
-
-                <!--  this is the template for the items (options too)  -->
-                
-                <!--БЫЛО ТАК <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModelsHamburgerMenu:HamburgerMenuItemView}">-->
-                <DataTemplate x:Key="MenuItemTemplate">
-                    <Grid x:Name="RootGrid"
-                            Height="48"
-                            Background="Transparent">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <ContentControl Grid.Column="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Content="{Binding Icon}"
-                                    Focusable="False" />
-
-                        <TextBlock Grid.Column="1"
-                               VerticalAlignment="Center"
-                               FontSize="17"
-                               Text="{Binding Label}" />
-                    </Grid>
-
-                    <DataTemplate.Triggers>
-
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
-                            <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-
-                </DataTemplate>
-
-                <!--  these are the templates for the view models  -->
-
-                <DataTemplate DataType="{x:Type viewModels:ScratchControlView}">
-                    <!--<viewsHamburgerItem:ScratchControl  DataContext="{Binding}" />-->
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:ScriptEditorControlView}">
-                    <!--<viewsHamburgerItem:ScriptEditorControl DataContext="{Binding}" />-->
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:ComputerVisionControlView}">
-                    <!--<viewsHamburgerItem:ComputerVisionControl DataContext="{Binding}" />-->
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:VisualSettingsControlView}">
-                    <!--<viewsHamburgerItem:VisualSettingsControl DataContext="{Binding}" />-->
-                </DataTemplate>
-
-            </Grid.Resources>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <mah:HamburgerMenu Grid.Row="0" 
-                           Grid.RowSpan="2" 
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"
-                           DisplayMode="CompactInline"
-                           IsPaneOpen="False"
-                           ItemTemplate="{StaticResource MenuItemTemplate}"
-                           ItemsSource="{Binding MenuItems}"
-                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                           OptionsItemsSource="{Binding MenuOptionItems}"
-                           SelectedIndex="{Binding SelectedPageIndex}">
-
-                <!--  select the ViewModel of the selected item (options item)  -->
-
-                <mah:HamburgerMenu.Content>
-                    <MultiBinding Converter="{StaticResource SelectedItemToContentConverter}">
-
-                        <Binding FallbackValue="{x:Null}"
-                             Mode="OneWay"
-                             Path="SelectedItem"
-                             RelativeSource="{RelativeSource Self}" />
-                        <Binding FallbackValue="{x:Null}"
-                             Mode="OneWay"
-                             Path="SelectedOptionsItem"
-                             RelativeSource="{RelativeSource Self}" />
-                    </MultiBinding>
-                </mah:HamburgerMenu.Content>
-            </mah:HamburgerMenu>
-
-            <!--#endregion-->
-            
-        </Grid>
     </Grid>
 </UserControl>

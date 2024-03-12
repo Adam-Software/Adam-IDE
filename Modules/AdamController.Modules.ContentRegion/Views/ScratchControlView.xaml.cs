@@ -12,16 +12,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
+namespace AdamController.Modules.ContentRegion.Views
 {
-    public partial class ScratchControl : UserControl
+    public partial class ScratchControlView : UserControl
     {
         #region Singelton
 
-        private static ScratchControl mInstance = null;
+        private static ScratchControlView mInstance = null;
         private static readonly object padlock = new();
 
-        public static ScratchControl Instance
+        public static ScratchControlView Instance
         {
             get
             {
@@ -29,7 +29,7 @@ namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
                 {
                     if (mInstance == null)
                     {
-                        mInstance = new ScratchControl();
+                        mInstance = new ScratchControlView();
                     }
                     return mInstance;
                 }
@@ -48,7 +48,7 @@ namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
         private readonly string mPathToSource = Path.Combine(FolderHelper.CommonDirAppData, "BlocklySource");
         private readonly string mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
 
-        public ScratchControl()
+        public ScratchControlView()
         {
             mInstance = this;
             InitializeComponent();
@@ -61,9 +61,9 @@ namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
 
             TextResulEditor.TextChanged += TextResulEditorTextChanged;
 
-            if (ScratchControlView.ReloadWebView == null)
+            if (ScratchControlViewModel.ReloadWebView == null)
             {
-                ScratchControlView.ReloadWebView = new Action(() => WebView.CoreWebView2.Reload());
+                ScratchControlViewModel.ReloadWebView = new Action(() => WebView.CoreWebView2.Reload());
             }
         }
 

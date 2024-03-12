@@ -5,15 +5,15 @@ using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
 using AdamController.Core.Helpers;
 using AdamController.Core.Model;
+using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
-using AdamController.Core.ViewModels.HamburgerMenu;
-using AdamController.Modules.ContentRegion.Views.HamburgerPage;
-using AdamController.ViewModels.HamburgerMenu;
+using AdamController.Modules.ContentRegion.Views;
 using AdamController.WebApi.Client.v1;
-using AdamController.WebApi.Client.v1.ResponseModel;
 using MessageDialogManagerLib;
 using Newtonsoft.Json;
 using Prism.Commands;
+using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +22,7 @@ using System.Windows.Threading;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class ScratchControlView : HamburgerMenuItemView
+    public class ScratchControlViewModel : RegionViewModelBase //: HamburgerMenuItemView
     {
         #region Action field 
 
@@ -38,8 +38,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IMessageDialogManager IDialogManager;
         private bool mIsWarningStackOwerflowAlreadyShow;
 
-        public ScratchControlView()
-        //public ScratchControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView)
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
@@ -48,7 +47,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             ComunicateHelper.OnAdamTcpConnectedEvent += OnAdamTcpConnectedEvent;
             ComunicateHelper.OnAdamTcpDisconnectedEvent += OnAdamTcpDisconnectedEvent;
-
         }
 
         private void OnAdamTcpDisconnectedEvent()
@@ -88,9 +86,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void InitAction()
         {
-            ScratchControl.NavigationComplete ??= new Action(() => NavigationComplete());
+            ScratchControlView.NavigationComplete ??= new Action(() => NavigationComplete());
 
-            ScratchControl.WebMessageReceived ??= new Action<WebMessageJsonReceived>((results) => WebMessageReceived(results));
+            ScratchControlView.WebMessageReceived ??= new Action<WebMessageJsonReceived>((results) => WebMessageReceived(results));
         }
 
         #endregion
@@ -159,7 +157,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
-                await ScratchControl.ExecuteScript(Scripts.ShadowEnable);
+                await ScratchControlView.ExecuteScript(Scripts.ShadowEnable);
             }));
         }
 
@@ -172,7 +170,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
-                await ScratchControl.ExecuteScript(Scripts.ShadowDisable);
+                await ScratchControlView.ExecuteScript(Scripts.ShadowDisable);
             }));
 
             CompileLogStatusBarAction(compileLogStatusBarAction);
@@ -241,13 +239,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 {
                     await LoadBlocklySrc();
                     await LoadBlocklyBlockLocalLangSrc(language);
-                    _ = await ScratchControl.ExecuteScript(InitWorkspace());
-                    _ = await ScratchControl.ExecuteScript(Scripts.ListenerCreatePythonCode);
-                    _ = await ScratchControl.ExecuteScript(Scripts.ListenerSavedBlocks);
+                    _ = await ScratchControlView.ExecuteScript(InitWorkspace());
+                    _ = await ScratchControlView.ExecuteScript(Scripts.ListenerCreatePythonCode);
+                    _ = await ScratchControlView.ExecuteScript(Scripts.ListenerSavedBlocks);
 
                     if (Settings.Default.BlocklyRestoreBlockOnLoad)
                     {
-                        _ = await ScratchControl.ExecuteScript(Scripts.RestoreSavedBlocks);
+                        _ = await ScratchControlView.ExecuteScript(Scripts.RestoreSavedBlocks);
                     }
 
 
@@ -410,15 +408,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 Scripts.AdamCommonPytnonGenSrc
             });
 
-            _ = await ScratchControl.ExecuteScript(loadLocalSrc);
+            _ = await ScratchControlView.ExecuteScript(loadLocalSrc);
 
             //Thread.Sleep(1000);
             Thread.Sleep(500);
-            _ = await ScratchControl.ExecuteScript(loadLocalAdamBlockSrc);
+            _ = await ScratchControlView.ExecuteScript(loadLocalAdamBlockSrc);
 
             //Thread.Sleep(1000);
             Thread.Sleep(500);
-            _ = await ScratchControl.ExecuteScript(loadLocalAdamPythonGenSrc);
+            _ = await ScratchControlView.ExecuteScript(loadLocalAdamPythonGenSrc);
         }
 
         /// <summary>
@@ -583,7 +581,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand showSaveFileDialogCommand;
         public DelegateCommand ShowSaveFileDialogCommand => showSaveFileDialogCommand ??= new DelegateCommand(async () =>
         {
-            string workspace = await ScratchControl.ExecuteScript("getSavedWorkspace()");
+            string workspace = await ScratchControlView.ExecuteScript("getSavedWorkspace()");
             string xmlWorkspace = JsonConvert.DeserializeObject<dynamic>(workspace);
 
             if (IDialogManager.ShowSaveFileDialog("Сохранить рабочую область", Core.Properties.Settings.Default.SavedUserWorkspaceFolderPath, "workspace", ".xml", "XML documents (.xml)|*.xml"))
@@ -726,7 +724,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private static async Task<string> ExecuteScriptFunctionAsync(string functionName, params object[] parameters)
         {
             string script = Scripts.SerealizeObject(functionName, parameters);
-            return await ScratchControl.ExecuteScript(script);
+            return await ScratchControlView.ExecuteScript(script);
         }
 
         #endregion

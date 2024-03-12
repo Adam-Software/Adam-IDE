@@ -5,15 +5,15 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AdamController.Modules.ContentRegion.Views.HamburgerPage
+namespace AdamController.Modules.ContentRegion.Views
 {
 
-    public partial class ComputerVisionControl : UserControl, IDisposable
+    public partial class ComputerVisionControlView : UserControl, IDisposable
     {
         private LibVLC mLibVLC;
         private MediaPlayer mMediaPlayer;
 
-        public ComputerVisionControl()
+        public ComputerVisionControlView()
         {
             InitializeComponent();
 

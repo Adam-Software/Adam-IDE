@@ -1,6 +1,5 @@
 ﻿using AdamController.Core.Helpers;
 using AdamController.Core.Model;
-using AdamController.Core.ViewModels.HamburgerMenu;
 using AdamController.ViewModels.HamburgerMenu;
 using AdamController.WebApi.Client.v1;
 using Newtonsoft.Json;
@@ -8,7 +7,7 @@ using Prism.Commands;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class ComputerVisionControlView : HamburgerMenuItemView
+    public class ComputerVisionControlViewModel : HamburgerMenuItemView
     {
 
         private DelegateCommand<string> directionButtonCommandDown;
