@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdamController.Modules.ContentRegion.Views.Flayouts
+namespace AdamController.Modules.FlayoutsRegion.Views
 {
     /// <summary>
-    /// Логика взаимодействия для AdvancedBlocklySettingsView.xaml
+    /// Логика взаимодействия для NotificationView.xaml
     /// </summary>
-    public partial class AdvancedBlocklySettingsView : UserControl
+    public partial class NotificationView : UserControl
     {
-        public AdvancedBlocklySettingsView()
+        public NotificationView()
         {
             InitializeComponent();
         }

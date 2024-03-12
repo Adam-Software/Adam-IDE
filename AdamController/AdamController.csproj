@@ -38,6 +38,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AdamControllerLibrary\AdamController.Core.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.ContentRegion\AdamController.Modules.ContentRegion.csproj" />
+    <ProjectReference Include="..\Modules\AdamController.Modules.FlayoutsRegion\AdamController.Modules.FlayoutsRegion.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.MenuRegion\AdamController.Modules.MenuRegion.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.StatusBar\AdamController.Modules.StatusBar.csproj" />
   </ItemGroup>

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdamController.Modules.ContentRegion.Views.Flayouts
+namespace AdamController.Modules.FlayoutsRegion.Views
 {
     /// <summary>
-    /// Логика взаимодействия для NotificationView.xaml
+    /// Логика взаимодействия для FlayoutsView.xaml
     /// </summary>
-    public partial class NotificationView : UserControl
+    public partial class FlayoutsView : UserControl
     {
-        public NotificationView()
+        public FlayoutsView()
         {
             InitializeComponent();
         }

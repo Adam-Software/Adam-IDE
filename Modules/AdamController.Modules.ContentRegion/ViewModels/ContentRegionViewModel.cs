@@ -15,7 +15,6 @@ using System;
 using System.Linq;
 using Prism.Commands;
 using System.Windows.Threading;
-using System.Security.AccessControl;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {

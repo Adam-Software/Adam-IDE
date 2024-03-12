@@ -14,11 +14,5 @@
         public const string SubRegionComputerVisionControl = $"{nameof(SubRegionComputerVisionControl)}";
 
         public const string SubRegionVisualSettings = $"{nameof(SubRegionVisualSettings)}";
-
-
-
-        public const string SubRegionFlayotAdvancedBlocklySettings = $"{nameof(SubRegionFlayotAdvancedBlocklySettings)}";
-        public const string SubRegionNotification = $"{nameof(SubRegionNotification)}";
-
     }
 }
