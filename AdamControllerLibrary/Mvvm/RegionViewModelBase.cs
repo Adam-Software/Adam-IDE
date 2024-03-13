@@ -27,12 +27,12 @@ namespace AdamController.Core.Mvvm
         /// <summary>
         /// Occurs when the navigation area is called
         /// </summary>
-        public void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        public virtual void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
         {
             continuationCallback?.Invoke(true);
         }
 
-        public bool IsNavigationTarget(NavigationContext navigationContext)
+        public virtual bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;
         }
@@ -40,14 +40,14 @@ namespace AdamController.Core.Mvvm
         /// <summary>
         /// On close region
         /// </summary>
-        public void OnNavigatedFrom(NavigationContext navigationContext)
+        public virtual void OnNavigatedFrom(NavigationContext navigationContext)
         {
         }
 
         /// <summary>
         /// On load region
         /// </summary>
-        public void OnNavigatedTo(NavigationContext navigationContext)
+        public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
         }
     }

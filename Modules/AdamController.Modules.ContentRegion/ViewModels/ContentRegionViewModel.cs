@@ -1,6 +1,8 @@
-﻿using AdamController.Core.Helpers;
+﻿using AdamController.Core;
+using AdamController.Core.Helpers;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
+using AdamController.Modules.ContentRegion.Views;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
@@ -9,15 +11,51 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class ContentRegionViewModel : RegionViewModelBase
     {
-
-
-
         public ContentRegionViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
             
         }
 
         #region Navigation
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            //SubRegionsRequestNavigate(SubRegionNames.SubRegionEmpty, navigationContext.Parameters);
+        }
+
+        public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        {
+            //SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
+        }
+
+
+        private void SubRegionsRequestNavigate(string tag, NavigationParameters parameters)
+        {
+            if (string.IsNullOrEmpty(tag))
+                return;
+
+
+            switch (tag)
+            {
+
+                case SubRegionNames.SubRegionScratch:
+                    RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ScratchControlView), parameters);
+                    break;
+
+                case SubRegionNames.SubRegionScriptEditor:
+                    RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ScriptEditorControlView), parameters);
+                    break;
+
+                case SubRegionNames.SubRegionComputerVisionControl:
+                    RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ComputerVisionControlView), parameters);
+                    break;
+
+                case SubRegionNames.SubRegionVisualSettings:
+                    RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(VisualSettingsControlView), parameters);
+                    break;
+
+            }
+        }
 
         #endregion
 
@@ -174,18 +212,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #endregion
 
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
