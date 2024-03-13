@@ -19,6 +19,7 @@
 
                 <!--БЫЛО ТАК <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModelsHamburgerMenu:HamburgerMenuItemView}">-->
                 <DataTemplate x:Key="MenuItemTemplate">
+                    
                     <Grid x:Name="RootGrid"
                             Height="48"
                             Background="Transparent">
@@ -51,7 +52,7 @@
 
                 <!--  these are the templates for the view models  -->
 
-                <DataTemplate DataType="{x:Type viewModels:ScratchControlViewModel}">
+                <DataTemplate  DataType="{x:Type viewModels:ScratchControlViewModel}">
                     <!--<viewsHamburgerItem:ScratchControl  DataContext="{Binding}" />-->
                 </DataTemplate>
 
@@ -81,16 +82,17 @@
             </Grid.ColumnDefinitions>
 
             <mah:HamburgerMenu Grid.Row="0" 
-                           Grid.RowSpan="2" 
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"
-                           DisplayMode="CompactInline"
-                           IsPaneOpen="False"
-                           ItemTemplate="{StaticResource MenuItemTemplate}"
-                           ItemsSource="{Binding MenuItems}"
-                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                           OptionsItemsSource="{Binding MenuOptionItems}"
+                               Grid.RowSpan="2" 
+                               Grid.Column="0"
+                               Grid.ColumnSpan="2"
+                               DisplayMode="CompactInline"
+                               IsPaneOpen="False"
+                               ItemTemplate="{StaticResource MenuItemTemplate}"
+                               ItemsSource="{Binding MenuItems}"
+                               OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                               OptionsItemsSource="{Binding MenuOptionItems}"
                            SelectedIndex="{Binding SelectedPageIndex}">
+                
 
                 <!--  select the ViewModel of the selected item (options item)  -->
 
@@ -100,6 +102,7 @@
                         <Binding FallbackValue="{x:Null}"
                              Mode="OneWay"
                              Path="SelectedItem"
+                                
                              RelativeSource="{RelativeSource Self}" />
                         <Binding FallbackValue="{x:Null}"
                              Mode="OneWay"

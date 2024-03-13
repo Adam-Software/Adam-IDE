@@ -20,12 +20,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            //SubRegionsRequestNavigate(SubRegionNames.SubRegionEmpty, navigationContext.Parameters);
+            SubRegionsRequestNavigate(SubRegionNames.SubRegionScratch, navigationContext.Parameters);
         }
 
         public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
         {
-            //SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
+            SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
         }
 
 
