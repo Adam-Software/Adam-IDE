@@ -49,6 +49,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ComunicateHelper.OnAdamTcpDisconnectedEvent += OnAdamTcpDisconnectedEvent;
         }
 
+        #region Navigation
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+           
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            
+        }
+
+        #endregion
+
         private void OnAdamTcpDisconnectedEvent()
         {
             UpdatePythonInfo();
@@ -251,12 +265,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
                 }));
 
-                AppLogStatusBarAction("Загрузка скретч-редактора закончена");
+                //AppLogStatusBarAction("Загрузка скретч-редактора закончена");
             }
             catch
             {
                 //the error occurs when switching to another tab before blockly is fully loaded
-                AppLogStatusBarAction("Загрузка скретч-редактора внезапно прервана");
+                //AppLogStatusBarAction("Загрузка скретч-редактора внезапно прервана");
             }
         }
 
