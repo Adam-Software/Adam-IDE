@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.Stat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Services", "AdamController.Services\AdamController.Services.csproj", "{C6EEA5FC-E4F2-4334-B134-C4A9B7D2A49A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Modules.FlayoutsRegion", "Modules\AdamController.Modules.FlayoutsRegion\AdamController.Modules.FlayoutsRegion.csproj", "{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.FlayoutsRegion", "Modules\AdamController.Modules.FlayoutsRegion\AdamController.Modules.FlayoutsRegion.csproj", "{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Modules.HamburgerMenu", "AdamController.Modules.HamburgerMenu\AdamController.Modules.HamburgerMenu.csproj", "{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{6F12ECFD-3891-40AE-A18D-B3362C6A2946} = {BF38E868-9FEB-4645-9B2B-15AC47844075}
 		{05913116-D1EA-49C3-92C4-B4316E7C0A9C} = {BF38E868-9FEB-4645-9B2B-15AC47844075}
 		{D17BE826-5C86-4EAC-8424-534F9CF3DFE0} = {BF38E868-9FEB-4645-9B2B-15AC47844075}
+		{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9} = {BF38E868-9FEB-4645-9B2B-15AC47844075}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D00A029C-930D-44A8-8257-721FCA9202F6}

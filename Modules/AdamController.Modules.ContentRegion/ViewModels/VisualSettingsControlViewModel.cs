@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
-namespace AdamController.Modules.ContentRegion.ViewModels
+namespace AdamController.Modules.HamburgerMenu.ViewModels
 {
     public class VisualSettingsControlViewModel : RegionViewModelBase //: HamburgerMenuItemView
     {
@@ -176,7 +176,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     SetBlocklyThemeAndGridColor(BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Classic));
                 }
             }
-
         });
 
         #endregion

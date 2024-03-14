@@ -20,6 +20,7 @@ using AdamController.Services;
 using AdamController.Modules.StatusBar;
 using AdamController.Core;
 using AdamController.Modules.FlayoutsRegion;
+using AdamController.Modules.HamburgerMenu;
 
 #endregion
 
@@ -80,6 +81,7 @@ namespace AdamController
             moduleCatalog.AddModule<ContentRegionModule>();
             moduleCatalog.AddModule<StatusBarModule>();
             moduleCatalog.AddModule<FlayoutsRegionModule>();
+            moduleCatalog.AddModule<HamburgerMenuModule>();
         }
 
         private static void LoadHighlighting()

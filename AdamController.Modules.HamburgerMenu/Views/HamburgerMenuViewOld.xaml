@@ -1,9 +1,6 @@
-﻿<UserControl x:Class="AdamController.Modules.ContentRegion.Views.HamburgerMenuView"
+﻿<UserControl x:Class="AdamController.Modules.HamburgerMenu.Views.HamburgerMenuViewOld"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AdamController.Modules.ContentRegion.Views" 
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:viewModels="clr-namespace:AdamController.Modules.ContentRegion.ViewModels"
              xmlns:uiConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core">
@@ -52,21 +49,21 @@
 
                 <!--  these are the templates for the view models  -->
 
-                <DataTemplate  DataType="{x:Type viewModels:ScratchControlViewModel}">
+                <!--<DataTemplate  DataType="{x:Type viewModels:ScratchControlViewModel}">-->
                     <!--<viewsHamburgerItem:ScratchControl  DataContext="{Binding}" />-->
-                </DataTemplate>
+                <!--</DataTemplate>-->
 
-                <DataTemplate DataType="{x:Type viewModels:ScriptEditorControlViewModel}">
+                <!--<DataTemplate DataType="{x:Type viewModels:ScriptEditorControlViewModel}">-->
                     <!--<viewsHamburgerItem:ScriptEditorControl DataContext="{Binding}" />-->
-                </DataTemplate>
+                <!--</DataTemplate>-->
 
-                <DataTemplate DataType="{x:Type viewModels:ComputerVisionControlViewModel}">
+                <!--<DataTemplate DataType="{x:Type viewModels:ComputerVisionControlViewModel}">-->
                     <!--<viewsHamburgerItem:ComputerVisionControl DataContext="{Binding}" />-->
-                </DataTemplate>
+                <!--</DataTemplate>-->
 
-                <DataTemplate DataType="{x:Type viewModels:VisualSettingsControlViewModel}">
+                <!--<DataTemplate DataType="{x:Type viewModels:VisualSettingsControlViewModel}">-->
                     <!--<viewsHamburgerItem:VisualSettingsControl DataContext="{Binding}" />-->
-                </DataTemplate>
+                <!--</DataTemplate>-->
 
             </Grid.Resources>
 
