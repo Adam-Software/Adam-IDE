@@ -22,7 +22,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
-            int s = 10;
+            
         }
 
         #endregion

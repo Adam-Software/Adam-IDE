@@ -9,8 +9,8 @@
              xmlns:localConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
         <ResourceDictionary>

@@ -1,4 +1,5 @@
-﻿using LibVLCSharp.Shared;
+﻿using AdamController.Core.Helpers;
+using LibVLCSharp.Shared;
 using LibVLCSharp.WPF;
 using System;
 using System.Windows;
@@ -64,11 +65,11 @@ namespace AdamController.Modules.ContentRegion.Views
             GC.SuppressFinalize(this);
         }
 
-        //public string DownRightDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 1, \"z\": 0}}";
+        public string DownRightDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 1, \"z\": 0}}";
 
-        /*private void Button_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void Button_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             ComunicateHelper.WebSocketSendTextMessage(DownRightDirection);
-        }*/
+        }
     }
 }

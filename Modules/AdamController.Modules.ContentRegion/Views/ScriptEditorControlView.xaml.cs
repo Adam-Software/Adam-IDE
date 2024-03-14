@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 
 namespace AdamController.Modules.ContentRegion.Views
@@ -11,15 +13,15 @@ namespace AdamController.Modules.ContentRegion.Views
 			InitializeComponent();
 			//LoadHighlighting();
 
-			//TextResulEditor.TextChanged += TextResulEditorTextChanged;
+			TextResulEditor.TextChanged += TextResulEditorTextChanged;
 		}
 
 		private void TextResulEditorTextChanged(object sender, EventArgs e)
 		{
-			//Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-			//{
-			//	TextResulEditor.ScrollToEnd();
-			//}));
+			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+			{
+				TextResulEditor.ScrollToEnd();
+			}));
 	
 		}
 		

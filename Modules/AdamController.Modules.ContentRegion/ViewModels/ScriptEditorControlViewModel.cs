@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class ScriptEditorControlViewModel : RegionViewModelBase //: HamburgerMenuItemView
+    public class ScriptEditorControlViewModel : RegionViewModelBase 
     {
         public static Action<string> AppLogStatusBarAction { get; set; }
 
