@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 
-namespace AdamController.Modules.StatusBar.ViewModels
+namespace AdamController.Modules.StatusBarRegion.ViewModels
 {
     public class StatusBarViewModel : RegionViewModelBase
     {

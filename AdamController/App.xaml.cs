@@ -17,7 +17,7 @@ using AdamController.Modules.MenuRegion;
 using AdamController.Modules.ContentRegion;
 using AdamController.Core.Helpers;
 using AdamController.Services;
-using AdamController.Modules.StatusBar;
+using AdamController.Modules.StatusBarRegion;
 using AdamController.Core;
 using AdamController.Modules.FlayoutsRegion;
 using AdamController.Modules.HamburgerMenu;
@@ -79,7 +79,7 @@ namespace AdamController
         {
             moduleCatalog.AddModule<MenuRegionModule>();
             moduleCatalog.AddModule<ContentRegionModule>();
-            moduleCatalog.AddModule<StatusBarModule>();
+            moduleCatalog.AddModule<StatusBarRegionModule>();
             moduleCatalog.AddModule<FlayoutsRegionModule>();
             moduleCatalog.AddModule<HamburgerMenuModule>();
         }

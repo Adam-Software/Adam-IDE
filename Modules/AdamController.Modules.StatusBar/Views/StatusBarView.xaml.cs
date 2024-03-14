@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AdamController.Modules.StatusBar.Views
+namespace AdamController.Modules.StatusBarRegion.Views
 {
     public partial class StatusBarView : UserControl
     {

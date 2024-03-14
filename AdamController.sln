@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.Menu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy", "Legacy", "{511F4919-C2FC-4775-92A4-C446E51B49DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.StatusBar", "Modules\AdamController.Modules.StatusBar\AdamController.Modules.StatusBar.csproj", "{05913116-D1EA-49C3-92C4-B4316E7C0A9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.StatusBarRegion", "Modules\AdamController.Modules.StatusBar\AdamController.Modules.StatusBarRegion.csproj", "{05913116-D1EA-49C3-92C4-B4316E7C0A9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Services", "AdamController.Services\AdamController.Services.csproj", "{C6EEA5FC-E4F2-4334-B134-C4A9B7D2A49A}"
 EndProject

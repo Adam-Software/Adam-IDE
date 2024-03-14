@@ -1,16 +1,16 @@
 ﻿using AdamController.Core;
-using AdamController.Modules.StatusBar.Views;
+using AdamController.Modules.StatusBarRegion.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace AdamController.Modules.StatusBar
+namespace AdamController.Modules.StatusBarRegion
 {
-    public class StatusBarModule : IModule
+    public class StatusBarRegionModule : IModule
     {
         private readonly IRegionManager mRegionManager;
 
-        public StatusBarModule(IRegionManager regionManager)
+        public StatusBarRegionModule(IRegionManager regionManager)
         {
             mRegionManager = regionManager;
         }
