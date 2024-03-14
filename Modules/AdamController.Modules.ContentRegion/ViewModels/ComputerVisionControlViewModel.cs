@@ -1,19 +1,31 @@
 ﻿using AdamController.Core.Helpers;
 using AdamController.Core.Model;
-using AdamController.ViewModels.HamburgerMenu;
+using AdamController.Core.Mvvm;
 using AdamController.WebApi.Client.v1;
 using Newtonsoft.Json;
 using Prism.Commands;
+using Prism.Regions;
+using Prism.Services.Dialogs;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class ComputerVisionControlViewModel : HamburgerMenuItemView
+    public class ComputerVisionControlViewModel : RegionViewModelBase
     {
+        #region private var
 
         private DelegateCommand<string> directionButtonCommandDown;
         private DelegateCommand<string> directionButtonCommandUp;
 
-        //public ComputerVisionControlView(HamburgerMenuView hamburgerMenuView) //: base(hamburgerMenuView){}
+        #endregion
+
+        #region ~
+
+        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        {
+            int s = 10;
+        }
+
+        #endregion
 
         #region Commands
 
@@ -91,10 +103,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         }, () => ComunicateHelper.TcpClientIsConnected);
 
         private float sliderValue;
-
-        //public ComputerVisionControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView)
-        //{
-        //}
 
         public float SliderValue 
         {

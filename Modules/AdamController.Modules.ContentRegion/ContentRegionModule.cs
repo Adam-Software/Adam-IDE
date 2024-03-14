@@ -26,6 +26,8 @@ namespace AdamController.Modules.ContentRegion
 
             containerRegistry.RegisterForNavigation<ContentRegionView>(nameof(ContentRegionView));
             containerRegistry.RegisterForNavigation<ScratchControlView>(nameof(ScratchControlView));
+            containerRegistry.RegisterForNavigation<ComputerVisionControlView>(nameof(ComputerVisionControlView));
+
         }
     }
 }

@@ -22,7 +22,7 @@ using System.Windows.Threading;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class ScratchControlViewModel : RegionViewModelBase //: HamburgerMenuItemView
+    public class ScratchControlViewModel : RegionViewModelBase 
     {
         #region Action field 
 
