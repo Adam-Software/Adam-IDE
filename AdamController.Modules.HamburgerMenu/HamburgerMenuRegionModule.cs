@@ -1,16 +1,16 @@
 ﻿using AdamController.Core;
-using AdamController.Modules.HamburgerMenu.Views;
+using AdamController.Modules.HamburgerMenuRegion.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
 namespace AdamController.Modules.HamburgerMenu
 {
-    public class HamburgerMenuModule : IModule
+    public class HamburgerMenuRegionModule : IModule
     {
         private readonly IRegionManager mRegionManager;
 
-        public HamburgerMenuModule(IRegionManager regionManager)
+        public HamburgerMenuRegionModule(IRegionManager regionManager)
         {
             mRegionManager = regionManager;
         }

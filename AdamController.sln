@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Services", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.Modules.FlayoutsRegion", "Modules\AdamController.Modules.FlayoutsRegion\AdamController.Modules.FlayoutsRegion.csproj", "{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Modules.HamburgerMenu", "AdamController.Modules.HamburgerMenu\AdamController.Modules.HamburgerMenu.csproj", "{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Modules.HamburgerMenuRegion", "AdamController.Modules.HamburgerMenu\AdamController.Modules.HamburgerMenuRegion.csproj", "{D9EEEB5F-D2B8-4233-8422-CD9F5145E9C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AdamController.Modules.HamburgerMenu.Views
+namespace AdamController.Modules.HamburgerMenuRegion.Views
 {
     public partial class HamburgerMenuViewOld : UserControl
     {

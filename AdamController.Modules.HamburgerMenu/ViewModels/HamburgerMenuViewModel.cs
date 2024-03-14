@@ -5,7 +5,7 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System.Collections.ObjectModel;
 
-namespace AdamController.Modules.ContentRegion.ViewModels
+namespace AdamController.Modules.HamburgerMenuRegion.ViewModels
 {
 
     public class HamburgerMenuViewModel : RegionViewModelBase

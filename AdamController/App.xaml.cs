@@ -81,7 +81,7 @@ namespace AdamController
             moduleCatalog.AddModule<ContentRegionModule>();
             moduleCatalog.AddModule<StatusBarRegionModule>();
             moduleCatalog.AddModule<FlayoutsRegionModule>();
-            moduleCatalog.AddModule<HamburgerMenuModule>();
+            moduleCatalog.AddModule<HamburgerMenuRegionModule>();
         }
 
         private static void LoadHighlighting()
