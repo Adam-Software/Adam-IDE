@@ -26,9 +26,9 @@
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdamBlocklyLibrary\AdamBlocklyLibrary.csproj" />
     <ProjectReference Include="..\AdamController.Services\AdamController.Services.csproj" />
-    <ProjectReference Include="..\AdamController.WebApi.Client\AdamController.WebApi.Client.csproj" />
+    <ProjectReference Include="..\Legacy\AdamBlocklyLibrary\AdamBlocklyLibrary.csproj" />
+    <ProjectReference Include="..\Legacy\AdamController.WebApi.Client\AdamController.WebApi.Client.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
