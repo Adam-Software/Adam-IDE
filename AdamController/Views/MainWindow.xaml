@@ -32,6 +32,7 @@
         <mah:WindowCommands>
             <StackPanel Orientation="Horizontal">
                 <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
+
             </StackPanel>
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
@@ -78,9 +79,22 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-            
-        <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
-        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ContentControl Grid.Column="0"
+                        Grid.Row="0" 
+                        prism:RegionManager.RegionName="{x:Static core:RegionNames.HamburgerMenuRegion}" />
+        
+        <ContentControl Grid.Column="1" 
+                        Grid.Row="0" 
+                        prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+        
+        <ContentControl Grid.Column="0" Grid.ColumnSpan="5"
+                        Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
     </Grid>
 
 </mah:MetroWindow>

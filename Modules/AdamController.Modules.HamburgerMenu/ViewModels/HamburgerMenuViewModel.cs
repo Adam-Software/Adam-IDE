@@ -1,6 +1,5 @@
 ﻿using AdamController.Core.Mvvm;
 using AdamController.ViewModels.HamburgerMenu;
-using MahApps.Metro.IconPacks;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System.Collections.ObjectModel;
@@ -15,7 +14,7 @@ namespace AdamController.Modules.HamburgerMenuRegion.ViewModels
 
         public HamburgerMenuViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
-            CreateMenuItems();
+            //CreateMenuItems();
         }
 
         public void CreateMenuItems()
