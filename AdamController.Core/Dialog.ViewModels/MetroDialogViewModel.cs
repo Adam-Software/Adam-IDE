@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 namespace AdamController.Core.Dialog.ViewModels
 {
     [Obsolete("Use it as example")]
-    public class MetroDialogView
+    public class MetroDialogViewModel
     {
         private readonly IMessageDialogManager IDialogManager;
 
-        public MetroDialogView(IMessageDialogManager messageDialogManager)
+        public MetroDialogViewModel(IMessageDialogManager messageDialogManager)
         {
             IDialogManager = messageDialogManager;
             ShowFolderBrowserSingleCommand = new DelegateCommand(ShowFolderBrowserSingleCommandExecute, ShowFolderBrowserSingleCommandCanExecute);

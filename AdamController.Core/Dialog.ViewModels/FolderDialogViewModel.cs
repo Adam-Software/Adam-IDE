@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace AdamController.Core.Dialog.ViewModels
 {
-    public class SettingsWindowView : BindableBase
+    public class FolderDialogViewModel : BindableBase
     {
         private readonly IFolderBrowserDialog IFolderBrowser;
 
-        public SettingsWindowView()
+        public FolderDialogViewModel()
         {
             IFolderBrowser = new FolderBrowserEx.FolderBrowserDialog();
         }

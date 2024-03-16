@@ -16,7 +16,7 @@ using System.Windows.Threading;
 
 namespace AdamController.Core.Dialog.ViewModels
 {
-    public class NetworkTestView : BindableBase, IDialogAware
+    public class NetworkTestViewModel : BindableBase, IDialogAware
     {
         #region Const
 
@@ -36,7 +36,7 @@ namespace AdamController.Core.Dialog.ViewModels
 
         #region ~
 
-        public NetworkTestView()
+        public NetworkTestViewModel()
         {
             SendApiComunicateCommand(ServerCommand.Start);
 

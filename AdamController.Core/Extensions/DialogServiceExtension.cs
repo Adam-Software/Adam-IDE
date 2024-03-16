@@ -1,4 +1,5 @@
-﻿using Prism.Services.Dialogs;
+﻿using AdamController.Core.Dialog.Views;
+using Prism.Services.Dialogs;
 
 namespace AdamController.Core.Extensions
 {
@@ -6,7 +7,7 @@ namespace AdamController.Core.Extensions
     {
         public static void ShowSettingsDialog(this IDialogService dialogService)
         {
-            //dialogService.ShowDialog(nameof(SettingsDialogView));
+            dialogService.ShowDialog(nameof(SettingsView));
         }
     }
 }

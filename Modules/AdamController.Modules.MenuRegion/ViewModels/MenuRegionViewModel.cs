@@ -16,8 +16,6 @@ namespace AdamController.Modules.MenuRegion.ViewModels
 
         public MenuRegionViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
-            CloseAppCommand = new DelegateCommand(Application.Current.Shutdown);
-
             CloseAppCommand = new DelegateCommand(CloseApp);
             ShowDialogCommand = new DelegateCommand<string>(ShowDialog);
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
@@ -30,12 +28,9 @@ namespace AdamController.Modules.MenuRegion.ViewModels
         {
             switch (dialogNames)
             {
-                //case DialogNames.SettingsDialog:
-                //    DialogService.ShowSettingsDialog();
-                //    break;
-                //case DialogNames.LogDialog:
-                //    DialogService.ShowLogViewerDialog();
-                //    break;
+                case DialogNames.SettingsDialog:
+                    DialogService.ShowSettingsDialog();
+                    break;
             }
         }
 

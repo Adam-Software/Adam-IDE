@@ -21,6 +21,8 @@ using AdamController.Modules.StatusBarRegion;
 using AdamController.Core;
 using AdamController.Modules.FlayoutsRegion;
 using AdamController.Modules.HamburgerMenu;
+using AdamController.Core.Dialog.Views;
+using AdamController.Core.Dialog.ViewModels;
 
 #endregion
 
@@ -73,6 +75,8 @@ namespace AdamController
         {
             //here must be ip/port
             containerRegistry.Register<IAdamTcpClient, AdamTcpClient>();
+
+            containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
