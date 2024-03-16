@@ -1,0 +1,59 @@
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
+using System;
+
+namespace AdamController.Core.Mvvm
+{
+    public class DialogViewModelBase : BindableBase, IDialogAware
+    {
+        public string Title { get; protected set; } = "Title";
+
+        #region Command
+
+        private DelegateCommand<string> mCloseDialogCommand;
+        public DelegateCommand<string> CloseDialogCommand => mCloseDialogCommand ??= new DelegateCommand<string>(CloseDialog);
+
+        #endregion
+
+        #region Navigation
+
+
+        public event Action<IDialogResult> RequestClose;
+
+        public virtual void RaiseRequestClose(IDialogResult dialogResult)
+        {
+            RequestClose?.Invoke(dialogResult);
+        }
+
+        public virtual bool CanCloseDialog()
+        {
+            return true;
+        }
+
+        public virtual void OnDialogClosed()
+        {
+
+        }
+
+        public virtual void OnDialogOpened(IDialogParameters parameters)
+        {
+
+        }
+
+        public virtual void CloseDialog(string parameter)
+        {
+            ButtonResult result = ButtonResult.None;
+
+            if (parameter?.ToLower() == "true")
+                result = ButtonResult.OK;
+            else if (parameter?.ToLower() == "false")
+                result = ButtonResult.Cancel;
+
+            RaiseRequestClose(new DialogResult(result));
+        }
+
+        #endregion
+
+    }
+}

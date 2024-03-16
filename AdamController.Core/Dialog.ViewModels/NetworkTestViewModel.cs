@@ -1,12 +1,11 @@
 ﻿using AdamController.Core.Helpers;
+using AdamController.Core.Mvvm;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.RequestModel;
 using MahApps.Metro.IconPacks;
 using MessageDialogManagerLib;
 using NetCoreServer;
 using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -16,7 +15,7 @@ using System.Windows.Threading;
 
 namespace AdamController.Core.Dialog.ViewModels
 {
-    public class NetworkTestViewModel : BindableBase, IDialogAware
+    public class NetworkTestViewModel : DialogViewModelBase
     {
         #region Const
 
@@ -38,14 +37,16 @@ namespace AdamController.Core.Dialog.ViewModels
 
         public NetworkTestViewModel()
         {
-            SendApiComunicateCommand(ServerCommand.Start);
+            Title = "Тест сети";
 
-            mComunicateTestHelper = ComunicateBenchmarkHelper.Instance;
+            //SendApiComunicateCommand(ServerCommand.Start);
+
+            //mComunicateTestHelper = ComunicateBenchmarkHelper.Instance;
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
-            ComunicateBenchmarkHelper.OnTcpConnected += OnTcpConnected;
-            ComunicateBenchmarkHelper.OnTcpDisconnected += OnTcpDisconnected;
-            ComunicateBenchmarkHelper.OnTcpReconnected += OnTcpReconnected;
+            //ComunicateBenchmarkHelper.OnTcpConnected += OnTcpConnected;
+            //ComunicateBenchmarkHelper.OnTcpDisconnected += OnTcpDisconnected;
+            //ComunicateBenchmarkHelper.OnTcpReconnected += OnTcpReconnected;
 
             ClearTcpResultField();
             TcpStatusBarManager(false);
@@ -55,35 +56,18 @@ namespace AdamController.Core.Dialog.ViewModels
 
             if (Properties.Settings.Default.AutoStartTestTcpConnect)
             {
-                ConnectButtonComand.Execute();
+                //ConnectButtonComand.Execute();
             }
             else
             {
                 //init fields if autorun off
-                OnTcpDisconnected();
+                //OnTcpDisconnected();
             }
         }
 
         #endregion
 
         #region Navigation
-
-        public string Title => throw new NotImplementedException();
-
-        public bool CanCloseDialog()
-        {
-            return true;
-        }
-
-        public void OnDialogClosed()
-        {
-            
-        }
-
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
-            
-        }
 
         #endregion
 
@@ -1258,8 +1242,6 @@ namespace AdamController.Core.Dialog.ViewModels
 
         private DelegateCommand saveResults;
 
-        public event Action<IDialogResult> RequestClose;
-
         public DelegateCommand SaveResults => saveResults ??= new DelegateCommand(() => 
         {
             IList<string> envParamsShort = null;
@@ -1298,8 +1280,6 @@ namespace AdamController.Core.Dialog.ViewModels
             }
 
         });
-
-       
 
         private async void FileSaveDialog(string file, string title, string fileName)
         {

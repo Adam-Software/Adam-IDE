@@ -4,6 +4,7 @@ using System.Windows;
 
 namespace AdamController.Core.Behaviors
 {
+    [Obsolete]
     public class ActivateBehavior : Behavior<Window>
     {
         private bool isActivated;

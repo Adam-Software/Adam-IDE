@@ -31,6 +31,10 @@ namespace AdamController.Modules.MenuRegion.ViewModels
                 case DialogNames.SettingsDialog:
                     DialogService.ShowSettingsDialog();
                     break;
+
+                case DialogNames.NetworkTestDialog:
+                    DialogService.ShowNetworkTestDialog();
+                    break;
             }
         }
 

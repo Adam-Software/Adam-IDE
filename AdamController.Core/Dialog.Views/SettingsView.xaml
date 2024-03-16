@@ -12,6 +12,8 @@
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  Width="800" Height="600">
 
+    <!--#region Resources -->
+    
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,7 +21,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+    
+    <!--#endregion-->
 
+    <!--#region WindowStyle -->
+    
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
@@ -29,6 +35,8 @@
             <Setter Property="Topmost" Value="True" />
         </Style>
     </prism:Dialog.WindowStyle>
+    
+    <!--#endregion-->
 
     <!--<i:Interaction.Behaviors>
         <behaviors:ActivateBehavior Activated="{Binding SettingWindowActivated, Mode=TwoWay}"/>

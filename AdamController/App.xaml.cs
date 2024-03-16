@@ -1,5 +1,4 @@
-﻿
-using AdamController.Views;
+﻿using AdamController.Views;
 using ControlzEx.Theming;
 using ICSharpCode.AvalonEdit.Highlighting;
 using System;
@@ -12,13 +11,11 @@ using System.Xml;
 using Prism.Ioc;
 using Prism.DryIoc;
 using Prism.Modularity;
-using MahApps.Metro.Controls;
 using AdamController.Modules.MenuRegion;
 using AdamController.Modules.ContentRegion;
 using AdamController.Core.Helpers;
 using AdamController.Services;
 using AdamController.Modules.StatusBarRegion;
-using AdamController.Core;
 using AdamController.Modules.FlayoutsRegion;
 using AdamController.Modules.HamburgerMenu;
 using AdamController.Core.Dialog.Views;
@@ -77,6 +74,7 @@ namespace AdamController
             containerRegistry.Register<IAdamTcpClient, AdamTcpClient>();
 
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
+            containerRegistry.RegisterDialog<NetworkTestView, NetworkTestViewModel>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

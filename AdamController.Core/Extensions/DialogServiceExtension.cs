@@ -9,5 +9,10 @@ namespace AdamController.Core.Extensions
         {
             dialogService.ShowDialog(nameof(SettingsView));
         }
+
+        public static void ShowNetworkTestDialog(this IDialogService dialogService)
+        {
+            dialogService.ShowDialog(nameof(NetworkTestView));
+        }
     }
 }
