@@ -22,6 +22,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
     </mah:MetroWindow.Resources>
 
     <!--#endregion-->
@@ -74,6 +75,51 @@
     </mah:MetroWindow.Flyouts>
 
     <Grid>
+
+        <!--#region GridResources -->
+
+        <Grid.Resources>
+            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
+                <Grid Height="48">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="Segoe MDL2 Assets"
+                               Text="{Binding Glyph}" />
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Text="{Binding Label}" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="OptionsMenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
+                <Grid Height="48">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="Segoe MDL2 Assets"
+                               Text="{Binding Glyph}" />
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Text="{Binding Label}" />
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+        
+        <!--#endregion-->
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -84,10 +130,61 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ContentControl Grid.Column="0" Grid.Row="0" prism:RegionManager.RegionName="{x:Static core:RegionNames.HamburgerMenuRegion}" />
-        
-        <ContentControl Grid.Column="1" Grid.Row="0" Margin="0 0 0 0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
-        
+        <mah:HamburgerMenu Grid.Column="0"
+                           Grid.Row="0"
+                           x:Name="HamburgerMenuControl"
+                           IsPaneOpen="False"
+                           ItemTemplate="{StaticResource MenuItemTemplate}"
+                           OptionsItemTemplate="{StaticResource OptionsMenuItemTemplate}"
+                           SelectedIndex="1"
+                           DisplayMode="CompactInline">
+
+            <!--  Items  -->
+            <mah:HamburgerMenu.ItemsSource>
+                <mah:HamburgerMenuItemCollection>
+                    <mah:HamburgerMenuGlyphItem Glyph="" Label="Home">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <TextBox />
+                            <!--<ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}"/>-->
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>
+
+                    <!--<mah:HamburgerMenuGlyphItem Glyph="" Label="Private">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}"/>
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>
+
+                    <mah:HamburgerMenuGlyphItem Glyph="" Label="Settings">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}"/>
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>-->
+                </mah:HamburgerMenuItemCollection>
+            </mah:HamburgerMenu.ItemsSource>
+
+            <!--  Options  
+            <mah:HamburgerMenu.OptionsItemsSource>
+                <mah:HamburgerMenuItemCollection>
+                    <mah:HamburgerMenuGlyphItem Glyph="" Label="About">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" Tag="About"/>
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>
+                </mah:HamburgerMenuItemCollection>
+            </mah:HamburgerMenu.OptionsItemsSource>-->
+
+            <!--  Content -->
+            <mah:HamburgerMenu.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+                    </StackPanel>
+                </DataTemplate>
+            </mah:HamburgerMenu.ContentTemplate>
+
+        </mah:HamburgerMenu>
+
         <ContentControl Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
 
     </Grid>

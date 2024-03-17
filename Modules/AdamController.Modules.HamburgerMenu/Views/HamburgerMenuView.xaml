@@ -9,38 +9,121 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <mah:HamburgerMenu Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=SelectedItem.Tag}"
-                       DisplayMode="CompactOverlay"
-                       Width="Auto" Height="Auto">
-        
-        <mah:HamburgerMenu.ItemsSource>
-            <mah:HamburgerMenuItemCollection>
+    <Grid>
 
-                <mah:HamburgerMenuIconItem Icon="A" Label="Test 1">
-                    <mah:HamburgerMenuIconItem.Tag>
-                        <Button Margin="5">
-                            This is Test 1
-                        </Button>
-                    </mah:HamburgerMenuIconItem.Tag>
-                </mah:HamburgerMenuIconItem>
+        <Grid.Resources>
 
-                <mah:HamburgerMenuIconItem Icon="B" Label="Test 2">
-                    <mah:HamburgerMenuIconItem.Tag>
-                        <Button Margin="5">
-                            This is Test 2
-                        </Button>
-                    </mah:HamburgerMenuIconItem.Tag>
-                </mah:HamburgerMenuIconItem>
+            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
+                <Grid Height="48">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="Segoe MDL2 Assets"
+                               Text="{Binding Glyph}" />
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Text="{Binding Label}" />
+                </Grid>
+            </DataTemplate>
 
-                <mah:HamburgerMenuIconItem Icon="C" Label="Test 3">
-                    <mah:HamburgerMenuIconItem.Tag>
-                        <Button Margin="5">
-                            This is Test 3
-                        </Button>
-                    </mah:HamburgerMenuIconItem.Tag>
-                </mah:HamburgerMenuIconItem>
+            <DataTemplate x:Key="OptionsMenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
+                <Grid Height="48">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="Segoe MDL2 Assets"
+                               Text="{Binding Glyph}" />
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Text="{Binding Label}" />
+                </Grid>
+            </DataTemplate>
 
-            </mah:HamburgerMenuItemCollection>
-        </mah:HamburgerMenu.ItemsSource>
-    </mah:HamburgerMenu>
+        </Grid.Resources>
+
+        <mah:HamburgerMenu x:Name="HamburgerMenuControl"
+                                IsPaneOpen="False"
+                                ItemTemplate="{StaticResource MenuItemTemplate}"
+                                OptionsItemTemplate="{StaticResource OptionsMenuItemTemplate}"
+                                SelectedIndex="1"
+                                DisplayMode="CompactInline">
+
+            <!--  Items  -->
+            <mah:HamburgerMenu.ItemsSource>
+                <mah:HamburgerMenuItemCollection>
+                    <mah:HamburgerMenuGlyphItem Glyph="" Label="Home">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <ContentControl prism:RegionManager.RegionName=""/>
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>
+
+                    <mah:HamburgerMenuGlyphItem Glyph="" Label="Private">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <ContentControl prism:RegionManager.RegionName=""/>
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>
+
+                    <mah:HamburgerMenuGlyphItem Glyph="" Label="Settings">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <ContentControl prism:RegionManager.RegionName=""/>
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>
+                </mah:HamburgerMenuItemCollection>
+            </mah:HamburgerMenu.ItemsSource>
+
+            <!--  Options  -->
+            <mah:HamburgerMenu.OptionsItemsSource>
+                <mah:HamburgerMenuItemCollection>
+                    <mah:HamburgerMenuGlyphItem Glyph="" Label="About">
+                        <mah:HamburgerMenuGlyphItem.Tag>
+                            <ContentControl prism:RegionManager.RegionName="" Tag="About"/>
+                        </mah:HamburgerMenuGlyphItem.Tag>
+                    </mah:HamburgerMenuGlyphItem>
+                </mah:HamburgerMenuItemCollection>
+            </mah:HamburgerMenu.OptionsItemsSource>
+
+            <!--  Content --> 
+            <mah:HamburgerMenu.ContentTemplate>
+                <DataTemplate DataType="{x:Type mah:HamburgerMenuItem}">
+                    <Grid x:Name="TheContentGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="48" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        
+                        <Border Grid.Row="0"
+                                Background="#FF444444">
+                            
+                            <TextBlock x:Name="Header"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="24"
+                                       Foreground="White"
+                                       Text="{Binding Label}" />
+                        </Border>
+                        
+                        <ContentControl x:Name="TheContent"
+                                        Grid.Row="1"
+                                        Focusable="False"
+                                        Content="{Binding Tag}" />
+                    </Grid>
+                </DataTemplate>
+            </mah:HamburgerMenu.ContentTemplate>
+
+        </mah:HamburgerMenu>
+
+    </Grid>
+
 </UserControl>
