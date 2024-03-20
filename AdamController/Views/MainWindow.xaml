@@ -79,18 +79,21 @@
         <!--#region GridResources -->
 
         <Grid.Resources>
+
             <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
                 <Grid Height="48">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="48" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
+                    
                     <TextBlock Grid.Column="0"
                                FontSize="16"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontFamily="Segoe MDL2 Assets"
                                Text="{Binding Glyph}" />
+                    
                     <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
                                FontSize="16"
@@ -101,7 +104,7 @@
             <DataTemplate x:Key="OptionsMenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
                 <Grid Height="48">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition  Width="48" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0"
@@ -126,11 +129,11 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <mah:HamburgerMenu Grid.Column="0"
+                           
                            Grid.Row="0"
                            x:Name="HamburgerMenuControl"
                            IsPaneOpen="False"
@@ -142,48 +145,27 @@
             <!--  Items  -->
             <mah:HamburgerMenu.ItemsSource>
                 <mah:HamburgerMenuItemCollection>
-                    <mah:HamburgerMenuGlyphItem Glyph="" Label="Home">
-                        <mah:HamburgerMenuGlyphItem.Tag>
-                            <TextBox />
-                            <!--<ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}"/>-->
-                        </mah:HamburgerMenuGlyphItem.Tag>
-                    </mah:HamburgerMenuGlyphItem>
-
-                    <!--<mah:HamburgerMenuGlyphItem Glyph="" Label="Private">
-                        <mah:HamburgerMenuGlyphItem.Tag>
-                            <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}"/>
-                        </mah:HamburgerMenuGlyphItem.Tag>
-                    </mah:HamburgerMenuGlyphItem>
-
-                    <mah:HamburgerMenuGlyphItem Glyph="" Label="Settings">
-                        <mah:HamburgerMenuGlyphItem.Tag>
-                            <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}"/>
-                        </mah:HamburgerMenuGlyphItem.Tag>
-                    </mah:HamburgerMenuGlyphItem>-->
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xE76E;" Label="Скретч-редактор" Command="{Binding }" CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xEB7E;" Label="Редактор скриптов" Command="{Binding }" CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xEA0C;" Label="Компьютерное зрение" Command="{Binding }" CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
                 </mah:HamburgerMenuItemCollection>
             </mah:HamburgerMenu.ItemsSource>
 
-            <!--  Options  
+            <!--Options-->
             <mah:HamburgerMenu.OptionsItemsSource>
                 <mah:HamburgerMenuItemCollection>
-                    <mah:HamburgerMenuGlyphItem Glyph="" Label="About">
-                        <mah:HamburgerMenuGlyphItem.Tag>
-                            <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" Tag="About"/>
-                        </mah:HamburgerMenuGlyphItem.Tag>
-                    </mah:HamburgerMenuGlyphItem>
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xE713;" Label="Настройки" Command="{Binding }" CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}"/>
                 </mah:HamburgerMenuItemCollection>
-            </mah:HamburgerMenu.OptionsItemsSource>-->
+            </mah:HamburgerMenu.OptionsItemsSource>
 
             <!--  Content -->
-            <mah:HamburgerMenu.ContentTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
-                    </StackPanel>
-                </DataTemplate>
-            </mah:HamburgerMenu.ContentTemplate>
+            <mah:HamburgerMenu.Content>
+                <ContentControl Margin="-48 0 0 0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+            </mah:HamburgerMenu.Content>
 
         </mah:HamburgerMenu>
+
+
 
         <ContentControl Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
 
