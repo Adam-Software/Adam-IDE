@@ -1,15 +1,49 @@
-﻿using Prism.Mvvm;
+﻿using AdamController.Core;
+using AdamController.Core.Mvvm;
+using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Regions;
+using Prism.Services.Dialogs;
+using System;
 using System.Reflection;
 
 namespace AdamController.ViewModels
 {
-    public class MainWindowViewModel : BindableBase//BaseViewModel
+    public class MainWindowViewModel : BindableBase//BindableBase//BaseViewModel
     {
+        public DelegateCommand<string> ShowRegionCommand { get; private set; }
+
+        public IRegionManager RegionManager { get; }
+
+        public MainWindowViewModel(IRegionManager regionManager, IDialogService dialogService) //: base(regionManager, dialogService)
+        {
+            RegionManager = regionManager;
+            ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
+        }
+
+        private void ShowRegion(string subRegionName)
+        {
+            switch (subRegionName)
+            {
+                case SubRegionNames.SubRegionScratch:
+                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
+                    break;
+                case SubRegionNames.SubRegionScriptEditor:
+                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScriptEditor);
+                    break;
+                case SubRegionNames.SubRegionComputerVisionControl:
+                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
+                    break;
+                case SubRegionNames.SubRegionVisualSettings:
+                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
+                    break;
+            }
+        }
 
 
         #region Services
 
-       
+
 
         #endregion
 
@@ -19,8 +53,8 @@ namespace AdamController.ViewModels
 
         #endregion
 
-        public MainWindowViewModel()
-        {
+        //public MainWindowViewModel()
+        //{
             //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
             //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
             //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
@@ -42,7 +76,7 @@ namespace AdamController.ViewModels
                 //ConnectIcon = PackIconModernKind.Connect;
                 //IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
             //}
-        }
+        //}
 
     }
 }

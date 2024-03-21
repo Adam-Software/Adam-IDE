@@ -18,9 +18,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Navigation
 
+        public override bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return base.IsNavigationTarget(navigationContext);
+        }
+
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            SubRegionsRequestNavigate(SubRegionNames.SubRegionScratch, navigationContext.Parameters);
+            SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
+            //SubRegionsRequestNavigate(SubRegionNames.SubRegionVisualSettings, navigationContext.Parameters);
         }
 
         public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
