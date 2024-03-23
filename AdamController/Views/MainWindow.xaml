@@ -11,7 +11,6 @@
                   xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
                   TitleCharacterCasing="Normal" WindowState="Maximized" ShowIconOnTitleBar="True"
                   xmlns:prism="http://prismlibrary.com/" prism:ViewModelLocator.AutoWireViewModel="True"
-                  x:Name="MainWindowName"
                   Title="{Binding WindowTitle}">
 
     <!--#region Window resources -->
@@ -140,45 +139,53 @@
         </Grid.ColumnDefinitions>
 
         <mah:HamburgerMenu Grid.Column="0"
-                           
                            Grid.Row="0"
-                           x:Name="HamburgerMenuControl"
                            IsPaneOpen="False"
                            ItemTemplate="{StaticResource MenuItemTemplate}"
                            OptionsItemTemplate="{StaticResource OptionsMenuItemTemplate}"
-                           SelectedIndex="1"
                            DisplayMode="CompactInline">
 
             <!--  Items  -->
             <mah:HamburgerMenu.ItemsSource>
                 <mah:HamburgerMenuItemCollection>
+                    
                     <mah:HamburgerMenuGlyphItem Glyph="&#xE76E;" 
                                                 Label="Скретч-редактор" 
-                                                Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
+                                                Command="{Binding ShowRegionCommand}" 
+                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
                     <mah:HamburgerMenuGlyphItem Glyph="&#xEB7E;" 
                                                 Label="Редактор скриптов" 
-                                                Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}"/>
+                                                Command="{Binding ShowRegionCommand}" 
+                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}"/>
                     <mah:HamburgerMenuGlyphItem Glyph="&#xEA0C;" 
                                                 Label="Компьютерное зрение" 
-                                                Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"/>
+                                                Command="{Binding ShowRegionCommand}" 
+                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"/>
+                    
                 </mah:HamburgerMenuItemCollection>
             </mah:HamburgerMenu.ItemsSource>
 
             <!--Options-->
             <mah:HamburgerMenu.OptionsItemsSource>
                 <mah:HamburgerMenuItemCollection>
+
                     <mah:HamburgerMenuGlyphItem Glyph="&#xE713;" 
-                                                Label="Настройки" Command="{Binding ShowRegionCommand}" 
+                                                Label="Настройки" 
+                                                Command="{Binding ShowRegionCommand}" 
                                                 CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}"/>
+                    
                 </mah:HamburgerMenuItemCollection>
+                
             </mah:HamburgerMenu.OptionsItemsSource>
 
             <!--  Content -->
 
             <mah:HamburgerMenu.Content>
+                
                 <ContentControl Margin="-48 0 0 0"
                                 prism:RegionManager.RegionManager="{Binding RegionManager}"
                                 prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+                
             </mah:HamburgerMenu.Content>
 
         </mah:HamburgerMenu>

@@ -17,7 +17,6 @@ using AdamController.Core.Helpers;
 using AdamController.Services;
 using AdamController.Modules.StatusBarRegion;
 using AdamController.Modules.FlayoutsRegion;
-using AdamController.Modules.HamburgerMenu;
 using AdamController.Core.Dialog.Views;
 using AdamController.Core.Dialog.ViewModels;
 

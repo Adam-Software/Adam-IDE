@@ -12,15 +12,28 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
-namespace AdamController.Modules.HamburgerMenu.ViewModels
+namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class VisualSettingsControlViewModel : RegionViewModelBase //: HamburgerMenuItemView
+    public class VisualSettingsControlViewModel : RegionViewModelBase 
     {
         public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
+            sbyte s = 4;
         }
 
-        //public VisualSettingsControlView(HamburgerMenuView hamburgerMenuView) : base(hamburgerMenuView) {}
+        #region Navigation
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+
+        }
+
+        #endregion
 
         public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = ThemesCollection.BlocklyThemes;
 

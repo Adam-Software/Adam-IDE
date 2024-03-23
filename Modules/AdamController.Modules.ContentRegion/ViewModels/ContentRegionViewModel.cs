@@ -22,7 +22,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             //SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
             //is loaded on startup region
-            SubRegionsRequestNavigate(SubRegionNames.SubRegionScratch, navigationContext.Parameters);
+            //SubRegionsRequestNavigate(SubRegionNames.SubRegionScratch, navigationContext.Parameters);
         }
 
         public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)

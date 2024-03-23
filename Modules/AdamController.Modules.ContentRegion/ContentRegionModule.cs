@@ -22,9 +22,9 @@ namespace AdamController.Modules.ContentRegion
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<ContentRegionView>();
-
+            //containerRegistry.RegisterForNavigation<ContentRegionView>();
             containerRegistry.RegisterForNavigation<ContentRegionView>(nameof(ContentRegionView));
+
             containerRegistry.RegisterForNavigation<ScratchControlView>(nameof(ScratchControlView));
             containerRegistry.RegisterForNavigation<ComputerVisionControlView>(nameof(ComputerVisionControlView));
             containerRegistry.RegisterForNavigation<ScriptEditorControlView>(nameof(ScriptEditorControlView));

@@ -9,16 +9,23 @@ using System.Reflection;
 
 namespace AdamController.ViewModels
 {
-    public class MainWindowViewModel : BindableBase//BindableBase//BaseViewModel
+    public class MainWindowViewModel : BindableBase
     {
         public DelegateCommand<string> ShowRegionCommand { get; private set; }
 
         public IRegionManager RegionManager { get; }
 
-        public MainWindowViewModel(IRegionManager regionManager, IDialogService dialogService) //: base(regionManager, dialogService)
+        public MainWindowViewModel(IRegionManager regionManager, IDialogService dialogService) 
         {
             RegionManager = regionManager;
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
+
+            System.Windows.Application.Current.MainWindow.Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
         }
 
         private void ShowRegion(string subRegionName)
