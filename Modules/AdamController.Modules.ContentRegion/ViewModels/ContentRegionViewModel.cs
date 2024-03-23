@@ -18,15 +18,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Navigation
 
-        public override bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return base.IsNavigationTarget(navigationContext);
-        }
-
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
-            //SubRegionsRequestNavigate(SubRegionNames.SubRegionVisualSettings, navigationContext.Parameters);
+            //SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
+            //is loaded on startup region
+            SubRegionsRequestNavigate(SubRegionNames.SubRegionScratch, navigationContext.Parameters);
         }
 
         public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
@@ -43,7 +39,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             switch (tag)
             {
-
                 case SubRegionNames.SubRegionScratch:
                     RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ScratchControlView), parameters);
                     break;

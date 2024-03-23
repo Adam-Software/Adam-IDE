@@ -68,12 +68,15 @@
     
     <!--#endregion-->
 
+    <!--#region Flayouts -->
 
     <mah:MetroWindow.Flyouts>
         <mah:FlyoutsControl>
             <ContentControl prism:RegionManager.RegionName="{x:Static core:FlayoutsRegionNames.FlayoutsRegion}" />
         </mah:FlyoutsControl>
     </mah:MetroWindow.Flyouts>
+    
+    <!--#endregion-->
 
     <Grid>
 
@@ -149,16 +152,24 @@
             <!--  Items  -->
             <mah:HamburgerMenu.ItemsSource>
                 <mah:HamburgerMenuItemCollection>
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xE76E;" Label="Скретч-редактор" Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xEB7E;" Label="Редактор скриптов" Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}"/>
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xEA0C;" Label="Компьютерное зрение" Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"/>
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xE76E;" 
+                                                Label="Скретч-редактор" 
+                                                Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xEB7E;" 
+                                                Label="Редактор скриптов" 
+                                                Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}"/>
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xEA0C;" 
+                                                Label="Компьютерное зрение" 
+                                                Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"/>
                 </mah:HamburgerMenuItemCollection>
             </mah:HamburgerMenu.ItemsSource>
 
             <!--Options-->
             <mah:HamburgerMenu.OptionsItemsSource>
                 <mah:HamburgerMenuItemCollection>
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xE713;" Label="Настройки" Command="{Binding ShowRegionCommand}" CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}"/>
+                    <mah:HamburgerMenuGlyphItem Glyph="&#xE713;" 
+                                                Label="Настройки" Command="{Binding ShowRegionCommand}" 
+                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}"/>
                 </mah:HamburgerMenuItemCollection>
             </mah:HamburgerMenu.OptionsItemsSource>
 
@@ -168,18 +179,12 @@
                 <ContentControl Margin="-48 0 0 0"
                                 prism:RegionManager.RegionManager="{Binding RegionManager}"
                                 prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
-
-
-
             </mah:HamburgerMenu.Content>
 
         </mah:HamburgerMenu>
 
-
         <ContentControl  Grid.ColumnSpan="5" Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
         
-        
-
     </Grid>
 
 
