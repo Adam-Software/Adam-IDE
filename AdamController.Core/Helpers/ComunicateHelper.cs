@@ -32,7 +32,7 @@ namespace AdamController.Core.Helpers
 
         public static bool TcpClientIsConnected => mAdamTcpClient != null && mAdamTcpClient.IsConnected;
 
-        private static AdamTcpClient mAdamTcpClient;
+        private static AdamTcpClientService mAdamTcpClient;
         private static AdamUdpClient mAdamUdpMessageClient;
         private static AdamUdpServer mAdamUdpLogServer;
         private static AdamWebSocketClient mAdamWebSocketClient;

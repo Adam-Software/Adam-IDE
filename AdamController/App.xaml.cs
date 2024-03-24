@@ -78,7 +78,7 @@ namespace AdamController
             });
 
             //here must be ip/port
-            containerRegistry.Register<IAdamTcpClient, AdamTcpClient>();
+            containerRegistry.Register<IAdamTcpClientService, AdamTcpClientService>();
             
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterDialog<NetworkTestView, NetworkTestViewModel>();

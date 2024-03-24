@@ -1,4 +1,5 @@
 ﻿using AdamController.Services.AdamTcpClientDependency;
+using AdamController.Services.Interfaces;
 using System;
 using System.Net.Sockets;
 using System.Threading;
@@ -6,45 +7,7 @@ using System.Threading;
 namespace AdamController.Services
 {
 
-    #region Events
-
-    public delegate void TcpCientConnected(object sender);
-    public delegate void TcpCientSent(object sender, long sent, long pending);
-    public delegate void TcpClientDisconnect(object sender);
-    public delegate void TcpClientError(object sender, SocketError error);
-    public delegate void TcpClientReceived(object sender, byte[] buffer, long offset, long size);
-    public delegate void TcpClientReconnected(object sender, int reconnectCount);
-
-    #endregion
-
-    public interface IAdamTcpClient
-    {
-        #region Events
-
-        public event TcpCientConnected RaiseTcpCientConnected;
-        public event TcpCientSent RaiseTcpCientSent;
-        public event TcpClientDisconnect RaiseTcpClientDisconnected;
-        public event TcpClientError RaiseTcpClientError;
-        public event TcpClientReceived RaiseTcpClientReceived;
-        public event TcpClientReconnected RaiseTcpClientReconnected;
-
-        #endregion
-
-        /// <summary>
-        /// The number of reconnections when the connection is lost
-        /// </summary>
-        public int ReconnectCount { get; }
-
-        /// <summary>
-        /// Reconnection timeout
-        /// </summary>
-        public int ReconnectTimeout { get; }
-
-        public void DisconnectAndStop();
-
-    }
-
-    public class AdamTcpClient : NetCoreServer.TcpClient, IAdamTcpClient
+    public class AdamTcpClientService : NetCoreServer.TcpClient, IAdamTcpClientService
     {
         #region Events
 
@@ -69,7 +32,7 @@ namespace AdamController.Services
 
         #region ~
 
-        public AdamTcpClient(string address, int port, AdamTcpClientOption option) : base(address, port) 
+        public AdamTcpClientService(string address, int port, AdamTcpClientOption option) : base(address, port) 
         {
             ReconnectCount = option.ReconnectCount;
             ReconnectTimeout = option.ReconnectTimeout;

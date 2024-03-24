@@ -50,7 +50,7 @@ namespace AdamController.Core.Helpers
 
         public bool TcpClientIsConnected => mAdamTcpClient != null && mAdamTcpClient.IsConnected;
 
-        private static AdamTcpClient mAdamTcpClient;
+        private static AdamTcpClientService mAdamTcpClient;
 
         #region ~
 
