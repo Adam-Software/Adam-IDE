@@ -2,7 +2,6 @@
   <PropertyGroup Label="Globals">
     <WebView2LoaderPreference>Dynamic</WebView2LoaderPreference>
     <WebView2UseWinRT>False</WebView2UseWinRT>
-    <ApplicationIcon>Images\Icons\AdamIconAndRGBPageIcon.ico</ApplicationIcon>
     <PackageLicenseExpression>MIT-Modern-Variant</PackageLicenseExpression>
     <AssemblyVersion>1.0.2.4</AssemblyVersion>
     <FileVersion>1.0.2.4</FileVersion>
@@ -29,20 +28,11 @@
     <NoWarn>1701;1702;CA1416</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Properties\Settings.Designer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Properties\Settings.settings" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AdamController.Core\AdamController.Core.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.ContentRegion\AdamController.Modules.ContentRegion.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.FlayoutsRegion\AdamController.Modules.FlayoutsRegion.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.MenuRegion\AdamController.Modules.MenuRegion.csproj" />
     <ProjectReference Include="..\Modules\AdamController.Modules.StatusBar\AdamController.Modules.StatusBarRegion.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Icons\AdamIconAndRGBPageIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -52,18 +42,5 @@
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>
