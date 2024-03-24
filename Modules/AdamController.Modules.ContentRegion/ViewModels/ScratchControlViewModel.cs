@@ -8,6 +8,7 @@ using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Modules.ContentRegion.Views;
+using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;
 using MessageDialogManagerLib;
 using Newtonsoft.Json;

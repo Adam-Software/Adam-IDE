@@ -19,6 +19,8 @@ using AdamController.Modules.StatusBarRegion;
 using AdamController.Modules.FlayoutsRegion;
 using AdamController.Core.Dialog.Views;
 using AdamController.Core.Dialog.ViewModels;
+using AdamController.Services.Interfaces;
+using AdamController.Core.Mvvm;
 
 #endregion
 
@@ -34,7 +36,8 @@ namespace AdamController
 
         protected override Window CreateShell()
         {
-            var window = Container.Resolve<MainWindow>();
+            MainWindow window = Container.Resolve<MainWindow>();
+            
             return window;
         }
 
@@ -69,9 +72,14 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<ISubRegionChangeAwareService>(containerRegistry =>
+            {
+                return new SubRegionChangeAwareService();
+            });
+
             //here must be ip/port
             containerRegistry.Register<IAdamTcpClient, AdamTcpClient>();
-
+            
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterDialog<NetworkTestView, NetworkTestViewModel>();
         }

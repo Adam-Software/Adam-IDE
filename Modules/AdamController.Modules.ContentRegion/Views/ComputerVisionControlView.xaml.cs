@@ -23,14 +23,23 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
-            mLibVLC = new LibVLC(enableDebugLogs: false);
-            mMediaPlayer = new MediaPlayer(mLibVLC);
+            try
+            {
+                mLibVLC = new LibVLC(enableDebugLogs: false);
+                mMediaPlayer = new MediaPlayer(mLibVLC);
 
-            VideoView.MediaPlayer = mMediaPlayer;
+                VideoView.MediaPlayer = mMediaPlayer;
 
-            mMediaPlayer.EnableHardwareDecoding = true;
-            mMediaPlayer.NetworkCaching = 1000;
-            mMediaPlayer.Scale = 0.72f;
+                mMediaPlayer.EnableHardwareDecoding = true;
+                mMediaPlayer.NetworkCaching = 1000;
+                mMediaPlayer.Scale = 0.72f;
+            }
+            catch 
+            {
+                //fix for
+                //LibVLCSharp.Shared.VLCException: "Failed to load required native libraries
+            }
+
         }
 
         private void UserControlUnloaded(object sender, RoutedEventArgs e)
@@ -42,8 +51,8 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             if (disposing)
             {
-                mMediaPlayer.Dispose();
-                mLibVLC.Dispose();
+                mMediaPlayer?.Dispose();
+                mLibVLC?.Dispose();
             }
         }
 

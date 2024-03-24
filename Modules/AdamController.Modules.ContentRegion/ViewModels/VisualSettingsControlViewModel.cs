@@ -18,7 +18,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
-            sbyte s = 4;
+           
         }
 
         #region Navigation

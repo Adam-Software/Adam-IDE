@@ -1,4 +1,5 @@
-﻿using Prism.Regions;
+﻿using AdamController.Services.Interfaces;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 
@@ -7,8 +8,9 @@ namespace AdamController.Core.Mvvm
 {
     public class RegionViewModelBase : ViewModelBase, INavigationAware, IConfirmNavigationRequest
     {
-
+        
         #region private service
+
         protected IRegionManager RegionManager { get; }
         protected IDialogService DialogService { get; }
 
@@ -32,8 +34,11 @@ namespace AdamController.Core.Mvvm
             continuationCallback?.Invoke(true);
         }
 
+        
         public virtual bool IsNavigationTarget(NavigationContext navigationContext)
         {
+
+
             return true;
         }
 
@@ -49,6 +54,7 @@ namespace AdamController.Core.Mvvm
         /// </summary>
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
+
         }
     }
 }

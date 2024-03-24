@@ -1,6 +1,7 @@
 ﻿using AdamController.Core.Helpers;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
+using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using Prism.Regions;

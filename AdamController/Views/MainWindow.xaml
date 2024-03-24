@@ -141,6 +141,8 @@
         <mah:HamburgerMenu Grid.Column="0"
                            Grid.Row="0"
                            IsPaneOpen="False"
+                           SelectedIndex="{Binding HamburgerMenuSelectedIndex}"
+                           SelectedOptionsIndex="{Binding HamburgerMenuSelectedOptionsIndex}"
                            ItemTemplate="{StaticResource MenuItemTemplate}"
                            OptionsItemTemplate="{StaticResource OptionsMenuItemTemplate}"
                            DisplayMode="CompactInline">

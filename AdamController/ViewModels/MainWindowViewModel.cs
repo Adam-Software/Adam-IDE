@@ -1,31 +1,123 @@
 ﻿using AdamController.Core;
-using AdamController.Core.Mvvm;
+using AdamController.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
-using Prism.Services.Dialogs;
-using System;
 using System.Reflection;
+using System.Windows;
 
 namespace AdamController.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
+        #region Command
+
         public DelegateCommand<string> ShowRegionCommand { get; private set; }
 
-        public IRegionManager RegionManager { get; }
+        #endregion
 
-        public MainWindowViewModel(IRegionManager regionManager, IDialogService dialogService) 
+        #region Services
+
+        public IRegionManager RegionManager { get; }
+        private ISubRegionChangeAwareService SubRegionChangeAwareService { get; }
+
+        #endregion
+
+        #region ~
+
+        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService) 
         {
             RegionManager = regionManager;
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
-
-            System.Windows.Application.Current.MainWindow.Loaded += MainWindow_Loaded;
+            SubRegionChangeAwareService = subRegionChangeAwareService;
+            
+            SubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
+            Application.Current.MainWindow.Loaded += MainWindowLoaded;
         }
 
-        private void MainWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Load default region at startup
+        /// Need to call it after loading the main window
+        /// </summary>
+        private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
+        }
+
+        /// <summary>
+        /// Changes the selected section in the hamburger menu
+        /// </summary>
+        private void RaiseSubRegionChangeEvent(object sender)
+        {
+            var changeRegionName = SubRegionChangeAwareService?.InsideRegionNavigationRequestName;
+            ChangeSelectedIndexByRegionName(changeRegionName);
+        }
+
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// -1 is not selected
+        /// </summary>
+        private int mHamburgerMenuSelectedIndex = -1;
+        public int HamburgerMenuSelectedIndex 
+        { 
+            get { return mHamburgerMenuSelectedIndex; }
+            set
+            {
+                if(mHamburgerMenuSelectedIndex == value)
+                    return;
+
+                SetProperty(ref mHamburgerMenuSelectedIndex, value);
+            } 
+        }
+
+        /// <summary>
+        /// -1 is not selected
+        /// </summary>
+        private int mHamburgerMenuSelectedOptionsIndex = -1;
+
+        public int HamburgerMenuSelectedOptionsIndex
+        {
+            get { return mHamburgerMenuSelectedOptionsIndex; }
+
+            set
+            {
+                if (mHamburgerMenuSelectedOptionsIndex == value)
+                    return;
+
+                SetProperty(ref mHamburgerMenuSelectedOptionsIndex, value);
+            }
+        }
+
+        public string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
+
+        #endregion
+
+        #region Methods
+
+        private void ChangeSelectedIndexByRegionName(string subRegionName)
+        {
+            switch (subRegionName)
+            {
+                case SubRegionNames.SubRegionScratch:
+                    HamburgerMenuSelectedIndex = 0;
+                    break;
+                case SubRegionNames.SubRegionScriptEditor:
+                    HamburgerMenuSelectedIndex = 1;
+                    break;
+                case SubRegionNames.SubRegionComputerVisionControl:
+                    HamburgerMenuSelectedIndex = 2;
+                    break;
+                case SubRegionNames.SubRegionVisualSettings:
+                    HamburgerMenuSelectedOptionsIndex = 0;
+                    break;
+            }
         }
 
         private void ShowRegion(string subRegionName)
@@ -47,43 +139,36 @@ namespace AdamController.ViewModels
             }
         }
 
-
-        #region Services
-
-
-
         #endregion
 
-        #region Fields
-
-        public string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
-
-        #endregion
+        #region Old
 
         //public MainWindowViewModel()
         //{
-            //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
-            //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
-            //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
-            //ComunicateHelper.OnAdamLogServerUdpReceivedEvent += ComunicateHelperOnAdamUdpReceived;
-            
+        //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
+        //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
+        //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
+        //ComunicateHelper.OnAdamLogServerUdpReceivedEvent += ComunicateHelperOnAdamUdpReceived;
 
-            //InitAction();
 
-            //if (Settings.Default.AutoStartTcpConnect)
-            //{
-            //    ConnectButtonComand.Execute(null);
-            //}
-            //else
-            //{
-                //init fields if autorun off
-                //TextOnConnectFlayotButton = mConnectButtonStatusDisconnected;
-                //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
+        //InitAction();
 
-                //ConnectIcon = PackIconModernKind.Connect;
-                //IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
-            //}
+        //if (Settings.Default.AutoStartTcpConnect)
+        //{
+        //    ConnectButtonComand.Execute(null);
         //}
+        //else
+        //{
+        //init fields if autorun off
+        //TextOnConnectFlayotButton = mConnectButtonStatusDisconnected;
+        //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
+
+        //ConnectIcon = PackIconModernKind.Connect;
+        //IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
+        //}
+        //}
+
+        #endregion
 
     }
 }

@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System.Windows;
+using AdamController.Services.Interfaces;
 
 namespace AdamController.Modules.MenuRegion.ViewModels
 {

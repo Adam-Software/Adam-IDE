@@ -3,6 +3,7 @@ using AdamController.Core.Helpers;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Modules.ContentRegion.Views;
+using AdamController.Services.Interfaces;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
@@ -11,35 +12,37 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class ContentRegionViewModel : RegionViewModelBase
     {
-        public ContentRegionViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        private ISubRegionChangeAwareService RegionChangeAwareService { get; }
+
+        public ContentRegionViewModel(IRegionManager regionManager, IDialogService dialogService, ISubRegionChangeAwareService regionChangeAwareService) : base(regionManager, dialogService)
         {
-            
+            RegionChangeAwareService = regionChangeAwareService;
         }
 
         #region Navigation
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            //SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
-            //is loaded on startup region
-            //SubRegionsRequestNavigate(SubRegionNames.SubRegionScratch, navigationContext.Parameters);
-        }
-
         public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
         {
-            SubRegionsRequestNavigate(navigationContext.Uri.ToString(), navigationContext.Parameters);
+            if (navigationContext.NavigationService.Region.Name == RegionNames.ContentRegion)
+            {
+                var insideRegionName = navigationContext.Uri.OriginalString;
+
+                RegionChangeAwareService.InsideRegionNavigationRequestName = insideRegionName;
+                SubRegionsRequestNavigate(insideRegionName, navigationContext.Parameters);
+            }
         }
 
 
-        private void SubRegionsRequestNavigate(string tag, NavigationParameters parameters)
+        private void SubRegionsRequestNavigate(string uri, NavigationParameters parameters)
         {
-            if (string.IsNullOrEmpty(tag))
+            if (string.IsNullOrEmpty(uri))
                 return;
 
-
-            switch (tag)
+            
+            switch (uri)
             {
                 case SubRegionNames.SubRegionScratch:
+                    
                     RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ScratchControlView), parameters);
                     break;
 

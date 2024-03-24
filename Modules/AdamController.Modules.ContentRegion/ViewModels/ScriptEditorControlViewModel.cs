@@ -1,5 +1,6 @@
 ﻿using AdamController.Core.Helpers;
 using AdamController.Core.Mvvm;
+using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using MessageDialogManagerLib;

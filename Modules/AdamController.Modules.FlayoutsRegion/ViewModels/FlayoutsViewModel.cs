@@ -1,4 +1,5 @@
 ﻿using AdamController.Core.Mvvm;
+using AdamController.Services.Interfaces;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 
