@@ -96,7 +96,7 @@ namespace AdamController
         {
             try
             {
-                using var stream = new MemoryStream(AdamController.Properties.Resources.AdamPython);
+                using var stream = new MemoryStream(Core.Properties.Resource.AdamPython);
                 using var reader = new XmlTextReader(stream);
                 HighlightingManager.Instance.RegisterHighlighting("AdamPython", Array.Empty<string>(),
                     ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance));
