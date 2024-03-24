@@ -1,5 +1,4 @@
-﻿using AdamController.Services.Interfaces;
-using Prism.Regions;
+﻿using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 
@@ -37,8 +36,6 @@ namespace AdamController.Core.Mvvm
         
         public virtual bool IsNavigationTarget(NavigationContext navigationContext)
         {
-
-
             return true;
         }
 
