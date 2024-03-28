@@ -12,18 +12,21 @@
     <Grid>
 
         <!--#region Flayouts Advanced blockly settings -->
+        <!--IsOpen="{Binding AdvancedBlocklySettingsFlayoutsIsOpen}"-->
 
-        <mah:Flyout IsOpen="{Binding AdvancedBlocklySettingsFlayoutsIsOpen}"
-             AnimateOpacity="True"
-             Position="Right"
-             Theme="Adapt"
-             AreAnimationsEnabled="True"
-             AnimateOnPositionChange="True"
-             ExternalCloseButton="Left"
-             CloseButtonVisibility="Visible"
-             IsModal="True"
-             Header="Продвинутые настройки скретч-редактора"
-             ContentTemplate="{Binding ElementName=FlayoutBlocklySettingsTemplate}">
+        <mah:Flyout  
+            
+            IsOpen="True"
+            AnimateOpacity="True"
+            Position="Right"
+            Theme="Adapt"
+            AreAnimationsEnabled="True"
+            AnimateOnPositionChange="True"
+            ExternalCloseButton="Left"
+            CloseButtonVisibility="Visible"
+            IsModal="True"
+            Header="Продвинутые настройки скретч-редактора"
+            ContentTemplate="{Binding ElementName=FlayoutBlocklySettingsTemplate}">
 
             <ScrollViewer HorizontalScrollBarVisibility="Visible"
                           Style="{DynamicResource MahApps.Styles.ScrollViewer}">

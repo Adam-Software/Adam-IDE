@@ -26,6 +26,25 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
         {
         }
 
+        #region Fields
+
+        private bool mNotificationFlayoutsIsOpen;
+        public bool NotificationFlayoutsIsOpen
+        {
+            get { return mNotificationFlayoutsIsOpen; }
+            set
+            {
+                if (mNotificationFlayoutsIsOpen == value)
+                    return;
+
+                mNotificationFlayoutsIsOpen = value;
+
+                SetProperty(ref mNotificationFlayoutsIsOpen, value);
+            }
+        }
+
+        #endregion
+
         #region NotificationMessage Visiblity
 
         private Visibility noNewNotificationMessageVisibility = Visibility.Visible;

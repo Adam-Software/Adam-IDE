@@ -17,15 +17,15 @@ namespace AdamController.Modules.FlayoutsRegion
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            mRegionManager.RequestNavigate(FlayoutsRegionNames.FlayoutsRegion, nameof(FlayoutsView));
+            mRegionManager.RequestNavigate(RegionNames.FlayoutsRegion, nameof(FlayoutsView));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<FlayoutsView>();
+            containerRegistry.RegisterForNavigation<FlayoutsView>(nameof(FlayoutsView));
 
-            containerRegistry.RegisterForNavigation<NotificationView>();
-            containerRegistry.RegisterForNavigation<AdvancedBlocklySettingsView>();
+            containerRegistry.RegisterForNavigation<NotificationView>(nameof(NotificationView));
+            containerRegistry.RegisterForNavigation<AdvancedBlocklySettingsView>(nameof(AdvancedBlocklySettingsView));
         }
     }
 }

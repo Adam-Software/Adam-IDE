@@ -21,15 +21,18 @@ namespace AdamController.ViewModels
         public IRegionManager RegionManager { get; }
         private ISubRegionChangeAwareService SubRegionChangeAwareService { get; }
 
+        private IFlayoutsRegionChangeOpenedAwareService FlayoutsRegionChangeOpenedAwareService { get; }
+
         #endregion
 
         #region ~
 
-        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService) 
+        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IFlayoutsRegionChangeOpenedAwareService flayoutsRegionChangeOpenedAwareService) 
         {
             RegionManager = regionManager;
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             SubRegionChangeAwareService = subRegionChangeAwareService;
+            FlayoutsRegionChangeOpenedAwareService = flayoutsRegionChangeOpenedAwareService;
             
             SubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
             Application.Current.MainWindow.Loaded += MainWindowLoaded;

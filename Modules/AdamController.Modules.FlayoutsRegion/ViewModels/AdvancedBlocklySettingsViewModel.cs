@@ -3,6 +3,7 @@ using AdamController.Core.DataSource;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
+using AdamController.Services.Interfaces;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -14,13 +15,30 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
 {
     public class AdvancedBlocklySettingsViewModel : RegionViewModelBase
     {
-        public AdvancedBlocklySettingsViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        private IFlayoutsRegionChangeOpenedAwareService FlayoutsRegionChangeOpenedService { get; }
+
+        public AdvancedBlocklySettingsViewModel(IRegionManager regionManager, IDialogService dialogService, IFlayoutsRegionChangeOpenedAwareService flayoutsRegionChangeOpenedAwareService ) : base(regionManager, dialogService)
         {
+            FlayoutsRegionChangeOpenedService = flayoutsRegionChangeOpenedAwareService;
+
+            FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange += RaiseAdvancedBlocklySettingsIsOpenChange;
         }
 
-        
+        #region Navigation
 
-        #region Open BlocklySettingsFlayots
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange -= RaiseAdvancedBlocklySettingsIsOpenChange;
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            
+        }
+
+        #endregion
+
+        #region Fields
 
         private bool advancedBlocklySettingsFlayoutsIsOpen;
         public bool AdvancedBlocklySettingsFlayoutsIsOpen
@@ -28,11 +46,21 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
             get { return advancedBlocklySettingsFlayoutsIsOpen; }
             set
             {
-                if (value == advancedBlocklySettingsFlayoutsIsOpen) return;
+                if (value == advancedBlocklySettingsFlayoutsIsOpen) 
+                    return;
 
                 advancedBlocklySettingsFlayoutsIsOpen = value;
                 SetProperty(ref advancedBlocklySettingsFlayoutsIsOpen, value);
             }
+        }
+
+        #endregion
+
+        #region Raise events
+
+        private void RaiseAdvancedBlocklySettingsIsOpenChange(object sender)
+        {
+            AdvancedBlocklySettingsFlayoutsIsOpen = FlayoutsRegionChangeOpenedService.AdvancedBlocklySettingsIsOpen;
         }
 
         #endregion

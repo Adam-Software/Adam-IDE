@@ -77,6 +77,11 @@ namespace AdamController
                 return new SubRegionChangeAwareService();
             });
 
+            containerRegistry.RegisterSingleton<IFlayoutsRegionChangeOpenedAwareService>(containerRegistry =>
+            {
+                return new FlayoutsRegionChangeOpenedAwareService();
+            });
+
             //here must be ip/port
             containerRegistry.Register<IAdamTcpClientService, AdamTcpClientService>();
             

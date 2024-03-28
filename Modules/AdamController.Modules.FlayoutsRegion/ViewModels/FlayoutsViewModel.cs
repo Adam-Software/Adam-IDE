@@ -1,5 +1,4 @@
 ﻿using AdamController.Core.Mvvm;
-using AdamController.Services.Interfaces;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 
@@ -9,6 +8,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
     {
         public FlayoutsViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {
+            
         }
     }
 }

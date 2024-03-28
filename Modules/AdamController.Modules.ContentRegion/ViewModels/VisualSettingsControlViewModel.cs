@@ -3,6 +3,7 @@ using AdamController.Core.DataSource;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
+using AdamController.Services.Interfaces;
 using ControlzEx.Theming;
 using Prism.Commands;
 using Prism.Regions;
@@ -16,10 +17,23 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class VisualSettingsControlViewModel : RegionViewModelBase 
     {
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        #region Service
+
+        private IFlayoutsRegionChangeOpenedAwareService FayoutsRegionChangeOpenedService { get; }
+
+        #endregion
+
+        #region ~
+
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlayoutsRegionChangeOpenedAwareService flayoutsRegionChangeOpenedAwareService) : base(regionManager, dialogService)
         {
-           
+            FayoutsRegionChangeOpenedService = flayoutsRegionChangeOpenedAwareService;
         }
+
+        #endregion
+
+
+
 
         #region Navigation
 
@@ -36,6 +50,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #endregion
 
         public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = ThemesCollection.BlocklyThemes;
+
 
         #region LanguageSettings
 
@@ -165,7 +180,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand openAdvancedBlocklySettingsCommand;
         public DelegateCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new DelegateCommand(() =>
         {
-            OpenAdvancedBlocklySettings(true);
+            FayoutsRegionChangeOpenedService.AdvancedBlocklySettingsIsOpen = true;
+            ///OpenAdvancedBlocklySettings(true);
         });
 
         private DelegateCommand<string> changeBaseColorTheme;
@@ -198,7 +214,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public static Action<double> ChangeNotificationOpacity { get; set; }
         public static Action<string> ChangeBaseTheme { get; set; }
         public static Action<string> ChangeThemeColorScheme { get; set; }
-        public static Action<bool> OpenAdvancedBlocklySettings { get; set; }
+        //public static Action<bool> OpenAdvancedBlocklySettings { get; set; }
         public static Action<BlocklyLanguageModel> SetToolboxLanguage { get; set; }
         public static Action<BlocklyThemeModel> SetBlocklyThemeAndGridColor { get; set; }
       

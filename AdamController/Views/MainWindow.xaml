@@ -71,7 +71,8 @@
 
     <mah:MetroWindow.Flyouts>
         <mah:FlyoutsControl>
-            <ContentControl prism:RegionManager.RegionName="{x:Static core:FlayoutsRegionNames.FlayoutsRegion}" />
+            <ContentControl prism:RegionManager.RegionManager="{Binding RegionManager}"
+                            prism:RegionManager.RegionName="{x:Static core:RegionNames.FlayoutsRegion}" />
         </mah:FlyoutsControl>
     </mah:MetroWindow.Flyouts>
     
