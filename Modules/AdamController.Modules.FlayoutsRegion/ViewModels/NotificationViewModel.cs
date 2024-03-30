@@ -9,7 +9,7 @@ using Prism.Services.Dialogs;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
+namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
     public class NotificationViewModel : RegionViewModelBase
     {

@@ -32,7 +32,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
-
         private void SubRegionsRequestNavigate(string uri, NavigationParameters parameters)
         {
             if (string.IsNullOrEmpty(uri))

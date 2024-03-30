@@ -22,6 +22,7 @@ namespace AdamController.Modules.FlayoutsRegion
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+
             containerRegistry.RegisterForNavigation<FlayoutsView>(nameof(FlayoutsView));
 
             containerRegistry.RegisterForNavigation<NotificationView>(nameof(NotificationView));

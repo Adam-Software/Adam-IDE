@@ -20,21 +20,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
-    <PackageReference Include="LibVLCSharp.WPF" Version="3.8.2" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
-    <PackageReference Include="MessageDialogManagerLib" Version="1.0.3" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2365.46" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
-    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
-    <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
-    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AdamController.Services\AdamController.Services.csproj" />
     <ProjectReference Include="..\Legacy\AdamBlocklyLibrary\AdamBlocklyLibrary.csproj" />
     <ProjectReference Include="..\Legacy\AdamController.WebApi.Client\AdamController.WebApi.Client.csproj" />

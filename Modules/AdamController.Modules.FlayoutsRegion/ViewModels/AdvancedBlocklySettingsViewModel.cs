@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
 
-namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
+namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
     public class AdvancedBlocklySettingsViewModel : RegionViewModelBase
     {
@@ -21,19 +21,22 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
         {
             FlayoutsRegionChangeOpenedService = flayoutsRegionChangeOpenedAwareService;
 
-            FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange += RaiseAdvancedBlocklySettingsIsOpenChange;
+           
         }
 
         #region Navigation
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange -= RaiseAdvancedBlocklySettingsIsOpenChange;
+            AdvancedBlocklySettingsFlayoutsIsOpen = false;
+            //FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange -= RaiseAdvancedBlocklySettingsIsOpenChange;
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            
+            AdvancedBlocklySettingsFlayoutsIsOpen = true;
+            //FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange += RaiseAdvancedBlocklySettingsIsOpenChange;
+
         }
 
         #endregion
@@ -60,11 +63,11 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
 
         private void RaiseAdvancedBlocklySettingsIsOpenChange(object sender)
         {
-            AdvancedBlocklySettingsFlayoutsIsOpen = FlayoutsRegionChangeOpenedService.AdvancedBlocklySettingsIsOpen;
+            //AdvancedBlocklySettingsFlayoutsIsOpen = FlayoutsRegionChangeOpenedService.AdvancedBlocklySettingsIsOpen;
         }
 
         #endregion
-
+/*
 
         #region BlocklyGridColour settings
 
@@ -226,5 +229,8 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels.Flayouts
 
         #endregion
 
+        */
     }
+
+        
 }

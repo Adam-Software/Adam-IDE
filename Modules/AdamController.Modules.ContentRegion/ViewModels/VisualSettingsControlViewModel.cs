@@ -1,4 +1,5 @@
 ﻿using AdamBlocklyLibrary.Enum;
+using AdamController.Core;
 using AdamController.Core.DataSource;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
@@ -180,8 +181,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand openAdvancedBlocklySettingsCommand;
         public DelegateCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new DelegateCommand(() =>
         {
-            FayoutsRegionChangeOpenedService.AdvancedBlocklySettingsIsOpen = true;
-            ///OpenAdvancedBlocklySettings(true);
+            RegionManager.RequestNavigate(RegionNames.FlayoutsRegion, FlayoutsRegionNames.FlayotAdvancedBlocklySettings);
         });
 
         private DelegateCommand<string> changeBaseColorTheme;
