@@ -12,7 +12,7 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
     /// and clean up as many resources as possible within OnClosing as the instance of the ViewModel will remain in memory from the
     /// moment of registration with the FlyoutManager until the moment of unregistration, or program exit.
     /// </summary>
-    public abstract  class FlayoutBase: BindableBase, IFlyout
+    public abstract  class FlyoutBase: BindableBase, IFlyout
     {
         public event EventHandler<FlyoutEventArgs> OnClosed;
         public event EventHandler<FlyoutEventArgs> OnOpened;
