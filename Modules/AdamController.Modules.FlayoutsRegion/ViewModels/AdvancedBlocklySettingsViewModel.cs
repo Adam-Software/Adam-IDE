@@ -1,84 +1,33 @@
-﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
+﻿using AdamBlocklyLibrary.Enum;
+using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
+using AdamController.Core.DataSource;
+using AdamController.Core.Model;
+using AdamController.Core.Properties;
+using Prism.Commands;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Media;
+
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
-    public class AdvancedBlocklySettingsViewModel : FlyoutBase //: RegionViewModelBase
+    public class AdvancedBlocklySettingsViewModel : FlyoutBase 
     {
-        //private IFlayoutsRegionChangeOpenedAwareService FlayoutsRegionChangeOpenedService { get; }
-
         public AdvancedBlocklySettingsViewModel() 
         {
-            Position = FlyoutPosition.Right;
-            Theme = FlyoutTheme.Accent;
-            //FlayoutsRegionChangeOpenedService = flayoutsRegionChangeOpenedAwareService;
-        }
-
-        protected override void OnChanging(bool isOpening)
-        {
-            base.OnChanging(isOpening);
+            Header = "Продвинутые настройки скретч-редактора";
+            
         }
 
         protected override void OnOpening(FlyoutParameters flyoutParameters)
         {
-            // Because FlyoutParameters provides weakly-typed objects we need to cast the provided "dog" parameter as a Dog type
-            // Dog = flyoutParameters["dog"] as Dog;
-
-            // We can set the Flyout name based on information passed via flyoutParameters
-            //Header = "Editing " + Dog.Name;
-
-            // As well as setting the position
-            // if (Dog.Name == "Patch")
-            //    Position = FlyoutPosition.Left;
-            // else
-            //    Position = FlyoutPosition.Right;
-
-            // And any other property you like.  See the full list in the code wiki at flyoutmanager.codeplex.com
+            base.OnOpening(flyoutParameters);
         }
 
-        #region Navigation
-
-        /*public override void OnNavigatedFrom(NavigationContext navigationContext)
+        protected override void OnClosing(FlyoutParameters flyoutParameters)
         {
-            AdvancedBlocklySettingsFlayoutsIsOpen = false;
-            //FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange -= RaiseAdvancedBlocklySettingsIsOpenChange;
-        }*/
-
-        /*public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            AdvancedBlocklySettingsFlayoutsIsOpen = true;
-            //FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange += RaiseAdvancedBlocklySettingsIsOpenChange;
-
-        }*/
-
-        #endregion
-
-        #region Fields
-
-        private bool advancedBlocklySettingsFlayoutsIsOpen;
-        public bool AdvancedBlocklySettingsFlayoutsIsOpen
-        {
-            get { return advancedBlocklySettingsFlayoutsIsOpen; }
-            set
-            {
-                if (value == advancedBlocklySettingsFlayoutsIsOpen) 
-                    return;
-
-                advancedBlocklySettingsFlayoutsIsOpen = value;
-                SetProperty(ref advancedBlocklySettingsFlayoutsIsOpen, value);
-            }
+            base.OnClosing(flyoutParameters);
         }
-
-        #endregion
-
-        #region Raise events
-
-        private void RaiseAdvancedBlocklySettingsIsOpenChange(object sender)
-        {
-            //AdvancedBlocklySettingsFlayoutsIsOpen = FlayoutsRegionChangeOpenedService.AdvancedBlocklySettingsIsOpen;
-        }
-
-        #endregion
-/*
 
         #region BlocklyGridColour settings
 
@@ -194,7 +143,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         });
 
-
         private DelegateCommand<bool?> changeGridColorToggleSwitchCommand;
         public DelegateCommand<bool?> ChangeGridColorToggleSwitchCommand => changeGridColorToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
         {
@@ -239,8 +187,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         });
 
         #endregion
-
-        */
     }
 
         

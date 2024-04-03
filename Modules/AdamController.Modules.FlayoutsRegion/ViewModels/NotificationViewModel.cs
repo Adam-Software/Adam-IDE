@@ -1,7 +1,9 @@
-﻿using AdamController.Core.Helpers;
+﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
+using AdamController.Core.Helpers;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
+using LibVLCSharp.Shared;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using Prism.Regions;
@@ -11,7 +13,7 @@ using System.Windows.Threading;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
-    public class NotificationViewModel : RegionViewModelBase
+    public class NotificationViewModel : FlyoutBase
     {
 
         #region Const
@@ -22,9 +24,16 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
-        public NotificationViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        #region ~
+
+        public NotificationViewModel() 
         {
+            Theme = FlyoutTheme.Inverse;
+            Header= "Центр уведомлений";
+            IsModal = false;
         }
+
+        #endregion
 
         #region Fields
 

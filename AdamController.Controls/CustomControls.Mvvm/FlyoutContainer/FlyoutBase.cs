@@ -15,17 +15,20 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         public event EventHandler<FlyoutEventArgs> OnClosed;
         public event EventHandler<FlyoutEventArgs> OnOpened;
         public event EventHandler<FlyoutEventArgs> OnOpenChanged;
-        private bool isOpen;
-        private string position;
-        private string header;
-        private string theme;
-        private bool isModal = false;
-        private bool areAnimationsEnabled = true;
-        private bool animateOpacity;
-        private ICommand closeCommand;
-        private MouseButton externalCloseButton;
-        private bool closeButtonIsCancel;
-        private bool isPinned;
+
+        private bool mIsOpen;
+        private bool mIsModal = true;
+        private bool mAreAnimationsEnabled = true;
+        private bool mAnimateOpacity = true;
+        private bool mCloseButtonIsCancel;
+        private bool mIsPinned;
+
+        private string mPosition = FlyoutPosition.Right;
+        private string mHeader = string.Empty;
+        private string mTheme = FlyoutTheme.Adapt;
+
+        private ICommand mCloseCommand;
+        private MouseButton mExternalCloseButton;
 
         /// <summary>
         /// Bindable property to determine open/closed staus of flyout, based on private field isOpen.
@@ -34,11 +37,11 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public bool IsOpen
         {
-            get { return isOpen; }
+            get { return mIsOpen; }
             set
             {
                 OnChanging(value);
-                SetProperty(ref isOpen, value);
+                SetProperty(ref mIsOpen, value);
             }
         }
 
@@ -49,8 +52,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public string Position
         {
-            get { return position; }
-            set { SetProperty(ref position, value); }
+            get { return mPosition; }
+            set { SetProperty(ref mPosition, value); }
         }
 
         /// <summary>
@@ -59,8 +62,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public string Theme
         {
-            get { return theme; }
-            set { SetProperty(ref theme, value); }
+            get { return mTheme; }
+            set { SetProperty(ref mTheme, value); }
         }
 
         /// <summary>
@@ -68,8 +71,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public bool IsModal
         {
-            get { return isModal; }
-            set { SetProperty(ref isModal, value); }
+            get { return mIsModal; }
+            set { SetProperty(ref mIsModal, value); }
         }
 
         /// <summary>
@@ -77,8 +80,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public bool AreAnimationsEnabled
         {
-            get { return areAnimationsEnabled; }
-            set { SetProperty(ref areAnimationsEnabled, value); }
+            get { return mAreAnimationsEnabled; }
+            set { SetProperty(ref mAreAnimationsEnabled, value); }
         }
 
         /// <summary>
@@ -86,8 +89,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public ICommand CloseCommand
         {
-            get { return closeCommand; }
-            set { SetProperty(ref closeCommand, value); }
+            get { return mCloseCommand; }
+            set { SetProperty(ref mCloseCommand, value); }
         }
 
         /// <summary>
@@ -95,8 +98,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public MouseButton ExternalCloseButton
         {
-            get { return externalCloseButton; }
-            set { SetProperty(ref externalCloseButton, value); }
+            get { return mExternalCloseButton; }
+            set { SetProperty(ref mExternalCloseButton, value); }
         }
 
         /// <summary>
@@ -104,8 +107,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public bool CloseButtonIsCancel
         {
-            get { return closeButtonIsCancel; }
-            set { SetProperty(ref closeButtonIsCancel, value); }
+            get { return mCloseButtonIsCancel; }
+            set { SetProperty(ref mCloseButtonIsCancel, value); }
         }
 
         /// <summary>
@@ -113,8 +116,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public bool IsPinned
         {
-            get { return isPinned; }
-            set { SetProperty(ref isPinned, value); }
+            get { return mIsPinned; }
+            set { SetProperty(ref mIsPinned, value); }
         }
 
         /// <summary>
@@ -135,8 +138,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public bool AnimateOpacity
         {
-            get { return animateOpacity; }
-            set { SetProperty(ref animateOpacity, value); }
+            get { return mAnimateOpacity; }
+            set { SetProperty(ref mAnimateOpacity, value); }
         }
 
         /// <summary>
@@ -169,8 +172,8 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         /// </summary>
         public string Header
         {
-            get { return header; }
-            set { SetProperty(ref header, value); }
+            get { return mHeader; }
+            set { SetProperty(ref mHeader, value); }
         }
 
         /// <summary>
@@ -183,16 +186,13 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
 
             var flyoutEventArgs = new FlyoutEventArgs(flyoutAction);
 
-            if (OnOpenChanged != null)
-                OnOpenChanged(this, flyoutEventArgs);
+            OnOpenChanged?.Invoke(this, flyoutEventArgs);
 
             if (flyoutAction == FlyoutAction.Opening)
-                if (OnOpened != null)
-                    OnOpened(this, flyoutEventArgs);
+                OnOpened?.Invoke(this, flyoutEventArgs);
 
             if (flyoutAction == FlyoutAction.Closing)
-                if (OnClosed != null)
-                    OnClosed(this, flyoutEventArgs);
+                OnClosed?.Invoke(this, flyoutEventArgs);
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿using AdamController.Core.Mvvm;
+﻿using AdamController.Controls.CustomControls.Services;
+using AdamController.Core;
+using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
@@ -9,13 +11,26 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 {
     public class StatusBarViewModel : RegionViewModelBase
     {
+
+        #region Services
+
+        private IFlyoutManager mFlyoutManager;
+
+        #endregion
+
+        #region const
+
         private const string mToolbarStatusClientDisconnected = "Робот Адам: отключен";
         private const string mToolbarStatusClientConnected = "Робот Адам: подключен";
         private const string mToolbarStatusClientReconnected = "Робот Адам: переподключение";
 
-        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        #endregion
+
+
+
+        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
         {
-            
+            mFlyoutManager = flyoutManager;
         }
 
         #region ProgressRing field
@@ -158,7 +173,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         private DelegateCommand<bool?> openNotificationPanel;
         public DelegateCommand<bool?> OpenNotificationPanel => openNotificationPanel ??= new DelegateCommand<bool?>(obj =>
         {
-            NotificationFlayoutsIsOpen = !NotificationFlayoutsIsOpen;
+            mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutNotification);
         });
 
         #endregion

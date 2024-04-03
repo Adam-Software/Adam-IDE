@@ -5,7 +5,6 @@ using AdamController.Core.DataSource;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
 using ControlzEx.Theming;
 using Prism.Commands;
 using Prism.Regions;
@@ -182,8 +181,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand openAdvancedBlocklySettingsCommand;
         public DelegateCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new DelegateCommand(() =>
         {
-            FlyoutManager.OpenFlyout("FlayoutsView");
-            //RegionManager.RequestNavigate(RegionNames.FlayoutsRegion, FlayoutsRegionNames.FlayotAdvancedBlocklySettings);
+            FlyoutManager.OpenFlyout(FlyoutNames.FlyotAdvancedBlocklySettings);
         });
 
         private DelegateCommand<string> changeBaseColorTheme;
