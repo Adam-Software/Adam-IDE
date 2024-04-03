@@ -1,6 +1,6 @@
-﻿using AdamController.Core;
+﻿using AdamController.Controls.CustomControls.Services;
+using AdamController.Core;
 using AdamController.Modules.FlayoutsRegion.Views;
-using AdamController.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;

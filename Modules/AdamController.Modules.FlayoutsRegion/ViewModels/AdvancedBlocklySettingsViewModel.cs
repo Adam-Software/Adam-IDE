@@ -1,17 +1,4 @@
-﻿using AdamBlocklyLibrary.Enum;
-using AdamController.Core.DataSource;
-using AdamController.Core.Model;
-using AdamController.Core.Mvvm;
-using AdamController.Core.Properties;
-using AdamController.Services.FlayoutsRegionEventAwareServiceDependency;
-using AdamController.Services.Interfaces;
-using Microsoft.VisualBasic.Logging;
-using Prism.Commands;
-using Prism.Regions;
-using Prism.Services.Dialogs;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Media;
+﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {

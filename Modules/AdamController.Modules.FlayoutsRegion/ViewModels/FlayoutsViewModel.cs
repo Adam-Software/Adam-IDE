@@ -1,11 +1,7 @@
-﻿using AdamController.Core;
-using AdamController.Core.Mvvm;
-using AdamController.Modules.FlayoutsRegion.Views;
-using AdamController.Services.FlayoutsRegionEventAwareServiceDependency;
-using AdamController.Services.Interfaces;
+﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
+using AdamController.Controls.CustomControls.Services;
+using AdamController.Core;
 using Prism.Regions;
-using Prism.Services.Dialogs;
-using System;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
@@ -18,17 +14,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         {
             Position = FlyoutPosition.Right;
             Theme = FlyoutTheme.Dark;   
-        }
-
-        protected override void OnChanging(bool isOpening)
-        {
-            base.OnChanging(isOpening);
-        }
-
-        protected override void OnOpening(FlyoutParameters flyoutParameters)
-        {
-            base.OnOpening(flyoutParameters);
-            IsOpen = true;
         }
 
         //public FlayoutsViewModel(IRegionManager regionManager, IDialogService dialogService, FlyoutManager flyoutManager) : base(regionManager, dialogService)

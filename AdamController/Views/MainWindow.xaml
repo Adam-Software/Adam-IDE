@@ -11,7 +11,7 @@
                   xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
                   TitleCharacterCasing="Normal" WindowState="Maximized" ShowIconOnTitleBar="True"
                   xmlns:prism="http://prismlibrary.com/" 
-                  xmlns:customusercontrol="clr-namespace:AdamController.Services.FlayoutsRegionEventAwareServiceDependency;assembly=AdamController.Services" 
+                  xmlns:customusercontrol="clr-namespace:AdamController.Controls.CustomControls;assembly=AdamController.Controls"
                   prism:ViewModelLocator.AutoWireViewModel="True"
                   Title="{Binding WindowTitle}">
 
@@ -57,7 +57,7 @@
 
 
                 <TextBlock Text="{Binding}"
-                    FontWeight="Medium"
+                           FontWeight="Medium"
                            FontSize="15"
                            Margin="10 2 10 0"
                            HorizontalAlignment="Center"
@@ -71,10 +71,8 @@
 
     <!--#region Flayouts -->
 
-
     <mah:MetroWindow.Flyouts>
-        <customusercontrol:FlyoutContainer  prism:RegionManager.RegionManager="{Binding RegionManager}"
-                                            prism:RegionManager.RegionName="{x:Static core:RegionNames.FlayoutsRegion}"/>
+        <customusercontrol:FlyoutContainer prism:RegionManager.RegionName="{x:Static core:RegionNames.FlayoutsRegion}"/>
     </mah:MetroWindow.Flyouts>
 
     <!--#endregion-->

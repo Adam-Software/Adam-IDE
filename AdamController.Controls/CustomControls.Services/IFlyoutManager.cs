@@ -1,12 +1,12 @@
-﻿using AdamController.Services.FlayoutsRegionEventAwareServiceDependency;
+﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using Prism.Regions;
 using System.Windows;
 
-namespace AdamController.Services.Interfaces
+namespace AdamController.Controls.CustomControls.Services
 {
     public interface IFlyoutManager
     {
-        public IRegionManager RegionManager { get; set; }
+        public IRegionManager RegionManager { get; }
 
         public void SetDefaultFlyoutRegion(string regionName);
 

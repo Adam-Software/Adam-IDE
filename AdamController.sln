@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamBlocklyLibrary", "Legac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.WebApi.Client", "Legacy\AdamController.WebApi.Client\AdamController.WebApi.Client.csproj", "{771220FE-2F25-441B-815E-7DD63918BA95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamController.Controls", "AdamController.Controls\AdamController.Controls.csproj", "{1BADFDB1-D66E-4580-8EAF-CAEE37761640}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{771220FE-2F25-441B-815E-7DD63918BA95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{771220FE-2F25-441B-815E-7DD63918BA95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{771220FE-2F25-441B-815E-7DD63918BA95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BADFDB1-D66E-4580-8EAF-CAEE37761640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BADFDB1-D66E-4580-8EAF-CAEE37761640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BADFDB1-D66E-4580-8EAF-CAEE37761640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BADFDB1-D66E-4580-8EAF-CAEE37761640}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

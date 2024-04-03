@@ -1,5 +1,4 @@
-﻿
-<metro:FlyoutsControl x:Class="AdamController.Services.FlayoutsRegionEventAwareServiceDependency.FlyoutContainer"
+﻿<metro:FlyoutsControl x:Class="AdamController.Controls.CustomControls.FlyoutContainer"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls">

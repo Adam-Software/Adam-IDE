@@ -1,13 +1,9 @@
 ﻿using System.Windows.Input;
-using System;
-using AdamController.Services.FlayoutsRegionEventAwareServiceDependency;
 
-namespace AdamController.Services.Interfaces
+namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
 {
-    
     public interface IFlyout
     {
-        
         public event EventHandler<FlyoutEventArgs> OnClosed;
 
         public event EventHandler<FlyoutEventArgs> OnOpened;

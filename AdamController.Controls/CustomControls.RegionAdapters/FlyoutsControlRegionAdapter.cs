@@ -3,11 +3,11 @@ using Prism.Regions;
 using System.Collections.Specialized;
 using System.Windows;
 
-namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
+namespace AdamController.Controls.CustomControls.RegionAdapters
 {
     public class FlyoutsControlRegionAdapter : RegionAdapterBase<FlyoutsControl>
     {
-        public FlyoutsControlRegionAdapter(IRegionBehaviorFactory factory): base(factory){}
+        public FlyoutsControlRegionAdapter(IRegionBehaviorFactory factory) : base(factory) { }
 
         protected override void Adapt(IRegion region, FlyoutsControl regionTarget)
         {
@@ -15,17 +15,21 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
             {
                 if (e.Action == NotifyCollectionChangedAction.Add)
                 {
-                    foreach (FrameworkElement element in e.NewItems)
+                    foreach (FrameworkElement element in e?.NewItems)
                     {
-                        Flyout flyout = new Flyout();
-                        flyout.Content = element;
-                        flyout.DataContext = element.DataContext;
+                        Flyout flyout = new()
+                        {
+                            Content = element,
+                            DataContext = element.DataContext
+                        };
+
                         regionTarget.Items.Add(flyout);
                     }
                 }
+
                 if (e.Action == NotifyCollectionChangedAction.Remove)
                 {
-                    foreach (FrameworkElement element in e.OldItems)
+                    foreach (FrameworkElement element in e?.OldItems)
                     {
                         regionTarget.Items.Remove(element);
                     }

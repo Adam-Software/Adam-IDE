@@ -1,10 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
+namespace AdamController.Controls.CustomControls
 {
-    /// <summary>
-    /// Логика взаимодействия для FlyoutContainer.xaml
-    /// </summary>
     public partial class FlyoutContainer : FlyoutsControl
     {
         public FlyoutContainer()

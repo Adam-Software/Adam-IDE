@@ -20,6 +20,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AdamController.Controls\AdamController.Controls.csproj" />
     <ProjectReference Include="..\AdamController.Services\AdamController.Services.csproj" />
     <ProjectReference Include="..\Legacy\AdamBlocklyLibrary\AdamBlocklyLibrary.csproj" />
     <ProjectReference Include="..\Legacy\AdamController.WebApi.Client\AdamController.WebApi.Client.csproj" />

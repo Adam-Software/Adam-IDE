@@ -1,16 +1,25 @@
-﻿using AdamController.Views;
-using ControlzEx.Theming;
-using ICSharpCode.AvalonEdit.Highlighting;
+﻿#region system
+
 using System;
 using System.IO;
 using System.Windows;
 using System.Xml;
+
+#endregion
 
 #region prism
 
 using Prism.Ioc;
 using Prism.DryIoc;
 using Prism.Modularity;
+using Prism.Regions;
+using DryIoc;
+
+#endregion
+
+#region innerhit
+
+using AdamController.Views;
 using AdamController.Modules.MenuRegion;
 using AdamController.Modules.ContentRegion;
 using AdamController.Core.Helpers;
@@ -20,12 +29,21 @@ using AdamController.Modules.FlayoutsRegion;
 using AdamController.Core.Dialog.Views;
 using AdamController.Core.Dialog.ViewModels;
 using AdamController.Services.Interfaces;
-using AdamController.Core.Mvvm;
-using AdamController.Services.FlayoutsRegionEventAwareServiceDependency;
-using Prism.Regions;
-using DryIoc;
-using AdamController.Modules.FlayoutsRegion.Views;
+using AdamController.Controls.CustomControls.Services;
+using AdamController.Controls.CustomControls.RegionAdapters;
+
+#endregion
+
+#region mahapps
+
 using MahApps.Metro.Controls;
+
+#endregion
+
+#region other
+
+using ControlzEx.Theming;
+using ICSharpCode.AvalonEdit.Highlighting;
 
 #endregion
 
@@ -33,12 +51,6 @@ namespace AdamController
 {
     public partial class App : PrismApplication
     {
-
-        public App()
-        {
-
-        }
-
         protected override Window CreateShell()
         {
             MainWindow window = Container.Resolve<MainWindow>();
@@ -48,13 +60,9 @@ namespace AdamController
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
 
             LoadHighlighting();
-
-            // side menu context, MUST inherit from MainViewModel
-            // HamburgerMenuView : MainWindowView
-            // and MainWindowView  MUST inherit from BaseViewModel
-            // MainWindowView : BaseViewModel
 
             _ = FolderHelper.CreateAppDataFolder();
 
@@ -71,8 +79,6 @@ namespace AdamController
             string password = Core.Properties.Settings.Default.ApiPassword;
 
             WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
-
-            base.OnStartup(e);
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -82,26 +88,22 @@ namespace AdamController
                 return new SubRegionChangeAwareService();
             });
 
-            containerRegistry.RegisterSingleton<IFlayoutsRegionChangeOpenedAwareService>(containerRegistry =>
-            {
-                return new FlayoutsRegionChangeOpenedAwareService();
-            });
-
             containerRegistry.RegisterSingleton<IFlyoutManager>(containerRegistry =>
             {
                 IContainer container = containerRegistry.GetContainer();
-                var regionManager = containerRegistry.Resolve<IRegionManager>();
+                IRegionManager regionManager = containerRegistry.Resolve<IRegionManager>();
 
                 return new FlyoutManager(container, regionManager);
             });
 
             //here must be ip/port
-            containerRegistry.Register<IAdamTcpClientService, AdamTcpClientService>();
+            containerRegistry.RegisterSingleton<IAdamTcpClientService, AdamTcpClientService>();
 
-            //register custom control
-            //containerRegistry.RegisterForNavigation<FlyoutContainer, FlyoutsControlRegionAdapter>();
+            RegisterDialogs(containerRegistry);
+        }
 
-            //register dialog
+        private static void RegisterDialogs(IContainerRegistry containerRegistry)
+        {
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterDialog<NetworkTestView, NetworkTestViewModel>();
         }
@@ -118,9 +120,7 @@ namespace AdamController
             moduleCatalog.AddModule<MenuRegionModule>();
             moduleCatalog.AddModule<ContentRegionModule>();
             moduleCatalog.AddModule<StatusBarRegionModule>();
-            moduleCatalog.AddModule<FlayoutsRegionModule>();
-
-            
+            moduleCatalog.AddModule<FlayoutsRegionModule>();   
         }
 
         private static void LoadHighlighting()

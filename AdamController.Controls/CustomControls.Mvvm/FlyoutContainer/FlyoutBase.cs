@@ -1,9 +1,7 @@
-﻿using AdamController.Services.Interfaces;
-using Prism.Mvvm;
-using System;
+﻿using Prism.Mvvm;
 using System.Windows.Input;
 
-namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
+namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
 {
     /// <summary>
     /// Base class that provides and implementation of IFlyout.
@@ -12,7 +10,7 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
     /// and clean up as many resources as possible within OnClosing as the instance of the ViewModel will remain in memory from the
     /// moment of registration with the FlyoutManager until the moment of unregistration, or program exit.
     /// </summary>
-    public abstract class FlyoutBase: BindableBase, IFlyout
+    public abstract class FlyoutBase : BindableBase, IFlyout
     {
         public event EventHandler<FlyoutEventArgs> OnClosed;
         public event EventHandler<FlyoutEventArgs> OnOpened;
@@ -184,7 +182,7 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
             var flyoutAction = isOpening ? FlyoutAction.Opening : FlyoutAction.Closing;
 
             var flyoutEventArgs = new FlyoutEventArgs(flyoutAction);
-            
+
             if (OnOpenChanged != null)
                 OnOpenChanged(this, flyoutEventArgs);
 
@@ -229,3 +227,4 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
         }
     }
 }
+

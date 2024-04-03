@@ -1,11 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
-namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
+namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
 {
+    /// <summary>
+    /// A collection of parameters that are passed from objects requesting the Flyout to open to the IFlyout ViewModel that controls
+    /// the specific Flyout.
+    /// These parameters can also (optionally) be attached to FlyoutEventArgs when notifying subscribers of a change in the Flyout status.
+    /// </summary>
     public class FlyoutParameters : IEnumerable
     {
-        IDictionary<string, object> parameters;
+        private readonly IDictionary<string, object> parameters;
 
         public FlyoutParameters()
         {

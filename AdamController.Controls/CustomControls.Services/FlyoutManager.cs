@@ -1,44 +1,56 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using DryIoc;
 using Prism.Regions;
-using System;
-using System.Collections.Generic;
-
-using System.Linq;
 using System.Windows;
 
-namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
+namespace AdamController.Controls.CustomControls.Services
 {
+    /// <summary>
+    /// Manages a collection of Flyouts, registering them with specified regions and creating their views and viewmodels.
+    /// Flyouts that are managed must have viewmodels that implement IFlyout.
+    /// </summary>
     public class FlyoutManager : IFlyoutManager
     {
+        private readonly IDictionary<string, IFlyout> mFlyouts;
 
-        IDictionary<string, IFlyout> mFlyouts;
+        private readonly IContainer mDryIocContainer;
 
-        IContainer mDryIocContainer;
+        private string mDefaultFlyoutRegion = string.Empty;
 
-        string mDefaultFlyoutRegion;
+        /// <summary>
+        /// The region manager controlling the region where the Flyouts are to be displayed.
+        /// Made public to allow use of sub-region managers.
+        /// </summary>
+        public IRegionManager RegionManager { get; }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="container">DryIoc container, generally passed by dependency injection.</param>
+        /// <param name="regionManager">Region manager, generally passed by dependency injection.</param>
         public FlyoutManager(IContainer container, IRegionManager regionManager)
         {
             mDryIocContainer = container;
             RegionManager = regionManager;
+
             mFlyouts = new Dictionary<string, IFlyout>();
         }
 
-        public IRegionManager RegionManager { get; set; }
 
         public void RegisterFlyoutWithDefaultRegion<TView>(string flyoutKey) where TView : FrameworkElement
         {
-            if (String.IsNullOrEmpty(mDefaultFlyoutRegion))
+            if (string.IsNullOrEmpty(mDefaultFlyoutRegion))
                 throw new NullReferenceException("Default region not set.");
+
             RegisterFlyout<TView>(flyoutKey, mDefaultFlyoutRegion);
         }
 
 
         public void RegisterFlyoutWithDefaultRegion<TView>(string flyoutKey, IFlyout viewModel) where TView : FrameworkElement
         {
-            if (String.IsNullOrEmpty(mDefaultFlyoutRegion))
+            if (string.IsNullOrEmpty(mDefaultFlyoutRegion))
                 throw new NullReferenceException("Default region not set.");
+
             RegisterFlyout<TView>(flyoutKey, mDefaultFlyoutRegion, viewModel);
         }
 

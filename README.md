@@ -11,3 +11,7 @@ For a successful launch, the following components must be installed in the syste
 * [MicrosoftEdgeWebView2RuntimeInstaller.113.0.1774.50.X64](https://disk.yandex.ru/d/vT4lVRCzDylGYA)
 * [VC_redist.14.29.30135.0.x64](https://disk.yandex.ru/d/0hzuZSiQIxZxLQ)
 * [windowsdesktop-runtime-7.0.5-win-x64](https://disk.yandex.ru/d/TQ2qIRYBnq2Ecw)
+
+# Thanks
+
+The Flyout solution is copied from [here](https://github.com/alsiola/FlyoutManager).

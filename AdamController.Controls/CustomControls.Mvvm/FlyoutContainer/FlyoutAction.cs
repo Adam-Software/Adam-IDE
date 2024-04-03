@@ -1,5 +1,8 @@
-﻿namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
+﻿namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
 {
+    /// <summary>
+    /// Represents the ongoing direction of change of a Flyout
+    /// </summary>
     public class FlyoutAction
     {
         private const string mOpening = "Opening";
