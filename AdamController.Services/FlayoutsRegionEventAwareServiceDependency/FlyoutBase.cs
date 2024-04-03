@@ -12,7 +12,7 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
     /// and clean up as many resources as possible within OnClosing as the instance of the ViewModel will remain in memory from the
     /// moment of registration with the FlyoutManager until the moment of unregistration, or program exit.
     /// </summary>
-    public abstract  class FlyoutBase: BindableBase, IFlyout
+    public abstract class FlyoutBase: BindableBase, IFlyout
     {
         public event EventHandler<FlyoutEventArgs> OnClosed;
         public event EventHandler<FlyoutEventArgs> OnOpened;
@@ -41,7 +41,6 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
             {
                 OnChanging(value);
                 SetProperty(ref isOpen, value);
-
             }
         }
 
@@ -183,12 +182,16 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
         protected virtual void OnChanging(bool isOpening)
         {
             var flyoutAction = isOpening ? FlyoutAction.Opening : FlyoutAction.Closing;
+
             var flyoutEventArgs = new FlyoutEventArgs(flyoutAction);
+            
             if (OnOpenChanged != null)
                 OnOpenChanged(this, flyoutEventArgs);
+
             if (flyoutAction == FlyoutAction.Opening)
                 if (OnOpened != null)
                     OnOpened(this, flyoutEventArgs);
+
             if (flyoutAction == FlyoutAction.Closing)
                 if (OnClosed != null)
                     OnClosed(this, flyoutEventArgs);

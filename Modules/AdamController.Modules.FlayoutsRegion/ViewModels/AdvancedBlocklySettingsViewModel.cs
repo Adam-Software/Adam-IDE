@@ -3,7 +3,9 @@ using AdamController.Core.DataSource;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
+using AdamController.Services.FlayoutsRegionEventAwareServiceDependency;
 using AdamController.Services.Interfaces;
+using Microsoft.VisualBasic.Logging;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -13,31 +15,53 @@ using System.Windows.Media;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
-    public class AdvancedBlocklySettingsViewModel : RegionViewModelBase
+    public class AdvancedBlocklySettingsViewModel : FlyoutBase //: RegionViewModelBase
     {
-        private IFlayoutsRegionChangeOpenedAwareService FlayoutsRegionChangeOpenedService { get; }
+        //private IFlayoutsRegionChangeOpenedAwareService FlayoutsRegionChangeOpenedService { get; }
 
-        public AdvancedBlocklySettingsViewModel(IRegionManager regionManager, IDialogService dialogService, IFlayoutsRegionChangeOpenedAwareService flayoutsRegionChangeOpenedAwareService ) : base(regionManager, dialogService)
+        public AdvancedBlocklySettingsViewModel() 
         {
-            FlayoutsRegionChangeOpenedService = flayoutsRegionChangeOpenedAwareService;
+            Position = FlyoutPosition.Right;
+            Theme = FlyoutTheme.Accent;
+            //FlayoutsRegionChangeOpenedService = flayoutsRegionChangeOpenedAwareService;
+        }
 
-           
+        protected override void OnChanging(bool isOpening)
+        {
+            base.OnChanging(isOpening);
+        }
+
+        protected override void OnOpening(FlyoutParameters flyoutParameters)
+        {
+            // Because FlyoutParameters provides weakly-typed objects we need to cast the provided "dog" parameter as a Dog type
+            // Dog = flyoutParameters["dog"] as Dog;
+
+            // We can set the Flyout name based on information passed via flyoutParameters
+            //Header = "Editing " + Dog.Name;
+
+            // As well as setting the position
+            // if (Dog.Name == "Patch")
+            //    Position = FlyoutPosition.Left;
+            // else
+            //    Position = FlyoutPosition.Right;
+
+            // And any other property you like.  See the full list in the code wiki at flyoutmanager.codeplex.com
         }
 
         #region Navigation
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        /*public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
             AdvancedBlocklySettingsFlayoutsIsOpen = false;
             //FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange -= RaiseAdvancedBlocklySettingsIsOpenChange;
-        }
+        }*/
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
+        /*public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             AdvancedBlocklySettingsFlayoutsIsOpen = true;
             //FlayoutsRegionChangeOpenedService.RaiseAdvancedBlocklySettingsIsOpenChange += RaiseAdvancedBlocklySettingsIsOpenChange;
 
-        }
+        }*/
 
         #endregion
 

@@ -21,6 +21,11 @@ using AdamController.Core.Dialog.Views;
 using AdamController.Core.Dialog.ViewModels;
 using AdamController.Services.Interfaces;
 using AdamController.Core.Mvvm;
+using AdamController.Services.FlayoutsRegionEventAwareServiceDependency;
+using Prism.Regions;
+using DryIoc;
+using AdamController.Modules.FlayoutsRegion.Views;
+using MahApps.Metro.Controls;
 
 #endregion
 
@@ -82,11 +87,30 @@ namespace AdamController
                 return new FlayoutsRegionChangeOpenedAwareService();
             });
 
+            containerRegistry.RegisterSingleton<IFlyoutManager>(containerRegistry =>
+            {
+                IContainer container = containerRegistry.GetContainer();
+                var regionManager = containerRegistry.Resolve<IRegionManager>();
+
+                return new FlyoutManager(container, regionManager);
+            });
+
             //here must be ip/port
             containerRegistry.Register<IAdamTcpClientService, AdamTcpClientService>();
-            
+
+            //register custom control
+            //containerRegistry.RegisterForNavigation<FlyoutContainer, FlyoutsControlRegionAdapter>();
+
+            //register dialog
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterDialog<NetworkTestView, NetworkTestViewModel>();
+        }
+
+        protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+        {
+            base.ConfigureRegionAdapterMappings(regionAdapterMappings);
+
+            regionAdapterMappings.RegisterMapping(typeof(FlyoutsControl), Container.Resolve<FlyoutsControlRegionAdapter>());
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
@@ -95,6 +119,8 @@ namespace AdamController
             moduleCatalog.AddModule<ContentRegionModule>();
             moduleCatalog.AddModule<StatusBarRegionModule>();
             moduleCatalog.AddModule<FlayoutsRegionModule>();
+
+            
         }
 
         private static void LoadHighlighting()

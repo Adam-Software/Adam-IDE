@@ -19,11 +19,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
+        #region services
+
+        IFlyoutManager FlyoutManager { get; }
+        #endregion
+
         #region ~
 
-        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
         {
-            
+            FlyoutManager = flyoutManager;
         }
 
         #endregion

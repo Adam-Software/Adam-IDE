@@ -4,7 +4,12 @@
              xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
-    
-    <ContentControl prism:RegionManager.RegionName="{x:Static core:FlayoutsRegionNames.FlayoutsInsideRegion}"/>
-    
+
+    <StackPanel Width="1000" Height="5000">
+        
+    </StackPanel>
+
+    <!--<ContentControl prism:RegionManager.RegionName="{x:Static core:FlayoutsRegionNames.FlayoutsInsideRegion}"/>-->
+    <!--<customusercontrol:FlyoutContainer  prism:RegionManager.RegionName="{x:Static core:FlayoutsRegionNames.FlayoutsInsideRegion}"/>-->
+
 </UserControl>

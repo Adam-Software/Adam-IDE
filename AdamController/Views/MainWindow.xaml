@@ -10,7 +10,9 @@
                   xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
                   xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
                   TitleCharacterCasing="Normal" WindowState="Maximized" ShowIconOnTitleBar="True"
-                  xmlns:prism="http://prismlibrary.com/" prism:ViewModelLocator.AutoWireViewModel="True"
+                  xmlns:prism="http://prismlibrary.com/" 
+                  xmlns:customusercontrol="clr-namespace:AdamController.Services.FlayoutsRegionEventAwareServiceDependency;assembly=AdamController.Services" 
+                  prism:ViewModelLocator.AutoWireViewModel="True"
                   Title="{Binding WindowTitle}">
 
     <!--#region Window resources -->
@@ -71,13 +73,8 @@
 
 
     <mah:MetroWindow.Flyouts>
-        <mah:FlyoutsControl>
-            <mah:FlyoutsControl>
-                <mah:Flyout>
-                    <!--<ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.FlayoutsRegion}"/>-->
-                </mah:Flyout>
-            </mah:FlyoutsControl>
-        </mah:FlyoutsControl>
+        <customusercontrol:FlyoutContainer  prism:RegionManager.RegionManager="{Binding RegionManager}"
+                                            prism:RegionManager.RegionName="{x:Static core:RegionNames.FlayoutsRegion}"/>
     </mah:MetroWindow.Flyouts>
 
     <!--#endregion-->
@@ -142,7 +139,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
 
 
         <mah:HamburgerMenu Grid.Column="0"

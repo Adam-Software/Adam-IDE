@@ -2,11 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="FlayoutsRegionEventAwareServiceDependency\CustomUserControl\FlyoutContainer.xaml" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
@@ -27,13 +24,6 @@
     <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
     <PackageReference Include="Websocket.Client" Version="5.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Include="FlayoutsRegionEventAwareServiceDependency\CustomUserControl\FlyoutContainer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
 
 </Project>

@@ -20,15 +20,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         #region Service
 
-        private IFlayoutsRegionChangeOpenedAwareService FayoutsRegionChangeOpenedService { get; }
+        private IFlyoutManager FlyoutManager { get; }
 
         #endregion
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlayoutsRegionChangeOpenedAwareService flayoutsRegionChangeOpenedAwareService) : base(regionManager, dialogService)
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
         {
-            FayoutsRegionChangeOpenedService = flayoutsRegionChangeOpenedAwareService;
+            FlyoutManager = flyoutManager;
         }
 
         #endregion
@@ -181,7 +181,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand openAdvancedBlocklySettingsCommand;
         public DelegateCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new DelegateCommand(() =>
         {
-            RegionManager.RequestNavigate(RegionNames.FlayoutsRegion, FlayoutsRegionNames.FlayotAdvancedBlocklySettings);
+            FlyoutManager.OpenFlyout("FlayoutsView");
+            //RegionManager.RequestNavigate(RegionNames.FlayoutsRegion, FlayoutsRegionNames.FlayotAdvancedBlocklySettings);
         });
 
         private DelegateCommand<string> changeBaseColorTheme;

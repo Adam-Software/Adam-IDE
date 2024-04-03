@@ -14,15 +14,15 @@ namespace AdamController.Services.FlayoutsRegionEventAwareServiceDependency
 
         IDictionary<string, IFlyout> mFlyouts;
 
-        Container mDryIocContainer;
+        IContainer mDryIocContainer;
 
         string mDefaultFlyoutRegion;
 
-        public FlyoutManager(Container  container, IRegionManager regionManager)
+        public FlyoutManager(IContainer container, IRegionManager regionManager)
         {
             mDryIocContainer = container;
             RegionManager = regionManager;
-
+            mFlyouts = new Dictionary<string, IFlyout>();
         }
 
         public IRegionManager RegionManager { get; set; }
