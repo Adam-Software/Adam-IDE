@@ -1,13 +1,8 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using AdamController.Core.Helpers;
-using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
-using LibVLCSharp.Shared;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
-using Prism.Regions;
-using Prism.Services.Dialogs;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -15,12 +10,11 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
     public class NotificationViewModel : FlyoutBase
     {
-
         #region Const
 
-        private const string mConnectButtonStatusDisconnected = "Подключить";
-        private const string mConnectButtonStatusConnected = "Отключить";
-        private const string mConnectButtonStatusReconnected = "Подождите";
+        private const string cConnectButtonStatusDisconnected = "Подключить";
+        private const string cConnectButtonStatusConnected = "Отключить";
+        private const string cConnectButtonStatusReconnected = "Подождите";
 
         #endregion
 
@@ -31,25 +25,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             Theme = FlyoutTheme.Inverse;
             Header= "Центр уведомлений";
             IsModal = false;
-        }
-
-        #endregion
-
-        #region Fields
-
-        private bool mNotificationFlayoutsIsOpen;
-        public bool NotificationFlayoutsIsOpen
-        {
-            get { return mNotificationFlayoutsIsOpen; }
-            set
-            {
-                if (mNotificationFlayoutsIsOpen == value)
-                    return;
-
-                mNotificationFlayoutsIsOpen = value;
-
-                SetProperty(ref mNotificationFlayoutsIsOpen, value);
-            }
         }
 
         #endregion
@@ -108,8 +83,9 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
-        #region NotificationBadge
 
+        #region NotificationBadge
+        /* #16 */
         private void ClearNotification()
         {
             //BadgeCounter = 0;
@@ -154,6 +130,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         public DelegateCommand ConnectButtonComand => connectButtonComand ??= new DelegateCommand(async () =>
         {
             bool isNotifyButton = false; //(string)obj == "IsNotificationButtonCalling";
+
             if (isNotifyButton)
             {
                 ClearNotification();
@@ -184,12 +161,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         public DelegateCommand ClearNotifications => clearNotifications ??= new DelegateCommand(() =>
         {
             ClearNotification();
-        });
-
-        private DelegateCommand closeNotificationFlayots;
-        public DelegateCommand CloseNotificationFlayots => closeNotificationFlayots ??= new DelegateCommand(() =>
-        {
-            //NotificationFlayoutsIsOpen = false;
         });
 
         #endregion

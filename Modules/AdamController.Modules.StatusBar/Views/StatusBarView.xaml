@@ -102,43 +102,42 @@
 
 
                     <TextBlock Grid.Column="1"
-                       VerticalAlignment="Center"
-                       FontWeight="Medium"
-                       Text="{Binding TextOnStatusConnectToolbar, Mode=TwoWay}" />
+                               VerticalAlignment="Center"
+                               FontWeight="Medium"
+                               Text="{Binding TextOnStatusConnectToolbar, Mode=TwoWay}" />
                 </Grid>
             </StatusBarItem>
 
             <!--#endregion-->
 
             <Separator Grid.Column="6" 
-               Margin="5 0 5 0"
-               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-               Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+                       Margin="5 0 5 0"
+                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
+                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
 
             <StatusBarItem  Grid.Column="7" Margin="5 0 5 0">
 
                 <mah:Badged Padding="0 -7 1 0"
-                    Margin="0 8 5 0"
-                    BadgeBackground="Red"
-                    BadgePlacementMode="TopRight"
-                    Badge="{Binding NotificationBadge}">
+                            Margin="0 8 5 0"
+                            BadgeBackground="Red"
+                            BadgePlacementMode="TopRight"
+                            Badge="{Binding NotificationBadge}">
 
                     <Button Padding="3"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Command="{Binding OpenNotificationPanel}"
-                    CommandParameter="{Binding ElementName=NotificationFlayouts, Path=IsOpen}"
-                    Background="Transparent"
-                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                    Style="{StaticResource MahApps.Styles.Button.ToolBar}">
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Command="{Binding OpenNotificationPanelDelegateCommand}"
+                            Background="Transparent"
+                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            Style="{StaticResource MahApps.Styles.Button.ToolBar}">
                         <iconPacks:PackIconBootstrapIcons Kind="Bell" />
                     </Button>
                 </mah:Badged>
             </StatusBarItem>
 
             <Separator Grid.Column="8" Margin="5 0 5 0"
-               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-               Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
+                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
 
         </StatusBar>
 

@@ -1,7 +1,6 @@
 ﻿using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Mvvm;
-using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using Prism.Regions;
@@ -11,34 +10,46 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 {
     public class StatusBarViewModel : RegionViewModelBase
     {
+        #region DelegateCommands
+
+        public DelegateCommand OpenNotificationPanelDelegateCommand { get; }
+
+        #endregion
 
         #region Services
 
-        private IFlyoutManager mFlyoutManager;
+        private readonly IFlyoutManager mFlyoutManager;
 
         #endregion
 
-        #region const
+        #region Const
 
-        private const string mToolbarStatusClientDisconnected = "Робот Адам: отключен";
-        private const string mToolbarStatusClientConnected = "Робот Адам: подключен";
-        private const string mToolbarStatusClientReconnected = "Робот Адам: переподключение";
+        private const string cTextOnStatusConnectToolbarDisconnected = "Робот Адам: отключен";
+        private const string cTextOnStatusConnectToolbarConnected = "Робот Адам: подключен";
+        private const string cTextOnStatusConnectToolbarReconnected = "Робот Адам: переподключение";
+
+        private const string cCompileLogStatusBar = "Лог робота";
+        private const string cAppLogStatusBar = "Лог приложения";
 
         #endregion
 
-
+        #region ~
 
         public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
         {
             mFlyoutManager = flyoutManager;
+
+            OpenNotificationPanelDelegateCommand = new DelegateCommand(OpenNotificationPanel, OpenNotificationPanelCanExecute);
         }
 
-        #region ProgressRing field
+        #endregion
 
-        private bool progressRingStart = false;
+        #region public fields
+
+        private bool progressRingStart;
         public bool ProgressRingStart
         {
-            get => progressRingStart;
+            get { return progressRingStart; }
             set
             {
                 if (value == progressRingStart) return;
@@ -48,15 +59,10 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             }
         }
 
-
-        #endregion
-
-        #region CompileLogStatusBar field
-
-        private string compileLogStatusBar = "Лог робота";
+        private string compileLogStatusBar = cCompileLogStatusBar;
         public string CompileLogStatusBar
         {
-            get => compileLogStatusBar;
+            get { return compileLogStatusBar; }
             set
             {
                 if (value == compileLogStatusBar)
@@ -69,14 +75,10 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             }
         }
 
-        #endregion
-
-        #region AppStatusBar field
-
-        private string appLogStatusBar = "Лог приложения";
+        private string appLogStatusBar = cAppLogStatusBar;
         public string AppLogStatusBar
         {
-            get => appLogStatusBar;
+            get { return appLogStatusBar; }
             set
             {
                 if (value == appLogStatusBar)
@@ -89,12 +91,10 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             }
         }
 
-        #endregion
-
         private PackIconModernKind connectIcon = PackIconModernKind.Connect;
         public PackIconModernKind ConnectIcon
         {
-            get => connectIcon;
+            get { return connectIcon; }
             set
             {
                 if (value == connectIcon) return;
@@ -104,11 +104,10 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             }
         }
 
-
-        private string textOnStatusConnectToolbar;
+        private string textOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
         public string TextOnStatusConnectToolbar
         {
-            get => textOnStatusConnectToolbar;
+            get { return textOnStatusConnectToolbar; }
             set
             {
                 if (value == textOnStatusConnectToolbar) return;
@@ -118,13 +117,31 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             }
         }
 
+        private string notificationBadge;
+        public string NotificationBadge
+        {
+            get { return notificationBadge; }
+            set
+            {
+                if (value == notificationBadge) return;
+
+                notificationBadge = value;
+                SetProperty(ref notificationBadge, value);
+            }
+        }
+
+        #endregion
+
+        #region Private fields
+
         private int badgeCounter = 0;
         private int BadgeCounter
         {
-            get => badgeCounter;
+            get { return badgeCounter; }
             set
             {
                 if (value == badgeCounter) return;
+
                 if (value == 0)
                 {
                     badgeCounter = value;
@@ -138,44 +155,21 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             }
         }
 
-        private string notificationBadge;
-        public string NotificationBadge
-        {
-            get => notificationBadge;
-            set
-            {
-                if (value == notificationBadge) return;
-
-                notificationBadge = value;
-                SetProperty(ref notificationBadge, value);
-            }
-        }
-
-        #region Open NotificationFlayouts
-
-        private bool notificationFlayoutsIsOpen;
-        public bool NotificationFlayoutsIsOpen
-        {
-            get { return notificationFlayoutsIsOpen; }
-            set
-            {
-                if (value == notificationFlayoutsIsOpen) return;
-
-                notificationFlayoutsIsOpen = value;
-                SetProperty(ref notificationFlayoutsIsOpen, value);
-            }
-        }
-
         #endregion
 
-        #region Commands
+        #region DelegateCommands methods
 
-        private DelegateCommand<bool?> openNotificationPanel;
-        public DelegateCommand<bool?> OpenNotificationPanel => openNotificationPanel ??= new DelegateCommand<bool?>(obj =>
+        private void OpenNotificationPanel()
         {
             mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutNotification);
-        });
+        }
+
+        private bool OpenNotificationPanelCanExecute()
+        {
+            return true;
+        }
 
         #endregion
+
     }
 }

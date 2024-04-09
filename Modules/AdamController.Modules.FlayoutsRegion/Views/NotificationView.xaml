@@ -11,8 +11,6 @@
              >
     <Grid>
 
-        <!--#region Flayouts notification-->
-
         <ScrollViewer HorizontalScrollBarVisibility="Visible"
                         Style="{DynamicResource MahApps.Styles.ScrollViewer}">
 
@@ -148,8 +146,5 @@
                 </Grid>
             </Grid>
         </ScrollViewer>
-
-        <!--#endregion-->
-
     </Grid>
 </UserControl>
