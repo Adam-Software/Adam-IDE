@@ -39,5 +39,10 @@ namespace AdamController.Services.Interfaces
         public int ReconnectTimeout { get; }
 
         public void DisconnectAndStop();
+
+        /// <summary>
+        /// This method is implemented in NetCoreServer.TcpClient
+        /// </summary>
+        public bool ConnectAsync();
     }
 }

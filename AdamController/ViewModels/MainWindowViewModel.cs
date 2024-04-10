@@ -1,5 +1,7 @@
 ﻿using AdamController.Core;
+using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
+using DryIoc;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -8,9 +10,9 @@ using System.Windows;
 
 namespace AdamController.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : ViewModelBase
     {
-        #region Command
+        #region DelegateCommands
 
         public DelegateCommand<string> ShowRegionCommand { get; private set; }
 
@@ -19,87 +21,58 @@ namespace AdamController.ViewModels
         #region Services
 
         public IRegionManager RegionManager { get; }
-        private ISubRegionChangeAwareService SubRegionChangeAwareService { get; }
+        private readonly ISubRegionChangeAwareService mSubRegionChangeAwareService;
 
         #endregion
 
         #region ~
 
-        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService) 
+        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, ICommunicationProviderService communicationProviderService) 
         {
             RegionManager = regionManager;
-            ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
-            SubRegionChangeAwareService = subRegionChangeAwareService;
-            
-            SubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
-            Application.Current.MainWindow.Loaded += MainWindowLoaded;
+            mSubRegionChangeAwareService = subRegionChangeAwareService;
+
+            ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
+            Subscribe();
         }
 
         #endregion
 
-        #region Events
+        #region Public fields
 
-        /// <summary>
-        /// Load default region at startup
-        /// Need to call it after loading the main window
-        /// </summary>
-        private void MainWindowLoaded(object sender, RoutedEventArgs e)
-        {
-            ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
-        }
-
-        /// <summary>
-        /// Changes the selected section in the hamburger menu
-        /// </summary>
-        private void RaiseSubRegionChangeEvent(object sender)
-        {
-            var changeRegionName = SubRegionChangeAwareService?.InsideRegionNavigationRequestName;
-            ChangeSelectedIndexByRegionName(changeRegionName);
-        }
-
-        #endregion
-
-        #region Fields
+        public string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
 
         /// <summary>
         /// -1 is not selected
         /// </summary>
-        private int mHamburgerMenuSelectedIndex = -1;
+        private int hamburgerMenuSelectedIndex = -1;
         public int HamburgerMenuSelectedIndex 
         { 
-            get { return mHamburgerMenuSelectedIndex; }
+            get { return hamburgerMenuSelectedIndex; }
             set
             {
-                if(mHamburgerMenuSelectedIndex == value)
-                    return;
-
-                SetProperty(ref mHamburgerMenuSelectedIndex, value);
+                SetProperty(ref hamburgerMenuSelectedIndex, value);
             } 
         }
 
         /// <summary>
         /// -1 is not selected
         /// </summary>
-        private int mHamburgerMenuSelectedOptionsIndex = -1;
+        private int hamburgerMenuSelectedOptionsIndex = -1;
 
         public int HamburgerMenuSelectedOptionsIndex
         {
-            get { return mHamburgerMenuSelectedOptionsIndex; }
+            get { return hamburgerMenuSelectedOptionsIndex; }
 
             set
             {
-                if (mHamburgerMenuSelectedOptionsIndex == value)
-                    return;
-
-                SetProperty(ref mHamburgerMenuSelectedOptionsIndex, value);
+                SetProperty(ref hamburgerMenuSelectedOptionsIndex, value);
             }
         }
 
-        public string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
-
         #endregion
 
-        #region Methods
+        #region Private methods
 
         private void ChangeSelectedIndexByRegionName(string subRegionName)
         {
@@ -137,6 +110,50 @@ namespace AdamController.ViewModels
                     RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
                     break;
             }
+        }
+
+        #endregion
+
+        #region Subscriptions
+
+        /// <summary>
+        /// #20
+        /// </summary>
+        private void Subscribe()
+        {
+            mSubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
+            Application.Current.MainWindow.Loaded += MainWindowLoaded;
+        }
+
+        /// <summary>
+        /// #20
+        /// </summary>
+        private void Unsubscribe()
+        {
+            mSubRegionChangeAwareService.RaiseSubRegionChangeEvent -= RaiseSubRegionChangeEvent;
+            Application.Current.MainWindow.Loaded -= MainWindowLoaded;
+        }
+
+        #endregion
+
+        #region Event methods
+      
+        /// <summary>
+        /// Load default region at startup
+        /// Need to call it after loading the main window
+        /// </summary>
+        private void MainWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
+        }
+
+        /// <summary>
+        /// Changes the selected section in the hamburger menu
+        /// </summary>
+        private void RaiseSubRegionChangeEvent(object sender)
+        {
+            var changeRegionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            ChangeSelectedIndexByRegionName(changeRegionName);
         }
 
         #endregion

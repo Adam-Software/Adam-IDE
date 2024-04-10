@@ -1,6 +1,7 @@
 ﻿using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Mvvm;
+using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using Prism.Regions;
@@ -19,6 +20,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         #region Services
 
         private readonly IFlyoutManager mFlyoutManager;
+        private readonly ICommunicationProviderService mCommunicationProviderService;
 
         #endregion
 
@@ -35,11 +37,19 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         #region ~
 
-        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
+        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, ICommunicationProviderService communicationProviderService) : base(regionManager, dialogService)
         {
             mFlyoutManager = flyoutManager;
+            mCommunicationProviderService = communicationProviderService;
 
             OpenNotificationPanelDelegateCommand = new DelegateCommand(OpenNotificationPanel, OpenNotificationPanelCanExecute);
+
+            //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
+            //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
+            //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
+
+            mCommunicationProviderService.RaiseAdamTcpCientConnected += RaiseAdamTcpCientConnected;
+            mCommunicationProviderService.RaiseAdamTcpClientDisconnect += RaiseAdamTcpClientDisconnect;
         }
 
         #endregion
@@ -52,9 +62,6 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             get { return progressRingStart; }
             set
             {
-                if (value == progressRingStart) return;
-
-                progressRingStart = value;
                 SetProperty(ref progressRingStart, value);
             }
         }
@@ -65,12 +72,6 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             get { return compileLogStatusBar; }
             set
             {
-                if (value == compileLogStatusBar)
-                {
-                    return;
-                }
-
-                compileLogStatusBar = value;
                 SetProperty(ref compileLogStatusBar, value);
             }
         }
@@ -80,13 +81,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         {
             get { return appLogStatusBar; }
             set
-            {
-                if (value == appLogStatusBar)
-                {
-                    return;
-                }
-
-                appLogStatusBar = value;
+            {   
                 SetProperty(ref appLogStatusBar, value);
             }
         }
@@ -97,9 +92,6 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             get { return connectIcon; }
             set
             {
-                if (value == connectIcon) return;
-
-                connectIcon = value;
                 SetProperty(ref connectIcon, value);
             }
         }
@@ -110,9 +102,6 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             get { return textOnStatusConnectToolbar; }
             set
             {
-                if (value == textOnStatusConnectToolbar) return;
-
-                textOnStatusConnectToolbar = value;
                 SetProperty(ref textOnStatusConnectToolbar, value);
             }
         }
@@ -123,9 +112,6 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             get { return notificationBadge; }
             set
             {
-                if (value == notificationBadge) return;
-
-                notificationBadge = value;
                 SetProperty(ref notificationBadge, value);
             }
         }
@@ -140,7 +126,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             get { return badgeCounter; }
             set
             {
-                if (value == badgeCounter) return;
+                if (badgeCounter == value) 
+                    return;
 
                 if (value == 0)
                 {
@@ -153,6 +140,22 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
                 NotificationBadge = $"{BadgeCounter}";
             }
+        }
+
+        #endregion
+
+        #region Event methods
+
+        private void RaiseAdamTcpClientDisconnect(object sender)
+        {
+            ConnectIcon = PackIconModernKind.Connect;
+            TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
+        }
+
+        private void RaiseAdamTcpCientConnected(object sender)
+        {
+            ConnectIcon = PackIconModernKind.Disconnect;
+            TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarConnected;
         }
 
         #endregion

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 
 namespace AdamController.Services.Interfaces
 {
@@ -32,6 +31,14 @@ namespace AdamController.Services.Interfaces
 
         public void ConnectAllAsync();
         public void DisconnectAllAsync();
+
+
+        /// <summary>
+        /// Left for backward compatibility
+        /// This is where events were unsubscribed, and instances of client classes were destroyed
+        /// This is now implemented in Dispose services
+        /// All calls to this method should be replaced with calls to DisconnectAllAsync()
+        /// </summary>
         public void DisconnectAllAndDestroy();
 
         #endregion

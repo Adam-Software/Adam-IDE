@@ -17,7 +17,7 @@ namespace AdamController.Services
 
         #region Services
 
-        IAdamTcpClientService mAdamTcpClientService;
+        private readonly IAdamTcpClientService mAdamTcpClientService;
 
         #endregion
 
@@ -32,25 +32,24 @@ namespace AdamController.Services
 
         public void ConnectAllAsync()
         {
-            //_ = Task.Run(() => mAdamTcpClient?.ConnectAsync());
+            mAdamTcpClientService.ConnectAsync();
+            //_ = Task.Run();
             //_ = Task.Run(() => mAdamUdpMessageClient?.Start());
             //_ = Task.Run(() => mAdamWebSocketClient?.ConnectAsync());
         }
 
         public void DisconnectAllAsync()
         {
-            //_ = Task.Run(() => mAdamTcpClient?.DisconnectAndStop());
+            _ = Task.Run(mAdamTcpClientService.DisconnectAndStop);
             //_ = Task.Run(() => mAdamUdpMessageClient?.Stop());
             //_ = Task.Run(() => mAdamWebSocketClient?.DisconnectAsync());
         }
 
-        public void DisconnectAllAndDestroy()
-        {
-            ///throw new System.NotImplementedException();
-        }
+        public void DisconnectAllAndDestroy() {}
 
         public void Dispose()
         {
+            DisconnectAllAsync();
             Unsubscribe();
         }
 
@@ -78,11 +77,12 @@ namespace AdamController.Services
 
         #endregion
 
-        #region Events methods
+        #region Event methods
 
         private void RaiseTcpCientConnected(object sender)
         {
             //OnAdamTcpConnectedEvent?.Invoke();
+            OnRaiseAdamTcpCientConnected();
 
             //if (!mAdamUdpLogServer.IsStarted)
             //    mAdamUdpLogServer?.Start();
@@ -94,6 +94,7 @@ namespace AdamController.Services
         private void RaiseTcpClientDisconnected(object sender)
         {
             //OnAdamTcpDisconnectedEvent?.Invoke();
+            OnRaiseAdamTcpClientDisconnect();
 
             //if (mAdamUdpLogServer != null)
             //{
@@ -111,6 +112,7 @@ namespace AdamController.Services
         private void RaiseTcpClientReconnected(object sender, int reconnectCount)
         {
             //OnAdamTcpReconnected?.Invoke(reconnectCount);
+            OnRaiseAdamTcpClientReconnected(reconnectCount);
         }
 
         #endregion
@@ -120,31 +122,31 @@ namespace AdamController.Services
         protected virtual void OnRaiseAdamTcpCientConnected()
         {
             AdamTcpCientConnected raiseEvent = RaiseAdamTcpCientConnected;
-            raiseEvent.Invoke(this);
+            raiseEvent?.Invoke(this);
         }
 
         protected virtual void OnRaiseAdamTcpClientDisconnect()
         {
             AdamTcpClientDisconnect raiseEvent = RaiseAdamTcpClientDisconnect;
-            raiseEvent.Invoke(this);
+            raiseEvent?.Invoke(this);
         }
 
         public virtual void OnRaiseAdamTcpClientReconnected(int reconnectCounter)
         {
             AdamTcpClientReconnected raiseEvent = RaiseAdamTcpClientReconnected;
-            raiseEvent.Invoke(this, reconnectCounter);
+            raiseEvent?.Invoke(this, reconnectCounter);
         }
 
         protected virtual void OnRaiseAdamUdpServerReceived()
         {
             AdamUdpServerReceived raiseEvent = RaiseAdamUdpServerReceived;
-            raiseEvent.Equals(this);
+            raiseEvent?.Equals(this);
         }
 
         protected virtual void OnRaiseAdamUdpMessageReceived(string message)
         {
             AdamUdpMessageReceived raiseEvent = RaiseAdamUdpMessageReceived;
-            raiseEvent.Invoke(this, message);
+            raiseEvent?.Invoke(this, message);
         }
 
         #endregion

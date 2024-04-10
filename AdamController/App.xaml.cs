@@ -48,6 +48,9 @@ using AdamController.Services.AdamTcpClientDependency;
 using AdamController.Core.Properties;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using AdamController.ViewModels;
+using AdamController.Core.Mvvm;
+using System.Windows.Navigation;
 
 #endregion
 
@@ -60,6 +63,8 @@ namespace AdamController
         public App()
         {
             SetupUnhandledExceptionHandling();
+            //?
+            //this.Dispatcher.UnhandledException += this.OnDispatcherUnhandledException;
         }
 
         #endregion
@@ -91,6 +96,13 @@ namespace AdamController
             string password = Settings.Default.ApiPassword;
 
             WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            StartServices();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -131,6 +143,12 @@ namespace AdamController
             });
 
             RegisterDialogs(containerRegistry);
+        }
+
+        private void StartServices()
+        {
+            if (Settings.Default.AutoStartTcpConnect)
+                Container.Resolve<ICommunicationProviderService>().ConnectAllAsync();
         }
 
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
@@ -190,6 +208,9 @@ namespace AdamController
             Settings.Default.Save();
         }
 
+        /// <summary>
+        /// The priority of resource release is important!
+        /// </summary>
         private void DisposeServices()
         {
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
