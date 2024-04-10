@@ -1,8 +1,9 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 
 namespace AdamController.Services.Interfaces
 {
-    #region Events
+    #region Delegate
 
     public delegate void TcpCientConnected(object sender);
     public delegate void TcpCientSent(object sender, long sent, long pending);
@@ -13,8 +14,9 @@ namespace AdamController.Services.Interfaces
 
     #endregion
 
-    public interface IAdamTcpClientService
+    public interface IAdamTcpClientService : IDisposable
     {
+        
         #region Events
 
         public event TcpCientConnected RaiseTcpCientConnected;

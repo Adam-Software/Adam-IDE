@@ -167,44 +167,43 @@ namespace AdamController.Services
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             OnRaiseTcpClientReceived(buffer, offset, size);
-            
         }
 
         #endregion
 
-        #region RaiseEvents
+        #region OnRaiseEvents
 
-        public virtual void OnRaiseTcpCientConnected()
+        protected virtual void OnRaiseTcpCientConnected()
         {
             TcpCientConnected raiseEvent = RaiseTcpCientConnected;
             raiseEvent?.Invoke(this);
         }
 
-        public virtual void OnRaiseTcpCientSent(long sent, long pending)
+        protected virtual void OnRaiseTcpCientSent(long sent, long pending)
         {
             TcpCientSent raiseEvent = RaiseTcpCientSent;
             raiseEvent?.Invoke(this, sent, pending);
         }
 
-        public virtual void OnRaiseTcpClientDisconnected()
+        protected virtual void OnRaiseTcpClientDisconnected()
         {
             TcpClientDisconnect raiseEvent = RaiseTcpClientDisconnected;
             raiseEvent?.Invoke(this);
         }
 
-        public virtual void OnRaiseTcpClientError(SocketError socketError)
+        protected virtual void OnRaiseTcpClientError(SocketError socketError)
         {
             TcpClientError raiseEvent = RaiseTcpClientError;
             raiseEvent?.Invoke(this, socketError);
         }
 
-        public virtual void OnRaiseTcpClientReceived(byte[] buffer, long offset, long size)
+        protected virtual void OnRaiseTcpClientReceived(byte[] buffer, long offset, long size)
         {
             TcpClientReceived raiseEvent = RaiseTcpClientReceived;
             raiseEvent?.Invoke(this, buffer, offset, size);
         }
         
-        public virtual void OnRaiseTcpClientReconnected(int reconnectCount)
+        protected virtual void OnRaiseTcpClientReconnected(int reconnectCount)
         {
             TcpClientReconnected raiseEvent = RaiseTcpClientReconnected;
             raiseEvent?.Invoke(this, reconnectCount);

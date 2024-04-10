@@ -46,16 +46,16 @@ namespace AdamController.Core.Helpers
 
         private static void LazyInitializer()
         {
-            if(mAdamTcpClient == null)
-            {
-                AdamTcpClientOption option = new()
-                {
-                    ReconnectCount = Settings.Default.ReconnectQtyComunicateTcpClient,
-                    ReconnectTimeout = Settings.Default.ReconnectTimeoutComunicateTcpClient
-                };
+            //if(mAdamTcpClient == null)
+            //{
+                //AdamTcpClientOption option = new()
+                //{
+                //    ReconnectCount = Settings.Default.ReconnectQtyComunicateTcpClient,
+                //    ReconnectTimeout = Settings.Default.ReconnectTimeoutComunicateTcpClient
+                //};
 
-                mAdamTcpClient = new(Settings.Default.ServerIP, Settings.Default.TcpConnectStatePort, option);
-            }
+                //mAdamTcpClient = new(Settings.Default.ServerIP, Settings.Default.TcpConnectStatePort, option);
+            //}
 
             mAdamUdpMessageClient ??= new(IPAddress.Any, int.Parse(Settings.Default.MessageDataExchangePort))
                 {
@@ -76,11 +76,11 @@ namespace AdamController.Core.Helpers
 #endif
 
 
-            mAdamTcpClient.RaiseTcpCientConnected += TcpCientConnected;
-            mAdamTcpClient.RaiseTcpClientDisconnected += TcpClientDisconnected;
-            mAdamTcpClient.RaiseTcpClientError += TcpClientError;
-            mAdamTcpClient.RaiseTcpClientReceived += TcpClientReceived;
-            mAdamTcpClient.RaiseTcpClientReconnected += TcpClientReconnected;
+            //mAdamTcpClient.RaiseTcpCientConnected += TcpCientConnected;
+            //mAdamTcpClient.RaiseTcpClientDisconnected += TcpClientDisconnected;
+            //mAdamTcpClient.RaiseTcpClientError += TcpClientError;
+            //mAdamTcpClient.RaiseTcpClientReceived += TcpClientReceived;
+            //mAdamTcpClient.RaiseTcpClientReconnected += TcpClientReconnected;
 
             mAdamWebSocketClient.WebSocketConnectedEvent += WebSocketConnectedEvent;
             mAdamWebSocketClient.WebSocketClientReceivedEvent += WebSocketClientReceived;
@@ -166,32 +166,32 @@ namespace AdamController.Core.Helpers
 
         #region Tcp/Udp connect
         
-        private static void Connect()
-        {
-            _ = Task.Run(() => mAdamTcpClient?.ConnectAsync());
-            _ = Task.Run(() => mAdamUdpMessageClient?.Start());
-            _ = Task.Run(() => mAdamWebSocketClient?.ConnectAsync());
-        }
+        //private static void Connect()
+        //{
+            //_ = Task.Run(() => mAdamTcpClient?.ConnectAsync());
+            //_ = Task.Run(() => mAdamUdpMessageClient?.Start());
+            //_ = Task.Run(() => mAdamWebSocketClient?.ConnectAsync());
+        //}
 
-        public static void ConnectAllAsync()
-        {
-            _ = Task.Run(() => Connect());
-        }
+        //public static void ConnectAllAsync()
+        //{
+            //_ = Task.Run(() => Connect());
+        //}
 
         #endregion
 
         # region Tcp/Upd disconnect 
 
-        public static void DisconnectAll()
-        {
-            _ = Task.Run(()=> mAdamTcpClient?.DisconnectAndStop());
-            _ = Task.Run(() => mAdamUdpMessageClient?.Stop());
-            _ = Task.Run(() => mAdamWebSocketClient?.DisconnectAsync());
-        }
+        //public static void DisconnectAll()
+        //{
+            //_ = Task.Run(()=> mAdamTcpClient?.DisconnectAndStop());
+            //_ = Task.Run(() => mAdamUdpMessageClient?.Stop());
+            //_ = Task.Run(() => mAdamWebSocketClient?.DisconnectAsync());
+        //}
 
         public static void DisconnectAllAndDestroy()
         {
-            DisconnectAll();
+            //DisconnectAll();
             
             if(mAdamTcpClient != null)
             {

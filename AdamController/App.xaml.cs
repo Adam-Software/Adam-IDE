@@ -44,6 +44,10 @@ using MahApps.Metro.Controls;
 
 using ControlzEx.Theming;
 using ICSharpCode.AvalonEdit.Highlighting;
+using AdamController.Services.AdamTcpClientDependency;
+using AdamController.Core.Properties;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -51,10 +55,18 @@ namespace AdamController
 {
     public partial class App : PrismApplication
     {
+        #region ~
+
+        public App()
+        {
+            SetupUnhandledExceptionHandling();
+        }
+
+        #endregion
+
         protected override Window CreateShell()
         {
             MainWindow window = Container.Resolve<MainWindow>();
-            
             return window;
         }
 
@@ -67,16 +79,16 @@ namespace AdamController
             _ = FolderHelper.CreateAppDataFolder();
 
             //TODO check theme before ChangeTheme
-            _ = ThemeManager.Current.ChangeTheme(this, $"{Core.Properties.Settings.Default.BaseTheme}.{Core.Properties.Settings.Default.ThemeColorScheme}", false);
+            _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
 
-            string ip = Core.Properties.Settings.Default.ServerIP;
-            int port = Core.Properties.Settings.Default.ApiPort;
+            string ip = Settings.Default.ServerIP;
+            int port = Settings.Default.ApiPort;
 
             Uri DefaultUri = new($"http://{ip}:{port}");
             WebApi.Client.v1.BaseApi.SetApiClientUri(DefaultUri);
 
-            string login = Core.Properties.Settings.Default.ApiLogin;
-            string password = Core.Properties.Settings.Default.ApiPassword;
+            string login = Settings.Default.ApiLogin;
+            string password = Settings.Default.ApiPassword;
 
             WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
         }
@@ -96,8 +108,27 @@ namespace AdamController
                 return new FlyoutManager(container, regionManager);
             });
 
-            //here must be ip/port
-            containerRegistry.RegisterSingleton<IAdamTcpClientService, AdamTcpClientService>();
+            containerRegistry.RegisterSingleton<IAdamTcpClientService>(containerRegistry =>
+            {
+                AdamTcpClientOption option = new()
+                {
+                    ReconnectCount = Settings.Default.ReconnectQtyComunicateTcpClient,
+                    ReconnectTimeout = Settings.Default.ReconnectTimeoutComunicateTcpClient
+                };
+
+                string ip = Settings.Default.ServerIP;
+                int port = Settings.Default.TcpConnectStatePort;
+
+                AdamTcpClientService client = new(ip, port, option);
+                return client;
+            });
+
+            containerRegistry.RegisterSingleton<ICommunicationProviderService>(containerRegistry =>
+            {
+                IAdamTcpClientService tcpClientService = containerRegistry.Resolve<IAdamTcpClientService>();
+                CommunicationProviderService communicationProvider = new(tcpClientService);
+                return communicationProvider;
+            });
 
             RegisterDialogs(containerRegistry);
         }
@@ -120,14 +151,14 @@ namespace AdamController
             moduleCatalog.AddModule<MenuRegionModule>();
             moduleCatalog.AddModule<ContentRegionModule>();
             moduleCatalog.AddModule<StatusBarRegionModule>();
-            moduleCatalog.AddModule<FlayoutsRegionModule>();   
+            moduleCatalog.AddModule<FlayoutsRegionModule>();
         }
 
         private static void LoadHighlighting()
         {
             try
             {
-                using var stream = new MemoryStream(Core.Properties.Resource.AdamPython);
+                using var stream = new MemoryStream(Resource.AdamPython);
                 using var reader = new XmlTextReader(stream);
                 HighlightingManager.Instance.RegisterHighlighting("AdamPython", Array.Empty<string>(),
                     ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance));
@@ -140,11 +171,75 @@ namespace AdamController
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Core.Properties.Settings.Default.BaseTheme = ThemeManager.Current.DetectTheme(Current).BaseColorScheme;
-            Core.Properties.Settings.Default.ThemeColorScheme = ThemeManager.Current.DetectTheme(Current).ColorScheme;
-            Core.Properties.Settings.Default.Save();
+            OnAppCrashOrExit();
 
             base.OnExit(e);
         }
+
+        private void OnAppCrashOrExit()
+        {
+            SaveSettiings();
+            DisposeServices();
+            Current.Shutdown();
+        }
+
+        private void SaveSettiings()
+        {
+            Settings.Default.BaseTheme = ThemeManager.Current.DetectTheme(Current).BaseColorScheme;
+            Settings.Default.ThemeColorScheme = ThemeManager.Current.DetectTheme(Current).ColorScheme;
+            Settings.Default.Save();
+        }
+
+        private void DisposeServices()
+        {
+            Container.Resolve<ISubRegionChangeAwareService>().Dispose();
+            Container.Resolve<IAdamTcpClientService>().Dispose();
+            Container.Resolve<ICommunicationProviderService>().Dispose();
+        }
+
+        #region Intercepting Unhandled Exception
+
+        private void SetupUnhandledExceptionHandling()
+        {
+            // Catch exceptions from all threads in the AppDomain.
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException", false);
+
+            // Catch exceptions from each AppDomain that uses a task scheduler for async operations.
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+                ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException", false);
+
+            // Catch exceptions from a single specific UI dispatcher thread.
+            Dispatcher.UnhandledException += (sender, args) =>
+            {
+                // If we are debugging, let Visual Studio handle the exception and take us to the code that threw it.
+                if (!Debugger.IsAttached)
+                {
+                    args.Handled = true;
+                    ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException", true);
+                }
+            };
+        }
+
+        private void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
+        {
+            var messageBoxTitle = $"An unexpected error has occurred: {unhandledExceptionType}";
+            var messageBoxMessage = $"The following exception occurred:\n\n{e}";
+            var messageBoxButtons = MessageBoxButton.OK;
+
+            if (promptUserForShutdown)
+            {
+                messageBoxMessage += "\n\nTo continue working, you need to exit the application. Can I do it now?";
+                messageBoxButtons = MessageBoxButton.YesNo;
+            }
+
+            // Let the user decide if the app should die or not (if applicable).
+            if (MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == MessageBoxResult.Yes)
+            {
+                OnAppCrashOrExit();
+            }
+        }
+
+        #endregion
     }
 }

@@ -142,13 +142,13 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
             if (ComunicateHelper.TcpClientIsConnected)
             {
-                ComunicateHelper.DisconnectAll();
+                //ComunicateHelper.DisconnectAll();
                 return;
             }
 
             if (!ComunicateHelper.TcpClientIsConnected)
             {
-                ComunicateHelper.ConnectAllAsync();
+                //ComunicateHelper.ConnectAllAsync();
                 return;
             }
         });

@@ -24,5 +24,7 @@ namespace AdamController.Services
             SubRegionChangeEventHandler raiseEvent = RaiseSubRegionChangeEvent;
             raiseEvent?.Invoke(this);
         }
+
+        public void Dispose(){}
     }
 }
