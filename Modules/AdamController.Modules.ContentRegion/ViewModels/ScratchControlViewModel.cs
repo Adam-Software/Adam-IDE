@@ -25,6 +25,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class ScratchControlViewModel : RegionViewModelBase 
     {
+
+        #region Services
+
+        private readonly ICommunicationProviderService mCommunicationProvider;
+
+        #endregion
+
         #region Action field 
 
         public static Action<string> SendSourceToScriptEditor { get; set; }
@@ -39,37 +46,21 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IMessageDialogManager IDialogManager;
         private bool mIsWarningStackOwerflowAlreadyShow;
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider) : base(regionManager, dialogService)
         {
+            mCommunicationProvider = communicationProvider;
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
             InitAction();
             PythonExecuteEvent();
-
-            ComunicateHelper.OnAdamTcpConnectedEvent += OnAdamTcpConnectedEvent;
-            ComunicateHelper.OnAdamTcpDisconnectedEvent += OnAdamTcpDisconnectedEvent;
         }
 
-        #region Navigation
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-           
-        }
-
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            
-        }
-
-        #endregion
-
-        private void OnAdamTcpDisconnectedEvent()
+        private void RaiseAdamTcpClientDisconnect(object sender)
         {
             UpdatePythonInfo();
         }
 
-        private async void OnAdamTcpConnectedEvent()
+        private async void RaiseAdamTcpCientConnected(object sender)
         {
             var pythonVersionResult = await BaseApi.GetPythonVersion();
             var pythonBinPathResult = await BaseApi.GetPythonBinDir();
@@ -81,6 +72,23 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             UpdatePythonInfo(pythonVersion, pythonBinPath, pythonWorkDir);
         }
+
+        #region Navigation
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            mCommunicationProvider.RaiseAdamTcpCientConnected -= RaiseAdamTcpCientConnected;
+            mCommunicationProvider.RaiseAdamTcpClientDisconnect -= RaiseAdamTcpClientDisconnect;
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            mCommunicationProvider.RaiseAdamTcpCientConnected += RaiseAdamTcpCientConnected;
+            mCommunicationProvider.RaiseAdamTcpClientDisconnect += RaiseAdamTcpClientDisconnect;
+        }
+
+        #endregion
+
 
         private void UpdatePythonInfo(string pythonVersion = "", string pythonBinPath = "", string pythonWorkDir = "")
         {
@@ -210,26 +218,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public bool IsEnabledStopExecuteButton
         {
             get => isEnabledStopExecuteButton;
-            set
-            {
-                if (value == isEnabledStopExecuteButton) return;
-                isEnabledStopExecuteButton = value;
-
-                SetProperty(ref isEnabledStopExecuteButton, value);
-            }
+            set => SetProperty(ref isEnabledStopExecuteButton, value);
         }
 
         private bool isEnabledShowOpenDialogButton = true;
         public bool IsEnabledShowOpenDialogButton
         {
             get => isEnabledShowOpenDialogButton;
-            set
-            {
-                if (value == isEnabledShowOpenDialogButton) return;
-                isEnabledShowOpenDialogButton = value;
-
-                SetProperty(ref isEnabledShowOpenDialogButton, value);
-            }
+            set => SetProperty(ref isEnabledShowOpenDialogButton, value);
         }
 
         #endregion
@@ -487,13 +483,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public int ResultTextEditorLength
         {
             get => resultTextEditorLength;
-            set
-            {
-                if (value == resultTextEditorLength) return;
-                resultTextEditorLength = value;
-
-                SetProperty(ref resultTextEditorLength, value);
-            }
+            set => SetProperty(ref resultTextEditorLength, value);
         }
 
         #endregion
@@ -522,39 +512,21 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public string PythonVersion
         {
             get => pythonVersion;
-            set
-            {
-                if (value == pythonVersion) return;
-                pythonVersion = value;
-
-                SetProperty(ref pythonVersion, value);
-            }
+            set => SetProperty(ref pythonVersion, value);
         }
 
         private string pythonBinPath;
         public string PythonBinPath
         {
             get => pythonBinPath;
-            set
-            {
-                if (value == pythonBinPath) return;
-                pythonBinPath = value;
-
-                SetProperty(ref pythonBinPath, value);
-            }
+            set => SetProperty(ref pythonBinPath, value);
         }
 
         private string pythonWorkDir;
         public string PythonWorkDir
         {
             get => pythonWorkDir;
-            set
-            {
-                if (value == pythonWorkDir) return;
-                pythonWorkDir = value;
-
-                SetProperty(ref pythonWorkDir, value);
-            }
+            set => SetProperty(ref pythonWorkDir, value);
         }
 
         #endregion
@@ -565,13 +537,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public string SourceTextEditor
         {
             get => sourceTextEditor;
-            set
-            {
-                if (value == sourceTextEditor) return;
-                sourceTextEditor = value;
-
-                SetProperty(ref sourceTextEditor, value);
-            }
+            set => SetProperty(ref sourceTextEditor, value);
         }
 
         #endregion
@@ -599,7 +565,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             string workspace = await ScratchControlView.ExecuteScript("getSavedWorkspace()");
             string xmlWorkspace = JsonConvert.DeserializeObject<dynamic>(workspace);
 
-            if (IDialogManager.ShowSaveFileDialog("Сохранить рабочую область", Core.Properties.Settings.Default.SavedUserWorkspaceFolderPath, "workspace", ".xml", "XML documents (.xml)|*.xml"))
+            if (IDialogManager.ShowSaveFileDialog("Сохранить рабочую область", Settings.Default.SavedUserWorkspaceFolderPath, "workspace", ".xml", "XML documents (.xml)|*.xml"))
             {
                 string path = IDialogManager.FilePathToSave;
                 await FileHelper.WriteAsync(path, xmlWorkspace);
@@ -667,12 +633,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 ResultTextEditor += $"Ошибка: {executeResult.StandardError}" +
                     "\n======================";
 
-        }, () => !string.IsNullOrEmpty(SourceTextEditor) && ComunicateHelper.TcpClientIsConnected);
+        }, () => !string.IsNullOrEmpty(SourceTextEditor) && mCommunicationProvider.IsTcpClientConnected);
 
         private DelegateCommand stopExecute;
         public DelegateCommand StopExecute => stopExecute ??= new DelegateCommand( async () =>
         {
-            if (ComunicateHelper.TcpClientIsConnected)
+            if (mCommunicationProvider.IsTcpClientConnected)
             {
                 try
                 {
@@ -697,7 +663,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 ResultTextEditorError = ex.Message.ToString();
             }
 
-        }, () => ComunicateHelper.TcpClientIsConnected);
+        }, () => mCommunicationProvider.IsTcpClientConnected);
 
         private DelegateCommand cleanExecuteEditor;
         public DelegateCommand CleanExecuteEditor => cleanExecuteEditor ??= new DelegateCommand(async () =>

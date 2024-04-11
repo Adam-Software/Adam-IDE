@@ -1,5 +1,4 @@
-﻿using AdamController.Core.Helpers;
-using AdamController.WebApi.Client.Common;
+﻿using AdamController.WebApi.Client.Common;
 using AdamController.WebApi.Client.v1.ResponseModel;
 
 namespace AdamController.Core.Helpers

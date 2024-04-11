@@ -13,14 +13,14 @@ namespace AdamController.Core.Helpers
     {
         #region Declaration delegates and events
 
-        public delegate void OnAdamTcpCientConnected();
-        public static event OnAdamTcpCientConnected OnAdamTcpConnectedEvent;
+        //public delegate void OnAdamTcpCientConnected();
+        //public static event OnAdamTcpCientConnected OnAdamTcpConnectedEvent;
 
-        public delegate void OnAdamTcpClientDisconnect();
-        public static event OnAdamTcpClientDisconnect OnAdamTcpDisconnectedEvent;
+        //public delegate void OnAdamTcpClientDisconnect();
+        //public static event OnAdamTcpClientDisconnect OnAdamTcpDisconnectedEvent;
 
-        public delegate void OnAdamTcpClientReconnected(int reconnectCount);
-        public static event OnAdamTcpClientReconnected OnAdamTcpReconnected;
+        //public delegate void OnAdamTcpClientReconnected(int reconnectCount);
+        //public static event OnAdamTcpClientReconnected OnAdamTcpReconnected;
 
         public delegate void OnAdamUdpServerReceived(string message);
         public static event OnAdamUdpServerReceived OnAdamLogServerUdpReceivedEvent;
@@ -30,10 +30,10 @@ namespace AdamController.Core.Helpers
 
         #endregion
 
-        public static bool TcpClientIsConnected => mAdamTcpClient != null && mAdamTcpClient.IsConnected;
+        //public static bool TcpClientIsConnected => mAdamTcpClient != null && mAdamTcpClient.IsConnected;
 
-        private static AdamTcpClientService mAdamTcpClient;
-        private static AdamUdpClient mAdamUdpMessageClient;
+        //private static AdamTcpClientService mAdamTcpClient;
+        //private static AdamUdpClient mAdamUdpMessageClient;
         private static AdamUdpServer mAdamUdpLogServer;
         private static AdamWebSocketClient mAdamWebSocketClient;
 
@@ -125,19 +125,19 @@ namespace AdamController.Core.Helpers
 
         #region TCP Client events
 
-        private static void TcpClientReceived(object sender, byte[] buffer, long offset, long size) {}
+        //private static void TcpClientReceived(object sender, byte[] buffer, long offset, long size) {}
 
-        private static void TcpClientError(object sender, SocketError error) {}
+        //private static void TcpClientError(object sender, SocketError error) {}
 
         private static void TcpClientDisconnected(object sender)
         {
             //OnAdamTcpDisconnectedEvent?.Invoke();
 
-            //if (mAdamUdpLogServer != null)
-            //{
-            //    if (mAdamUdpLogServer.IsStarted)
-            //        mAdamUdpLogServer?.Stop();
-            //}
+            if (mAdamUdpLogServer != null)
+            {
+                if (mAdamUdpLogServer.IsStarted)
+                    mAdamUdpLogServer?.Stop();
+            }
 
             if(mAdamWebSocketClient != null)
             {
@@ -150,8 +150,8 @@ namespace AdamController.Core.Helpers
         {
             //OnAdamTcpConnectedEvent?.Invoke();
             
-            //if(!mAdamUdpLogServer.IsStarted)
-            //    mAdamUdpLogServer?.Start();
+            if(!mAdamUdpLogServer.IsStarted)
+                mAdamUdpLogServer?.Start();
 
             //if (!mAdamWebSocketClient.IsStarted)
             mAdamWebSocketClient.ConnectAsync();
@@ -210,11 +210,11 @@ namespace AdamController.Core.Helpers
                 mAdamUdpLogServer = null;
             }
 
-            if(mAdamUdpMessageClient != null)
-            {
+            //if(mAdamUdpMessageClient != null)
+            //{
                 //mAdamUdpMessageClient.UdpClientReceived -= MessageClientUdpReceived;
                 mAdamUdpLogServer = null;
-            }
+            //}
 
             if(mAdamWebSocketClient != null)
             {
@@ -229,15 +229,15 @@ namespace AdamController.Core.Helpers
 
         #region Tcp/Udp/WebSocket send message
 
-        public static void SendTcpMessage(string message)
-        {
-            mAdamTcpClient.Send(message);
-        }
+        //public static void SendTcpMessage(string message)
+        //{
+        //    mAdamTcpClient.Send(message);
+        //}
 
-        public static void SendTcpMessageAsync(string message)
-        {
-            _ = Task.Run(() => SendTcpMessage(message)); 
-        }
+        //public static void SendTcpMessageAsync(string message)
+        //{
+        //    _ = Task.Run(() => SendTcpMessage(message)); 
+        //}
 
         public static void WebSocketSendTextMessage(string message) 
         {

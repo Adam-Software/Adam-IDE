@@ -1,6 +1,7 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using AdamController.Core.Helpers;
 using AdamController.Core.Properties;
+using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using System.Windows;
@@ -10,6 +11,12 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
     public class NotificationViewModel : FlyoutBase
     {
+        #region Services
+
+        private readonly ICommunicationProviderService mCommunicationProvider;
+
+        #endregion
+
         #region Const
 
         private const string cConnectButtonStatusDisconnected = "Подключить";
@@ -20,8 +27,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #region ~
 
-        public NotificationViewModel() 
+        public NotificationViewModel(ICommunicationProviderService communicationProvider) 
         {
+            mCommunicationProvider = communicationProvider;
+
             Theme = FlyoutTheme.Inverse;
             Header= "Центр уведомлений";
             IsModal = false;
@@ -35,14 +44,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         public Visibility NoNewNotificationMessageVisibility
         {
             get => noNewNotificationMessageVisibility;
-            set
-            {
-                if (value == noNewNotificationMessageVisibility) return;
-
-                noNewNotificationMessageVisibility = value;
-                SetProperty(ref noNewNotificationMessageVisibility, value);
-
-            }
+            set => SetProperty(ref noNewNotificationMessageVisibility, value);
         }
 
         private Visibility failConnectMessageVisibility = Visibility.Collapsed;
@@ -71,18 +73,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         public double NotificationOpacity
         {
             get => notificationOpacity;
-            set
-            {
-                if (value == notificationOpacity) return;
-
-                notificationOpacity = value;
-
-                SetProperty(ref notificationOpacity, value);
-            }
+            set => SetProperty(ref notificationOpacity, value);
         }
 
         #endregion
-
 
         #region NotificationBadge
         /* #16 */
@@ -100,13 +94,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         public string TextOnConnectFlayotButton
         {
             get => textOnConnectFlayotButton;
-            set
-            {
-                if (value == textOnConnectFlayotButton) return;
-
-                textOnConnectFlayotButton = value;
-                SetProperty(ref textOnConnectFlayotButton, value);
-            }
+            set => SetProperty(ref textOnConnectFlayotButton, value);
         }
 
         private PackIconMaterialKind iconOnConnectFlayoutButton;
@@ -140,15 +128,15 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             await Dispatcher.Yield(DispatcherPriority.Normal);
 
 
-            if (ComunicateHelper.TcpClientIsConnected)
+            if (mCommunicationProvider.IsTcpClientConnected)
             {
-                //ComunicateHelper.DisconnectAll();
+                mCommunicationProvider.DisconnectAllAsync();
                 return;
             }
 
-            if (!ComunicateHelper.TcpClientIsConnected)
+            if (!mCommunicationProvider.IsTcpClientConnected)
             {
-                //ComunicateHelper.ConnectAllAsync();
+                mCommunicationProvider.ConnectAllAsync();
                 return;
             }
         });

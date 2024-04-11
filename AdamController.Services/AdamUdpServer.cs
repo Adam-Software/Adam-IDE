@@ -1,9 +1,11 @@
 ﻿using NetCoreServer;
+using System;
 using System.Net;
 using System.Net.Sockets;
 
 namespace AdamController.Services
 {
+    [Obsolete]
     public class AdamUdpServer : UdpServer
     {
         public delegate void OnUdpServerReceived(EndPoint endpoint, byte[] buffer, long offset, long size);

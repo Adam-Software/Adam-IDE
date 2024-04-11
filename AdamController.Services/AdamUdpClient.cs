@@ -1,8 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 
 namespace AdamController.Services
 {
+    [Obsolete]
     public class AdamUdpClient : NetCoreServer.UdpServer
     {
         #region DelegateAndEvent

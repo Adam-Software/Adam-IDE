@@ -15,13 +15,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class ScriptEditorControlViewModel : RegionViewModelBase 
     {
+        #region Services
+
+        private readonly ICommunicationProviderService mCommunicationProvider;
+
+        #endregion
         public static Action<string> AppLogStatusBarAction { get; set; }
 
         private bool mIsWarningStackOwerflowAlreadyShow;
         private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
+        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider) : base(regionManager, dialogService)
         {
+            mCommunicationProvider = communicationProvider;
+
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
             InitAction();
             PythonExecuteEvent();
@@ -82,26 +89,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public string SourceTextEditor
         {
             get => sourceTextEditor;
-            set
-            {
-                if (value == sourceTextEditor) return;
-
-                sourceTextEditor = value;
-                SetProperty(ref sourceTextEditor, value);
-            }
+            set => SetProperty(ref sourceTextEditor, value);
         }
 
         private string selectedText;
         public string SelectedText
         {
             get => selectedText;
-            set
-            {
-                if (value == selectedText) return;
-
-                selectedText = value;
-                SetProperty(ref selectedText, value);
-            }
+            set => SetProperty(ref selectedText, value);
         }
 
         #endregion
@@ -143,13 +138,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public int ResultTextEditorLength
         {
             get => resultTextEditorLength;
-            set
-            {
-                if (value == resultTextEditorLength) return;
-
-                resultTextEditorLength = value;
-                SetProperty (ref resultTextEditorLength, value);
-            }
+            set => SetProperty(ref resultTextEditorLength, value);
         }
 
         #endregion
@@ -160,13 +149,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public bool IsCodeExecuted
         {
             get => isCodeExecuted;
-            set
-            {
-                if (value == isCodeExecuted) return;
-                isCodeExecuted = value;
-
-                SetProperty(ref isCodeExecuted, value);
-            }
+            set => SetProperty(ref isCodeExecuted, value);
         }
 
         #endregion
@@ -204,7 +187,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             try
             {
-                if(ComunicateHelper.TcpClientIsConnected)
+                if(mCommunicationProvider.IsTcpClientConnected)
                 {
                     var command = new WebApi.Client.v1.RequestModel.PythonCommand
                     {

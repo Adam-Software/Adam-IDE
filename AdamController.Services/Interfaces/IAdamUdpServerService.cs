@@ -1,20 +1,21 @@
-﻿using System;
+﻿
+using System;
 using System.Net;
-using System.Net.Sockets;
 
 namespace AdamController.Services.Interfaces
 {
+
     #region Delegate
 
-    public delegate void UdpClientReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size);
+    public delegate void UdpServerReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size);
 
     #endregion
 
-    public interface IAdamUdpClientService :  IDisposable
+    public interface IAdamUdpServerService : IDisposable
     {
         #region Events
 
-        public event UdpClientReceived RaiseUdpClientReceived;
+        public event UdpServerReceived RaiseUdpServerReceived;
 
         #endregion
 
@@ -26,10 +27,11 @@ namespace AdamController.Services.Interfaces
 
         #region Public methods
 
-        public bool Stop();
-
         public bool Start();
 
+        public bool Stop();
+
         #endregion
+
     }
 }

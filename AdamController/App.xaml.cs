@@ -86,17 +86,6 @@ namespace AdamController
 
             //TODO check theme before ChangeTheme
             _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
-
-            string ip = Settings.Default.ServerIP;
-            int port = Settings.Default.ApiPort;
-
-            Uri DefaultUri = new($"http://{ip}:{port}");
-            WebApi.Client.v1.BaseApi.SetApiClientUri(DefaultUri);
-
-            string login = Settings.Default.ApiLogin;
-            string password = Settings.Default.ApiPassword;
-
-            WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
         }
 
         protected override void OnInitialized()
@@ -104,6 +93,7 @@ namespace AdamController
             base.OnInitialized();
 
             StartServices();
+            StartWebApi();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -150,11 +140,26 @@ namespace AdamController
                 return client;
             });
 
+            containerRegistry.RegisterSingleton<IAdamUdpServerService>(containerRegistry =>
+            {
+                IPAddress ip = IPAddress.Any;
+                int port = Settings.Default.LogServerPort;
+
+                AdamUdpServerService server = new(ip, port)
+                {
+                    OptionDualMode = true,
+                    OptionReuseAddress = true
+                };
+
+                return server;
+            });
+
             containerRegistry.RegisterSingleton<ICommunicationProviderService>(containerRegistry =>
             {
                 IAdamTcpClientService tcpClientService = containerRegistry.Resolve<IAdamTcpClientService>();
                 IAdamUdpClientService udpClientService = containerRegistry.Resolve<IAdamUdpClientService>();
-                CommunicationProviderService communicationProvider = new(tcpClientService, udpClientService);
+                IAdamUdpServerService udpServerService = containerRegistry.Resolve<IAdamUdpServerService>();
+                CommunicationProviderService communicationProvider = new(tcpClientService, udpClientService, udpServerService);
                 return communicationProvider;
             });
 
@@ -165,6 +170,20 @@ namespace AdamController
         {
             if (Settings.Default.AutoStartTcpConnect)
                 Container.Resolve<ICommunicationProviderService>().ConnectAllAsync();
+        }
+
+        private void StartWebApi()
+        {
+            string ip = Settings.Default.ServerIP;
+            int port = Settings.Default.ApiPort;
+
+            Uri DefaultUri = new($"http://{ip}:{port}");
+            WebApi.Client.v1.BaseApi.SetApiClientUri(DefaultUri);
+
+            string login = Settings.Default.ApiLogin;
+            string password = Settings.Default.ApiPassword;
+
+            WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
         }
 
         private static void RegisterDialogs(IContainerRegistry containerRegistry)

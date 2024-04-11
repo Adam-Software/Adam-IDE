@@ -29,6 +29,12 @@ namespace AdamController.Services.Interfaces
 
         #endregion
 
+        #region Public fields
+
+        public bool IsTcpClientConnected { get; }
+
+        #endregion
+
         #region Public methods
 
         public void ConnectAllAsync();

@@ -13,6 +13,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class ComputerVisionControlViewModel : RegionViewModelBase
     {
+        #region Services
+
+        private readonly ICommunicationProviderService mCommunicationProvider;
+
+        #endregion
+
         #region private var
 
         private DelegateCommand<string> directionButtonCommandDown;
@@ -20,16 +26,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-        #region services
-
-        IFlyoutManager FlyoutManager { get; }
-        #endregion
-
         #region ~
 
-        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
+        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider) : base(regionManager, dialogService)
         {
-            FlyoutManager = flyoutManager;
+            mCommunicationProvider = communicationProvider;
         }
 
         #endregion
@@ -73,7 +74,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             var json = JsonConvert.SerializeObject(vectorSource);
 
             ComunicateHelper.WebSocketSendTextMessage(json);
-        }, canExecute => ComunicateHelper.TcpClientIsConnected);
+        }, canExecute =>  mCommunicationProvider.IsTcpClientConnected);
 
         /// <summary>
         /// Comamand execute when button up
@@ -93,7 +94,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             var json = JsonConvert.SerializeObject(vector);
             ComunicateHelper.WebSocketSendTextMessage(json);
 
-        }, canExecute => ComunicateHelper.TcpClientIsConnected);
+        }, canExecute => mCommunicationProvider.IsTcpClientConnected);
 
         private DelegateCommand toZeroPositionCommand;
         public DelegateCommand ToZeroPositionCommand => toZeroPositionCommand ??= new DelegateCommand(async () =>
@@ -107,7 +108,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
             }
 
-        }, () => ComunicateHelper.TcpClientIsConnected);
+        }, () => mCommunicationProvider.IsTcpClientConnected);
 
         private float sliderValue;
 
