@@ -49,6 +49,8 @@ namespace AdamController.Services.Interfaces
         /// </summary>
         public void DisconnectAllAndDestroy();
 
+        public void WebSocketSendTextMessage(string message);
+
         #endregion
     }
 }

@@ -4,6 +4,7 @@ using Websocket.Client;
 
 namespace AdamController.Services
 {
+    [Obsolete]
     public class AdamWebSocketClient : IDisposable
     {
 

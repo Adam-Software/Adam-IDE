@@ -154,12 +154,31 @@ namespace AdamController
                 return server;
             });
 
+            containerRegistry.RegisterSingleton<IAdamWebSocketClientService>(containerRegistry =>
+            {
+                string ip = Settings.Default.ServerIP;
+                int port = Settings.Default.SoketServerPort;
+
+                // debug
+                Uri uri = new($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement");
+
+                //work
+                //Uri uri = new($"ws://{ip}:{port}/adam-2.7/movement");
+
+                AdamWebSocketClientService client = new(uri);
+                return client;
+
+            });
+
             containerRegistry.RegisterSingleton<ICommunicationProviderService>(containerRegistry =>
             {
                 IAdamTcpClientService tcpClientService = containerRegistry.Resolve<IAdamTcpClientService>();
                 IAdamUdpClientService udpClientService = containerRegistry.Resolve<IAdamUdpClientService>();
                 IAdamUdpServerService udpServerService = containerRegistry.Resolve<IAdamUdpServerService>();
-                CommunicationProviderService communicationProvider = new(tcpClientService, udpClientService, udpServerService);
+                IAdamWebSocketClientService socketClientService = containerRegistry.Resolve<IAdamWebSocketClientService>();
+                
+                CommunicationProviderService communicationProvider = new(tcpClientService, udpClientService, udpServerService, socketClientService);
+
                 return communicationProvider;
             });
 

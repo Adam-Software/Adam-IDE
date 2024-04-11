@@ -78,7 +78,8 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void Button_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            ComunicateHelper.WebSocketSendTextMessage(DownRightDirection);
+            //There is no solution for this situation
+            //ComunicateHelper.WebSocketSendTextMessage(DownRightDirection);
         }
     }
 }

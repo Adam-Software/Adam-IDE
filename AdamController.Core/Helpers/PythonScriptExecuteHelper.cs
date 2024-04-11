@@ -20,7 +20,8 @@ namespace AdamController.Core.Helpers
 
         static PythonScriptExecuteHelper()
         {
-            ComunicateHelper.OnAdamMessageReceivedEvent += OnAdamMessageReceivedAsync;
+            //Change on comunication provider
+            //ComunicateHelper.OnAdamMessageReceivedEvent += OnAdamMessageReceivedAsync;
         }
 
         private static void OnAdamMessageReceivedAsync(string message)

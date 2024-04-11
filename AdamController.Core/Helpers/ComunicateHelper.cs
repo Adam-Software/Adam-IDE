@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace AdamController.Core.Helpers
 {
+    [Obsolete]
     public sealed class ComunicateHelper
     {
         #region Declaration delegates and events
@@ -22,11 +23,11 @@ namespace AdamController.Core.Helpers
         //public delegate void OnAdamTcpClientReconnected(int reconnectCount);
         //public static event OnAdamTcpClientReconnected OnAdamTcpReconnected;
 
-        public delegate void OnAdamUdpServerReceived(string message);
-        public static event OnAdamUdpServerReceived OnAdamLogServerUdpReceivedEvent;
+        //public delegate void OnAdamUdpServerReceived(string message);
+        //public static event OnAdamUdpServerReceived OnAdamLogServerUdpReceivedEvent;
 
-        public delegate void OnAdamUdpMessageReceived(string message);
-        public static event OnAdamUdpMessageReceived OnAdamMessageReceivedEvent;
+        //public delegate void OnAdamUdpMessageReceived(string message);
+        //public static event OnAdamUdpMessageReceived OnAdamMessageReceivedEvent;
 
         #endregion
 
@@ -34,14 +35,14 @@ namespace AdamController.Core.Helpers
 
         //private static AdamTcpClientService mAdamTcpClient;
         //private static AdamUdpClient mAdamUdpMessageClient;
-        private static AdamUdpServer mAdamUdpLogServer;
-        private static AdamWebSocketClient mAdamWebSocketClient;
+        //private static AdamUdpServer mAdamUdpLogServer;
+        //private static AdamWebSocketClient mAdamWebSocketClient;
 
         #region ~ 
 
         static ComunicateHelper()
         {
-            LazyInitializer();
+            //LazyInitializer();
         }
 
         private static void LazyInitializer()
@@ -63,16 +64,16 @@ namespace AdamController.Core.Helpers
             //        OptionReuseAddress = true
             //    };
 
-            mAdamUdpLogServer ??= new(IPAddress.Any, Settings.Default.LogServerPort)
-                {
-                    OptionDualMode = true,
-                    OptionReuseAddress = true
-                };
+            //mAdamUdpLogServer ??= new(IPAddress.Any, Settings.Default.LogServerPort)
+            //    {
+            //        OptionDualMode = true,
+            //        OptionReuseAddress = true
+            //    };
 
 #if DEBUG
-            mAdamWebSocketClient ??= new AdamWebSocketClient(new Uri($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement"));
+            //mAdamWebSocketClient ??= new AdamWebSocketClient(new Uri($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement"));
 #else
-            mAdamWebSocketClient ??= new AdamWebSocketClient(new Uri($"ws://{Settings.Default.ServerIP}:{Settings.Default.SoketServerPort}/adam-2.7/movement")); 
+            //mAdamWebSocketClient ??= new AdamWebSocketClient(new Uri($"ws://{Settings.Default.ServerIP}:{Settings.Default.SoketServerPort}/adam-2.7/movement")); 
 #endif
 
 
@@ -82,12 +83,12 @@ namespace AdamController.Core.Helpers
             //mAdamTcpClient.RaiseTcpClientReceived += TcpClientReceived;
             //mAdamTcpClient.RaiseTcpClientReconnected += TcpClientReconnected;
 
-            mAdamWebSocketClient.WebSocketConnectedEvent += WebSocketConnectedEvent;
-            mAdamWebSocketClient.WebSocketClientReceivedEvent += WebSocketClientReceived;
-            mAdamWebSocketClient.WebSocketClientDisconnectedEvent += WebSocketClientDisconnectedEvent;
+            //mAdamWebSocketClient.WebSocketConnectedEvent += WebSocketConnectedEvent;
+            //mAdamWebSocketClient.WebSocketClientReceivedEvent += WebSocketClientReceived;
+            //mAdamWebSocketClient.WebSocketClientDisconnectedEvent += WebSocketClientDisconnectedEvent;
             
             //mAdamUdpMessageClient.UdpClientReceived += MessageClientUdpReceived;
-            mAdamUdpLogServer.UdpServerReceived += UdpServerReceived;
+            //mAdamUdpLogServer.UdpServerReceived += UdpServerReceived;
         }
 
         private static void WebSocketClientDisconnectedEvent()
@@ -115,11 +116,11 @@ namespace AdamController.Core.Helpers
 
         #region Udp Server events
 
-        private static void UdpServerReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            OnAdamLogServerUdpReceivedEvent?.Invoke(encodedMessage);
-        }
+        //private static void UdpServerReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
+        //{
+       //     string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+       //     OnAdamLogServerUdpReceivedEvent?.Invoke(encodedMessage);
+        //}
 
         #endregion
 
@@ -133,28 +134,28 @@ namespace AdamController.Core.Helpers
         {
             //OnAdamTcpDisconnectedEvent?.Invoke();
 
-            if (mAdamUdpLogServer != null)
-            {
-                if (mAdamUdpLogServer.IsStarted)
-                    mAdamUdpLogServer?.Stop();
-            }
+            //if (mAdamUdpLogServer != null)
+            //{
+            //    if (mAdamUdpLogServer.IsStarted)
+            //        mAdamUdpLogServer?.Stop();
+            //}
 
-            if(mAdamWebSocketClient != null)
-            {
+            //if(mAdamWebSocketClient != null)
+            //{
                 //if (mAdamWebSocketClient.IsRunning)
-                mAdamWebSocketClient.DisconnectAsync();
-            }
+            //    mAdamWebSocketClient.DisconnectAsync();
+            //}
         }
 
         private static void TcpCientConnected(object sender)
         {
             //OnAdamTcpConnectedEvent?.Invoke();
             
-            if(!mAdamUdpLogServer.IsStarted)
-                mAdamUdpLogServer?.Start();
+            //if(!mAdamUdpLogServer.IsStarted)
+            //    mAdamUdpLogServer?.Start();
 
             //if (!mAdamWebSocketClient.IsStarted)
-            mAdamWebSocketClient.ConnectAsync();
+            //mAdamWebSocketClient.ConnectAsync();
         }
 
         //private static void TcpClientReconnected(object sender, int reconnectCount)
@@ -204,25 +205,25 @@ namespace AdamController.Core.Helpers
             //    mAdamTcpClient = null;
             //}
 
-            if(mAdamUdpLogServer != null)
-            {
-                mAdamUdpLogServer.UdpServerReceived -= UdpServerReceived;
-                mAdamUdpLogServer = null;
-            }
+            //if(mAdamUdpLogServer != null)
+            //{
+            //    mAdamUdpLogServer.UdpServerReceived -= UdpServerReceived;
+            //    mAdamUdpLogServer = null;
+            //}
 
             //if(mAdamUdpMessageClient != null)
             //{
                 //mAdamUdpMessageClient.UdpClientReceived -= MessageClientUdpReceived;
-                mAdamUdpLogServer = null;
+                //mAdamUdpLogServer = null;
             //}
 
-            if(mAdamWebSocketClient != null)
-            {
-                mAdamWebSocketClient.WebSocketConnectedEvent -= WebSocketConnectedEvent;
-                mAdamWebSocketClient.WebSocketClientReceivedEvent -= WebSocketClientReceived;
-                mAdamWebSocketClient.WebSocketClientDisconnectedEvent -= WebSocketClientDisconnectedEvent;
+            //if(mAdamWebSocketClient != null)
+            //{
+            //    mAdamWebSocketClient.WebSocketConnectedEvent -= WebSocketConnectedEvent;
+            //    mAdamWebSocketClient.WebSocketClientReceivedEvent -= WebSocketClientReceived;
+            //    mAdamWebSocketClient.WebSocketClientDisconnectedEvent -= WebSocketClientDisconnectedEvent;
                 //mAdamWebSocketClient.Dispose();
-            }
+            //}
         }
 
         #endregion
@@ -239,10 +240,10 @@ namespace AdamController.Core.Helpers
         //    _ = Task.Run(() => SendTcpMessage(message)); 
         //}
 
-        public static void WebSocketSendTextMessage(string message) 
-        {
-            Task.Run(() => mAdamWebSocketClient.SendTextAsync(message));
-        }
+        //public static void WebSocketSendTextMessage(string message) 
+        //{
+            //Task.Run(() => mAdamWebSocketClient.SendTextAsync(message));
+        //}
 
         #endregion
     }

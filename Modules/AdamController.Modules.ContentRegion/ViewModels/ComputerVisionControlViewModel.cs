@@ -73,7 +73,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             
             var json = JsonConvert.SerializeObject(vectorSource);
 
-            ComunicateHelper.WebSocketSendTextMessage(json);
+            mCommunicationProvider.WebSocketSendTextMessage(json);
         }, canExecute =>  mCommunicationProvider.IsTcpClientConnected);
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             };
 
             var json = JsonConvert.SerializeObject(vector);
-            ComunicateHelper.WebSocketSendTextMessage(json);
+            mCommunicationProvider.WebSocketSendTextMessage(json);
 
         }, canExecute => mCommunicationProvider.IsTcpClientConnected);
 
