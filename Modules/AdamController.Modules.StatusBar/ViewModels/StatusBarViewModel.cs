@@ -48,8 +48,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
             //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
 
-            mCommunicationProviderService.RaiseAdamTcpCientConnected += RaiseAdamTcpCientConnected;
-            mCommunicationProviderService.RaiseAdamTcpClientDisconnect += RaiseAdamTcpClientDisconnect;
+            mCommunicationProviderService.RaiseTcpCientConnected += RaiseAdamTcpCientConnected;
+            mCommunicationProviderService.RaiseTcpClientDisconnect += RaiseAdamTcpClientDisconnect;
         }
 
         #endregion

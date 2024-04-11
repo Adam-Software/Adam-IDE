@@ -9,20 +9,20 @@ namespace AdamController.Services
     {
         #region Events
 
-        public event AdamTcpCientConnected RaiseAdamTcpCientConnected;
-        public event AdamTcpClientDisconnect RaiseAdamTcpClientDisconnect;
-        public event AdamTcpClientReconnected RaiseAdamTcpClientReconnected;
-        public event AdamUdpServerReceived RaiseAdamUdpServerReceived;
-        public event AdamUdpClientReceived RaiseAdamUdpClientReceived;
+        public event TcpCientConnected RaiseTcpCientConnected;
+        public event TcpClientDisconnect RaiseTcpClientDisconnect;
+        public event TcpClientReconnected RaiseTcpClientReconnected;
+        public event UdpServerReceived RaiseUdpServerReceived;
+        public event UdpClientReceived RaiseUdpClientReceived;
 
         #endregion
 
         #region Services
 
-        private readonly ITcpClientService mAdamTcpClientService;
-        private readonly IUdpClientService mAdamUdpClientService;
-        private readonly IUdpServerService mAadamUdpServerService;
-        private readonly IWebSocketClientService mAdamWebSocketClientService;
+        private readonly ITcpClientService mTcpClientService;
+        private readonly IUdpClientService mUdpClientService;
+        private readonly IUdpServerService mUdpServerService;
+        private readonly IWebSocketClientService mWebSocketClientService;
 
         #endregion
 
@@ -31,10 +31,10 @@ namespace AdamController.Services
         public CommunicationProviderService(ITcpClientService adamTcpClientService, IUdpClientService adamUdpClientService, 
             IUdpServerService adamUdpServerService, IWebSocketClientService adamWebSocketClientService)
         {
-            mAdamTcpClientService = adamTcpClientService;
-            mAdamUdpClientService = adamUdpClientService;
-            mAadamUdpServerService = adamUdpServerService;
-            mAdamWebSocketClientService = adamWebSocketClientService;
+            mTcpClientService = adamTcpClientService;
+            mUdpClientService = adamUdpClientService;
+            mUdpServerService = adamUdpServerService;
+            mWebSocketClientService = adamWebSocketClientService;
 
             Subscribe();
         }
@@ -51,25 +51,25 @@ namespace AdamController.Services
 
         public void ConnectAllAsync()
         {
-            _ = Task.Run(mAdamTcpClientService.ConnectAsync);
-            _ = Task.Run(mAdamUdpClientService.Start);
-            _ = Task.Run(mAadamUdpServerService.Start);
-            _ = Task.Run(mAdamWebSocketClientService.ConnectAsync);
+            _ = Task.Run(mTcpClientService.ConnectAsync);
+            _ = Task.Run(mUdpClientService.Start);
+            _ = Task.Run(mUdpServerService.Start);
+            _ = Task.Run(mWebSocketClientService.ConnectAsync);
         }
 
         public void DisconnectAllAsync()
         {
-            _ = Task.Run(mAdamTcpClientService.DisconnectAndStop);
-            _ = Task.Run(mAdamUdpClientService.Stop);
-            _ = Task.Run(mAadamUdpServerService.Stop);
-            _ = Task.Run(mAdamWebSocketClientService.DisconnectAsync);
+            _ = Task.Run(mTcpClientService.DisconnectAndStop);
+            _ = Task.Run(mUdpClientService.Stop);
+            _ = Task.Run(mUdpServerService.Stop);
+            _ = Task.Run(mWebSocketClientService.DisconnectAsync);
         }
 
-        public void DisconnectAllAndDestroy() {}
+        //public void DisconnectAllAndDestroy() {}
 
         public void WebSocketSendTextMessage(string message)
         {
-            Task.Run(() => mAdamWebSocketClientService.SendTextAsync(message));
+            Task.Run(() => mWebSocketClientService.SendTextAsync(message));
         }
 
         public void Dispose()
@@ -77,10 +77,10 @@ namespace AdamController.Services
             DisconnectAllAsync();
             Unsubscribe();
 
-            mAdamTcpClientService.Dispose();
-            mAdamUdpClientService.Dispose();
-            mAadamUdpServerService.Dispose();
-            mAdamWebSocketClientService.Dispose();
+            mTcpClientService.Dispose();
+            mUdpClientService.Dispose();
+            mUdpServerService.Dispose();
+            mWebSocketClientService.Dispose();
         }
 
         #endregion
@@ -93,99 +93,99 @@ namespace AdamController.Services
 
         private void Subscribe()
         {
-            mAdamTcpClientService.RaiseTcpClientReconnected += RaiseTcpClientReconnected;
-            mAdamTcpClientService.RaiseTcpCientConnected += RaiseTcpCientConnected;
-            mAdamTcpClientService.RaiseTcpClientDisconnected += RaiseTcpClientDisconnected;
-            mAdamUdpClientService.RaiseUdpClientReceived += RaiseUdpClientReceived;
-            mAadamUdpServerService.RaiseUdpServerReceived += RaiseUdpServerReceived;
+            mTcpClientService.RaiseTcpClientReconnected += RaiseTcpClientReconnected;
+            mTcpClientService.RaiseTcpCientConnected += RaiseTcpCientConnected;
+            mTcpClientService.RaiseTcpClientDisconnected += RaiseTcpClientDisconnected;
+            mUdpClientService.RaiseUdpClientReceived += RaiseUdpClientReceived;
+            mUdpServerService.RaiseUdpServerReceived += RaiseUdpServerReceived;
         }
 
         private void Unsubscribe()
         {
-            mAdamTcpClientService.RaiseTcpClientReconnected -= RaiseTcpClientReconnected;
-            mAdamTcpClientService.RaiseTcpCientConnected -= RaiseTcpCientConnected;
-            mAdamTcpClientService.RaiseTcpClientDisconnected -= RaiseTcpClientDisconnected;
-            mAdamUdpClientService.RaiseUdpClientReceived -= RaiseUdpClientReceived;
-            mAadamUdpServerService.RaiseUdpServerReceived -= RaiseUdpServerReceived;
+            mTcpClientService.RaiseTcpClientReconnected -= RaiseServiceTcpClientReconnected;
+            mTcpClientService.RaiseTcpCientConnected -= RaiseServiceTcpCientConnected;
+            mTcpClientService.RaiseTcpClientDisconnected -= RaiseTcpClientDisconnected;
+            mUdpClientService.RaiseUdpClientReceived -= RaiseServiceUdpClientReceived;
+            mUdpServerService.RaiseUdpServerReceived -= RaiseServiceUdpServerReceived;
         }
 
         #endregion
 
         #region Event methods
 
-        private void RaiseTcpCientConnected(object sender)
+        private void RaiseServiceTcpCientConnected(object sender)
         {
             IsTcpClientConnected = true;
 
-            OnRaiseAdamTcpCientConnected();
+            OnRaiseTcpCientConnected();
 
-            mAdamUdpClientService.Start();
-            mAadamUdpServerService.Start();
-            mAdamWebSocketClientService.ConnectAsync();
+            mUdpClientService.Start();
+            mUdpServerService.Start();
+            mWebSocketClientService.ConnectAsync();
         }
 
         private void RaiseTcpClientDisconnected(object sender)
         {
             IsTcpClientConnected = false;
 
-            OnRaiseAdamTcpClientDisconnect();
+            OnRaiseTcpClientDisconnect();
 
-            mAdamUdpClientService.Stop();
-            mAadamUdpServerService.Stop();
-            mAdamWebSocketClientService.DisconnectAsync();
+            mUdpClientService.Stop();
+            mUdpServerService.Stop();
+            mWebSocketClientService.DisconnectAsync();
         }
 
-        private void RaiseTcpClientReconnected(object sender, int reconnectCount)
+        private void RaiseServiceTcpClientReconnected(object sender, int reconnectCount)
         {
-            OnRaiseAdamTcpClientReconnected(reconnectCount);
+            OnRaiseTcpClientReconnected(reconnectCount);
         }
 
-        private void RaiseUdpClientReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            string encodedMessage = Encoding.UTF8.GetString(buffer);
-            //string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            OnRaiseAdamUdpClientReceived(encodedMessage);
-        }
-
-
-        private void RaiseUdpServerReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
+        private void RaiseServiceUdpClientReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             string encodedMessage = Encoding.UTF8.GetString(buffer);
             //string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            OnRaiseAdamUdpServerReceived(encodedMessage);
+            OnRaiseUdpClientReceived(encodedMessage);
+        }
+
+
+        private void RaiseServiceUdpServerReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
+        {
+            string encodedMessage = Encoding.UTF8.GetString(buffer);
+            //string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+            OnRaiseUdpServerReceived(encodedMessage);
         }
 
         #endregion
 
         #region OnRaise events
 
-        protected virtual void OnRaiseAdamTcpCientConnected()
+        protected virtual void OnRaiseTcpCientConnected()
         {
-            AdamTcpCientConnected raiseEvent = RaiseAdamTcpCientConnected;
+            TcpCientConnected raiseEvent = RaiseTcpCientConnected;
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnRaiseAdamTcpClientDisconnect()
+        protected virtual void OnRaiseTcpClientDisconnect()
         {
-            AdamTcpClientDisconnect raiseEvent = RaiseAdamTcpClientDisconnect;
+            TcpClientDisconnect raiseEvent = RaiseTcpClientDisconnect;
             raiseEvent?.Invoke(this);
         }
 
-        public virtual void OnRaiseAdamTcpClientReconnected(int reconnectCounter)
+        public virtual void OnRaiseTcpClientReconnected(int reconnectCounter)
         {
-            AdamTcpClientReconnected raiseEvent = RaiseAdamTcpClientReconnected;
+            TcpClientReconnected raiseEvent = RaiseTcpClientReconnected;
             raiseEvent?.Invoke(this, reconnectCounter);
         }
 
-        protected virtual void OnRaiseAdamUdpServerReceived(string message)
+        protected virtual void OnRaiseUdpServerReceived(string message)
         {
-            AdamUdpServerReceived raiseEvent = RaiseAdamUdpServerReceived;
+            UdpServerReceived raiseEvent = RaiseUdpServerReceived;
             raiseEvent?.Invoke(this, message);
         }
 
-        protected virtual void OnRaiseAdamUdpClientReceived(string message)
+        protected virtual void OnRaiseUdpClientReceived(string message)
         {
-            AdamUdpClientReceived raiseEvent = RaiseAdamUdpClientReceived;
+            UdpClientReceived raiseEvent = RaiseUdpClientReceived;
             raiseEvent?.Invoke(this, message);
         }
 
