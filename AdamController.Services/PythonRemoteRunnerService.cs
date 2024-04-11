@@ -99,13 +99,13 @@ namespace AdamController.Services
 
         private void Subscribe()
         {
-            mCommunicationProvider.RaiseUdpClientReceived += RaiseUdpClientReceived;
+            mCommunicationProvider.RaiseUdpServiceClientReceived += RaiseUdpClientReceived;
         }
 
 
         private void Unsubscribe() 
         {
-            mCommunicationProvider.RaiseUdpClientReceived -= RaiseUdpClientReceived;
+            mCommunicationProvider.RaiseUdpServiceClientReceived -= RaiseUdpClientReceived;
         }
 
 

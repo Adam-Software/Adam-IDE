@@ -55,12 +55,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             PythonExecuteEvent();
         }
 
-        private void RaiseAdamTcpClientDisconnect(object sender)
+        private void RaiseTcperviceClientDisconnect(object sender)
         {
             UpdatePythonInfo();
         }
 
-        private async void RaiseAdamTcpCientConnected(object sender)
+        private async void RaiseTcpServiceCientConnected(object sender)
         {
             var pythonVersionResult = await BaseApi.GetPythonVersion();
             var pythonBinPathResult = await BaseApi.GetPythonBinDir();
@@ -77,14 +77,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            mCommunicationProvider.RaiseAdamTcpCientConnected -= RaiseAdamTcpCientConnected;
-            mCommunicationProvider.RaiseAdamTcpClientDisconnect -= RaiseAdamTcpClientDisconnect;
+            mCommunicationProvider.RaiseTcpServiceCientConnected -= RaiseTcpServiceCientConnected;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnect -= RaiseTcperviceClientDisconnect;
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            mCommunicationProvider.RaiseAdamTcpCientConnected += RaiseAdamTcpCientConnected;
-            mCommunicationProvider.RaiseAdamTcpClientDisconnect += RaiseAdamTcpClientDisconnect;
+            mCommunicationProvider.RaiseTcpServiceCientConnected += RaiseTcpServiceCientConnected;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnect += RaiseTcperviceClientDisconnect;
         }
 
         #endregion
