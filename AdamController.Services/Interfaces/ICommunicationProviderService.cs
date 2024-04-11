@@ -25,6 +25,8 @@ namespace AdamController.Services.Interfaces
         public event AdamUdpServerReceived RaiseAdamUdpServerReceived;
         public event AdamUdpMessageReceived RaiseAdamUdpMessageReceived;
 
+
+
         #endregion
 
         #region Public methods

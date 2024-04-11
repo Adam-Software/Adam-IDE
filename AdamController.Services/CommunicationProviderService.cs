@@ -1,4 +1,6 @@
 ﻿using AdamController.Services.Interfaces;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AdamController.Services
@@ -18,12 +20,14 @@ namespace AdamController.Services
         #region Services
 
         private readonly IAdamTcpClientService mAdamTcpClientService;
+        private readonly IAdamUdpClientService mAdamUdpClientService;
 
         #endregion
 
-        public CommunicationProviderService(IAdamTcpClientService adamTcpClientService)
+        public CommunicationProviderService(IAdamTcpClientService adamTcpClientService, IAdamUdpClientService adamUdpClientService)
         {
             mAdamTcpClientService = adamTcpClientService;
+            mAdamUdpClientService = adamUdpClientService;
 
             Subscribe();
         }
@@ -32,16 +36,16 @@ namespace AdamController.Services
 
         public void ConnectAllAsync()
         {
-            mAdamTcpClientService.ConnectAsync();
-            //_ = Task.Run();
-            //_ = Task.Run(() => mAdamUdpMessageClient?.Start());
+            
+            _ = Task.Run(mAdamTcpClientService.ConnectAsync);
+            _ = Task.Run(mAdamUdpClientService.Start);
             //_ = Task.Run(() => mAdamWebSocketClient?.ConnectAsync());
         }
 
         public void DisconnectAllAsync()
         {
             _ = Task.Run(mAdamTcpClientService.DisconnectAndStop);
-            //_ = Task.Run(() => mAdamUdpMessageClient?.Stop());
+            _ = Task.Run(mAdamUdpClientService.Stop);
             //_ = Task.Run(() => mAdamWebSocketClient?.DisconnectAsync());
         }
 
@@ -51,6 +55,9 @@ namespace AdamController.Services
         {
             DisconnectAllAsync();
             Unsubscribe();
+
+            mAdamTcpClientService.Dispose();
+            mAdamUdpClientService.Dispose();
         }
 
         #endregion
@@ -66,6 +73,8 @@ namespace AdamController.Services
             mAdamTcpClientService.RaiseTcpClientReconnected += RaiseTcpClientReconnected;
             mAdamTcpClientService.RaiseTcpCientConnected += RaiseTcpCientConnected;
             mAdamTcpClientService.RaiseTcpClientDisconnected += RaiseTcpClientDisconnected;
+
+            mAdamUdpClientService.RaiseUdpClientReceived += RaiseUdpClientReceived;
         }
 
         private void Unsubscribe()
@@ -73,6 +82,8 @@ namespace AdamController.Services
             mAdamTcpClientService.RaiseTcpClientReconnected -= RaiseTcpClientReconnected;
             mAdamTcpClientService.RaiseTcpCientConnected -= RaiseTcpCientConnected;
             mAdamTcpClientService.RaiseTcpClientDisconnected -= RaiseTcpClientDisconnected;
+
+            mAdamUdpClientService.RaiseUdpClientReceived -= RaiseUdpClientReceived;
         }
 
         #endregion
@@ -86,6 +97,9 @@ namespace AdamController.Services
 
             //if (!mAdamUdpLogServer.IsStarted)
             //    mAdamUdpLogServer?.Start();
+
+            //if(!mAdamUdpClientService.IsStarted)
+            mAdamUdpClientService.Start();
 
             //if (!mAdamWebSocketClient.IsStarted)
             //mAdamWebSocketClient.ConnectAsync();
@@ -102,6 +116,9 @@ namespace AdamController.Services
             //        mAdamUdpLogServer?.Stop();
             //}
 
+            //if(mAdamUdpClientService.IsStarted)
+            mAdamUdpClientService.Stop();
+
             //if (mAdamWebSocketClient != null)
             //{
                 //if (mAdamWebSocketClient.IsRunning)
@@ -113,6 +130,12 @@ namespace AdamController.Services
         {
             //OnAdamTcpReconnected?.Invoke(reconnectCount);
             OnRaiseAdamTcpClientReconnected(reconnectCount);
+        }
+
+        private void RaiseUdpClientReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
+        {
+            string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+            OnRaiseAdamUdpMessageReceived(encodedMessage);
         }
 
         #endregion

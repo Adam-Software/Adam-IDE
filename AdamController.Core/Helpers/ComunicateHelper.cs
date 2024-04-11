@@ -57,11 +57,11 @@ namespace AdamController.Core.Helpers
                 //mAdamTcpClient = new(Settings.Default.ServerIP, Settings.Default.TcpConnectStatePort, option);
             //}
 
-            mAdamUdpMessageClient ??= new(IPAddress.Any, int.Parse(Settings.Default.MessageDataExchangePort))
-                {
-                    OptionDualMode = true,
-                    OptionReuseAddress = true
-                };
+            //mAdamUdpMessageClient ??= new(IPAddress.Any, int.Parse(Settings.Default.MessageDataExchangePort))
+            //    {
+            //        OptionDualMode = true,
+            //        OptionReuseAddress = true
+            //    };
 
             mAdamUdpLogServer ??= new(IPAddress.Any, Settings.Default.LogServerPort)
                 {
@@ -86,7 +86,7 @@ namespace AdamController.Core.Helpers
             mAdamWebSocketClient.WebSocketClientReceivedEvent += WebSocketClientReceived;
             mAdamWebSocketClient.WebSocketClientDisconnectedEvent += WebSocketClientDisconnectedEvent;
             
-            mAdamUdpMessageClient.UdpClientReceived += MessageClientUdpReceived;
+            //mAdamUdpMessageClient.UdpClientReceived += MessageClientUdpReceived;
             mAdamUdpLogServer.UdpServerReceived += UdpServerReceived;
         }
 
@@ -105,11 +105,11 @@ namespace AdamController.Core.Helpers
             //throw new System.NotImplementedException();
         }
 
-        private static void MessageClientUdpReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            OnAdamMessageReceivedEvent?.Invoke(encodedMessage);
-        }
+        //private static void MessageClientUdpReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
+        //{
+        //    string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+        //    OnAdamMessageReceivedEvent?.Invoke(encodedMessage);
+        //}
 
         #endregion
 
@@ -131,13 +131,13 @@ namespace AdamController.Core.Helpers
 
         private static void TcpClientDisconnected(object sender)
         {
-            OnAdamTcpDisconnectedEvent?.Invoke();
+            //OnAdamTcpDisconnectedEvent?.Invoke();
 
-            if (mAdamUdpLogServer != null)
-            {
-                if (mAdamUdpLogServer.IsStarted)
-                    mAdamUdpLogServer?.Stop();
-            }
+            //if (mAdamUdpLogServer != null)
+            //{
+            //    if (mAdamUdpLogServer.IsStarted)
+            //        mAdamUdpLogServer?.Stop();
+            //}
 
             if(mAdamWebSocketClient != null)
             {
@@ -148,19 +148,19 @@ namespace AdamController.Core.Helpers
 
         private static void TcpCientConnected(object sender)
         {
-            OnAdamTcpConnectedEvent?.Invoke();
+            //OnAdamTcpConnectedEvent?.Invoke();
             
-            if(!mAdamUdpLogServer.IsStarted)
-                mAdamUdpLogServer?.Start();
+            //if(!mAdamUdpLogServer.IsStarted)
+            //    mAdamUdpLogServer?.Start();
 
             //if (!mAdamWebSocketClient.IsStarted)
             mAdamWebSocketClient.ConnectAsync();
         }
 
-        private static void TcpClientReconnected(object sender, int reconnectCount)
-        {
-            OnAdamTcpReconnected?.Invoke(reconnectCount);
-        }
+        //private static void TcpClientReconnected(object sender, int reconnectCount)
+        //{
+        //    OnAdamTcpReconnected?.Invoke(reconnectCount);
+        //}
 
         #endregion
 
@@ -193,16 +193,16 @@ namespace AdamController.Core.Helpers
         {
             //DisconnectAll();
             
-            if(mAdamTcpClient != null)
-            {
-                mAdamTcpClient.RaiseTcpCientConnected -= TcpCientConnected;
-                mAdamTcpClient.RaiseTcpClientDisconnected -= TcpClientDisconnected;
-                mAdamTcpClient.RaiseTcpClientError -= TcpClientError;
-                mAdamTcpClient.RaiseTcpClientReceived -= TcpClientReceived;
-                mAdamTcpClient.RaiseTcpClientReconnected -= TcpClientReconnected;
+            //if(mAdamTcpClient != null)
+            //{
+                //mAdamTcpClient.RaiseTcpCientConnected -= TcpCientConnected;
+                //mAdamTcpClient.RaiseTcpClientDisconnected -= TcpClientDisconnected;
+                //mAdamTcpClient.RaiseTcpClientError -= TcpClientError;
+                //mAdamTcpClient.RaiseTcpClientReceived -= TcpClientReceived;
+                //mAdamTcpClient.RaiseTcpClientReconnected -= TcpClientReconnected;
                 
-                mAdamTcpClient = null;
-            }
+            //    mAdamTcpClient = null;
+            //}
 
             if(mAdamUdpLogServer != null)
             {
@@ -212,7 +212,7 @@ namespace AdamController.Core.Helpers
 
             if(mAdamUdpMessageClient != null)
             {
-                mAdamUdpMessageClient.UdpClientReceived -= MessageClientUdpReceived;
+                //mAdamUdpMessageClient.UdpClientReceived -= MessageClientUdpReceived;
                 mAdamUdpLogServer = null;
             }
 

@@ -51,6 +51,7 @@ using System.Threading.Tasks;
 using AdamController.ViewModels;
 using AdamController.Core.Mvvm;
 using System.Windows.Navigation;
+using System.Net;
 
 #endregion
 
@@ -135,10 +136,25 @@ namespace AdamController
                 return client;
             });
 
+            containerRegistry.RegisterSingleton<IAdamUdpClientService>(containerRegistry =>
+            {
+                IPAddress ip = IPAddress.Any;
+                int port = int.Parse(Settings.Default.MessageDataExchangePort);
+
+                AdamUdpClientService client = new(ip, port)
+                {
+                    OptionDualMode = true,
+                    OptionReuseAddress = true
+                };
+
+                return client;
+            });
+
             containerRegistry.RegisterSingleton<ICommunicationProviderService>(containerRegistry =>
             {
                 IAdamTcpClientService tcpClientService = containerRegistry.Resolve<IAdamTcpClientService>();
-                CommunicationProviderService communicationProvider = new(tcpClientService);
+                IAdamUdpClientService udpClientService = containerRegistry.Resolve<IAdamUdpClientService>();
+                CommunicationProviderService communicationProvider = new(tcpClientService, udpClientService);
                 return communicationProvider;
             });
 
@@ -210,11 +226,11 @@ namespace AdamController
 
         /// <summary>
         /// The priority of resource release is important!
+        /// FirstRun/LastStop
         /// </summary>
         private void DisposeServices()
         {
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
-            Container.Resolve<IAdamTcpClientService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();
         }
 
