@@ -1,6 +1,4 @@
-﻿using AdamController.Controls.CustomControls.Services;
-using AdamController.Core.Helpers;
-using AdamController.Core.Model;
+﻿using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;

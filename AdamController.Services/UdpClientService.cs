@@ -3,11 +3,11 @@ using System.Net;
 
 namespace AdamController.Services
 {
-    public class AdamUdpClientService : NetCoreServer.UdpServer, IAdamUdpClientService
+    public class UdpClientService : NetCoreServer.UdpServer, IUdpClientService
     {
         public event UdpClientReceived RaiseUdpClientReceived;
 
-        public AdamUdpClientService(IPAddress address, int port) : base(address, port) { }
+        public UdpClientService(IPAddress address, int port) : base(address, port) { }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {

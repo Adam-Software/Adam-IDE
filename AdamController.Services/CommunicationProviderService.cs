@@ -13,23 +13,23 @@ namespace AdamController.Services
         public event AdamTcpClientDisconnect RaiseAdamTcpClientDisconnect;
         public event AdamTcpClientReconnected RaiseAdamTcpClientReconnected;
         public event AdamUdpServerReceived RaiseAdamUdpServerReceived;
-        public event AdamUdpMessageReceived RaiseAdamUdpMessageReceived;
+        public event AdamUdpClientReceived RaiseAdamUdpClientReceived;
 
         #endregion
 
         #region Services
 
-        private readonly IAdamTcpClientService mAdamTcpClientService;
-        private readonly IAdamUdpClientService mAdamUdpClientService;
-        private readonly IAdamUdpServerService mAadamUdpServerService;
-        private readonly IAdamWebSocketClientService mAdamWebSocketClientService;
+        private readonly ITcpClientService mAdamTcpClientService;
+        private readonly IUdpClientService mAdamUdpClientService;
+        private readonly IUdpServerService mAadamUdpServerService;
+        private readonly IWebSocketClientService mAdamWebSocketClientService;
 
         #endregion
 
         #region ~
 
-        public CommunicationProviderService(IAdamTcpClientService adamTcpClientService, IAdamUdpClientService adamUdpClientService, 
-            IAdamUdpServerService adamUdpServerService, IAdamWebSocketClientService adamWebSocketClientService)
+        public CommunicationProviderService(ITcpClientService adamTcpClientService, IUdpClientService adamUdpClientService, 
+            IUdpServerService adamUdpServerService, IWebSocketClientService adamWebSocketClientService)
         {
             mAdamTcpClientService = adamTcpClientService;
             mAdamUdpClientService = adamUdpClientService;
@@ -51,7 +51,6 @@ namespace AdamController.Services
 
         public void ConnectAllAsync()
         {
-            
             _ = Task.Run(mAdamTcpClientService.ConnectAsync);
             _ = Task.Run(mAdamUdpClientService.Start);
             _ = Task.Run(mAadamUdpServerService.Start);
@@ -97,9 +96,7 @@ namespace AdamController.Services
             mAdamTcpClientService.RaiseTcpClientReconnected += RaiseTcpClientReconnected;
             mAdamTcpClientService.RaiseTcpCientConnected += RaiseTcpCientConnected;
             mAdamTcpClientService.RaiseTcpClientDisconnected += RaiseTcpClientDisconnected;
-
             mAdamUdpClientService.RaiseUdpClientReceived += RaiseUdpClientReceived;
-
             mAadamUdpServerService.RaiseUdpServerReceived += RaiseUdpServerReceived;
         }
 
@@ -108,9 +105,7 @@ namespace AdamController.Services
             mAdamTcpClientService.RaiseTcpClientReconnected -= RaiseTcpClientReconnected;
             mAdamTcpClientService.RaiseTcpCientConnected -= RaiseTcpCientConnected;
             mAdamTcpClientService.RaiseTcpClientDisconnected -= RaiseTcpClientDisconnected;
-
             mAdamUdpClientService.RaiseUdpClientReceived -= RaiseUdpClientReceived;
-
             mAadamUdpServerService.RaiseUdpServerReceived -= RaiseUdpServerReceived;
         }
 
@@ -149,7 +144,7 @@ namespace AdamController.Services
         {
             string encodedMessage = Encoding.UTF8.GetString(buffer);
             //string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            OnRaiseAdamUdpMessageReceived(encodedMessage);
+            OnRaiseAdamUdpClientReceived(encodedMessage);
         }
 
 
@@ -188,9 +183,9 @@ namespace AdamController.Services
             raiseEvent?.Invoke(this, message);
         }
 
-        protected virtual void OnRaiseAdamUdpMessageReceived(string message)
+        protected virtual void OnRaiseAdamUdpClientReceived(string message)
         {
-            AdamUdpMessageReceived raiseEvent = RaiseAdamUdpMessageReceived;
+            AdamUdpClientReceived raiseEvent = RaiseAdamUdpClientReceived;
             raiseEvent?.Invoke(this, message);
         }
 

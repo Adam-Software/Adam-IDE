@@ -1,9 +1,4 @@
-﻿using ICSharpCode.AvalonEdit.CodeCompletion;
-using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.AvalonEdit.Editing;
-using System;
-
-namespace AdamController.Core.Model
+﻿namespace AdamController.Core.Model
 {
 	//TODO Rename this (as Autocomplete or etc)
     /*public class EditorModel : ICompletionData

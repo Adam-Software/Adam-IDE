@@ -14,7 +14,7 @@ namespace AdamController.Services.Interfaces
 
     #endregion
 
-    public interface IAdamTcpClientService : IDisposable
+    public interface ITcpClientService : IDisposable
     {
         
         #region Events

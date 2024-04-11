@@ -12,7 +12,7 @@ namespace AdamController.Services.Interfaces
 
     #endregion
 
-    public interface IAdamWebSocketClientService : IDisposable
+    public interface IWebSocketClientService : IDisposable
     {
         #region Events
 

@@ -33,9 +33,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-
-
-
         #region Navigation
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)

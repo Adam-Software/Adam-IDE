@@ -44,14 +44,11 @@ using MahApps.Metro.Controls;
 
 using ControlzEx.Theming;
 using ICSharpCode.AvalonEdit.Highlighting;
-using AdamController.Services.AdamTcpClientDependency;
 using AdamController.Core.Properties;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using AdamController.ViewModels;
-using AdamController.Core.Mvvm;
-using System.Windows.Navigation;
 using System.Net;
+using AdamController.Services.TcpClientDependency;
 
 #endregion
 
@@ -111,9 +108,9 @@ namespace AdamController
                 return new FlyoutManager(container, regionManager);
             });
 
-            containerRegistry.RegisterSingleton<IAdamTcpClientService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<ITcpClientService>(containerRegistry =>
             {
-                AdamTcpClientOption option = new()
+                TcpClientOption option = new()
                 {
                     ReconnectCount = Settings.Default.ReconnectQtyComunicateTcpClient,
                     ReconnectTimeout = Settings.Default.ReconnectTimeoutComunicateTcpClient
@@ -122,16 +119,16 @@ namespace AdamController
                 string ip = Settings.Default.ServerIP;
                 int port = Settings.Default.TcpConnectStatePort;
 
-                AdamTcpClientService client = new(ip, port, option);
+                TcpClientService client = new(ip, port, option);
                 return client;
             });
 
-            containerRegistry.RegisterSingleton<IAdamUdpClientService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IUdpClientService>(containerRegistry =>
             {
                 IPAddress ip = IPAddress.Any;
                 int port = int.Parse(Settings.Default.MessageDataExchangePort);
 
-                AdamUdpClientService client = new(ip, port)
+                UdpClientService client = new(ip, port)
                 {
                     OptionDualMode = true,
                     OptionReuseAddress = true
@@ -140,12 +137,12 @@ namespace AdamController
                 return client;
             });
 
-            containerRegistry.RegisterSingleton<IAdamUdpServerService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IUdpServerService>(containerRegistry =>
             {
                 IPAddress ip = IPAddress.Any;
                 int port = Settings.Default.LogServerPort;
 
-                AdamUdpServerService server = new(ip, port)
+                UdpServerService server = new(ip, port)
                 {
                     OptionDualMode = true,
                     OptionReuseAddress = true
@@ -154,28 +151,28 @@ namespace AdamController
                 return server;
             });
 
-            containerRegistry.RegisterSingleton<IAdamWebSocketClientService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IWebSocketClientService>(containerRegistry =>
             {
                 string ip = Settings.Default.ServerIP;
                 int port = Settings.Default.SoketServerPort;
 
-                // debug
+                // debug, use only with debug server, which runs separately, not as a service
                 Uri uri = new($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement");
 
-                //work
-                //Uri uri = new($"ws://{ip}:{port}/adam-2.7/movement");
+                // work in production, connect to socket-server run as service
+                // Uri uri = new($"ws://{ip}:{port}/adam-2.7/movement");
 
-                AdamWebSocketClientService client = new(uri);
+                WebSocketClientService client = new(uri);
                 return client;
 
             });
 
             containerRegistry.RegisterSingleton<ICommunicationProviderService>(containerRegistry =>
             {
-                IAdamTcpClientService tcpClientService = containerRegistry.Resolve<IAdamTcpClientService>();
-                IAdamUdpClientService udpClientService = containerRegistry.Resolve<IAdamUdpClientService>();
-                IAdamUdpServerService udpServerService = containerRegistry.Resolve<IAdamUdpServerService>();
-                IAdamWebSocketClientService socketClientService = containerRegistry.Resolve<IAdamWebSocketClientService>();
+                ITcpClientService tcpClientService = containerRegistry.Resolve<ITcpClientService>();
+                IUdpClientService udpClientService = containerRegistry.Resolve<IUdpClientService>();
+                IUdpServerService udpServerService = containerRegistry.Resolve<IUdpServerService>();
+                IWebSocketClientService socketClientService = containerRegistry.Resolve<IWebSocketClientService>();
                 
                 CommunicationProviderService communicationProvider = new(tcpClientService, udpClientService, udpServerService, socketClientService);
 
@@ -208,7 +205,6 @@ namespace AdamController
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
-            containerRegistry.RegisterDialog<NetworkTestView, NetworkTestViewModel>();
         }
 
         protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)

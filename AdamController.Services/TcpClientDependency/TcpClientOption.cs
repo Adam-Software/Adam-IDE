@@ -1,6 +1,6 @@
-﻿namespace AdamController.Services.AdamTcpClientDependency
+﻿namespace AdamController.Services.TcpClientDependency
 {
-    public class AdamTcpClientOption
+    public class TcpClientOption
     {
         /// <summary>
         /// The number of reconnections when the connection is lost

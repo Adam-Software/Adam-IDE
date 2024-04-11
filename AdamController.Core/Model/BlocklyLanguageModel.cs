@@ -8,33 +8,15 @@ namespace AdamController.Core.Model
         private BlocklyLanguage blocklyLanguage;
         public BlocklyLanguage BlocklyLanguage 
         {
-            get { return blocklyLanguage; }
-            set
-            {
-                if (value == blocklyLanguage)
-                {
-                    return;
-                }
-
-                blocklyLanguage = value;
-                //OnPropertyChanged(nameof(BlocklyLanguage));
-            }
+            get => blocklyLanguage;
+            set => SetProperty(ref blocklyLanguage, value);
         }
 
         private string languageName;
         public string LanguageName 
-        { 
-            get { return languageName; }
-            set 
-            {
-                if (value == languageName)
-                {
-                    return;
-                }
-
-                languageName = value;
-                //OnPropertyChanged(nameof(LanguageName));
-            } 
+        {
+            get => languageName;
+            set => SetProperty(ref languageName, value);
         }
     }
 }

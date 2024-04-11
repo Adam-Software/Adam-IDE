@@ -8,7 +8,7 @@ namespace AdamController.Services.Interfaces
     public delegate void AdamTcpClientDisconnect(object sender);
     public delegate void AdamTcpClientReconnected(object sender, int reconnectCounter);
     public delegate void AdamUdpServerReceived(object sender, string message);
-    public delegate void AdamUdpMessageReceived(object sender, string message);
+    public delegate void AdamUdpClientReceived(object sender, string message);
 
     #endregion
 
@@ -23,7 +23,7 @@ namespace AdamController.Services.Interfaces
         public event AdamTcpClientDisconnect RaiseAdamTcpClientDisconnect;
         public event AdamTcpClientReconnected RaiseAdamTcpClientReconnected;
         public event AdamUdpServerReceived RaiseAdamUdpServerReceived;
-        public event AdamUdpMessageReceived RaiseAdamUdpMessageReceived;
+        public event AdamUdpClientReceived RaiseAdamUdpClientReceived;
 
 
 

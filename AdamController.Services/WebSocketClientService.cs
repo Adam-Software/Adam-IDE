@@ -5,7 +5,7 @@ using Websocket.Client;
 
 namespace AdamController.Services
 {
-    public class AdamWebSocketClientService : IAdamWebSocketClientService
+    public class WebSocketClientService : IWebSocketClientService
     {
         #region Events
 
@@ -23,7 +23,7 @@ namespace AdamController.Services
 
         #region ~
 
-        public AdamWebSocketClientService(Uri url)
+        public WebSocketClientService(Uri url)
         {
             mWebsocketClient = new(url)
             {

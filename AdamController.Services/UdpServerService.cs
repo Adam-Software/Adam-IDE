@@ -4,7 +4,7 @@ using System.Net;
 
 namespace AdamController.Services
 {
-    public class AdamUdpServerService : UdpServer, IAdamUdpServerService
+    public class UdpServerService : UdpServer, IUdpServerService
     {
         #region Events
 
@@ -14,7 +14,7 @@ namespace AdamController.Services
 
         #region ~
 
-        public AdamUdpServerService(IPAddress address, int port) : base(address, port){}
+        public UdpServerService(IPAddress address, int port) : base(address, port){}
 
         #endregion
 

@@ -77,10 +77,6 @@
                           Command="{Binding ShowDialogCommand}"
                           CommandParameter="{x:Static core:DialogNames.SettingsDialog}"/>
 
-                <MenuItem Header="Тест сети" 
-                          Command="{Binding ShowDialogCommand}"
-                          CommandParameter="{x:Static core:DialogNames.NetworkTestDialog}"/>
-
             </MenuItem>
             
         </Menu>

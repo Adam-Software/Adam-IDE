@@ -1,5 +1,5 @@
-﻿using AdamController.Services.AdamTcpClientDependency;
-using AdamController.Services.Interfaces;
+﻿using AdamController.Services.Interfaces;
+using AdamController.Services.TcpClientDependency;
 using System;
 using System.Net.Sockets;
 using System.Threading;
@@ -7,7 +7,7 @@ using System.Threading;
 namespace AdamController.Services
 {
 
-    public class AdamTcpClientService : NetCoreServer.TcpClient, IAdamTcpClientService
+    public class TcpClientService : NetCoreServer.TcpClient, ITcpClientService
     {
         #region Events
 
@@ -32,7 +32,7 @@ namespace AdamController.Services
 
         #region ~
 
-        public AdamTcpClientService(string address, int port, AdamTcpClientOption option) : base(address, port) 
+        public TcpClientService(string address, int port, TcpClientOption option) : base(address, port) 
         {
             ReconnectCount = option.ReconnectCount;
             ReconnectTimeout = option.ReconnectTimeout;
