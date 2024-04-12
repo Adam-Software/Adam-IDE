@@ -35,15 +35,21 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Navigation
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
         {
-
+            base.ConfirmNavigationRequest(navigationContext, continuationCallback);
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-
+            base.OnNavigatedTo(navigationContext);
         }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+        }
+
 
         #endregion
 

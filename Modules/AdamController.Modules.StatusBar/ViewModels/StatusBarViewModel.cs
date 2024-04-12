@@ -6,6 +6,7 @@ using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using System;
 
 namespace AdamController.Modules.StatusBarRegion.ViewModels
 {
@@ -43,77 +44,76 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mCommunicationProviderService = communicationProviderService;
 
             OpenNotificationPanelDelegateCommand = new DelegateCommand(OpenNotificationPanel, OpenNotificationPanelCanExecute);
-
-            //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
-            //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
-            //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
-
-            mCommunicationProviderService.RaiseTcpServiceCientConnected += RaiseAdamTcpCientConnected;
-            mCommunicationProviderService.RaiseTcpServiceClientDisconnect += RaiseAdamTcpClientDisconnect;
         }
 
         #endregion
 
-        #region public fields
+        #region Navigation
+
+        public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        {
+            base.ConfirmNavigationRequest(navigationContext, continuationCallback);
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            Subscribe();
+
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            Unsubscribe();
+
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+
+        #endregion
+
+        #region Public fields
 
         private bool progressRingStart;
         public bool ProgressRingStart
         {
             get { return progressRingStart; }
-            set
-            {
-                SetProperty(ref progressRingStart, value);
-            }
+            set { SetProperty(ref progressRingStart, value); }
         }
 
         private string compileLogStatusBar = cCompileLogStatusBar;
         public string CompileLogStatusBar
         {
             get { return compileLogStatusBar; }
-            set
-            {
-                SetProperty(ref compileLogStatusBar, value);
-            }
+            set { SetProperty(ref compileLogStatusBar, value); }
         }
 
         private string appLogStatusBar = cAppLogStatusBar;
         public string AppLogStatusBar
         {
             get { return appLogStatusBar; }
-            set
-            {   
-                SetProperty(ref appLogStatusBar, value);
-            }
+            set { SetProperty(ref appLogStatusBar, value); }
         }
 
         private PackIconModernKind connectIcon = PackIconModernKind.Connect;
         public PackIconModernKind ConnectIcon
         {
             get { return connectIcon; }
-            set
-            {
-                SetProperty(ref connectIcon, value);
-            }
+            set { SetProperty(ref connectIcon, value); }
         }
 
         private string textOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
         public string TextOnStatusConnectToolbar
         {
             get { return textOnStatusConnectToolbar; }
-            set
-            {
-                SetProperty(ref textOnStatusConnectToolbar, value);
-            }
+            set { SetProperty(ref textOnStatusConnectToolbar, value); }
         }
 
         private string notificationBadge;
         public string NotificationBadge
         {
             get { return notificationBadge; }
-            set
-            {
-                SetProperty(ref notificationBadge, value);
-            }
+            set { SetProperty(ref notificationBadge, value); }
         }
 
         #endregion
@@ -140,6 +140,27 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
                 NotificationBadge = $"{BadgeCounter}";
             }
+        }
+
+        #endregion
+
+        #region Subscribes
+
+        private void Subscribe()
+        {
+            //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
+            //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
+            //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
+
+            mCommunicationProviderService.RaiseTcpServiceCientConnected += RaiseAdamTcpCientConnected;
+            mCommunicationProviderService.RaiseTcpServiceClientDisconnect += RaiseAdamTcpClientDisconnect;
+
+        }
+
+        private void Unsubscribe() 
+        {
+            mCommunicationProviderService.RaiseTcpServiceCientConnected -= RaiseAdamTcpCientConnected;
+            mCommunicationProviderService.RaiseTcpServiceClientDisconnect -= RaiseAdamTcpClientDisconnect;
         }
 
         #endregion

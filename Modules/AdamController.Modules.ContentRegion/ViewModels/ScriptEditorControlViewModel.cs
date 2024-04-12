@@ -18,6 +18,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Services
 
         private readonly ICommunicationProviderService mCommunicationProvider;
+        private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
 
         #endregion
         public static Action<string> AppLogStatusBarAction { get; set; }
@@ -25,60 +26,125 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private bool mIsWarningStackOwerflowAlreadyShow;
         private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider) : base(regionManager, dialogService)
+        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
+            mPythonRemoteRunner = pythonRemoteRunner;
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
             InitAction();
-            PythonExecuteEvent();
+            //PythonExecuteEvent();
         }
+
+        #region Navigation
+
+        public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        {
+            base.ConfirmNavigationRequest(navigationContext, continuationCallback);
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            mPythonRemoteRunner.RaisePythonScriptExecuteStart += OnRaisePythonScriptExecuteStart;
+            mPythonRemoteRunner.RaisePythonStandartOutput += OnRaisePythonStandartOutput;
+            mPythonRemoteRunner.RaisePythonScriptExecuteFinish += OnRaisePythonScriptExecuteFinish;
+
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            mPythonRemoteRunner.RaisePythonScriptExecuteStart -= OnRaisePythonScriptExecuteStart;
+            mPythonRemoteRunner.RaisePythonStandartOutput -= OnRaisePythonStandartOutput;
+            mPythonRemoteRunner.RaisePythonScriptExecuteFinish -= OnRaisePythonScriptExecuteFinish;
+
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+
+        #endregion
+
+        #region Event methods
+
+        private void OnRaisePythonScriptExecuteStart(object sender)
+        {
+            ResultTextEditor = string.Empty;
+            IsCodeExecuted = true;
+            mIsWarningStackOwerflowAlreadyShow = false;
+        }
+
+        private void OnRaisePythonStandartOutput(object sender, string message)
+        {
+            if (ResultTextEditorLength > 10000)
+            {
+                if (!mIsWarningStackOwerflowAlreadyShow)
+                {
+                    ResultTextEditor += "\nДальнейший вывод результата, приведет к переполнению буфера, поэтому будет скрыт.";
+                    ResultTextEditor += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
+                    ResultTextEditor += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
+
+                    mIsWarningStackOwerflowAlreadyShow = true;
+                }
+
+                return;
+            }
+
+            ResultTextEditor += message;
+        }
+
+        private void OnRaisePythonScriptExecuteFinish(object sender, string message)
+        {
+            IsCodeExecuted = false;
+            ResultTextEditor += message;
+        }
+
+        #endregion
 
         #region Python execute event
 
         private void PythonExecuteEvent()
         {
-            PythonScriptExecuteHelper.OnExecuteStartEvent += (message) =>
-            {
+            //PythonScriptExecuteHelper.OnExecuteStartEvent += (message) =>
+            //{
                 //if (MainWindowViewModel.GetSelectedPageIndex != 1)
                 //    return;
 
-                ResultTextEditor = string.Empty;
-                IsCodeExecuted = true;
-                mIsWarningStackOwerflowAlreadyShow = false;
-                ResultTextEditor += message;
-            };
+                //ResultTextEditor = string.Empty;
+                //IsCodeExecuted = true;
+                //mIsWarningStackOwerflowAlreadyShow = false;
+                //ResultTextEditor += message;
+            //};
 
-            PythonScriptExecuteHelper.OnStandartOutputEvent += (message) => 
-            {
+            //PythonScriptExecuteHelper.OnStandartOutputEvent += (message) => 
+            //{
                 //if (MainWindowViewModel.GetSelectedPageIndex != 1)
                 //    return;
 
-                if (ResultTextEditorLength > 10000)
-                {
-                    if (!mIsWarningStackOwerflowAlreadyShow)
-                    {
-                        ResultTextEditor += "\nДальнейший вывод результата, приведет к переполнению буфера, поэтому будет скрыт.";
-                        ResultTextEditor += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
-                        ResultTextEditor += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
+                //if (ResultTextEditorLength > 10000)
+                //{
+                    //if (!mIsWarningStackOwerflowAlreadyShow)
+                    //{
+                    //    ResultTextEditor += "\nДальнейший вывод результата, приведет к переполнению буфера, поэтому будет скрыт.";
+                    //    ResultTextEditor += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
+                    //    ResultTextEditor += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
 
-                        mIsWarningStackOwerflowAlreadyShow = true;
-                    }
+                    //    mIsWarningStackOwerflowAlreadyShow = true;
+                    //}
 
-                    return;
-                }
+                    //return;
+                //}
 
-                ResultTextEditor += message;
-            };
+                //ResultTextEditor += message;
+            //};
             
-            PythonScriptExecuteHelper.OnExecuteFinishEvent += (message) =>
-            {
+            //PythonScriptExecuteHelper.OnExecuteFinishEvent += (message) =>
+            //{
                 //if (MainWindowViewModel.GetSelectedPageIndex != 1)
                 //    return;
 
-                IsCodeExecuted = false;
-                ResultTextEditor += message;
-            };
+                //IsCodeExecuted = false;
+                //ResultTextEditor += message;
+            //};
         }
 
         #endregion

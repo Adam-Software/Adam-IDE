@@ -140,16 +140,16 @@ namespace AdamController.Services
 
         private void RaiseServiceUdpClientReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            string encodedMessage = Encoding.UTF8.GetString(buffer);
-            //string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+            //string encodedMessage = Encoding.UTF8.GetString(buffer);
+            string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             OnRaiseUdpServiceClientReceived(encodedMessage);
         }
 
 
         private void RaiseServiceUdpServerReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            string encodedMessage = Encoding.UTF8.GetString(buffer);
-            //string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+            //string encodedMessage = Encoding.UTF8.GetString(buffer);
+            string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             OnRaiseUdpServiceServerReceived(encodedMessage);
         }
 

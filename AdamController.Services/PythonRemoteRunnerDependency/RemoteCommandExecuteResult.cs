@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace AdamController.Core.Model
+namespace AdamController.Services.PythonRemoteRunnerDependency
 {
-    [Obsolete]
-    public class CommandExecuteResult
+    public class RemoteCommandExecuteResult
     {
         /// <summary>
         /// The succeeded status of an executable.

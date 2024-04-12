@@ -1,7 +1,6 @@
 ﻿using AdamController.WebApi.Client.v1.ResponseModel;
 using Newtonsoft.Json;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Web;
 
 namespace AdamController.WebApi.Client.Common
@@ -10,6 +9,7 @@ namespace AdamController.WebApi.Client.Common
     {
         #region public extensions
 
+        [Obsolete]
         /// <summary>
         /// Deserealize jsonString to CommandExecuteResult
         /// </summary>

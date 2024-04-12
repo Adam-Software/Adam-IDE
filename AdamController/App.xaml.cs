@@ -179,6 +179,14 @@ namespace AdamController
                 return communicationProvider;
             });
 
+            containerRegistry.RegisterSingleton<IPythonRemoteRunnerService>(containerRegistry =>
+            {
+                ICommunicationProviderService communicationProvider = containerRegistry.Resolve<ICommunicationProviderService>();
+
+                PythonRemoteRunnerService remoteRunnerService = new(communicationProvider);
+                return remoteRunnerService;
+            });
+
             RegisterDialogs(containerRegistry);
         }
 
@@ -294,6 +302,13 @@ namespace AdamController
 
         private void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
         {
+            if (e.HResult == -2146233088)
+            {
+                // This message disables an error about the inability to connect to the websocket server.
+                // As a temporary measure. Service errors should be handled in the services themselves
+                if (e.InnerException.Source == "Websocket.Client")
+                    return;
+            }
             var messageBoxTitle = $"An unexpected error has occurred: {unhandledExceptionType}";
             var messageBoxMessage = $"The following exception occurred:\n\n{e}";
             var messageBoxButtons = MessageBoxButton.OK;

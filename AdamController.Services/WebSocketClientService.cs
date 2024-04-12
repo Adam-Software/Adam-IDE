@@ -47,7 +47,7 @@ namespace AdamController.Services
 
         public Task ConnectAsync()
         {
-            return mWebsocketClient.StartOrFail();
+            return  mWebsocketClient.StartOrFail();
         }
 
         public Task<bool> DisconnectAsync()

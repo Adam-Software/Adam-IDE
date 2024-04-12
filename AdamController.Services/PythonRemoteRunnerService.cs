@@ -1,4 +1,5 @@
 ﻿using AdamController.Services.Interfaces;
+using AdamController.Services.PythonRemoteRunnerDependency;
 
 namespace AdamController.Services
 {
@@ -26,10 +27,16 @@ namespace AdamController.Services
 
         #endregion
 
+        #region ~
+
         public PythonRemoteRunnerService(ICommunicationProviderService communicationProvider) 
         {
             mCommunicationProvider = communicationProvider;
+
+            Subscribe();
         }
+
+        #endregion
 
         #region Public method
 
@@ -47,7 +54,6 @@ namespace AdamController.Services
             switch (message)
             {
                 case cStartMessage:
-                    //OnExecuteStartEvent.Invoke(string.Empty);
                     OnRaisePythonScriptExecuteStart();
                     break;
 
@@ -55,27 +61,31 @@ namespace AdamController.Services
                     break;
 
                 case string result when result.StartsWith(cFinishMessage):
-                    //OnExecuteFinishEvent.Invoke(FinishExecuteMessage(message.Remove(0, 6)));
-                    break;
-
+                    {
+                        var cleanMessage = message.Remove(0, 6);
+                        var finishMessage = ParseFinishExecuteMessage(cleanMessage);
+                        OnRaisePythonScriptExecuteFinish(finishMessage);
+                        break;
+                    }
+                    
                 default:
-                    var messagen = $"{message}";
-                    OnRaisePythonStandartOutput(messagen);
-                    //OnStandartOutputEvent.Invoke($"{message}\n");
-                    break;
+                    {
+                        OnRaisePythonStandartOutput($"{message}\n");
+                        break;
+                    }
             }
         }
 
-        private static string FinishExecuteMessage(string resultJson = null)
+        private static string ParseFinishExecuteMessage(string resultJson = null)
         {
             string message = "\n======================\n<<Выполнение программы завершено>>";
 
             if (string.IsNullOrEmpty(resultJson))
                 return message;
 
-            //CommandExecuteResult executeResult = resultJson.ToCommandResult();
+            RemoteCommandExecuteResult executeResult = resultJson.ToCommandResult();
 
-            /*string messageWithResult = $"{message}\n" +
+            string messageWithResult = $"{message}\n" +
                 $"\n" +
                 $"Отчет о выполнении\n" +
                 $"======================\n" +
@@ -88,11 +98,11 @@ namespace AdamController.Services
 
             if (!string.IsNullOrEmpty(executeResult.StandardError))
                 messageWithResult += $"Ошибка: {executeResult.StandardError}" +
-                    $"\n======================\n";*/
+                    $"\n======================\n";
 
-            return null; //messageWithResult;
-
+            return messageWithResult;
         }
+
         #endregion
 
         #region Subscribses
@@ -128,10 +138,10 @@ namespace AdamController.Services
             raiseEvent?.Invoke(this, message);  
         }
 
-        protected virtual void OnRaisePythonScriptExecuteStart(string message = "")
+        protected virtual void OnRaisePythonScriptExecuteStart()
         {
             PythonScriptExecuteStart raiseEvent = RaisePythonScriptExecuteStart;
-            raiseEvent?.Invoke(this, message);
+            raiseEvent?.Invoke(this);
         }
 
         protected virtual void OnRaisePythonScriptExecuteFinish(string message)

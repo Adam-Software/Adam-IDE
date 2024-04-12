@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using System;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
@@ -29,6 +30,25 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
+        }
+
+        #endregion
+
+        #region Navigation
+
+        public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        {
+            base.ConfirmNavigationRequest(navigationContext, continuationCallback);
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
         }
 
         #endregion

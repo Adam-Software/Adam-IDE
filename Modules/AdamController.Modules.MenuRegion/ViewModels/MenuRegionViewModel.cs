@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System.Windows;
+using System;
 
 namespace AdamController.Modules.MenuRegion.ViewModels
 {
@@ -20,6 +21,25 @@ namespace AdamController.Modules.MenuRegion.ViewModels
             ShowDialogCommand = new DelegateCommand<string>(ShowDialog);
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
         }
+
+        #region Navigation
+
+        public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        {
+            base.ConfirmNavigationRequest(navigationContext, continuationCallback);
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+        #endregion
 
 
         #region Command methods

@@ -32,6 +32,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
+        //public override void OnNavigatedFrom(NavigationContext navigationContext)
+        //{
+
+        //}
+
+        //public override void OnNavigatedTo(NavigationContext navigationContext)
+        //{
+
+        //}
+
+        #endregion
+
+        #region Private methods
+
         private void SubRegionsRequestNavigate(string uri, NavigationParameters parameters)
         {
             if (string.IsNullOrEmpty(uri))

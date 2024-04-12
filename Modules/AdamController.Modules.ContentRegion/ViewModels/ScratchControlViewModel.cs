@@ -3,6 +3,7 @@ using AdamBlocklyLibrary.Enum;
 using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
+using AdamController.Core;
 using AdamController.Core.Helpers;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
@@ -29,13 +30,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Services
 
         private readonly ICommunicationProviderService mCommunicationProvider;
+        private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
 
         #endregion
 
         #region Action field 
 
         public static Action<string> SendSourceToScriptEditor { get; set; }
-        public static Action<int> SetSelectedPageIndex { get; set; }
+        //public static Action<int> SetSelectedPageIndex { get; set; }
         public static Action<string> AppLogStatusBarAction { get; set; }
         public static Action<string> CompileLogStatusBarAction { get; set; }
         public static Action<bool> ProgressRingStartAction { get; set; }
@@ -46,21 +48,54 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IMessageDialogManager IDialogManager;
         private bool mIsWarningStackOwerflowAlreadyShow;
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider) : base(regionManager, dialogService)
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
+            mPythonRemoteRunner = pythonRemoteRunner;
+
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
-            InitAction();
-            PythonExecuteEvent();
+            InitAction();;
         }
 
-        private void RaiseTcperviceClientDisconnect(object sender)
+        #region Navigation
+
+        public override void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
         {
-            UpdatePythonInfo();
+            base.ConfirmNavigationRequest(navigationContext, continuationCallback);
         }
 
-        private async void RaiseTcpServiceCientConnected(object sender)
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            mCommunicationProvider.RaiseTcpServiceCientConnected += OnRaiseTcpServiceCientConnected;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnect += OnRaiseTcperviceClientDisconnect;
+
+            mPythonRemoteRunner.RaisePythonScriptExecuteStart += OnRaisePythonScriptExecuteStart;
+            mPythonRemoteRunner.RaisePythonStandartOutput += OnRaisePythonStandartOutput;
+            mPythonRemoteRunner.RaisePythonScriptExecuteFinish += OnRaisePythonScriptExecuteFinish;
+
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            mCommunicationProvider.RaiseTcpServiceCientConnected -= OnRaiseTcpServiceCientConnected;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnect -= OnRaiseTcperviceClientDisconnect;
+
+            mPythonRemoteRunner.RaisePythonScriptExecuteStart -= OnRaisePythonScriptExecuteStart;
+            mPythonRemoteRunner.RaisePythonStandartOutput -= OnRaisePythonStandartOutput;
+            mPythonRemoteRunner.RaisePythonScriptExecuteFinish -= OnRaisePythonScriptExecuteFinish;
+
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+
+        #endregion
+
+
+        #region Event methods
+
+        private async void OnRaiseTcpServiceCientConnected(object sender)
         {
             var pythonVersionResult = await BaseApi.GetPythonVersion();
             var pythonBinPathResult = await BaseApi.GetPythonBinDir();
@@ -73,18 +108,41 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             UpdatePythonInfo(pythonVersion, pythonBinPath, pythonWorkDir);
         }
 
-        #region Navigation
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        private void OnRaiseTcperviceClientDisconnect(object sender)
         {
-            mCommunicationProvider.RaiseTcpServiceCientConnected -= RaiseTcpServiceCientConnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnect -= RaiseTcperviceClientDisconnect;
+            UpdatePythonInfo();
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
+
+        private void OnRaisePythonScriptExecuteStart(object sender)
         {
-            mCommunicationProvider.RaiseTcpServiceCientConnected += RaiseTcpServiceCientConnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnect += RaiseTcperviceClientDisconnect;
+            mIsWarningStackOwerflowAlreadyShow = false;
+            StartExecuteProgram();
+        }
+
+        private void OnRaisePythonStandartOutput(object sender, string message)
+        {
+            if (ResultTextEditorLength > 10000)
+            {
+                if (!mIsWarningStackOwerflowAlreadyShow)
+                {
+                    ResultTextEditor += "\nДальнейший вывод результата, будет скрыт.";
+                    ResultTextEditor += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
+                    ResultTextEditor += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
+
+                    mIsWarningStackOwerflowAlreadyShow = true;
+                }
+
+                return;
+            }
+
+            ResultTextEditor += message;
+        }
+
+        private void OnRaisePythonScriptExecuteFinish(object sender, string message)
+        {
+            FinishExecuteProgram();
+            ResultTextEditor += message;
         }
 
         #endregion
@@ -109,59 +167,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void InitAction()
         {
-            ScratchControlView.NavigationComplete ??= new Action(() => NavigationComplete());
-
-            ScratchControlView.WebMessageReceived ??= new Action<WebMessageJsonReceived>((results) => WebMessageReceived(results));
-        }
-
-        #endregion
-
-        #region Native python execute event
-
-        private void PythonExecuteEvent()
-        {
-            PythonScriptExecuteHelper.OnExecuteStartEvent += (message) =>
-            {
-                //if (MainWindowViewModel.GetSelectedPageIndex != 0)
-                //    return;
-
-                mIsWarningStackOwerflowAlreadyShow = false;
-
-                StartExecuteProgram();
-
-                ResultTextEditor += message;
-            };
-
-            PythonScriptExecuteHelper.OnStandartOutputEvent += (message) =>
-            {
-                //if (MainWindowViewModel.GetSelectedPageIndex != 0)
-                //    return;
-
-                if (ResultTextEditorLength > 10000)
-                {
-                    if (!mIsWarningStackOwerflowAlreadyShow)
-                    {
-                        ResultTextEditor += "\nДальнейший вывод результата, будет скрыт.";
-                        ResultTextEditor += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
-                        ResultTextEditor += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
-
-                        mIsWarningStackOwerflowAlreadyShow = true;
-                    }
-
-                    return;
-                }
-
-                ResultTextEditor += message;
-            };
-
-            PythonScriptExecuteHelper.OnExecuteFinishEvent += (message) =>
-            {
-                //if (MainWindowViewModel.GetSelectedPageIndex != 0)
-                //    return;
-
-                FinishExecuteProgram();
-                ResultTextEditor += message;
-            };
+            ScratchControlView.NavigationComplete ??= new Action(NavigationComplete);
+            ScratchControlView.WebMessageReceived ??= new Action<WebMessageJsonReceived>(WebMessageReceived);
         }
 
         #endregion
@@ -170,11 +177,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void StartExecuteProgram()
         {
-            CompileLogStatusBarAction("Сеанс отладки запущен");
+            //CompileLogStatusBarAction("Сеанс отладки запущен");
             IsEnabledShowOpenDialogButton = false;
             IsEnabledStopExecuteButton = true;
             ResultTextEditor = string.Empty;
-            ProgressRingStartAction(true);
+            //ProgressRingStartAction(true);
 
             if (!Settings.Default.ShadowWorkspaceInDebug) return;
 
@@ -196,8 +203,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 await ScratchControlView.ExecuteScript(Scripts.ShadowDisable);
             }));
 
-            CompileLogStatusBarAction(compileLogStatusBarAction);
-            ProgressRingStartAction(false);
+            //CompileLogStatusBarAction(compileLogStatusBarAction);
+            //ProgressRingStartAction(false);
             IsEnabledShowOpenDialogButton = true;
             IsEnabledStopExecuteButton = false;
         }
@@ -466,12 +473,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             get => resultTextEditor;
             set
             {
-                if (value == resultTextEditor) return;
+                if(SetProperty(ref resultTextEditor, value))
+                    ResultTextEditorLength = ResultTextEditor.Length;
 
-                resultTextEditor = value;
-                ResultTextEditorLength = value.Length;
+                //if (value == resultTextEditor) return;
 
-                SetProperty(ref resultTextEditor, value);
+                //resultTextEditor = value;
+                //ResultTextEditorLength = value.Length;
+
+                //SetProperty(ref resultTextEditor, value);
             }
         }
 
@@ -633,7 +643,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 ResultTextEditor += $"Ошибка: {executeResult.StandardError}" +
                     "\n======================";
 
-        }, () => !string.IsNullOrEmpty(SourceTextEditor) && mCommunicationProvider.IsTcpClientConnected);
+        }, () => true/*!string.IsNullOrEmpty(SourceTextEditor)*/ && true /*mCommunicationProvider.IsTcpClientConnected*/);
 
         private DelegateCommand stopExecute;
         public DelegateCommand StopExecute => stopExecute ??= new DelegateCommand( async () =>
