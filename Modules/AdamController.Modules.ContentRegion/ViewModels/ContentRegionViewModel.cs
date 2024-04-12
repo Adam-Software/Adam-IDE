@@ -30,17 +30,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 RegionChangeAwareService.InsideRegionNavigationRequestName = insideRegionName;
                 SubRegionsRequestNavigate(insideRegionName, navigationContext.Parameters);
             }
+
+            base.ConfirmNavigationRequest(navigationContext, continuationCallback);
         }
 
-        //public override void OnNavigatedFrom(NavigationContext navigationContext)
-        //{
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
 
-        //}
+        }
 
-        //public override void OnNavigatedTo(NavigationContext navigationContext)
-        //{
-
-        //}
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+        }
 
         #endregion
 
@@ -90,31 +93,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 //CompileLogStatusBar = $"Error reading udp log with exception {ex.Message}";
             }
         }
-
-        #region SelectedPageIndex
-
-        //private int selectedPageIndex = 0;
-        //public int SelectedPageIndex
-        //{
-            //get => selectedPageIndex;
-            //set
-            //{
-                //if (value == selectedPageIndex)
-                //{
-                    //return;
-                //}
-
-                //selectedPageIndex = value;
-                //GetSelectedPageIndex = value;
-
-                //SetProperty(ref value, selectedPageIndex);
-            //}
-        //}
-
-
-        //public static int GetSelectedPageIndex { get; private set; }
-
-        #endregion
 
         #region Events TCP/IP clients
 

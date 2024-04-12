@@ -7,14 +7,13 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:prism="http://prismlibrary.com/" 
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             >
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
 
         <ScrollViewer HorizontalScrollBarVisibility="Visible"
-                        Style="{DynamicResource MahApps.Styles.ScrollViewer}">
+                      Style="{DynamicResource MahApps.Styles.ScrollViewer}">
 
-            <Grid Width="Auto" Margin="20 0 0 0" x:Name="FlayoutNotificationTemplate" >
+            <Grid Width="400" Margin="20 0 0 0" x:Name="FlayoutNotificationTemplate" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="2*"/>
@@ -62,36 +61,36 @@
                                        Text="Робот Адам отключен!" />
 
                         <TextBlock Grid.Row="1"
-                                       Width="Auto" Height="Auto"
-                                       Margin="10"
-                                       FontStyle="Normal"
-                                       FontWeight="Bold"
-                                       FontSize="14"
-                                       Text="Проверьте связь и нажмите переподключить" />
+                                   Width="Auto" Height="Auto"
+                                   Margin="10"
+                                   FontStyle="Normal"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   Text="Проверьте связь и нажмите переподключить" />
 
                         <Button Grid.Row="2" Width="Auto"
-                                    Margin="10 5 10 10"
-                                    mah:ControlsHelper.ContentCharacterCasing="Upper"
-                                    Content="Переподключить" 
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Center"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Command="{Binding ConnectButtonComand}"
-                                    CommandParameter="IsNotificationButtonCalling"
-                                    Style="{StaticResource MahApps.Styles.Button.MetroSquare}"></Button>
+                                Margin="10 5 10 10"
+                                mah:ControlsHelper.ContentCharacterCasing="Upper"
+                                Content="Переподключить" 
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Command="{Binding ConnectButtonComand}"
+                                CommandParameter="IsNotificationButtonCalling"
+                                Style="{StaticResource MahApps.Styles.Button.MetroSquare}"></Button>
                     </Grid>
                 </Border>
 
                 <!--#endregion-->
 
                 <TextBlock Grid.Row="4"
-                               Margin="0 0 10 20"
-                               TextWrapping="WrapWithOverflow"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Right"
-                               FontWeight="Bold">
-            <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ClearNotifications}">
+                           Margin="0 0 10 20"
+                           TextWrapping="WrapWithOverflow"
+                           VerticalAlignment="Bottom"
+                           HorizontalAlignment="Right"
+                           FontWeight="Bold">
+            <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ClearNotificationsCommand}">
                 Очистить уведомления
             </Hyperlink>
 
@@ -108,18 +107,18 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="0"
-                    Width="100"
-                    VerticalContentAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Command="{Binding ConnectButtonComand}"
-                    Background="Transparent"
-                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                    Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
+                            Width="100"
+                            VerticalContentAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Command="{Binding ConnectButtonComand}"
+                            Background="Transparent"
+                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
             
-                    mah:ControlsHelper.ContentCharacterCasing="Upper"
-                    mah:ControlsHelper.CornerRadius="0">
+                            mah:ControlsHelper.ContentCharacterCasing="Upper"
+                            mah:ControlsHelper.CornerRadius="0">
 
                         <StackPanel Orientation="Vertical">
 
@@ -137,6 +136,7 @@
                                    FontWeight="Medium"
                                    mah:ControlsHelper.ContentCharacterCasing="Upper"
                                    Content="{Binding TextOnConnectFlayotButton}" />
+                            
                         </StackPanel>
 
                     </Button>

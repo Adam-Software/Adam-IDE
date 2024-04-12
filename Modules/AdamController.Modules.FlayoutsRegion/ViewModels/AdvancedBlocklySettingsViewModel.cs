@@ -50,7 +50,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
-
         #region BlocklyToolboxLanguage Settings
 
         public static ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection { get; private set; } = LanguagesCollection.BlocklyLanguageCollection;
@@ -75,7 +74,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         }
 
         #endregion
-
 
         #region BlocklyTheme Settings
 

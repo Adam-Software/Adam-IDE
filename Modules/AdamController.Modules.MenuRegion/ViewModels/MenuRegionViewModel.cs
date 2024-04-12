@@ -11,9 +11,10 @@ namespace AdamController.Modules.MenuRegion.ViewModels
 {
     public class MenuRegionViewModel : RegionViewModelBase
     {
+
         public DelegateCommand CloseAppCommand { get; }
-        public DelegateCommand<string> ShowDialogCommand { get; private set; }
-        public DelegateCommand<string> ShowRegionCommand { get; private set; }
+        public DelegateCommand<string> ShowDialogCommand { get; }
+        public DelegateCommand<string> ShowRegionCommand { get; }
 
         public MenuRegionViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager, dialogService)
         {

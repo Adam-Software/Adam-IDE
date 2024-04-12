@@ -564,7 +564,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand sendToExternalSourceEditor;
         public DelegateCommand SendToExternalSourceEditor => sendToExternalSourceEditor ??= new DelegateCommand(() =>
         {
-            SetSelectedPageIndex(1);
+            //SetSelectedPageIndex(1);
             SendSourceToScriptEditor(SourceTextEditor);
 
         }, () => SourceTextEditor?.Length > 0);
