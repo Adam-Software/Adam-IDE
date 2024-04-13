@@ -19,17 +19,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private readonly ICommunicationProviderService mCommunicationProvider;
         private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
+        private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
 
         #endregion
-        public static Action<string> AppLogStatusBarAction { get; set; }
+
+        //public static Action<string> AppLogStatusBarAction { get; set; }
 
         private bool mIsWarningStackOwerflowAlreadyShow;
         private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner) : base(regionManager, dialogService)
+        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
+            mStatusBarNotificationDelivery = statusBarNotificationDelivery;
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
             InitAction();
@@ -352,11 +355,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 string pythonProgram = await FileHelper.ReadTextAsStringAsync(path);
                 SourceTextEditor = pythonProgram;
 
-                AppLogStatusBarAction($"Файл {path} загружен");
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {path} загружен";
+                //AppLogStatusBarAction($"Файл {path} загружен");
             }
             else
             {
-                AppLogStatusBarAction("Файл c исходным кодом не выбран");
+                mStatusBarNotificationDelivery.AppLogMessage = "Файл c исходным кодом не выбран";
+                //AppLogStatusBarAction("Файл c исходным кодом не выбран");
+
             }
         });
 
@@ -376,11 +382,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 string path = IDialogManager.FilePathToSave;
                 await FileHelper.WriteAsync(path, pythonProgram);
 
-                AppLogStatusBarAction($"Файл {IDialogManager.FilePathToSave} сохранен");
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {IDialogManager.FilePathToSave} сохранен";
+                //AppLogStatusBarAction($"Файл {IDialogManager.FilePathToSave} сохранен");
             }
             else
             {
-                AppLogStatusBarAction("Файл не сохранен");
+                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
             }
         }, () => SourceTextEditor?.Length > 0);
 

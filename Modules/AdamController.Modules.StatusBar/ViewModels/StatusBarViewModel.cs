@@ -157,16 +157,24 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mCommunicationProviderService.RaiseTcpServiceCientConnected += RaiseAdamTcpCientConnected;
             mCommunicationProviderService.RaiseTcpServiceClientDisconnect += RaiseAdamTcpClientDisconnect;
 
+            mStatusBarNotificationDelivery.RaiseChangeProgressRingStateEvent += RaiseChangeProgressRingStateEvent;
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent += RaiseNewCompileLogMessageEvent;
-
+            mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent += RaiseNewAppLogMessageEvent;
+            mStatusBarNotificationDelivery.RaiseNewNotificationBadgeMessageEvent += RaiseNewNotificationBadgeMessageEvent;
         }
+
+
 
         private void Unsubscribe() 
         {
             mCommunicationProviderService.RaiseTcpServiceCientConnected -= RaiseAdamTcpCientConnected;
             mCommunicationProviderService.RaiseTcpServiceClientDisconnect -= RaiseAdamTcpClientDisconnect;
 
+
+            mStatusBarNotificationDelivery.RaiseChangeProgressRingStateEvent -= RaiseChangeProgressRingStateEvent;
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent -= RaiseNewCompileLogMessageEvent;
+            mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent -= RaiseNewAppLogMessageEvent;
+            mStatusBarNotificationDelivery.RaiseNewNotificationBadgeMessageEvent -= RaiseNewNotificationBadgeMessageEvent;
         }
 
         #endregion
@@ -185,10 +193,26 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarConnected;
         }
 
+        private void RaiseChangeProgressRingStateEvent(object sender, bool newState)
+        {
+            ProgressRingStart = newState;
+        }
+
         private void RaiseNewCompileLogMessageEvent(object sender, string message)
         {
             CompileLogStatusBar = message;
         }
+
+        private void RaiseNewAppLogMessageEvent(object sender, string message)
+        {
+            AppLogStatusBar = message;
+        }
+
+        private void RaiseNewNotificationBadgeMessageEvent(object sender, string message)
+        {
+            NotificationBadge = message;
+        }
+
 
         #endregion
 

@@ -5,9 +5,19 @@ namespace AdamController.Services
 {
     public class SubRegionChangeAwareService : BindableBase, ISubRegionChangeAwareService
     {
-        public SubRegionChangeAwareService() { }
+        #region Events
 
         public event SubRegionChangeEventHandler RaiseSubRegionChangeEvent;
+
+        #endregion
+
+        #region ~
+
+        public SubRegionChangeAwareService() { }
+
+        #endregion
+
+        #region Public fields
 
         private string insideRegionNavigationRequestName;
         public string InsideRegionNavigationRequestName
@@ -22,12 +32,19 @@ namespace AdamController.Services
             }
         }
 
+        public void Dispose() { }
+
+        #endregion
+
+        #region OnRaise events
+
         protected virtual void OnRaiseRegionChangeEvent()
         {
             SubRegionChangeEventHandler raiseEvent = RaiseSubRegionChangeEvent;
             raiseEvent?.Invoke(this);
         }
 
-        public void Dispose(){}
+        #endregion
+
     }
 }

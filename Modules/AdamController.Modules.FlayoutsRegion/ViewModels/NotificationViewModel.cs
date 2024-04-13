@@ -38,7 +38,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         public NotificationViewModel(ICommunicationProviderService communicationProvider) 
         {
-            SetFlyoutParametr();
+            SetFlyoutParametrs();
 
             mCommunicationProvider = communicationProvider;
 
@@ -53,8 +53,12 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         protected override void OnChanging(bool isOpening)
         {
             //need update status bar on opening
-            if(isOpening)
+            if (isOpening)
+            {
                 Subscribe();
+                SetStatusConnection(mCommunicationProvider.IsTcpClientConnected);
+            }
+                
 
             if (!isOpening)
                 Unsubscribe();
@@ -66,11 +70,43 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #region Private methods
 
-        private void SetFlyoutParametr()
+        private void SetFlyoutParametrs()
         {
             Theme = FlyoutTheme.Inverse;
             Header = "Центр уведомлений";
             IsModal = false;
+        }
+
+        private void SetStatusConnection(bool connectionStatus)
+        {
+            if (connectionStatus)
+            {
+                // это должно быть не здесь
+                _ = BaseApi.StopPythonExecute();
+
+                TextOnConnectFlayotButton = cConnectButtonStatusConnected;
+                //TextOnStatusConnectToolbar = mToolbarStatusClientConnected;
+
+                //ConnectIcon = PackIconModernKind.Disconnect;
+                IconOnConnectFlayoutButton = PackIconMaterialKind.Robot;
+                //throw new NotImplementedException();
+            }
+
+            if(!connectionStatus)
+            {
+                //если центр уведомлений закрыт, обновляем счетчик уведомлений
+                if (!IsOpen && Settings.Default.IsMessageShowOnAbortMainConnection)
+                {
+                    //BadgeCounter++;
+                    FailConnectMessageVisibility = Visibility.Visible;
+                }
+
+                TextOnConnectFlayotButton = cConnectButtonStatusDisconnected;
+                //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
+
+                //ConnectIcon = PackIconModernKind.Connect;
+                IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
+            }
         }
 
         #endregion
@@ -98,15 +134,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void OnRaiseTcpServiceCientConnected(object sender)
         {
-            // это должно быть не здесь
-            _ = BaseApi.StopPythonExecute();
-
-            TextOnConnectFlayotButton = cConnectButtonStatusConnected;
-            //TextOnStatusConnectToolbar = mToolbarStatusClientConnected;
-
-            //ConnectIcon = PackIconModernKind.Disconnect;
-            IconOnConnectFlayoutButton = PackIconMaterialKind.Robot;
-            //throw new NotImplementedException();
+            SetStatusConnection(true);   
         }
 
         private void OnRaiseTcpServiceClientReconnected(object sender, int reconnectCounter)
@@ -122,23 +150,12 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void OnRaiseTcpServiceClientDisconnect(object sender)
         {
-            //если центр уведомлений закрыт, обновляем счетчик уведомлений
-            if (!IsOpen && Settings.Default.IsMessageShowOnAbortMainConnection)
-            {
-                //BadgeCounter++;
-                FailConnectMessageVisibility = Visibility.Visible;
-            }
-
-            TextOnConnectFlayotButton = cConnectButtonStatusDisconnected;
-            //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
-
-            //ConnectIcon = PackIconModernKind.Connect;
-            IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
+            SetStatusConnection(false);
         }
 
         #endregion
 
-        #region Delegatecommand methods
+        #region DelegateCommands methods
 
         private void ConnectButton()
         {
@@ -184,7 +201,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
-
         #region NotificationMessage Visiblity
 
         private Visibility noNewNotificationMessageVisibility = Visibility.Visible;
@@ -200,15 +216,16 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             get => failConnectMessageVisibility;
             set
             {
-                if (value == failConnectMessageVisibility) return;
+                bool isNewValue = SetProperty(ref failConnectMessageVisibility, value);
+                
+                if (isNewValue)
+                {
+                    if (FailConnectMessageVisibility == Visibility.Visible)
+                        NoNewNotificationMessageVisibility = Visibility.Collapsed;
 
-                if (value == Visibility.Visible)
-                    NoNewNotificationMessageVisibility = Visibility.Collapsed;
-                if (value == Visibility.Collapsed)
-                    NoNewNotificationMessageVisibility = Visibility.Visible;
-
-                failConnectMessageVisibility = value;
-                SetProperty(ref failConnectMessageVisibility, value);
+                    if (FailConnectMessageVisibility == Visibility.Collapsed)
+                        NoNewNotificationMessageVisibility = Visibility.Visible;
+                }
             }
         }
 
@@ -244,7 +261,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
-        #region Events TCP/IP clients
+        #region Events TCP/IP clients OLD
 
         private void OnTcpDisconnected()
         {

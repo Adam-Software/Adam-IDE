@@ -31,16 +31,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private readonly ICommunicationProviderService mCommunicationProvider;
         private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
+        private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
 
         #endregion
 
         #region Action field 
 
         public static Action<string> SendSourceToScriptEditor { get; set; }
-        //public static Action<int> SetSelectedPageIndex { get; set; }
-        public static Action<string> AppLogStatusBarAction { get; set; }
-        public static Action<string> CompileLogStatusBarAction { get; set; }
-        public static Action<bool> ProgressRingStartAction { get; set; }
         public static Action ReloadWebView { get; set; }
 
         #endregion
@@ -48,10 +45,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IMessageDialogManager IDialogManager;
         private bool mIsWarningStackOwerflowAlreadyShow;
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner) : base(regionManager, dialogService)
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, 
+            IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
+            mStatusBarNotificationDelivery = statusBarNotificationDelivery;
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
@@ -91,7 +90,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
 
         #endregion
-
 
         #region Event methods
 
@@ -147,7 +145,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-
         private void UpdatePythonInfo(string pythonVersion = "", string pythonBinPath = "", string pythonWorkDir = "")
         {
             if (string.IsNullOrEmpty(pythonVersion))
@@ -177,11 +174,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void StartExecuteProgram()
         {
-            //CompileLogStatusBarAction("Сеанс отладки запущен");
+            mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки запущен";
+            mStatusBarNotificationDelivery.ProgressRingStart = true;
+
             IsEnabledShowOpenDialogButton = false;
             IsEnabledStopExecuteButton = true;
             ResultTextEditor = string.Empty;
-            //ProgressRingStartAction(true);
+            
 
             if (!Settings.Default.ShadowWorkspaceInDebug) return;
 
@@ -203,8 +202,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 await ScratchControlView.ExecuteScript(Scripts.ShadowDisable);
             }));
 
-            //CompileLogStatusBarAction(compileLogStatusBarAction);
-            //ProgressRingStartAction(false);
+            mStatusBarNotificationDelivery.CompileLogMessage = compileLogStatusBarAction;
+            mStatusBarNotificationDelivery.ProgressRingStart = false;
+
             IsEnabledShowOpenDialogButton = true;
             IsEnabledStopExecuteButton = false;
         }
@@ -269,12 +269,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
                 }));
 
-                //AppLogStatusBarAction("Загрузка скретч-редактора закончена");
+                mStatusBarNotificationDelivery.AppLogMessage = "Загрузка скретч редактора завершена";
             }
             catch
             {
-                //the error occurs when switching to another tab before blockly is fully loaded
-                //AppLogStatusBarAction("Загрузка скретч-редактора внезапно прервана");
+                mStatusBarNotificationDelivery.AppLogMessage = "Загрузка скретч-редактора внезапно прервана";
             }
         }
 
@@ -473,15 +472,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             get => resultTextEditor;
             set
             {
-                if(SetProperty(ref resultTextEditor, value))
+                bool isNewValue = SetProperty(ref resultTextEditor, value);
+                
+                if (isNewValue)
                     ResultTextEditorLength = ResultTextEditor.Length;
-
-                //if (value == resultTextEditor) return;
-
-                //resultTextEditor = value;
-                //ResultTextEditorLength = value.Length;
-
-                //SetProperty(ref resultTextEditor, value);
             }
         }
 
@@ -506,8 +500,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             get => resultTextEditorError;
             set
             {
+                
                 if (value == resultTextEditorError) return;
-
 
                 if (value.Length > 0)
                     resultTextEditorError = $"Error: {value}";
@@ -564,7 +558,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand sendToExternalSourceEditor;
         public DelegateCommand SendToExternalSourceEditor => sendToExternalSourceEditor ??= new DelegateCommand(() =>
         {
-            //SetSelectedPageIndex(1);
             SendSourceToScriptEditor(SourceTextEditor);
 
         }, () => SourceTextEditor?.Length > 0);
@@ -580,11 +573,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 string path = IDialogManager.FilePathToSave;
                 await FileHelper.WriteAsync(path, xmlWorkspace);
 
-                AppLogStatusBarAction($"Файл {IDialogManager.FilePathToSave} сохранен");
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {IDialogManager.FilePathToSave} сохранен";
             }
             else
             {
-                AppLogStatusBarAction("Файл не сохранен");
+                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
             }
         });
 
@@ -599,11 +592,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     string xml = await FileHelper.ReadTextAsStringAsync(path);
                     _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
 
-                    AppLogStatusBarAction($"Файл {path} загружен");
+                    mStatusBarNotificationDelivery.AppLogMessage = $"Файл {path} загружен";
                 }
                 else
                 {
-                    AppLogStatusBarAction("Файл рабочей области не выбран");
+                    mStatusBarNotificationDelivery.AppLogMessage = "Файл рабочей области не выбран";
                 }
             });
 
@@ -698,11 +691,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 string path = IDialogManager.FilePathToSave;
                 await FileHelper.WriteAsync(path, pythonProgram);
 
-                AppLogStatusBarAction($"Файл {IDialogManager.FilePathToSave} сохранен");
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {IDialogManager.FilePathToSave} сохранен";
             }
             else
             {
-                AppLogStatusBarAction("Файл не сохранен");
+                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
             }
         }, () => SourceTextEditor?.Length > 0);
 

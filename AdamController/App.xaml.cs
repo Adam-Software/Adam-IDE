@@ -100,6 +100,11 @@ namespace AdamController
                 return new SubRegionChangeAwareService();
             });
 
+            containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService>(containerRegistry =>
+            {
+                return new StatusBarNotificationDeliveryService();
+            });
+
             containerRegistry.RegisterSingleton<IFlyoutManager>(containerRegistry =>
             {
                 IContainer container = containerRegistry.GetContainer();
@@ -187,10 +192,7 @@ namespace AdamController
                 return remoteRunnerService;
             });
 
-            containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService>(containerRegistry =>
-            {
-                return new StatusBarNotificationDeliveryService();
-            });
+
 
             RegisterDialogs(containerRegistry);
         }
@@ -278,6 +280,9 @@ namespace AdamController
         private void DisposeServices()
         {
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
+            Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
+
+            Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();
         }
 

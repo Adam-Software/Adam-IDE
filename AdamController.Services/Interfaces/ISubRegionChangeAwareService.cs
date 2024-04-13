@@ -16,6 +16,10 @@ namespace AdamController.Services.Interfaces
 
         #endregion
 
+        #region Public fields
+
         public string InsideRegionNavigationRequestName { get; set; }
+
+        #endregion
     }
 }

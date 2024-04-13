@@ -163,34 +163,5 @@ namespace AdamController.ViewModels
 
         #endregion
 
-        #region Old
-
-        //public MainWindowViewModel()
-        //{
-        //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
-        //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
-        //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
-        //ComunicateHelper.OnAdamLogServerUdpReceivedEvent += ComunicateHelperOnAdamUdpReceived;
-
-
-        //InitAction();
-
-        //if (Settings.Default.AutoStartTcpConnect)
-        //{
-        //    ConnectButtonComand.Execute(null);
-        //}
-        //else
-        //{
-        //init fields if autorun off
-        //TextOnConnectFlayotButton = mConnectButtonStatusDisconnected;
-        //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
-
-        //ConnectIcon = PackIconModernKind.Connect;
-        //IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
-        //}
-        //}
-
-        #endregion
-
     }
 }

@@ -25,7 +25,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             if (navigationContext.NavigationService.Region.Name == RegionNames.ContentRegion)
             {
-                var insideRegionName = navigationContext.Uri.OriginalString;
+                string insideRegionName = navigationContext.Uri.OriginalString;
 
                 RegionChangeAwareService.InsideRegionNavigationRequestName = insideRegionName;
                 SubRegionsRequestNavigate(insideRegionName, navigationContext.Parameters);

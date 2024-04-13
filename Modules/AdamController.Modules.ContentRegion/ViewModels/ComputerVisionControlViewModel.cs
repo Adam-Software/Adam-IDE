@@ -133,14 +133,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public float SliderValue 
         {
             get => sliderValue;
-            set
-            {
-                if (sliderValue == value) return;
-
-                sliderValue = value;
-
-                SetProperty(ref sliderValue, value);
-            } 
+            set => SetProperty(ref sliderValue, value);
         }
 
         public string StopDirrection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 0, \"z\": 0}}";
