@@ -187,6 +187,11 @@ namespace AdamController
                 return remoteRunnerService;
             });
 
+            containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService>(containerRegistry =>
+            {
+                return new StatusBarNotificationDeliveryService();
+            });
+
             RegisterDialogs(containerRegistry);
         }
 

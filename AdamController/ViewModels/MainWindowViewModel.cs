@@ -22,15 +22,18 @@ namespace AdamController.ViewModels
 
         public IRegionManager RegionManager { get; }
         private readonly ISubRegionChangeAwareService mSubRegionChangeAwareService;
+        private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
 
         #endregion
 
         #region ~
 
-        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, ICommunicationProviderService communicationProviderService) 
+        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification) 
+
         {
             RegionManager = regionManager;
             mSubRegionChangeAwareService = subRegionChangeAwareService;
+            mStatusBarNotification = statusBarNotification;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
             Subscribe();
@@ -145,6 +148,8 @@ namespace AdamController.ViewModels
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
+
+            mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";
         }
 
         /// <summary>

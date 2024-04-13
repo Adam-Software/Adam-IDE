@@ -22,6 +22,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private readonly IFlyoutManager mFlyoutManager;
         private readonly ICommunicationProviderService mCommunicationProviderService;
+        private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
 
         #endregion
 
@@ -38,10 +39,11 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         #region ~
 
-        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, ICommunicationProviderService communicationProviderService) : base(regionManager, dialogService)
+        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, ICommunicationProviderService communicationProviderService, IStatusBarNotificationDeliveryService statusBarNotification) : base(regionManager, dialogService)
         {
             mFlyoutManager = flyoutManager;
             mCommunicationProviderService = communicationProviderService;
+            mStatusBarNotificationDelivery = statusBarNotification; 
 
             OpenNotificationPanelDelegateCommand = new DelegateCommand(OpenNotificationPanel, OpenNotificationPanelCanExecute);
         }
@@ -155,12 +157,16 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mCommunicationProviderService.RaiseTcpServiceCientConnected += RaiseAdamTcpCientConnected;
             mCommunicationProviderService.RaiseTcpServiceClientDisconnect += RaiseAdamTcpClientDisconnect;
 
+            mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent += RaiseNewCompileLogMessageEvent;
+
         }
 
         private void Unsubscribe() 
         {
             mCommunicationProviderService.RaiseTcpServiceCientConnected -= RaiseAdamTcpCientConnected;
             mCommunicationProviderService.RaiseTcpServiceClientDisconnect -= RaiseAdamTcpClientDisconnect;
+
+            mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent -= RaiseNewCompileLogMessageEvent;
         }
 
         #endregion
@@ -177,6 +183,11 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         {
             ConnectIcon = PackIconModernKind.Disconnect;
             TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarConnected;
+        }
+
+        private void RaiseNewCompileLogMessageEvent(object sender, string message)
+        {
+            CompileLogStatusBar = message;
         }
 
         #endregion

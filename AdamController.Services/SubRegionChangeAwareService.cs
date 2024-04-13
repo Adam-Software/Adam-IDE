@@ -1,21 +1,24 @@
 ﻿using AdamController.Services.Interfaces;
+using Prism.Mvvm;
 
 namespace AdamController.Services
 {
-    public class SubRegionChangeAwareService : ISubRegionChangeAwareService
+    public class SubRegionChangeAwareService : BindableBase, ISubRegionChangeAwareService
     {
         public SubRegionChangeAwareService() { }
 
         public event SubRegionChangeEventHandler RaiseSubRegionChangeEvent;
 
-        private string mRegionNavigtedToName;
+        private string insideRegionNavigationRequestName;
         public string InsideRegionNavigationRequestName
         {
-            get { return mRegionNavigtedToName; }
+            get { return insideRegionNavigationRequestName; }
             set
             {
-                mRegionNavigtedToName = value;
-                OnRaiseRegionChangeEvent();
+                bool isNewValue = SetProperty(ref insideRegionNavigationRequestName, value);
+                
+                if (isNewValue) 
+                    OnRaiseRegionChangeEvent();
             }
         }
 

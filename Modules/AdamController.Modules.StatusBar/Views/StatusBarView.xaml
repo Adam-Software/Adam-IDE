@@ -48,6 +48,7 @@
                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
 
                 <StackPanel Orientation="Horizontal">
+                    
                     <mah:ProgressRing Width="Auto" Height="Auto"
                                       Padding="5"
                                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
