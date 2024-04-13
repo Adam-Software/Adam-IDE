@@ -8,6 +8,7 @@ namespace AdamController.Services.Interfaces
     public delegate void NewCompileLogMessageEventHandler(object sender, string message);
     public delegate void NewAppLogMessageEventHandler(object sender, string message);
     public delegate void NewNotificationBadgeMessageEventHandler(object sender, string message);
+    public delegate void UpdateNotificationCounterEventHandler(object sender, int counter);
 
     #endregion
 
@@ -19,6 +20,7 @@ namespace AdamController.Services.Interfaces
         public event NewCompileLogMessageEventHandler RaiseNewCompileLogMessageEvent;
         public event NewAppLogMessageEventHandler RaiseNewAppLogMessageEvent;
         public event NewNotificationBadgeMessageEventHandler RaiseNewNotificationBadgeMessageEvent;
+        public event UpdateNotificationCounterEventHandler RaiseUpdateNotificationCounterEvent;
 
         #endregion
 
@@ -28,6 +30,7 @@ namespace AdamController.Services.Interfaces
         public string CompileLogMessage { get; set; }
         public string AppLogMessage {  get; set; }
         public string NotificationBadgeMessage { get; set; }
+        public int NotificationCounter { get; set; }
 
         #endregion
     }

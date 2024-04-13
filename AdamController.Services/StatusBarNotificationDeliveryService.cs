@@ -13,6 +13,7 @@ namespace AdamController.Services
         public event NewCompileLogMessageEventHandler RaiseNewCompileLogMessageEvent;
         public event NewAppLogMessageEventHandler RaiseNewAppLogMessageEvent;
         public event NewNotificationBadgeMessageEventHandler RaiseNewNotificationBadgeMessageEvent;
+        public event UpdateNotificationCounterEventHandler RaiseUpdateNotificationCounterEvent;
 
         #endregion
 
@@ -77,6 +78,19 @@ namespace AdamController.Services
             } 
         }
 
+        private int notificationCounter;
+        public int NotificationCounter 
+        { 
+            get => notificationCounter;
+            set 
+            {
+                bool isNewValue = SetProperty(ref notificationCounter, value);
+            
+                if (isNewValue)
+                    OnRaiseUpdateNotificationCounterEvent(NotificationCounter);
+            }
+        }
+
         public void Dispose()
         {
             
@@ -109,6 +123,12 @@ namespace AdamController.Services
         {
             NewNotificationBadgeMessageEventHandler raiseEvent = RaiseNewNotificationBadgeMessageEvent;
             raiseEvent?.Invoke(this, message);
+        }
+
+        protected virtual void OnRaiseUpdateNotificationCounterEvent(int counter)
+        {
+            UpdateNotificationCounterEventHandler raiseEvent = RaiseUpdateNotificationCounterEvent;
+            raiseEvent?.Invoke(this, counter);  
         }
 
         #endregion

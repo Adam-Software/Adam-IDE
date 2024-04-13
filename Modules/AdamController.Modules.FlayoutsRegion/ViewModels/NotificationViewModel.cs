@@ -1,13 +1,11 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
-using AdamController.Core.Helpers;
 using AdamController.Core.Properties;
+using AdamController.Services;
 using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
-using System;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
@@ -23,6 +21,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         #region Services
 
         private readonly ICommunicationProviderService mCommunicationProvider;
+        private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDeliveryService;
 
         #endregion
 
@@ -36,14 +35,18 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #region ~
 
-        public NotificationViewModel(ICommunicationProviderService communicationProvider) 
+        public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery) 
         {
             SetFlyoutParametrs();
+            
 
             mCommunicationProvider = communicationProvider;
+            mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
 
             ConnectButtonComand = new (ConnectButton, ConnectButtonCanExecute);
             ClearNotificationsCommand = new DelegateCommand(ClearNotifications, ClearNotificationsCanExecute);
+
+            Subscribe();
         }
 
         #endregion
@@ -60,11 +63,13 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             }
                 
 
-            if (!isOpening)
-                Unsubscribe();
+            //if (!isOpening)
+                //Unsubscribe();
 
             base.OnChanging(isOpening);
         }
+
+        
 
         #endregion
 
@@ -95,10 +100,13 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if(!connectionStatus)
             {
                 //если центр уведомлений закрыт, обновляем счетчик уведомлений
-                if (!IsOpen && Settings.Default.IsMessageShowOnAbortMainConnection)
+                if (Settings.Default.IsMessageShowOnAbortMainConnection)
                 {
-                    //BadgeCounter++;
-                    FailConnectMessageVisibility = Visibility.Visible;
+                    mStatusBarNotificationDeliveryService.NotificationCounter++;
+
+                    if (!IsOpen)
+                        FailConnectMessageVisibility = Visibility.Visible;
+                    
                 }
 
                 TextOnConnectFlayotButton = cConnectButtonStatusDisconnected;
@@ -139,18 +147,19 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void OnRaiseTcpServiceClientReconnected(object sender, int reconnectCounter)
         {
-            TextOnConnectFlayotButton = $"{cConnectButtonStatusReconnected} {reconnectCount}";
+            mStatusBarNotificationDeliveryService.NotificationCounter = reconnectCounter;
+            TextOnConnectFlayotButton = $"{cConnectButtonStatusReconnected} {reconnectCounter}";
             //TextOnStatusConnectToolbar = $"{mToolbarStatusClientReconnected} {reconnectCount}";
 
             //ConnectIcon = PackIconModernKind.TransitConnectionDeparture;
             IconOnConnectFlayoutButton = PackIconMaterialKind.RobotConfused;
         }
 
-        private int reconnectCount = 0;
+        //private int reconnectCount = 0;
 
         private void OnRaiseTcpServiceClientDisconnect(object sender)
         {
-            SetStatusConnection(false);
+            SetStatusConnection(false); 
         }
 
         #endregion
@@ -190,7 +199,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         /* #16 */
         private void ClearNotifications()
         {
+
             //BadgeCounter = 0;
+            mStatusBarNotificationDeliveryService.NotificationCounter = 0;
+
             FailConnectMessageVisibility = Visibility.Collapsed;
         }
 

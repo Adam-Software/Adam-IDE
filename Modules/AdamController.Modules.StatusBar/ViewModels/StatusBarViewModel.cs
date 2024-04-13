@@ -161,9 +161,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent += RaiseNewCompileLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent += RaiseNewAppLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseNewNotificationBadgeMessageEvent += RaiseNewNotificationBadgeMessageEvent;
+            mStatusBarNotificationDelivery.RaiseUpdateNotificationCounterEvent += RaiseUpdateNotificationCounterEvent;
         }
-
-
 
         private void Unsubscribe() 
         {
@@ -213,6 +212,10 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             NotificationBadge = message;
         }
 
+        private void RaiseUpdateNotificationCounterEvent(object sender, int counter)
+        {
+            BadgeCounter = counter;
+        }
 
         #endregion
 
