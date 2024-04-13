@@ -7,9 +7,9 @@ namespace AdamController.Services
     {
         #region Events
 
-        public event PythonStandartOutput RaisePythonStandartOutput;
-        public event PythonScriptExecuteStart RaisePythonScriptExecuteStart;
-        public event PythonScriptExecuteFinish RaisePythonScriptExecuteFinish;
+        public event PythonStandartOutputEventHandler RaisePythonStandartOutputEvent;
+        public event PythonScriptExecuteStartEventHandler RaisePythonScriptExecuteStartEvent;
+        public event PythonScriptExecuteFinishEventHandler RaisePythonScriptExecuteFinishEvent;
 
         #endregion
 
@@ -54,7 +54,7 @@ namespace AdamController.Services
             switch (message)
             {
                 case cStartMessage:
-                    OnRaisePythonScriptExecuteStart();
+                    OnRaisePythonScriptExecuteStartEvent();
                     break;
 
                 case cErrorMessage:
@@ -64,13 +64,13 @@ namespace AdamController.Services
                     {
                         var cleanMessage = message.Remove(0, 6);
                         var finishMessage = ParseFinishExecuteMessage(cleanMessage);
-                        OnRaisePythonScriptExecuteFinish(finishMessage);
+                        OnRaisePythonScriptExecuteFinishEvent(finishMessage);
                         break;
                     }
                     
                 default:
                     {
-                        OnRaisePythonStandartOutput($"{message}\n");
+                        OnRaisePythonStandartOutputEvent($"{message}\n");
                         break;
                     }
             }
@@ -109,13 +109,13 @@ namespace AdamController.Services
 
         private void Subscribe()
         {
-            mCommunicationProvider.RaiseUdpServiceClientReceived += RaiseUdpClientReceived;
+            mCommunicationProvider.RaiseUdpServiceClientReceivedEvent += RaiseUdpClientReceived;
         }
 
 
         private void Unsubscribe() 
         {
-            mCommunicationProvider.RaiseUdpServiceClientReceived -= RaiseUdpClientReceived;
+            mCommunicationProvider.RaiseUdpServiceClientReceivedEvent -= RaiseUdpClientReceived;
         }
 
 
@@ -132,21 +132,21 @@ namespace AdamController.Services
 
         #region OnRaise events
 
-        protected virtual void OnRaisePythonStandartOutput(string message)
+        protected virtual void OnRaisePythonStandartOutputEvent(string message)
         {
-            PythonStandartOutput raiseEvent = RaisePythonStandartOutput;
+            PythonStandartOutputEventHandler raiseEvent = RaisePythonStandartOutputEvent;
             raiseEvent?.Invoke(this, message);  
         }
 
-        protected virtual void OnRaisePythonScriptExecuteStart()
+        protected virtual void OnRaisePythonScriptExecuteStartEvent()
         {
-            PythonScriptExecuteStart raiseEvent = RaisePythonScriptExecuteStart;
+            PythonScriptExecuteStartEventHandler raiseEvent = RaisePythonScriptExecuteStartEvent;
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnRaisePythonScriptExecuteFinish(string message)
+        protected virtual void OnRaisePythonScriptExecuteFinishEvent(string message)
         {
-            PythonScriptExecuteFinish raiseEvent = RaisePythonScriptExecuteFinish;
+            PythonScriptExecuteFinishEventHandler raiseEvent = RaisePythonScriptExecuteFinishEvent;
             raiseEvent?.Invoke(this, message);
         }
 

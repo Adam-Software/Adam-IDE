@@ -7,7 +7,7 @@ namespace AdamController.Services.Interfaces
 
     #region Delegate
 
-    public delegate void UdpServerReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size);
+    public delegate void UdpServerReceivedEventHandler(object sender, EndPoint endpoint, byte[] buffer, long offset, long size);
 
     #endregion
 
@@ -15,7 +15,7 @@ namespace AdamController.Services.Interfaces
     {
         #region Events
 
-        public event UdpServerReceived RaiseUdpServerReceived;
+        public event UdpServerReceivedEventHandler RaiseUdpServerReceivedEvent;
 
         #endregion
 

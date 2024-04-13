@@ -48,18 +48,18 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            mPythonRemoteRunner.RaisePythonScriptExecuteStart += OnRaisePythonScriptExecuteStart;
-            mPythonRemoteRunner.RaisePythonStandartOutput += OnRaisePythonStandartOutput;
-            mPythonRemoteRunner.RaisePythonScriptExecuteFinish += OnRaisePythonScriptExecuteFinish;
+            mPythonRemoteRunner.RaisePythonScriptExecuteStartEvent += OnRaisePythonScriptExecuteStart;
+            mPythonRemoteRunner.RaisePythonStandartOutputEvent += OnRaisePythonStandartOutput;
+            mPythonRemoteRunner.RaisePythonScriptExecuteFinishEvent += OnRaisePythonScriptExecuteFinish;
 
             base.OnNavigatedTo(navigationContext);
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            mPythonRemoteRunner.RaisePythonScriptExecuteStart -= OnRaisePythonScriptExecuteStart;
-            mPythonRemoteRunner.RaisePythonStandartOutput -= OnRaisePythonStandartOutput;
-            mPythonRemoteRunner.RaisePythonScriptExecuteFinish -= OnRaisePythonScriptExecuteFinish;
+            mPythonRemoteRunner.RaisePythonScriptExecuteStartEvent -= OnRaisePythonScriptExecuteStart;
+            mPythonRemoteRunner.RaisePythonStandartOutputEvent -= OnRaisePythonStandartOutput;
+            mPythonRemoteRunner.RaisePythonScriptExecuteFinishEvent -= OnRaisePythonScriptExecuteFinish;
 
             base.OnNavigatedFrom(navigationContext);
         }

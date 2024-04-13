@@ -154,8 +154,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
             //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
 
-            mCommunicationProviderService.RaiseTcpServiceCientConnected += RaiseAdamTcpCientConnected;
-            mCommunicationProviderService.RaiseTcpServiceClientDisconnect += RaiseAdamTcpClientDisconnect;
+            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseAdamTcpCientConnected;
+            mCommunicationProviderService.RaiseTcpServiceClientDisconnectEvent += RaiseAdamTcpClientDisconnect;
 
             mStatusBarNotificationDelivery.RaiseChangeProgressRingStateEvent += RaiseChangeProgressRingStateEvent;
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent += RaiseNewCompileLogMessageEvent;
@@ -167,8 +167,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private void Unsubscribe() 
         {
-            mCommunicationProviderService.RaiseTcpServiceCientConnected -= RaiseAdamTcpCientConnected;
-            mCommunicationProviderService.RaiseTcpServiceClientDisconnect -= RaiseAdamTcpClientDisconnect;
+            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseAdamTcpCientConnected;
+            mCommunicationProviderService.RaiseTcpServiceClientDisconnectEvent -= RaiseAdamTcpClientDisconnect;
 
 
             mStatusBarNotificationDelivery.RaiseChangeProgressRingStateEvent -= RaiseChangeProgressRingStateEvent;

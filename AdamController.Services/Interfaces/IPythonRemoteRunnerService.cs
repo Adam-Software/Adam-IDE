@@ -4,9 +4,9 @@ namespace AdamController.Services.Interfaces
 {
     #region Delegate
 
-    public delegate void PythonStandartOutput(object sender, string message);
-    public delegate void PythonScriptExecuteStart(object sender);
-    public delegate void PythonScriptExecuteFinish(object sender, string message);
+    public delegate void PythonStandartOutputEventHandler(object sender, string message);
+    public delegate void PythonScriptExecuteStartEventHandler(object sender);
+    public delegate void PythonScriptExecuteFinishEventHandler(object sender, string message);
 
     #endregion
 
@@ -14,9 +14,9 @@ namespace AdamController.Services.Interfaces
     {
         #region Events
 
-        public event PythonStandartOutput RaisePythonStandartOutput;
-        public event PythonScriptExecuteStart RaisePythonScriptExecuteStart;
-        public event PythonScriptExecuteFinish RaisePythonScriptExecuteFinish;
+        public event PythonStandartOutputEventHandler RaisePythonStandartOutputEvent;
+        public event PythonScriptExecuteStartEventHandler RaisePythonScriptExecuteStartEvent;
+        public event PythonScriptExecuteFinishEventHandler RaisePythonScriptExecuteFinishEvent;
 
         #endregion
     }

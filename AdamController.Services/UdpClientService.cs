@@ -5,13 +5,13 @@ namespace AdamController.Services
 {
     public class UdpClientService : NetCoreServer.UdpServer, IUdpClientService
     {
-        public event UdpClientReceived RaiseUdpClientReceived;
+        public event UdpClientReceivedEventHandler RaiseUdpClientReceivedEvent;
 
         public UdpClientService(IPAddress address, int port) : base(address, port) { }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            OnRaiseUdpClientReceived(endpoint, buffer, offset, size);
+            OnRaiseUdpClientReceivedEvent(endpoint, buffer, offset, size);
             ReceiveAsync();
         }
 
@@ -27,9 +27,9 @@ namespace AdamController.Services
 
         #region OnRaiseEvents
 
-        protected virtual void OnRaiseUdpClientReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
+        protected virtual void OnRaiseUdpClientReceivedEvent(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            UdpClientReceived raiseEvent = RaiseUdpClientReceived;
+            UdpClientReceivedEventHandler raiseEvent = RaiseUdpClientReceivedEvent;
             raiseEvent?.Invoke(this, endpoint, buffer, offset, size);
         }
 

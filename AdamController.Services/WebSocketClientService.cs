@@ -9,9 +9,9 @@ namespace AdamController.Services
     {
         #region Events
 
-        public event WebSocketClientReceived RaiseWebSocketClientReceived;
-        public event WebSocketConnected RaiseWebSocketConnected;
-        public event WebSocketClientDisconnect RaiseWebSocketClientDisconnect;
+        public event WebSocketClientReceivedEventHandler RaiseWebSocketClientReceivedEvent;
+        public event WebSocketConnectedEventHandler RaiseWebSocketConnectedEvent;
+        public event WebSocketClientDisconnectEventHandler RaiseWebSocketClientDisconnectEvent;
 
         #endregion
 
@@ -79,17 +79,17 @@ namespace AdamController.Services
         {
             mWebsocketClient.MessageReceived.Subscribe(message =>
             {
-                OnRaiseWebSocketClientReceived(message.Text);
+                OnRaiseWebSocketClientReceivedEvent(message.Text);
             });
 
             mWebsocketClient.DisconnectionHappened.Subscribe(eventHappened =>
             {
-                OnRaiseWebSocketClientDisconnect();
+                OnRaiseWebSocketClientDisconnectEvent();
             });
 
             mWebsocketClient.ReconnectionHappened.Subscribe(eventHappened =>
             {
-                OnRaiseWebSocketConnected();
+                OnRaiseWebSocketConnectedEvent();
             });
         }
 
@@ -97,21 +97,21 @@ namespace AdamController.Services
 
         #region OnRaiseEvents
 
-        protected virtual void OnRaiseWebSocketClientReceived(string text)
+        protected virtual void OnRaiseWebSocketClientReceivedEvent(string text)
         {
-            WebSocketClientReceived raiseEvent = RaiseWebSocketClientReceived;
+            WebSocketClientReceivedEventHandler raiseEvent = RaiseWebSocketClientReceivedEvent;
             raiseEvent?.Invoke(this, text);
         }
 
-        protected virtual void OnRaiseWebSocketConnected()
+        protected virtual void OnRaiseWebSocketConnectedEvent()
         {
-            WebSocketConnected raiseEvent = RaiseWebSocketConnected;
+            WebSocketConnectedEventHandler raiseEvent = RaiseWebSocketConnectedEvent;
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnRaiseWebSocketClientDisconnect()
+        protected virtual void OnRaiseWebSocketClientDisconnectEvent()
         {
-            WebSocketClientDisconnect raiseEvent = RaiseWebSocketClientDisconnect;
+            WebSocketClientDisconnectEventHandler raiseEvent = RaiseWebSocketClientDisconnectEvent;
             raiseEvent?.Invoke(this);
         }
 

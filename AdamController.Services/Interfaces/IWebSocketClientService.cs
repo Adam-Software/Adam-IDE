@@ -6,9 +6,9 @@ namespace AdamController.Services.Interfaces
 
     #region Delegate
 
-    public delegate void WebSocketClientReceived(object sender,  string text);
-    public delegate void WebSocketConnected(object sender);
-    public delegate void WebSocketClientDisconnect(object sender);
+    public delegate void WebSocketClientReceivedEventHandler(object sender,  string text);
+    public delegate void WebSocketConnectedEventHandler(object sender);
+    public delegate void WebSocketClientDisconnectEventHandler(object sender);
 
     #endregion
 
@@ -16,9 +16,9 @@ namespace AdamController.Services.Interfaces
     {
         #region Events
 
-        public event WebSocketClientReceived RaiseWebSocketClientReceived;
-        public event WebSocketConnected RaiseWebSocketConnected;
-        public event WebSocketClientDisconnect RaiseWebSocketClientDisconnect;
+        public event WebSocketClientReceivedEventHandler RaiseWebSocketClientReceivedEvent;
+        public event WebSocketConnectedEventHandler RaiseWebSocketConnectedEvent;
+        public event WebSocketClientDisconnectEventHandler RaiseWebSocketClientDisconnectEvent;
 
         #endregion
 

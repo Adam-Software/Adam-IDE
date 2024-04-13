@@ -8,7 +8,7 @@ namespace AdamController.Services
     {
         #region Events
 
-        public event UdpServerReceived RaiseUdpServerReceived;
+        public event UdpServerReceivedEventHandler RaiseUdpServerReceivedEvent;
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace AdamController.Services
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            OnRaiseUdpServerReceived(endpoint, buffer, offset, size);
+            OnRaiseUdpServerReceivedEvent(endpoint, buffer, offset, size);
             ReceiveAsync();
         }
 
@@ -40,9 +40,9 @@ namespace AdamController.Services
 
         #region OnRaiseEvents
 
-        protected virtual void OnRaiseUdpServerReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
+        protected virtual void OnRaiseUdpServerReceivedEvent(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            UdpServerReceived raiseEvent = RaiseUdpServerReceived;
+            UdpServerReceivedEventHandler raiseEvent = RaiseUdpServerReceivedEvent;
             raiseEvent?.Invoke(this, endpoint, buffer, offset, size);
         }
 

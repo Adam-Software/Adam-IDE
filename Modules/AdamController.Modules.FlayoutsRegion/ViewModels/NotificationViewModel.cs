@@ -115,17 +115,17 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void Subscribe()
         {
-            mCommunicationProvider.RaiseTcpServiceCientConnected += OnRaiseTcpServiceCientConnected;
-            mCommunicationProvider.RaiseTcpServiceClientReconnected += OnRaiseTcpServiceClientReconnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnect += OnRaiseTcpServiceClientDisconnect;
+            mCommunicationProvider.RaiseTcpServiceCientConnectedEvent += OnRaiseTcpServiceCientConnected;
+            mCommunicationProvider.RaiseTcpServiceClientReconnectedEvent += OnRaiseTcpServiceClientReconnected;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcpServiceClientDisconnect;
             
         }
 
         private void Unsubscribe() 
         {
-            mCommunicationProvider.RaiseTcpServiceCientConnected -= OnRaiseTcpServiceCientConnected;
-            mCommunicationProvider.RaiseTcpServiceClientReconnected -= OnRaiseTcpServiceClientReconnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnect -= OnRaiseTcpServiceClientDisconnect;
+            mCommunicationProvider.RaiseTcpServiceCientConnectedEvent -= OnRaiseTcpServiceCientConnected;
+            mCommunicationProvider.RaiseTcpServiceClientReconnectedEvent -= OnRaiseTcpServiceClientReconnected;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent -= OnRaiseTcpServiceClientDisconnect;
         }
 
         #endregion

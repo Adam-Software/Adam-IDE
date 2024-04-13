@@ -11,12 +11,12 @@ namespace AdamController.Services
     {
         #region Events
 
-        public event TcpCientConnected RaiseTcpCientConnected;
-        public event TcpCientSent RaiseTcpCientSent;
-        public event TcpClientDisconnect RaiseTcpClientDisconnected;
-        public event TcpClientError RaiseTcpClientError;
-        public event TcpClientReceived RaiseTcpClientReceived;
-        public event TcpClientReconnected RaiseTcpClientReconnected;
+        public event TcpCientConnectedEventHandler RaiseTcpCientConnectedEvent;
+        public event TcpCientSentEventHandler RaiseTcpCientSentEvent;
+        public event TcpClientDisconnectEventHandler RaiseTcpClientDisconnectedEvent;
+        public event TcpClientErrorEventHandler RaiseTcpClientErrorEvent;
+        public event TcpClientReceivedEventHandler RaiseTcpClientReceivedEvent;
+        public event TcpClientReconnectedEventHandler RaiseTcpClientReconnectedEvent;
 
         #endregion
 
@@ -103,7 +103,7 @@ namespace AdamController.Services
                 if (!mDisconnectAlreadyInvoke)
                 {
                     mDisconnectAlreadyInvoke = true;
-                    OnRaiseTcpClientDisconnected();
+                    OnRaiseTcpClientDisconnectedEvent();
                 }
                 
                 return; 
@@ -116,7 +116,7 @@ namespace AdamController.Services
                 if (!mDisconnectAlreadyInvoke)
                 {
                     mDisconnectAlreadyInvoke = true;
-                    OnRaiseTcpClientDisconnected();
+                    OnRaiseTcpClientDisconnectedEvent();
                 }
                 
                 RenewVariable(true);
@@ -135,7 +135,7 @@ namespace AdamController.Services
         {          
             if (!tokenSource.IsCancellationRequested)
             {
-                OnRaiseTcpClientReconnected(mReconnectCount--);
+                OnRaiseTcpClientReconnectedEvent(mReconnectCount--);
 
                 _ = tokenSource.Token.WaitHandle.WaitOne(TimeSpan.FromSeconds(mReconnectTimeout));
                 _ = ConnectAsync();
@@ -148,7 +148,7 @@ namespace AdamController.Services
 
         protected override void OnConnected()
         {
-            OnRaiseTcpCientConnected();
+            OnRaiseTcpCientConnectedEvent();
             RenewVariable(false);
             
             base.OnConnected();
@@ -156,56 +156,56 @@ namespace AdamController.Services
 
         protected override void OnSent(long sent, long pending)
         {
-            OnRaiseTcpCientSent(sent, pending);
+            OnRaiseTcpCientSentEvent(sent, pending);
         }
 
         protected override void OnError(SocketError error)
         {
-            OnRaiseTcpClientError(error);
+            OnRaiseTcpClientErrorEvent(error);
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            OnRaiseTcpClientReceived(buffer, offset, size);
+            OnRaiseTcpClientReceivedEvent(buffer, offset, size);
         }
 
         #endregion
 
         #region OnRaiseEvents
 
-        protected virtual void OnRaiseTcpCientConnected()
+        protected virtual void OnRaiseTcpCientConnectedEvent()
         {
-            TcpCientConnected raiseEvent = RaiseTcpCientConnected;
+            TcpCientConnectedEventHandler raiseEvent = RaiseTcpCientConnectedEvent;
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnRaiseTcpCientSent(long sent, long pending)
+        protected virtual void OnRaiseTcpCientSentEvent(long sent, long pending)
         {
-            TcpCientSent raiseEvent = RaiseTcpCientSent;
+            TcpCientSentEventHandler raiseEvent = RaiseTcpCientSentEvent;
             raiseEvent?.Invoke(this, sent, pending);
         }
 
-        protected virtual void OnRaiseTcpClientDisconnected()
+        protected virtual void OnRaiseTcpClientDisconnectedEvent()
         {
-            TcpClientDisconnect raiseEvent = RaiseTcpClientDisconnected;
+            TcpClientDisconnectEventHandler raiseEvent = RaiseTcpClientDisconnectedEvent;
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnRaiseTcpClientError(SocketError socketError)
+        protected virtual void OnRaiseTcpClientErrorEvent(SocketError socketError)
         {
-            TcpClientError raiseEvent = RaiseTcpClientError;
+            TcpClientErrorEventHandler raiseEvent = RaiseTcpClientErrorEvent;
             raiseEvent?.Invoke(this, socketError);
         }
 
-        protected virtual void OnRaiseTcpClientReceived(byte[] buffer, long offset, long size)
+        protected virtual void OnRaiseTcpClientReceivedEvent(byte[] buffer, long offset, long size)
         {
-            TcpClientReceived raiseEvent = RaiseTcpClientReceived;
+            TcpClientReceivedEventHandler raiseEvent = RaiseTcpClientReceivedEvent;
             raiseEvent?.Invoke(this, buffer, offset, size);
         }
         
-        protected virtual void OnRaiseTcpClientReconnected(int reconnectCount)
+        protected virtual void OnRaiseTcpClientReconnectedEvent(int reconnectCount)
         {
-            TcpClientReconnected raiseEvent = RaiseTcpClientReconnected;
+            TcpClientReconnectedEventHandler raiseEvent = RaiseTcpClientReconnectedEvent;
             raiseEvent?.Invoke(this, reconnectCount);
         }
 

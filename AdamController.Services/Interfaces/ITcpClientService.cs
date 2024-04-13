@@ -5,12 +5,12 @@ namespace AdamController.Services.Interfaces
 {
     #region Delegate
 
-    public delegate void TcpCientConnected(object sender);
-    public delegate void TcpCientSent(object sender, long sent, long pending);
-    public delegate void TcpClientDisconnect(object sender);
-    public delegate void TcpClientError(object sender, SocketError error);
-    public delegate void TcpClientReceived(object sender, byte[] buffer, long offset, long size);
-    public delegate void TcpClientReconnected(object sender, int reconnectCount);
+    public delegate void TcpCientConnectedEventHandler(object sender);
+    public delegate void TcpCientSentEventHandler(object sender, long sent, long pending);
+    public delegate void TcpClientDisconnectEventHandler(object sender);
+    public delegate void TcpClientErrorEventHandler(object sender, SocketError error);
+    public delegate void TcpClientReceivedEventHandler(object sender, byte[] buffer, long offset, long size);
+    public delegate void TcpClientReconnectedEventHandler(object sender, int reconnectCount);
 
     #endregion
 
@@ -19,12 +19,12 @@ namespace AdamController.Services.Interfaces
         
         #region Events
 
-        public event TcpCientConnected RaiseTcpCientConnected;
-        public event TcpCientSent RaiseTcpCientSent;
-        public event TcpClientDisconnect RaiseTcpClientDisconnected;
-        public event TcpClientError RaiseTcpClientError;
-        public event TcpClientReceived RaiseTcpClientReceived;
-        public event TcpClientReconnected RaiseTcpClientReconnected;
+        public event TcpCientConnectedEventHandler RaiseTcpCientConnectedEvent;
+        public event TcpCientSentEventHandler RaiseTcpCientSentEvent;
+        public event TcpClientDisconnectEventHandler RaiseTcpClientDisconnectedEvent;
+        public event TcpClientErrorEventHandler RaiseTcpClientErrorEvent;
+        public event TcpClientReceivedEventHandler RaiseTcpClientReceivedEvent;
+        public event TcpClientReconnectedEventHandler RaiseTcpClientReconnectedEvent;
 
         #endregion
 
