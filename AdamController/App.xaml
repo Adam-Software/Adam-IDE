@@ -10,8 +10,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!--For inherit MahApps.Styles.TextBox to xctk:MaskedTextBox-->
-            <!--<Style BasedOn="{ StaticResource MahApps.Styles.TextBox }" TargetType="{x:Type xctk:MaskedTextBox}" />-->
+
+            <!-- Change IsChecked menu item color -->
+            <SolidColorBrush x:Key="MahApps.Brushes.CheckmarkFill" Color="{StaticResource MahApps.Colors.SystemChromeWhite}"/>
+            
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>
