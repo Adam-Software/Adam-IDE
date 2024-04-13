@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
              xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True" >
+             prism:ViewModelLocator.AutoWireViewModel="True" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" >
     
 
     <!--#region  Main menu  resources -->
@@ -46,6 +47,7 @@
             <MenuItem Header="Файл"
                       Style="{DynamicResource MahApps.Styles.MenuItem}"
                       Background="Transparent">
+                
                 <MenuItem Header="Закрыть программу"
                           Command="{Binding CloseAppCommand}"/>
             </MenuItem>
@@ -53,19 +55,26 @@
             <MenuItem Header="Вид"
                       Style="{DynamicResource MahApps.Styles.MenuItem}"
                       Background="Transparent">
-                
+
                 <MenuItem Header="Скрэтч-редактор" 
                           Command="{Binding ShowRegionCommand}"
-                          CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}" />
+                          CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"
+                          IsChecked="{Binding IsCheckedScratchMenuItem}" />
+
                 <MenuItem Header="Редактор скриптов" 
                           Command="{Binding ShowRegionCommand}"
-                          CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}" />
+                          CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}" 
+                          IsChecked="{Binding IsCheckedScriptEditorMenuItem}"/>
+                          
                 <MenuItem Header="Компьютерное зрение" 
                           Command="{Binding ShowRegionCommand}"
-                          CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"  />
+                          CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"
+                          IsChecked="{Binding IsCheckedComputerVisionMenuItem}"/>
+                
                 <MenuItem Header="Визуальные настройки" 
                           Command="{Binding ShowRegionCommand}"
-                          CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}" />
+                          CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}" 
+                          IsChecked="{Binding IsCheckedVisualSettingsMenuItem}"/>
 
             </MenuItem>
 
