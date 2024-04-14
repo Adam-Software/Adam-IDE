@@ -1,6 +1,7 @@
 ﻿using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Mvvm;
+using AdamController.Services;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
@@ -128,19 +129,13 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             get { return badgeCounter; }
             set
             {
-                if (badgeCounter == value) 
-                    return;
+                var isNewValue = SetProperty(ref badgeCounter, value);
 
-                if (value == 0)
-                {
-                    badgeCounter = value;
-                    NotificationBadge = "";
-                    return;
-                }
+                if(isNewValue)
+                    NotificationBadge = $"{BadgeCounter}";
 
-                badgeCounter = value;
-
-                NotificationBadge = $"{BadgeCounter}";
+                if(BadgeCounter == 0)
+                    NotificationBadge = string.Empty;
             }
         }
 
@@ -150,46 +145,49 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private void Subscribe()
         {
-            //ComunicateHelper.OnAdamTcpConnectedEvent += OnTcpConnected;
-            //ComunicateHelper.OnAdamTcpDisconnectedEvent += OnTcpDisconnected;
-            //ComunicateHelper.OnAdamTcpReconnected += OnTcpReconnected;
-
-            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseAdamTcpCientConnected;
-            mCommunicationProviderService.RaiseTcpServiceClientDisconnectEvent += RaiseAdamTcpClientDisconnect;
+            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseAdamTcpCientConnectedEvent;
+            mCommunicationProviderService.RaiseTcpServiceClientDisconnectEvent += RaiseAdamTcpClientDisconnectEvent;
+            mCommunicationProviderService.RaiseTcpServiceClientReconnectedEvent += RaiseTcpServiceClientReconnectedEvent;
 
             mStatusBarNotificationDelivery.RaiseChangeProgressRingStateEvent += RaiseChangeProgressRingStateEvent;
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent += RaiseNewCompileLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent += RaiseNewAppLogMessageEvent;
-            mStatusBarNotificationDelivery.RaiseNewNotificationBadgeMessageEvent += RaiseNewNotificationBadgeMessageEvent;
             mStatusBarNotificationDelivery.RaiseUpdateNotificationCounterEvent += RaiseUpdateNotificationCounterEvent;
         }
 
         private void Unsubscribe() 
         {
-            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseAdamTcpCientConnected;
-            mCommunicationProviderService.RaiseTcpServiceClientDisconnectEvent -= RaiseAdamTcpClientDisconnect;
-
+            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseAdamTcpCientConnectedEvent;
+            mCommunicationProviderService.RaiseTcpServiceClientDisconnectEvent -= RaiseAdamTcpClientDisconnectEvent;
+            mCommunicationProviderService.RaiseTcpServiceClientReconnectedEvent -= RaiseTcpServiceClientReconnectedEvent;
 
             mStatusBarNotificationDelivery.RaiseChangeProgressRingStateEvent -= RaiseChangeProgressRingStateEvent;
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent -= RaiseNewCompileLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent -= RaiseNewAppLogMessageEvent;
-            mStatusBarNotificationDelivery.RaiseNewNotificationBadgeMessageEvent -= RaiseNewNotificationBadgeMessageEvent;
         }
 
         #endregion
 
         #region Event methods
 
-        private void RaiseAdamTcpClientDisconnect(object sender)
-        {
-            ConnectIcon = PackIconModernKind.Connect;
-            TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
-        }
-
-        private void RaiseAdamTcpCientConnected(object sender)
+        private void RaiseAdamTcpCientConnectedEvent(object sender)
         {
             ConnectIcon = PackIconModernKind.Disconnect;
             TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarConnected;
+        }
+
+        private void RaiseTcpServiceClientReconnectedEvent(object sender, int reconnectCounter)
+        {
+            mStatusBarNotificationDelivery.NotificationCounter++;
+            ConnectIcon = PackIconModernKind.TransitConnectionDeparture;
+            TextOnStatusConnectToolbar = $"{cTextOnStatusConnectToolbarReconnected} {reconnectCounter}";
+        }
+
+        private void RaiseAdamTcpClientDisconnectEvent(object sender)
+        {
+            ConnectIcon = PackIconModernKind.Connect;
+            TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
+            mStatusBarNotificationDelivery.NotificationCounter++;
         }
 
         private void RaiseChangeProgressRingStateEvent(object sender, bool newState)
@@ -207,10 +205,6 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             AppLogStatusBar = message;
         }
 
-        private void RaiseNewNotificationBadgeMessageEvent(object sender, string message)
-        {
-            NotificationBadge = message;
-        }
 
         private void RaiseUpdateNotificationCounterEvent(object sender, int counter)
         {

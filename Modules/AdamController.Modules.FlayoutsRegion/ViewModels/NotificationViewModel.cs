@@ -1,6 +1,5 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using AdamController.Core.Properties;
-using AdamController.Services;
 using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;
 using MahApps.Metro.IconPacks;
@@ -13,8 +12,8 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
     {
         #region DelegateCommands
 
-        public DelegateCommand ConnectButtonComand { get; }
-        public DelegateCommand ClearNotificationsCommand { get;  }
+        public DelegateCommand ConnectButtonDelegateCommand { get; }
+        public DelegateCommand ResetNotificationsDelegateCommand { get;  }
 
         #endregion
 
@@ -39,14 +38,11 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         {
             SetFlyoutParametrs();
             
-
             mCommunicationProvider = communicationProvider;
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
 
-            ConnectButtonComand = new (ConnectButton, ConnectButtonCanExecute);
-            ClearNotificationsCommand = new DelegateCommand(ClearNotifications, ClearNotificationsCanExecute);
-
-            Subscribe();
+            ConnectButtonDelegateCommand = new (ConnectButton, ConnectButtonCanExecute);
+            ResetNotificationsDelegateCommand = new (ResetNotifications, ResetNotificationsCanExecute);
         }
 
         #endregion
@@ -55,7 +51,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         protected override void OnChanging(bool isOpening)
         {
-            //need update status bar on opening
+            
             if (isOpening)
             {
                 Subscribe();
@@ -63,13 +59,65 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             }
                 
 
-            //if (!isOpening)
-                //Unsubscribe();
+            if (!isOpening)
+                Unsubscribe();
 
             base.OnChanging(isOpening);
         }
 
-        
+
+
+        #endregion
+
+        #region Public field
+
+        private Visibility noNewNotificationMessageVisibility = Visibility.Visible;
+        public Visibility NoNewNotificationMessageVisibility
+        {
+            get => noNewNotificationMessageVisibility;
+            set => SetProperty(ref noNewNotificationMessageVisibility, value);
+        }
+
+        private Visibility failConnectNotificationVisibility = Visibility.Collapsed;
+        public Visibility FailConnectNotificationVisibility
+        {
+            get => failConnectNotificationVisibility;
+            set
+            {
+                bool isNewValue = SetProperty(ref failConnectNotificationVisibility, value);
+
+                if (isNewValue)
+                {
+                    if (FailConnectNotificationVisibility == Visibility.Visible)
+                        NoNewNotificationMessageVisibility = Visibility.Collapsed;
+
+                    if (FailConnectNotificationVisibility == Visibility.Collapsed)
+                        NoNewNotificationMessageVisibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private double notificationOpacity = Settings.Default.NotificationOpacity;
+        public double NotificationOpacity
+        {
+            get => notificationOpacity;
+            set => SetProperty(ref notificationOpacity, value);
+        }
+
+        private string contentConnectButton = cConnectButtonStatusDisconnected;
+        public string ContentConnectButton
+        {
+            get => contentConnectButton;
+            set => SetProperty(ref contentConnectButton, value);
+        }
+
+        private PackIconMaterialKind iconConnectButton = PackIconMaterialKind.Robot;
+        public PackIconMaterialKind IconConnectButton
+        {
+            get => iconConnectButton;
+            set => SetProperty(ref iconConnectButton, value);
+
+        }
 
         #endregion
 
@@ -82,38 +130,35 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             IsModal = false;
         }
 
-        private void SetStatusConnection(bool connectionStatus)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStatus">true is connected, false disconetcted, null reconected</param>
+        /// <param name="reconnectCounter"></param>
+        private void SetStatusConnection(bool? connectionStatus, int reconnectCounter = 0)
         {
-            if (connectionStatus)
+            if (connectionStatus == true)
             {
-                // это должно быть не здесь
-                _ = BaseApi.StopPythonExecute();
-
-                TextOnConnectFlayotButton = cConnectButtonStatusConnected;
-                //TextOnStatusConnectToolbar = mToolbarStatusClientConnected;
-
-                //ConnectIcon = PackIconModernKind.Disconnect;
-                IconOnConnectFlayoutButton = PackIconMaterialKind.Robot;
-                //throw new NotImplementedException();
+                ContentConnectButton = cConnectButtonStatusConnected;
+                IconConnectButton = PackIconMaterialKind.Robot;
             }
 
-            if(!connectionStatus)
+            if(connectionStatus == false)
             {
-                //если центр уведомлений закрыт, обновляем счетчик уведомлений
                 if (Settings.Default.IsMessageShowOnAbortMainConnection)
                 {
-                    mStatusBarNotificationDeliveryService.NotificationCounter++;
-
                     if (!IsOpen)
-                        FailConnectMessageVisibility = Visibility.Visible;
-                    
+                        FailConnectNotificationVisibility = Visibility.Visible;       
                 }
 
-                TextOnConnectFlayotButton = cConnectButtonStatusDisconnected;
-                //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
+                ContentConnectButton = cConnectButtonStatusDisconnected;
+                IconConnectButton = PackIconMaterialKind.RobotDead;
+            }
 
-                //ConnectIcon = PackIconModernKind.Connect;
-                IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
+            if(connectionStatus == null)
+            {
+                ContentConnectButton = $"{cConnectButtonStatusReconnected} {reconnectCounter}";
+                IconConnectButton = PackIconMaterialKind.RobotConfused;
             }
         }
 
@@ -125,8 +170,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         {
             mCommunicationProvider.RaiseTcpServiceCientConnectedEvent += OnRaiseTcpServiceCientConnected;
             mCommunicationProvider.RaiseTcpServiceClientReconnectedEvent += OnRaiseTcpServiceClientReconnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcpServiceClientDisconnect;
-            
+            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcpServiceClientDisconnect;   
         }
 
         private void Unsubscribe() 
@@ -147,15 +191,8 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void OnRaiseTcpServiceClientReconnected(object sender, int reconnectCounter)
         {
-            mStatusBarNotificationDeliveryService.NotificationCounter = reconnectCounter;
-            TextOnConnectFlayotButton = $"{cConnectButtonStatusReconnected} {reconnectCounter}";
-            //TextOnStatusConnectToolbar = $"{mToolbarStatusClientReconnected} {reconnectCount}";
-
-            //ConnectIcon = PackIconModernKind.TransitConnectionDeparture;
-            IconOnConnectFlayoutButton = PackIconMaterialKind.RobotConfused;
+            SetStatusConnection(null, reconnectCounter);
         }
-
-        //private int reconnectCount = 0;
 
         private void OnRaiseTcpServiceClientDisconnect(object sender)
         {
@@ -168,27 +205,11 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void ConnectButton()
         {
-            //bool isNotifyButton = false; //(string)obj == "IsNotificationButtonCalling";
-
-            //if (isNotifyButton)
-            //{
-                //ClearNotifications();
-                //NotificationFlayoutsIsOpen = false;
-            //}
-
-            //await Dispatcher.Yield(DispatcherPriority.Normal);
-
             if (mCommunicationProvider.IsTcpClientConnected)
-            {
                 mCommunicationProvider.DisconnectAllAsync();
-                //return;
-            }
-
+     
             if (!mCommunicationProvider.IsTcpClientConnected)
-            {
                 mCommunicationProvider.ConnectAllAsync();
-                //return;
-            }
         }
 
         private bool ConnectButtonCanExecute()
@@ -196,119 +217,15 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             return true;
         }
 
-        /* #16 */
-        private void ClearNotifications()
+        private void ResetNotifications()
         {
-
-            //BadgeCounter = 0;
-            mStatusBarNotificationDeliveryService.NotificationCounter = 0;
-
-            FailConnectMessageVisibility = Visibility.Collapsed;
+            mStatusBarNotificationDeliveryService.ResetNotificationCounter();
+            FailConnectNotificationVisibility = Visibility.Collapsed;
         }
 
-        private bool ClearNotificationsCanExecute()
+        private bool ResetNotificationsCanExecute()
         {
             return true;
-        }
-
-        #endregion
-
-        #region NotificationMessage Visiblity
-
-        private Visibility noNewNotificationMessageVisibility = Visibility.Visible;
-        public Visibility NoNewNotificationMessageVisibility
-        {
-            get => noNewNotificationMessageVisibility;
-            set => SetProperty(ref noNewNotificationMessageVisibility, value);
-        }
-
-        private Visibility failConnectMessageVisibility = Visibility.Collapsed;
-        public Visibility FailConnectMessageVisibility
-        {
-            get => failConnectMessageVisibility;
-            set
-            {
-                bool isNewValue = SetProperty(ref failConnectMessageVisibility, value);
-                
-                if (isNewValue)
-                {
-                    if (FailConnectMessageVisibility == Visibility.Visible)
-                        NoNewNotificationMessageVisibility = Visibility.Collapsed;
-
-                    if (FailConnectMessageVisibility == Visibility.Collapsed)
-                        NoNewNotificationMessageVisibility = Visibility.Visible;
-                }
-            }
-        }
-
-        #endregion
-
-        #region NotificationOpacity
-
-        private double notificationOpacity = Settings.Default.NotificationOpacity;
-        public double NotificationOpacity
-        {
-            get => notificationOpacity;
-            set => SetProperty(ref notificationOpacity, value);
-        }
-
-        #endregion
-
-        #region Connect/Disconnect button (Flayouts)
-
-        private string textOnConnectFlayotButton = cConnectButtonStatusDisconnected;
-        public string TextOnConnectFlayotButton
-        {
-            get => textOnConnectFlayotButton;
-            set => SetProperty(ref textOnConnectFlayotButton, value);
-        }
-
-        private PackIconMaterialKind iconOnConnectFlayoutButton = PackIconMaterialKind.Robot;
-        public PackIconMaterialKind IconOnConnectFlayoutButton
-        {
-            get => iconOnConnectFlayoutButton;
-            set => SetProperty(ref iconOnConnectFlayoutButton, value);
-            
-        }
-
-        #endregion
-
-        #region Events TCP/IP clients OLD
-
-        private void OnTcpDisconnected()
-        {
-            //если центр уведомлений закрыт, обновляем счетчик уведомлений
-            //if (!NotificationFlayoutsIsOpen && Settings.Default.IsMessageShowOnAbortMainConnection)
-            //{
-            //BadgeCounter++;
-            //FailConnectMessageVisibility = Visibility.Visible;
-            //}
-
-            //TextOnConnectFlayotButton = mConnectButtonStatusDisconnected;
-            //TextOnStatusConnectToolbar = mToolbarStatusClientDisconnected;
-
-            //ConnectIcon = PackIconModernKind.Connect;
-            //IconOnConnectFlayoutButton = PackIconMaterialKind.RobotDead;
-        }
-
-        private void OnTcpConnected()
-        {
-            //_ = BaseApi.StopPythonExecute();
-
-            //TextOnConnectFlayotButton = mConnectButtonStatusConnected;
-            //TextOnStatusConnectToolbar = mToolbarStatusClientConnected;
-
-            //ConnectIcon = PackIconModernKind.Disconnect;
-            //IconOnConnectFlayoutButton = PackIconMaterialKind.Robot;
-        }
-
-        private void OnTcpReconnected(int reconnectCount)
-        {
-            //TextOnConnectFlayotButton = $"{mConnectButtonStatusReconnected} {reconnectCount}";
-            //TextOnStatusConnectToolbar = $"{mToolbarStatusClientReconnected} {reconnectCount}";
-
-            //ConnectIcon = PackIconModernKind.TransitConnectionDeparture;
-            //IconOnConnectFlayoutButton = PackIconMaterialKind.RobotConfused;
         }
 
         #endregion

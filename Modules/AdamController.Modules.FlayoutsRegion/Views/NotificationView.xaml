@@ -36,7 +36,7 @@
                 <!--#region FailConnect Notify -->
 
                 <Border Grid.Row="0" 
-                        Visibility="{Binding FailConnectMessageVisibility}"
+                        Visibility="{Binding FailConnectNotificationVisibility}"
                         BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}" 
                         BorderThickness="3">
 
@@ -90,9 +90,10 @@
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Right"
                            FontWeight="Bold">
-            <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ClearNotificationsCommand}">
-                Очистить уведомления
-            </Hyperlink>
+                    
+                        <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ClearNotificationsCommand}">
+                            Очистить уведомления
+                        </Hyperlink>
 
                 </TextBlock>
 
@@ -112,8 +113,8 @@
                             HorizontalContentAlignment="Center"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
-                            Command="{Binding ConnectButtonComand}"
                             Background="Transparent"
+                            Command="{Binding ConnectButtonDelegateCommand}"
                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
             
@@ -123,9 +124,9 @@
                         <StackPanel Orientation="Vertical">
 
                             <iconPacks:PackIconMaterial Margin="5 0 5 0"  
-                                                            Width="Auto" 
-                                                            Height="Auto"
-                                                            Kind="{Binding IconOnConnectFlayoutButton}" />
+                                                        Width="Auto" 
+                                                        Height="Auto"
+                                                        Kind="{Binding IconConnectButton}" />
 
                             <Label Padding="0 5 0 0"
                                    Width="Auto" 
@@ -135,7 +136,7 @@
                                    FontSize="10"
                                    FontWeight="Medium"
                                    mah:ControlsHelper.ContentCharacterCasing="Upper"
-                                   Content="{Binding TextOnConnectFlayotButton}" />
+                                   Content="{Binding ContentConnectButton}" />
                             
                         </StackPanel>
 

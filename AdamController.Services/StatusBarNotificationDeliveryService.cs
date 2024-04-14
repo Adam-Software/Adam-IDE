@@ -12,7 +12,6 @@ namespace AdamController.Services
         public event ChangeProgressRingStateEventHandler RaiseChangeProgressRingStateEvent;
         public event NewCompileLogMessageEventHandler RaiseNewCompileLogMessageEvent;
         public event NewAppLogMessageEventHandler RaiseNewAppLogMessageEvent;
-        public event NewNotificationBadgeMessageEventHandler RaiseNewNotificationBadgeMessageEvent;
         public event UpdateNotificationCounterEventHandler RaiseUpdateNotificationCounterEvent;
 
         #endregion
@@ -65,19 +64,6 @@ namespace AdamController.Services
             } 
         }
 
-        private string notificationBadgeMessage = string.Empty;
-        public string NotificationBadgeMessage 
-        { 
-            get => notificationBadgeMessage;
-            set
-            {
-                bool isNewValue = SetProperty(ref notificationBadgeMessage, value);
-
-                if (isNewValue)
-                    OnRaiseNewNotificationBadgeMessageEvent(NotificationBadgeMessage);
-            } 
-        }
-
         private int notificationCounter;
         public int NotificationCounter 
         { 
@@ -91,13 +77,21 @@ namespace AdamController.Services
             }
         }
 
+        #endregion
+
+        #region Public methode
+
+        public void ResetNotificationCounter()
+        {
+            NotificationCounter = 0;
+        }
+
         public void Dispose()
         {
-            
+
         }
 
         #endregion
-
 
         #region OnRaise methods
 
@@ -116,12 +110,6 @@ namespace AdamController.Services
         protected virtual void OnRaiseNewAppLogMessageEvent(string message)
         {
             NewAppLogMessageEventHandler raiseEvent = RaiseNewAppLogMessageEvent;
-            raiseEvent?.Invoke(this, message);
-        }
-
-        protected virtual void OnRaiseNewNotificationBadgeMessageEvent(string message)
-        {
-            NewNotificationBadgeMessageEventHandler raiseEvent = RaiseNewNotificationBadgeMessageEvent;
             raiseEvent?.Invoke(this, message);
         }
 

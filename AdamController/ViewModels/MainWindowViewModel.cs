@@ -1,9 +1,8 @@
 ﻿using AdamController.Core;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
-using DryIoc;
+using AdamController.WebApi.Client.v1;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Regions;
 using System.Reflection;
 using System.Windows;
@@ -23,17 +22,20 @@ namespace AdamController.ViewModels
         public IRegionManager RegionManager { get; }
         private readonly ISubRegionChangeAwareService mSubRegionChangeAwareService;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
+        private readonly ICommunicationProviderService mCommunicationProviderService;
 
         #endregion
 
         #region ~
 
-        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification) 
+        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, 
+            IStatusBarNotificationDeliveryService statusBarNotification, ICommunicationProviderService communicationProviderService) 
 
         {
             RegionManager = regionManager;
             mSubRegionChangeAwareService = subRegionChangeAwareService;
             mStatusBarNotification = statusBarNotification;
+            mCommunicationProviderService = communicationProviderService;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
             Subscribe();
@@ -125,6 +127,7 @@ namespace AdamController.ViewModels
         private void Subscribe()
         {
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
+            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
         }
 
@@ -134,6 +137,7 @@ namespace AdamController.ViewModels
         private void Unsubscribe()
         {
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent -= RaiseSubRegionChangeEvent;
+            mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }
 
@@ -159,6 +163,16 @@ namespace AdamController.ViewModels
         {
             var changeRegionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
             ChangeSelectedIndexByRegionName(changeRegionName);
+        }
+
+        /// <summary>
+        /// It is not clear where to put this, so it will not get lost here.
+        /// 
+        /// Stops a remotely executed script that may have been executing before the connection was lost.
+        /// </summary>
+        private void RaiseTcpServiceCientConnectedEvent(object sender)
+        {
+            _ = BaseApi.StopPythonExecute();
         }
 
         #endregion
