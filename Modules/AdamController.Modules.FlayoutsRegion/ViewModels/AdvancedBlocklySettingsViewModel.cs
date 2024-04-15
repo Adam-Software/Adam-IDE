@@ -13,96 +13,117 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
     public class AdvancedBlocklySettingsViewModel : FlyoutBase 
     {
+        #region DelegateCommands
+
+        public DelegateCommand<bool?> ChangeToolboxLanguageToggleSwitchDelegateCommand { get; private set; }
+        public DelegateCommand<bool?> ChangeGridColorToggleSwitchDelegateCommand { get; private set; }
+        public DelegateCommand<bool?> ChangeBlocklyThemeToogleSwitchDelegateCommand { get; private set; }
+        public DelegateCommand<bool?> ChangeSpacingToggleSwitchDelegateCommand { get; private set; }
+        public DelegateCommand EnableShowGridDelegateCommand { get; private set; }
+
+        #endregion
+
         public AdvancedBlocklySettingsViewModel() 
         {
-            Header = "Продвинутые настройки скретч-редактора";
-            
+            SetFlyoutParametrs();
         }
 
-        protected override void OnOpening(FlyoutParameters flyoutParameters)
+        #region Navigation
+
+        protected override void OnChanging(bool isOpening)
         {
-            base.OnOpening(flyoutParameters);
+
+            if (isOpening)
+            {
+                UpdatePublicFields();
+                Subscribe();
+                CreateDelegateCommand();
+            }
+
+
+            if (!isOpening)
+            {
+                ClearPublicFields();
+                Unsubscribe();
+                ResetDelegateCommand();
+            }
+
+            base.OnChanging(isOpening);
         }
 
-        protected override void OnClosing(FlyoutParameters flyoutParameters)
+        #endregion
+
+        #region Public fields
+
+        private void UpdatePublicFields()
         {
-            base.OnClosing(flyoutParameters);
+            SelectedBlocklyGridColour = MahApps.Metro.Controls.ColorHelper.ColorFromString(Settings.Default.BlocklyGridColour);
+            BlocklyLanguageCollection = new ObservableCollection<BlocklyLanguageModel>(LanguagesCollection.BlocklyLanguageCollection);
+            SelectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyToolboxLanguage);
+            BlocklyThemes = new ObservableCollection<BlocklyThemeModel>(ThemesCollection.BlocklyThemes);
+            SelectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == Settings.Default.BlocklyTheme);
         }
 
-        #region BlocklyGridColour settings
+        private void ClearPublicFields()
+        {
+            //SelectedBlocklyGridColour = null;
+            BlocklyLanguageCollection = null;
+            //SelectedBlocklyToolboxLanguage = null;
+            BlocklyThemes = null;
+            //SelectedBlocklyTheme = null;
+        }
 
-        private Color? selectedBlocklyGridColour = MahApps.Metro.Controls.ColorHelper.ColorFromString(Settings.Default.BlocklyGridColour);
+        private Color? selectedBlocklyGridColour;
         public Color? SelectedBlocklyGridColour
         {
             get => selectedBlocklyGridColour;
             set
             {
-                if (value == selectedBlocklyGridColour)
-                {
-                    return;
-                }
-                selectedBlocklyGridColour = value;
+                bool isNewValue = SetProperty(ref selectedBlocklyGridColour, value);
 
-                SetProperty(ref selectedBlocklyGridColour, value);
-                Settings.Default.BlocklyGridColour = selectedBlocklyGridColour.ToString();
+                if (isNewValue)
+                    Settings.Default.BlocklyGridColour = SelectedBlocklyGridColour.ToString();
             }
         }
 
-        #endregion
+        private ObservableCollection<BlocklyLanguageModel> blocklyLanguageCollection;
+        public ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection 
+        {
+            get => blocklyLanguageCollection;
+            set => SetProperty(ref blocklyLanguageCollection, value);
+        }
 
-        #region BlocklyToolboxLanguage Settings
-
-        public static ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection { get; private set; } = LanguagesCollection.BlocklyLanguageCollection;
-
-        private BlocklyLanguageModel selectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyToolboxLanguage);
+        private BlocklyLanguageModel selectedBlocklyToolboxLanguage;
         public BlocklyLanguageModel SelectedBlocklyToolboxLanguage
         {
             get => selectedBlocklyToolboxLanguage;
-            set
-            {
-                if (value == selectedBlocklyToolboxLanguage)
-                {
-                    return;
-                }
-
-                selectedBlocklyToolboxLanguage = value;
-
-                SetProperty(ref selectedBlocklyToolboxLanguage, value);
-
-                Settings.Default.BlocklyToolboxLanguage = selectedBlocklyToolboxLanguage.BlocklyLanguage;
-            }
+            set => SetProperty(ref selectedBlocklyToolboxLanguage, value);
         }
 
-        #endregion
+        private ObservableCollection<BlocklyThemeModel> blocklyThemes;
+        public ObservableCollection<BlocklyThemeModel> BlocklyThemes 
+        {
+            get => blocklyThemes;
+            set => SetProperty(ref blocklyThemes, value);
+        }
 
-        #region BlocklyTheme Settings
-
-        public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = ThemesCollection.BlocklyThemes;
-
-        private BlocklyThemeModel selectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == Settings.Default.BlocklyTheme);
+        private BlocklyThemeModel selectedBlocklyTheme;
         public BlocklyThemeModel SelectedBlocklyTheme
         {
             get => selectedBlocklyTheme;
-            set
-            {
-                if (value == selectedBlocklyTheme)
-                {
-                    return;
-                }
-
-                selectedBlocklyTheme = value;
-                SetProperty(ref selectedBlocklyTheme, value);
-
-                Settings.Default.BlocklyTheme = selectedBlocklyTheme.BlocklyTheme;
-
-                if (Settings.Default.ChangeGridColorSwitchToggleSwitchState) return;
-                SelectGridColorDependingSelectedTheme(SelectedBlocklyTheme.BlocklyTheme);
-            }
+            set => SetProperty(ref selectedBlocklyTheme, value);
         }
 
         #endregion
 
-        #region SelectMainTheme
+        #region Private metods
+
+        private void SetFlyoutParametrs()
+        {
+            Theme = FlyoutTheme.Inverse;
+            Header = "Продвинутые настройки скретч-редактора";
+            IsModal = true;
+        }
 
         private void SelectGridColorDependingSelectedTheme(BlocklyTheme theme)
         {
@@ -126,63 +147,190 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             }
         }
 
+        private void CreateDelegateCommand()
+        {
+            ChangeToolboxLanguageToggleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeToolboxLanguageToggleSwitch, ChangeToolboxLanguageToggleSwitchCanExecute);
+            ChangeGridColorToggleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeGridColorToggleSwitch, ChangeGridColorToggleSwitchCanExecute);
+            ChangeBlocklyThemeToogleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeBlocklyThemeToogleSwitch, ChangeBlocklyThemeToogleSwitchCanExecute);
+            ChangeSpacingToggleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeSpacingToggleSwitch, ChangeSpacingToggleSwitchCanExecute);
+            EnableShowGridDelegateCommand = new DelegateCommand(EnableShowGridDelegate, EnableShowGridDelegateCanExecute);
+        }
+
+        private void ResetDelegateCommand()
+        {
+            ChangeToolboxLanguageToggleSwitchDelegateCommand = null;
+            ChangeGridColorToggleSwitchDelegateCommand = null;
+            ChangeBlocklyThemeToogleSwitchDelegateCommand = null;
+            ChangeSpacingToggleSwitchDelegateCommand = null;
+            EnableShowGridDelegateCommand = null;
+        }
+
         #endregion
 
-        #region Commands
+        #region Delegate command methods
 
-        private DelegateCommand<bool?> changeToolboxLanguageToggleSwitchCommand;
-        public DelegateCommand<bool?> ChangeToolboxLanguageToggleSwitchCommand => changeToolboxLanguageToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+        private void ChangeToolboxLanguageToggleSwitch(bool? obj)
         {
             bool? toogleSwitchState = obj;
 
-            if (toogleSwitchState == true) return;
+            if (toogleSwitchState == true) 
+                return;
 
             SelectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyWorkspaceLanguage);
+            Settings.Default.BlocklyToolboxLanguage = SelectedBlocklyToolboxLanguage.BlocklyLanguage;
+        }
 
-        });
+        private bool ChangeToolboxLanguageToggleSwitchCanExecute(bool? nullable)
+        {
+            return true;
+        }
 
-        private DelegateCommand<bool?> changeGridColorToggleSwitchCommand;
-        public DelegateCommand<bool?> ChangeGridColorToggleSwitchCommand => changeGridColorToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+        private void ChangeGridColorToggleSwitch(bool? obj)
         {
             bool? toogleSwitchState = obj;
 
-            if (toogleSwitchState == true) return;
+            if (toogleSwitchState == true) 
+                return;
 
             SelectGridColorDependingSelectedTheme(SelectedBlocklyTheme.BlocklyTheme);
-        });
 
-        private DelegateCommand<bool?> changeBlocklyThemeToogleSwitchCommand;
-        public DelegateCommand<bool?> ChangeBlocklyThemeToogleSwitchCommand => changeBlocklyThemeToogleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+            //if (isNewValue)
+            //{
+            //    Settings.Default.BlocklyTheme = SelectedBlocklyTheme.BlocklyTheme;
+
+            if (Settings.Default.ChangeGridColorSwitchToggleSwitchState)
+                    return;
+
+            SelectGridColorDependingSelectedTheme(SelectedBlocklyTheme.BlocklyTheme);
+            Settings.Default.BlocklyTheme = SelectedBlocklyTheme.BlocklyTheme;
+
+            //    SelectGridColorDependingSelectedTheme(SelectedBlocklyTheme.BlocklyTheme);
+            //}
+        }
+
+        private bool ChangeGridColorToggleSwitchCanExecute(bool? nullable)
+        {
+            return true;
+        }
+
+        private void ChangeBlocklyThemeToogleSwitch(bool? obj)
         {
             bool? toogleSwitchState = obj;
 
-            if (toogleSwitchState == true) return;
+            if (toogleSwitchState == true) 
+                return;
 
             if (Settings.Default.BaseTheme == "Dark")
             {
-                SelectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Dark);
+                 SelectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Dark);
             }
             else if (Settings.Default.BaseTheme == "Light")
             {
                 SelectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Classic);
             }
-        });
+        }
 
-        private DelegateCommand<bool?> changeSpacingToggleSwitchCommand;
-        public DelegateCommand<bool?> ChangeSpacingToggleSwitchCommand => changeSpacingToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+        private bool ChangeBlocklyThemeToogleSwitchCanExecute(bool? nullable)
+        {
+            return true;
+        }
+
+        private void ChangeSpacingToggleSwitch(bool? obj)
         {
             bool? toogleSwitchState = obj;
 
-            if (toogleSwitchState == true) return;
-
+            if (toogleSwitchState == true) 
+                return;
+                
             Settings.Default.BlocklyGridSpacing = 20;
-        });
+        }
 
-        private DelegateCommand enableShowGridCommand;
-        public DelegateCommand EnableShowGridCommand => enableShowGridCommand ??= new DelegateCommand(() =>
+        private bool ChangeSpacingToggleSwitchCanExecute(bool? nullable)
+        {
+            return true;
+        }
+
+        private void EnableShowGridDelegate()
         {
             Settings.Default.BlocklyShowGrid = true;
-        });
+        }
+
+        private bool EnableShowGridDelegateCanExecute()
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region Subscriptions
+
+        private void Subscribe()
+        {
+            
+        }
+
+        private void Unsubscribe()
+        {
+            
+        }
+
+        #endregion
+
+        #region Commands
+
+        //private DelegateCommand<bool?> changeToolboxLanguageToggleSwitchCommand;
+        //public DelegateCommand<bool?> ChangeToolboxLanguageToggleSwitchCommand => changeToolboxLanguageToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+        //{
+            //bool? toogleSwitchState = obj;
+
+            //if (toogleSwitchState == true) return;
+
+            //SelectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyWorkspaceLanguage);
+
+        //});
+
+        //private DelegateCommand<bool?> changeGridColorToggleSwitchCommand;
+        //public DelegateCommand<bool?> ChangeGridColorToggleSwitchCommand => changeGridColorToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+        //{
+        //    bool? toogleSwitchState = obj;
+
+        //    if (toogleSwitchState == true) return;
+
+        //    SelectGridColorDependingSelectedTheme(SelectedBlocklyTheme.BlocklyTheme);
+        //});
+
+        //private DelegateCommand<bool?> changeBlocklyThemeToogleSwitchCommand;
+        //public DelegateCommand<bool?> ChangeBlocklyThemeToogleSwitchCommand => changeBlocklyThemeToogleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+        //{
+        //    bool? toogleSwitchState = obj;
+
+        //    if (toogleSwitchState == true) return;
+
+        //    if (Settings.Default.BaseTheme == "Dark")
+        //    {
+        //        SelectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Dark);
+        //    }
+        //    else if (Settings.Default.BaseTheme == "Light")
+        //    {
+        //        SelectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Classic);
+        //    }
+        //});
+
+        //private DelegateCommand<bool?> changeSpacingToggleSwitchCommand;
+        //public DelegateCommand<bool?> ChangeSpacingToggleSwitchCommand => changeSpacingToggleSwitchCommand ??= new DelegateCommand<bool?>(obj =>
+        //{
+        //    bool? toogleSwitchState = obj;
+
+        //    if (toogleSwitchState == true) return;
+
+        //    Settings.Default.BlocklyGridSpacing = 20;
+        //});
+
+        //private DelegateCommand enableShowGridCommand;
+        //public DelegateCommand EnableShowGridCommand => enableShowGridCommand ??= new DelegateCommand(() =>
+        //{
+        //    Settings.Default.BlocklyShowGrid = true;
+        //});
 
         #endregion
     }

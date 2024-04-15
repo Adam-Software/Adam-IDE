@@ -40,10 +40,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             
             mCommunicationProvider = communicationProvider;
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
-
-            ConnectButtonDelegateCommand = new (ConnectButton, ConnectButtonCanExecute);
-            ReconnectNotificationButtonDelegateCommand = new (ReconnectNotificationButton, ReconnectNotificationButtonCanExecute);
-            ResetNotificationsDelegateCommand = new (ResetNotifications, ResetNotificationsCanExecute);
         }
 
         #endregion
@@ -56,6 +52,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if (isOpening)
             {
                 Subscribe();
+
+                ConnectButtonDelegateCommand = new(ConnectButton, ConnectButtonCanExecute);
+                ReconnectNotificationButtonDelegateCommand = new(ReconnectNotificationButton, ReconnectNotificationButtonCanExecute);
+                ResetNotificationsDelegateCommand = new(ResetNotifications, ResetNotificationsCanExecute);
 
                 SetStatusConnection(mCommunicationProvider.IsTcpClientConnected);
             }

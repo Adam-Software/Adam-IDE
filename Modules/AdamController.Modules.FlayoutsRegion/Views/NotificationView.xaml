@@ -1,9 +1,6 @@
 ﻿<UserControl x:Class="AdamController.Modules.FlayoutsRegion.Views.NotificationView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AdamController.Modules.FlayoutsRegion.Views" 
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:prism="http://prismlibrary.com/" 
@@ -13,7 +10,7 @@
         <ScrollViewer HorizontalScrollBarVisibility="Visible"
                       Style="{DynamicResource MahApps.Styles.ScrollViewer}">
 
-            <Grid Width="400" Margin="20 0 0 0" x:Name="FlayoutNotificationTemplate" >
+            <Grid Width="400" Margin="20 0 0 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="2*"/>
