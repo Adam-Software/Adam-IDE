@@ -13,11 +13,34 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class VisualSettingsControlViewModel : RegionViewModelBase 
     {
+        #region DelegateCommands
+
+        public DelegateCommand OpenAdvancedBlocklySettingsDelegateCommand { get; }
+
+        public DelegateCommand<string> ChangeBaseThemeDelegateCommand { get; }
+        
+        //public DelegateCommand<string> ChangeThemeColorSchemeDelegateCommand { get; }
+
+        #endregion
+
+        #region Action
+
+        //public static Action<string> ChangeBaseTheme { get; set; }
+
+        public static Action<double> ChangeNotificationOpacity { get; set; }
+        //public static Action<string> ChangeThemeColorScheme { get; set; }
+        //public static Action<bool> OpenAdvancedBlocklySettings { get; set; }
+        public static Action<BlocklyLanguageModel> SetToolboxLanguage { get; set; }
+        public static Action<BlocklyThemeModel> SetBlocklyThemeAndGridColor { get; set; }
+
+        #endregion
+
         #region Service
 
         private IFlyoutManager FlyoutManager { get; }
@@ -29,6 +52,34 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
         {
             FlyoutManager = flyoutManager;
+
+            OpenAdvancedBlocklySettingsDelegateCommand = new DelegateCommand(OpenAdvancedBlocklySettings, OpenAdvancedBlocklySettingsCanExecute);
+            ChangeBaseThemeDelegateCommand = new DelegateCommand<string>(ChangeBaseTheme, ChangeBaseThemeCanExecute);
+            //ChangeThemeColorScheme = new DelegateCommand<string>()
+        }
+
+        #endregion
+
+        #region  DelegateCommand methods
+
+        private void OpenAdvancedBlocklySettings()
+        {
+            FlyoutManager.OpenFlyout(FlyoutNames.FlyotAdvancedBlocklySettings);
+        }
+
+        private bool OpenAdvancedBlocklySettingsCanExecute()
+        {
+            return true;
+        }
+
+        private void ChangeBaseTheme(string theme)
+        {
+            ChangeTheme(theme);
+        }
+
+        private bool ChangeBaseThemeCanExecute(string theme)
+        {
+            return true;
         }
 
         #endregion
@@ -53,12 +104,36 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
+        #region Private methods
+
+        private void ChangeTheme(string newTheme)
+        {
+            _ = ThemeManager.Current.ChangeThemeBaseColor(Application.Current, newTheme);
+
+            if (!Settings.Default.ChangeBlocklyThemeToggleSwitchState)
+            {
+                if (newTheme == "Dark")
+                {
+                    Settings.Default.BlocklyTheme = BlocklyTheme.Dark;
+                    Settings.Default.BlocklyGridColour = Colors.White.ToString();
+                }
+                
+                if (newTheme == "Light")
+                {
+                    Settings.Default.BlocklyTheme = BlocklyTheme.Classic;
+                    Settings.Default.BlocklyGridColour = Colors.Black.ToString();
+                }
+            }
+        }
+
+        private void ChangeThemeColorScheme(string colorScheme)
+        {
+           ThemeManager.Current.ChangeThemeColorScheme(Application.Current, colorScheme);
+        }
+
+        #endregion
+
         public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = ThemesCollection.BlocklyThemes;
-
-
-        #region LanguageSettings
-
-        #region AppLanguage
 
         public static ObservableCollection<AppLanguageModel> LanguageApp { get; private set; } = LanguagesCollection.AppLanguageCollection;
 
@@ -80,10 +155,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 Settings.Default.AppLanguage = selectedLanguageApp.AppLanguage;
             }
         }
-
-        #endregion
-
-        #region BlocklyLanguage
 
         public static ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection { get; private set; } = LanguagesCollection.BlocklyLanguageCollection;
        
@@ -111,12 +182,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region ColorScheme Settings
-
         public ReadOnlyObservableCollection<string> ColorScheme { get; set; } = ThemeManager.Current.ColorSchemes;
 
         private string selectedColorScheme = ThemeManager.Current.DetectTheme(Application.Current).ColorScheme;
@@ -125,22 +190,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             get => selectedColorScheme;
             set
             {
-                if (value == selectedColorScheme)
-                {
-                    return;
-                }
+                bool isNewValue = SetProperty(ref selectedColorScheme, value);
 
-                selectedColorScheme = value;
-
-                ChangeThemeColorScheme(selectedColorScheme);
-
-                SetProperty(ref selectedColorScheme, value);
+                if(isNewValue)
+                    ChangeThemeColorScheme(selectedColorScheme);
             }
         }
 
-        #endregion
-
-        #region BlocklyGridLenth settings
         //TODO unused this variable
         private short blocklyGridLenth = Settings.Default.BlocklyGridLenth;
         public short BlocklyGridLenth
@@ -160,8 +216,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
-        #endregion
-
+        
         private double notificationOpacity = Settings.Default.NotificationOpacity;
         public double NotificationOpacity
         {
@@ -179,48 +234,36 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         }
 
 
-        #region Command
+        
 
-        private DelegateCommand openAdvancedBlocklySettingsCommand;
-        public DelegateCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new DelegateCommand(() =>
-        {
-            FlyoutManager.OpenFlyout(FlyoutNames.FlyotAdvancedBlocklySettings);
-        });
+        //private DelegateCommand openAdvancedBlocklySettingsCommand;
+        //public DelegateCommand OpenAdvancedBlocklySettingsCommand => openAdvancedBlocklySettingsCommand ??= new DelegateCommand(() =>
+        //{
+        //    FlyoutManager.OpenFlyout(FlyoutNames.FlyotAdvancedBlocklySettings);
+        //});
 
-        private DelegateCommand<string> changeBaseColorTheme;
+        //private DelegateCommand<string> changeBaseColorTheme;
 
-        public DelegateCommand<string> ChangeBaseColorTheme => changeBaseColorTheme ??= new DelegateCommand<string>(obj =>
-        {
-            string mainTheme = obj;
+        //public DelegateCommand<string> ChangeBaseColorTheme => changeBaseColorTheme ??= new DelegateCommand<string>(obj =>
+        //{
+            //string mainTheme = obj;
 
-            if (mainTheme == null) return;
+            //if (mainTheme == null) return;
 
-            ChangeBaseTheme(mainTheme);
+            //ChangeBaseTheme(mainTheme);
 
-            if (!Settings.Default.ChangeBlocklyThemeToggleSwitchState)
-            {
-                if (mainTheme == "Dark")
-                {
-                    SetBlocklyThemeAndGridColor(BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Dark));
-                }
-                else if (mainTheme == "Light")
-                {
-                    SetBlocklyThemeAndGridColor(BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Classic));
-                }
-            }
-        });
+            //if (!Settings.Default.ChangeBlocklyThemeToggleSwitchState)
+            //{
+            //    if (mainTheme == "Dark")
+            //    {
+            //        SetBlocklyThemeAndGridColor(BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Dark));
+            //    }
+            //    else if (mainTheme == "Light")
+            //    {
+            //        SetBlocklyThemeAndGridColor(BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == BlocklyTheme.Classic));
+            //    }
+            //}
+        //});
 
-        #endregion
-
-        #region Action
-
-        public static Action<double> ChangeNotificationOpacity { get; set; }
-        public static Action<string> ChangeBaseTheme { get; set; }
-        public static Action<string> ChangeThemeColorScheme { get; set; }
-        //public static Action<bool> OpenAdvancedBlocklySettings { get; set; }
-        public static Action<BlocklyLanguageModel> SetToolboxLanguage { get; set; }
-        public static Action<BlocklyThemeModel> SetBlocklyThemeAndGridColor { get; set; }
-      
-        #endregion
     }
 }

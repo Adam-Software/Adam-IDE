@@ -6,7 +6,7 @@
              xmlns:controlzex="urn:controlzex"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:localConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core" 
+             xmlns:converter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
              xmlns:prism="http://prismlibrary.com/" 
@@ -79,9 +79,8 @@
                         VerticalAlignment="Center"
                         Content="Темная"
                         Margin="20 5 10 10"
-                        Command="{Binding ChangeBaseColorTheme}"
+                        Command="{Binding ChangeBaseThemeDelegateCommand}"
                         CommandParameter="Dark"
-                        
                         Style="{DynamicResource MahApps.Styles.Button}"
                         Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                         Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
@@ -92,9 +91,8 @@
                         Margin="10 5 20 10"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
-                        Command="{Binding ChangeBaseColorTheme}"
+                        Command="{Binding ChangeBaseThemeDelegateCommand}"
                         CommandParameter="Light"
-                        
                         Style="{DynamicResource MahApps.Styles.Button}"
                         Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                         Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
@@ -471,7 +469,7 @@
                     <Button Grid.Row="8"
                             Margin="20 5 20 5"
                             Padding="10 5 10 5"
-                            Command="{Binding OpenAdvancedBlocklySettingsCommand}"
+                            Command="{Binding OpenAdvancedBlocklySettingsDelegateCommand}"
                             Content="Продвинутые настройки"
                             Style="{DynamicResource MahApps.Styles.Button.Split}"/>
                     
@@ -503,7 +501,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!--#region Show Notification on abort connrction -->
+                <!--#region Show Notification on abort connection -->
 
                 <mah:ToggleSwitch Grid.Row="0"
                                   Margin="20 0 20 0"

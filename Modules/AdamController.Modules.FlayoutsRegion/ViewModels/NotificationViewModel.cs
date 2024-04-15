@@ -40,6 +40,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             
             mCommunicationProvider = communicationProvider;
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
+
+            ConnectButtonDelegateCommand = new(ConnectButton, ConnectButtonCanExecute);
+            ReconnectNotificationButtonDelegateCommand = new(ReconnectNotificationButton, ReconnectNotificationButtonCanExecute);
+            ResetNotificationsDelegateCommand = new(ResetNotifications, ResetNotificationsCanExecute);
         }
 
         #endregion
@@ -52,12 +56,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if (isOpening)
             {
                 Subscribe();
-
-                ConnectButtonDelegateCommand = new(ConnectButton, ConnectButtonCanExecute);
-                ReconnectNotificationButtonDelegateCommand = new(ReconnectNotificationButton, ReconnectNotificationButtonCanExecute);
-                ResetNotificationsDelegateCommand = new(ResetNotifications, ResetNotificationsCanExecute);
-
-                SetStatusConnection(mCommunicationProvider.IsTcpClientConnected);
+                UpdateStatusConnection(mCommunicationProvider.IsTcpClientConnected);
             }
                 
 
@@ -116,7 +115,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         {
             get => iconConnectButton;
             set => SetProperty(ref iconConnectButton, value);
-
         }
 
         #endregion
@@ -135,7 +133,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         /// </summary>
         /// <param name="connectionStatus">true is connected, false disconetcted, null reconected</param>
         /// <param name="reconnectCounter"></param>
-        private void SetStatusConnection(bool? connectionStatus, int reconnectCounter = 0)
+        private void UpdateStatusConnection(bool? connectionStatus, int reconnectCounter = 0)
         {
             if (connectionStatus == true)
             {
@@ -186,17 +184,17 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void OnRaiseTcpServiceCientConnected(object sender)
         {
-            SetStatusConnection(true);   
+            UpdateStatusConnection(true);   
         }
 
         private void OnRaiseTcpServiceClientReconnected(object sender, int reconnectCounter)
         {
-            SetStatusConnection(null, reconnectCounter);
+            UpdateStatusConnection(null, reconnectCounter);
         }
 
         private void OnRaiseTcpServiceClientDisconnect(object sender)
         {
-            SetStatusConnection(false); 
+            UpdateStatusConnection(false); 
         }
 
         #endregion

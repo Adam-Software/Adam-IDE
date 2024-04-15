@@ -38,7 +38,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Action field 
 
         public static Action<string> SendSourceToScriptEditor { get; set; }
-        public static Action ReloadWebView { get; set; }
+        public Action ReloadWebView { get; set; }
 
         #endregion
 
@@ -54,7 +54,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
 
-            InitAction();;
+            InitAction();
         }
 
         #region Navigation
@@ -72,6 +72,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mPythonRemoteRunner.RaisePythonScriptExecuteStartEvent += OnRaisePythonScriptExecuteStart;
             mPythonRemoteRunner.RaisePythonStandartOutputEvent += OnRaisePythonStandartOutput;
             mPythonRemoteRunner.RaisePythonScriptExecuteFinishEvent += OnRaisePythonScriptExecuteFinish;
+
+            ReloadWebViewCommand.Execute();
 
             base.OnNavigatedTo(navigationContext);
         }

@@ -3,6 +3,7 @@ using AdamController.Core.Helpers;
 using AdamController.Core.Model;
 using AdamController.Core.Properties;
 using AdamController.Modules.ContentRegion.ViewModels;
+using AdamController.Services.Interfaces;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using System;
@@ -39,7 +40,6 @@ namespace AdamController.Modules.ContentRegion.Views
         #endregion
 
         #region Action
-
         public static Action NavigationComplete { get; set; }
         public static Action<WebMessageJsonReceived> WebMessageReceived { get; set; }
 
@@ -48,9 +48,11 @@ namespace AdamController.Modules.ContentRegion.Views
         private readonly string mPathToSource = Path.Combine(FolderHelper.CommonDirAppData, "BlocklySource");
         private readonly string mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
 
+
         public ScratchControlView()
         {
             mInstance = this;
+
             InitializeComponent();
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
@@ -61,11 +63,14 @@ namespace AdamController.Modules.ContentRegion.Views
 
             TextResulEditor.TextChanged += TextResulEditorTextChanged;
 
-            if (ScratchControlViewModel.ReloadWebView == null)
+            ScratchControlViewModel viewModel = DataContext as ScratchControlViewModel;
+
+            if (viewModel.ReloadWebView == null)
             {
-                ScratchControlViewModel.ReloadWebView = new Action(() => WebView.CoreWebView2.Reload());
+                viewModel.ReloadWebView = new Action(() => WebView?.CoreWebView2?.Reload());
             }
         }
+
 
         private void TextResulEditorTextChanged(object sender, EventArgs e)
         {
