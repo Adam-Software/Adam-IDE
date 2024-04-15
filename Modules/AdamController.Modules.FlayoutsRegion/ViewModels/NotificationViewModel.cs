@@ -1,7 +1,6 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
-using AdamController.WebApi.Client.v1;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using System.Windows;
@@ -12,15 +11,16 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
     {
         #region DelegateCommands
 
-        public DelegateCommand ConnectButtonDelegateCommand { get; }
-        public DelegateCommand ResetNotificationsDelegateCommand { get;  }
+        public DelegateCommand ConnectButtonDelegateCommand { get; private set; }
+        public DelegateCommand ReconnectNotificationButtonDelegateCommand { get; private set; }
+        public DelegateCommand ResetNotificationsDelegateCommand { get; private set; }
 
         #endregion
 
         #region Services
 
-        private readonly ICommunicationProviderService mCommunicationProvider;
-        private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDeliveryService;
+        private ICommunicationProviderService mCommunicationProvider;
+        private IStatusBarNotificationDeliveryService mStatusBarNotificationDeliveryService;
 
         #endregion
 
@@ -42,6 +42,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
 
             ConnectButtonDelegateCommand = new (ConnectButton, ConnectButtonCanExecute);
+            ReconnectNotificationButtonDelegateCommand = new (ReconnectNotificationButton, ReconnectNotificationButtonCanExecute);
             ResetNotificationsDelegateCommand = new (ResetNotifications, ResetNotificationsCanExecute);
         }
 
@@ -55,17 +56,23 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if (isOpening)
             {
                 Subscribe();
+
                 SetStatusConnection(mCommunicationProvider.IsTcpClientConnected);
             }
                 
 
             if (!isOpening)
+            {
                 Unsubscribe();
+
+                ConnectButtonDelegateCommand = null;
+                ReconnectNotificationButtonDelegateCommand = null;
+                ResetNotificationsDelegateCommand = null;
+            }
+                
 
             base.OnChanging(isOpening);
         }
-
-
 
         #endregion
 
@@ -97,13 +104,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             }
         }
 
-        private double notificationOpacity = Settings.Default.NotificationOpacity;
-        public double NotificationOpacity
-        {
-            get => notificationOpacity;
-            set => SetProperty(ref notificationOpacity, value);
-        }
-
         private string contentConnectButton = cConnectButtonStatusDisconnected;
         public string ContentConnectButton
         {
@@ -131,7 +131,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         }
 
         /// <summary>
-        /// 
+        /// Controls the display of the connection status
         /// </summary>
         /// <param name="connectionStatus">true is connected, false disconetcted, null reconected</param>
         /// <param name="reconnectCounter"></param>
@@ -205,11 +205,15 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void ConnectButton()
         {
-            if (mCommunicationProvider.IsTcpClientConnected)
+            bool isConnected = mCommunicationProvider.IsTcpClientConnected;
+
+            if (isConnected)
+            {
                 mCommunicationProvider.DisconnectAllAsync();
-     
-            if (!mCommunicationProvider.IsTcpClientConnected)
-                mCommunicationProvider.ConnectAllAsync();
+                return;
+            }
+            
+            mCommunicationProvider.ConnectAllAsync();
         }
 
         private bool ConnectButtonCanExecute()
@@ -224,6 +228,22 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         }
 
         private bool ResetNotificationsCanExecute()
+        {
+            return true;
+        }
+
+        private void ReconnectNotificationButton()
+        {
+            bool isConnected = mCommunicationProvider.IsTcpClientConnected;
+
+            if (!isConnected)
+            {
+                mCommunicationProvider.ConnectAllAsync();
+                ResetNotifications();
+            }
+        }
+
+        private bool ReconnectNotificationButtonCanExecute()
         {
             return true;
         }

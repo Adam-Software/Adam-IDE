@@ -131,15 +131,27 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             {
                 var isNewValue = SetProperty(ref badgeCounter, value);
 
-                if(isNewValue)
-                    NotificationBadge = $"{BadgeCounter}";
 
-                if(BadgeCounter == 0)
+                if (isNewValue)
+                    UpdateNotificationBagde();
+
+                if (BadgeCounter == 0)
                     NotificationBadge = string.Empty;
             }
         }
 
         #endregion
+
+        /// <summary>
+        /// <code>BadgeCounter < 2</code>
+        /// Restricts the notification counter so that it is not updated on repeated connections. 
+        /// Only one notification will work. When the second one appears, they will need to be distinguished somehow.
+        /// </summary>
+        private void UpdateNotificationBagde()
+        {
+            if(BadgeCounter < 2)
+                NotificationBadge = $"{BadgeCounter}";
+        }
 
         #region Subscribes
 

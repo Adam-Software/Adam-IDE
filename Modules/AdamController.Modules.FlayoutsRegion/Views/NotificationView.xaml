@@ -53,12 +53,12 @@
 
 
                         <TextBlock Grid.Row="0"
-                                       Width="Auto" Height="Auto"
-                                       Margin="10 20 0 0"
-                                       FontStyle="Normal"
-                                       FontWeight="Bold"
-                                       FontSize="18"
-                                       Text="Робот Адам отключен!" />
+                                   Width="Auto" Height="Auto"
+                                   Margin="10 20 0 0"
+                                   FontStyle="Normal"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   Text="Робот Адам отключен!" />
 
                         <TextBlock Grid.Row="1"
                                    Width="Auto" Height="Auto"
@@ -70,14 +70,13 @@
 
                         <Button Grid.Row="2" Width="Auto"
                                 Margin="10 5 10 10"
-                                mah:ControlsHelper.ContentCharacterCasing="Upper"
                                 Content="Переподключить" 
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
-                                Command="{Binding ConnectButtonComand}"
-                                CommandParameter="IsNotificationButtonCalling"
+                                mah:ControlsHelper.ContentCharacterCasing="Upper"
+                                Command="{Binding ReconnectNotificationButtonDelegateCommand}"
                                 Style="{StaticResource MahApps.Styles.Button.MetroSquare}"></Button>
                     </Grid>
                 </Border>
@@ -91,7 +90,7 @@
                            HorizontalAlignment="Right"
                            FontWeight="Bold">
                     
-                        <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ClearNotificationsCommand}">
+                        <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ResetNotificationsDelegateCommand}">
                             Очистить уведомления
                         </Hyperlink>
 
