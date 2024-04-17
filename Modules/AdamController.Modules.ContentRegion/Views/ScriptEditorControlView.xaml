@@ -262,30 +262,27 @@
         <Grid Grid.Row="1">
 
             <avalonEdit:TextEditor
-				Name="textEditor"
-                BorderThickness="1"
-                Padding="5"
-                Margin="15 5 15 10"    
-                FontFamily="Consolas"
-				FontSize="13pt"
-				FontStretch="Medium"
-                FontWeight="SemiBold"
-                SyntaxHighlighting="AdamPython"
-                ShowLineNumbers="True"
+				        Name="textEditor"
+                        BorderThickness="1"
+                        Padding="5"
+                        Margin="15 5 15 10"    
+                        FontFamily="Consolas"
+				        FontSize="13pt"
+				        FontStretch="Medium"
+                        FontWeight="SemiBold"
+                        SyntaxHighlighting="AdamPython"
+                        ShowLineNumbers="True"
                 
-                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                        LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                        Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
+                        BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                 
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Auto">
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Auto">
 
                 <i:Interaction.Behaviors>
-                    <behav:AvalonEditBehaviour 
-                        Text="{Binding SourceTextEditor, 
-                        Mode=TwoWay, 
-                        UpdateSourceTrigger=PropertyChanged}"/>
+                    <behav:AvalonEditBehaviour Text="{Binding SourceTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </i:Interaction.Behaviors>
 
 

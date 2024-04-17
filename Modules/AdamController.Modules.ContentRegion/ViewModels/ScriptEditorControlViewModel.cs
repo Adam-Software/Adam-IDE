@@ -36,7 +36,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
-            InitAction();
+            //InitAction();
             //PythonExecuteEvent();
         }
 
@@ -181,13 +181,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region SendSourceToScriptEditor Action
 
-        private void InitAction()
-        {
-            if(ScratchControlViewModel.SendSourceToScriptEditor == null)
-            {
-                ScratchControlViewModel.SendSourceToScriptEditor = new Action<string>(source => SourceTextEditor = source);
-            }
-        }
+        //private void InitAction()
+        //{
+        //    if(ScratchControlViewModel.SendSourceToScriptEditor == null)
+        //    {
+        //        ScratchControlViewModel.SendSourceToScriptEditor = new Action<string>(source => SourceTextEditor = source);
+        //    }
+        //}
 
         #endregion
 

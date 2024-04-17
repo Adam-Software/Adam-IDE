@@ -66,7 +66,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-
         #region ~
 
         public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager) : base(regionManager, dialogService)
@@ -388,7 +387,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             get => isPythonCodeExecute;
             set
             {
-                var isNewValue = SetProperty(ref isPythonCodeExecute, value);
+                bool isNewValue = SetProperty(ref isPythonCodeExecute, value);
                 
                 if (isNewValue)
                 {
