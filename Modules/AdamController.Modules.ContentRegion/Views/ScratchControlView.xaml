@@ -24,9 +24,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, 
-                Mode=TwoWay, 
-                Converter={StaticResource GridLengthConverter}, 
-                Source={x:Static properties:Settings.Default }}"/>
+                                            Mode=TwoWay, 
+                                            Converter={StaticResource GridLengthConverter}, 
+                                            Source={x:Static properties:Settings.Default }}"/>
             
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -34,9 +34,9 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding Path=BlocklyEditorWidth, 
-                Mode=TwoWay, 
-                Converter={StaticResource GridLengthConverter}, 
-                Source={x:Static properties:Settings.Default }}"/>
+                              Mode=TwoWay, 
+                              Converter={StaticResource GridLengthConverter}, 
+                              Source={x:Static properties:Settings.Default }}"/>
             
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>

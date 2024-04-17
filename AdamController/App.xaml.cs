@@ -95,6 +95,12 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IWebViewProvider>(containerRegistry =>
+            {
+                return new WebViewProvider();
+            });
+
+
             containerRegistry.RegisterSingleton<ISubRegionChangeAwareService>(containerRegistry =>
             {
                 return new SubRegionChangeAwareService();
@@ -191,8 +197,6 @@ namespace AdamController
                 PythonRemoteRunnerService remoteRunnerService = new(communicationProvider);
                 return remoteRunnerService;
             });
-
-
 
             RegisterDialogs(containerRegistry);
         }

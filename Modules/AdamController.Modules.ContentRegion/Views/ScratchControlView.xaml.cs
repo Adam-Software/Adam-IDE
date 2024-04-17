@@ -1,9 +1,9 @@
 ﻿
 using AdamController.Core.Helpers;
-using AdamController.Core.Model;
 using AdamController.Core.Properties;
 using AdamController.Modules.ContentRegion.ViewModels;
 using AdamController.Services.Interfaces;
+using AdamController.Services.WebViewProviderDependency;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using System;
@@ -19,65 +19,88 @@ namespace AdamController.Modules.ContentRegion.Views
     {
         #region Singelton
 
-        private static ScratchControlView mInstance = null;
-        private static readonly object padlock = new();
+        //private static ScratchControlView mInstance = null;
+        //private static readonly object padlock = new();
 
-        public static ScratchControlView Instance
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    if (mInstance == null)
-                    {
-                        mInstance = new ScratchControlView();
-                    }
-                    return mInstance;
-                }
-            }
-        }
+        //public static ScratchControlView Instance
+        //{
+        //    get
+        //    {
+        //        lock (padlock)
+        //        {
+        //            if (mInstance == null)
+        //            {
+        //                mInstance = new ScratchControlView();
+        //            }
+        //            return mInstance;
+        //        }
+        //    }
+        //}
 
         #endregion
 
         #region Action
-        public static Action NavigationComplete { get; set; }
-        public static Action<WebMessageJsonReceived> WebMessageReceived { get; set; }
+        //public static Action NavigationComplete { get; set; }
+        //public static Action<WebMessageJsonReceived> WebMessageReceived { get; set; }
 
+        #endregion
+
+        #region Services
+
+        private readonly IWebViewProvider mWebViewProvider;
         #endregion
 
         private readonly string mPathToSource = Path.Combine(FolderHelper.CommonDirAppData, "BlocklySource");
         private readonly string mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
 
 
-        public ScratchControlView()
+        public ScratchControlView(IWebViewProvider webViewProvider)
         {
-            mInstance = this;
+            //mInstance = this;
 
             InitializeComponent();
+            InitializeWebViewCore();
+
+            mWebViewProvider = webViewProvider;
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
             WebView.NavigationCompleted += WebViewNavigationCompleted;
             WebView.WebMessageReceived += WebViewWebMessageReceived;
-            
-            InitializeWebViewCore();
+
+            mWebViewProvider.RaiseExecuteJavaScriptEvent += RaiseExecuteJavaScriptEvent;
+            mWebViewProvider.RaiseExecuteReloadWebViewEvent += RaiseExecuteReloadWebViewEvent;
 
             TextResulEditor.TextChanged += TextResulEditorTextChanged;
 
-            ScratchControlViewModel viewModel = DataContext as ScratchControlViewModel;
+            //ScratchControlViewModel viewModel = DataContext as ScratchControlViewModel;
 
-            if (viewModel.ReloadWebView == null)
-            {
-                viewModel.ReloadWebView = new Action(() => WebView?.CoreWebView2?.Reload());
-            }
+            //if (viewModel.ReloadWebView == null)
+            //{
+            //    viewModel.ReloadWebView = new Action(() => WebView?.CoreWebView2?.Reload());
+            //}
         }
 
+        private void RaiseExecuteReloadWebViewEvent(object sender)
+        {
+            WebView.CoreWebView2.Reload();
+        }
+
+        private async Task<string> RaiseExecuteJavaScriptEvent(object sender, string script)
+        {
+            string result = await WebView.ExecuteScriptAsync(script);
+            return result;
+            //string result = await ExecuteScripts(script);//WebView.ExecuteScriptAsync(script).Result;
+            //return result;
+        }
+
+        private void WebViewNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            mWebViewProvider.NavigationComplete();
+        }
 
         private void TextResulEditorTextChanged(object sender, EventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-            {
-                TextResulEditor.ScrollToEnd();
-            }));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(TextResulEditor.ScrollToEnd));
         }
 
         private async void InitializeWebViewCore()
@@ -99,21 +122,26 @@ namespace AdamController.Modules.ContentRegion.Views
         
         #region Func
 
-        public static Func<string, Task<string>> ExecuteScript = async script => await mInstance.ExecuteScripts(script);
+        //public static Func<string, Task<string>> ExecuteScript = async script => await mInstance.ExecuteScripts(script);
 
-        public async Task<string> ExecuteScripts(string script)
-        {
-            string result = await WebView.ExecuteScriptAsync(script);
-            return result;
-        }
+        //public async Task<string> ExecuteScripts(string script)
+        //{
+        //    string result = await WebView.ExecuteScriptAsync(script);
+        //    return result;
+        //}
 
         #endregion
 
-        private void WebViewNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e) => NavigationComplete();
+        //private void WebViewNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e) => NavigationComplete();
 
         private void WebViewWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
-            ParseJsonReceived(e.WebMessageAsJson);
+            dynamic jsonClean = JsonConvert.DeserializeObject(e.WebMessageAsJson);
+            WebMessageJsonReceived receivedResult = JsonConvert.DeserializeObject<WebMessageJsonReceived>(jsonClean);
+            if (receivedResult == null) return;
+
+            mWebViewProvider.WebViewMessageReceived(receivedResult);
+            //ParseJsonReceived(e.WebMessageAsJson);
         }
 
         private async void ParseJsonReceived(string json)
@@ -124,7 +152,7 @@ namespace AdamController.Modules.ContentRegion.Views
                 WebMessageJsonReceived results = JsonConvert.DeserializeObject<WebMessageJsonReceived>(jsonClean);
                 if (results == null) return;
 
-                WebMessageReceived(results);
+                //WebMessageReceived(results);
             }));
         }
     }
