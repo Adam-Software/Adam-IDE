@@ -293,6 +293,8 @@ namespace AdamController
         {
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
+            Container.Resolve<IWebViewProvider>().Dispose();
+            Container.Resolve<IDialogManagerService>().Dispose();
 
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();
