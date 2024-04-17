@@ -224,6 +224,14 @@ namespace AdamController
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
+
+            //The old dialog call type integrated into the service
+            containerRegistry.RegisterSingleton<IDialogManagerService>(containerRegistry =>
+            {
+                var app = Current;
+                return new DialogManager(app);
+            });
+
         }
 
         protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)

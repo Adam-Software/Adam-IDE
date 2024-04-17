@@ -1,4 +1,5 @@
-﻿using AdamController.Core.Helpers;
+﻿using AdamController.Core;
+using AdamController.Core.Helpers;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;
@@ -52,6 +53,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mPythonRemoteRunner.RaisePythonStandartOutputEvent += OnRaisePythonStandartOutput;
             mPythonRemoteRunner.RaisePythonScriptExecuteFinishEvent += OnRaisePythonScriptExecuteFinish;
 
+            var sourceCode = string.Empty;
+            navigationContext.Parameters.TryGetValue(NavigationParametersKey.SourceCode, out sourceCode);
+            
+            if(sourceCode != null)
+            {
+                SourceTextEditor = sourceCode;
+            }
+            
             base.OnNavigatedTo(navigationContext);
         }
 

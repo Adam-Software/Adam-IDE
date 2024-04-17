@@ -36,6 +36,7 @@ namespace AdamController.Modules.ContentRegion.Views
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
             WebView.NavigationCompleted += WebViewNavigationCompleted;
+            
             WebView.WebMessageReceived += WebViewWebMessageReceived;
 
             mWebViewProvider.RaiseExecuteJavaScriptEvent += RaiseExecuteJavaScriptEvent;
@@ -46,7 +47,7 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void RaiseExecuteReloadWebViewEvent(object sender)
         {
-            WebView.CoreWebView2.Reload();
+            WebView?.CoreWebView2?.Reload();
         }
 
         private async Task<string> RaiseExecuteJavaScriptEvent(object sender, string script)

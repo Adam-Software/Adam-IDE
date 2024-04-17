@@ -23,6 +23,7 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            
             <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, 
                                             Mode=TwoWay, 
                                             Converter={StaticResource GridLengthConverter}, 
@@ -42,21 +43,20 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!--#region Scratch editor -->
-
-        <GroupBox     Header="Скретч редактор"
-                      Grid.Column="0" 
-                      Grid.Row="0" 
-                      Grid.RowSpan="3"
-                      Margin="10 5 10 5"
-                      Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}"
+        <GroupBox Header="Скретч редактор"
+                  Grid.Column="0" 
+                  Grid.Row="0" 
+                  Grid.RowSpan="3"
+                  Margin="10 5 10 5"
+                  Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}"
                       
-                      mah:ControlsHelper.ContentCharacterCasing="Normal"
-                      mah:HeaderedControlHelper.HeaderForeground="{DynamicResource MahApps.Brushes.ThemeForeground}">
+                  mah:ControlsHelper.ContentCharacterCasing="Normal"
+                  mah:HeaderedControlHelper.HeaderForeground="{DynamicResource MahApps.Brushes.ThemeForeground}">
 
             <Grid Margin="0 5 0 0"  
                   ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   ScrollViewer.CanContentScroll="False">
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -74,36 +74,31 @@
                         <StatusBarItem>
 
                             <StackPanel Orientation="Horizontal">
-                                
+
                                 <Button Margin="5 0 3 0"
                                         Padding="3"
-                                        Name="ShowOpenFileDialog"
-                                        Command="{Binding ShowOpenFileDialogCommand}"
-                                        
-                                        Style="{DynamicResource MahApps.Styles.Button}"
-                                        IsEnabled="{Binding IsEnabledShowOpenDialogButton}">
+                                        Command="{Binding ShowOpenFileDialogDelegateCommand}"
+                                        Style="{DynamicResource MahApps.Styles.Button}">
 
                                     <iconPacks:PackIconMaterial  Kind="FolderOpen" />
+                                    
                                 </Button>
 
                                 <Button Margin="0 0 5 0"
                                         Padding="3"
-                                        IsEnabled="{Binding ElementName=ShowOpenFileDialog, Path=IsEnabled}"
-                                        Command="{Binding ShowSaveFileDialogCommand}"
-                                        
+                                        Command="{Binding ShowSaveFileDialogDelegateCommand}"
                                         Style="{DynamicResource MahApps.Styles.Button}">
 
                                     <iconPacks:PackIconMaterial  Kind="ContentSave" />
                                 </Button>
 
                                 <Button Margin="0 0 5 0"
-                                        Padding="3"
-                                        IsEnabled="{Binding ElementName=ShowOpenFileDialog, Path=IsEnabled}"
-                                        Command="{Binding ReloadWebViewCommand}"
-                                        
+                                        Padding="3"   
+                                        Command="{Binding ReloadWebViewDelegateCommand}"
                                         Style="{DynamicResource MahApps.Styles.Button}">
 
                                     <iconPacks:PackIconMaterial  Kind="Reload" />
+                                    
                                 </Button>
                             </StackPanel>
                         </StatusBarItem>
@@ -209,7 +204,7 @@
                                 Margin="5 0 5 0"
                                 Padding="3"
                                 
-                                Command="{Binding ShowSaveFileSourceTextDialogCommand}"
+                                Command="{Binding ShowSaveFileSourceTextDialogDelegateCommand}"
                                 Style="{DynamicResource MahApps.Styles.Button}">
 
                                 <iconPacks:PackIconMaterial  Kind="ContentSave" />
@@ -236,7 +231,7 @@
 
                                 <Button Margin="5 0 5 0"
                                         Padding="3"
-                                        Command="{Binding SendToExternalSourceEditor}"
+                                        Command="{Binding SendCodeToExternalSourceEditorDelegateCommand}"
                                         Style="{DynamicResource MahApps.Styles.Button}">
 
                                     <StackPanel Orientation="Horizontal" 
@@ -268,28 +263,22 @@
 
                 
                     <avalonEdit:TextEditor Name="TextEditorPython"
-                                       Margin="5 10 0 5"    
-                                       Grid.Row="1" 
+                                           Margin="5 10 0 5"    
+                                           Grid.Row="1" 
+                                           FontFamily="Consolas"
+				                           FontSize="13pt"
+				                           FontStretch="Medium"
+                                           FontWeight="SemiBold"
+                                           ShowLineNumbers="True"
+                                           IsReadOnly="False"
+                                           HorizontalScrollBarVisibility="Auto"
+                                           VerticalScrollBarVisibility="Auto"
+                                           ScrollViewer.PanningMode="HorizontalOnly"
+                                           SyntaxHighlighting="AdamPython"
                                        
-                                      
-                                       FontFamily="Consolas"
-				                       FontSize="13pt"
-				                       FontStretch="Medium"
-                                       FontWeight="SemiBold"
-                                       
-                                       ShowLineNumbers="True"
-                                       IsReadOnly="False"
-                                   
-                                       HorizontalScrollBarVisibility="Auto"
-                                       VerticalScrollBarVisibility="Auto"
-                                           
-                                       ScrollViewer.PanningMode="HorizontalOnly"
-                                       
-                                       SyntaxHighlighting="AdamPython"
-                                       
-                                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                       LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                       Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+                                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                           LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                           Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
 
                         <i:Interaction.Behaviors>
                             <behaviors:AvalonEditBehaviour Text="{Binding SourceTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -350,7 +339,7 @@
                                 <Button Margin="3 0 0 0"
                                         Padding="3"
                                         ToolTip="Очистить окно результатов"
-                                        Command="{Binding CleanExecuteEditor}"        
+                                        Command="{Binding CleanExecuteEditorDelegateCommand}"        
                                         Style="{DynamicResource MahApps.Styles.Button}">
 
                                     
@@ -396,10 +385,7 @@
                                 <Button Margin="0 0 3 0"
                                         Padding="3"
                                         ToolTip="Запустить скрипт"
-                            
-                                        IsEnabled="{Binding ElementName=ShowOpenFileDialog, Path=IsEnabled}"
-                                        Command="{Binding RunCode}"
-                            
+                                        Command="{Binding RunPythonCodeDelegateCommand}"
                                         Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                                         Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                         Style="{DynamicResource MahApps.Styles.Button}">
@@ -430,13 +416,12 @@
 
                                 <Button Padding="3"
                                         ToolTip="Stop script execute"
-                                        Command="{Binding StopExecute}"        
+                                        Command="{Binding StopPythonCodeExecuteDelegateCommand}"        
                                         
                                         Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                                         Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                         
-                                        Style="{DynamicResource MahApps.Styles.Button}"
-                                        IsEnabled="{Binding IsEnabledStopExecuteButton}">
+                                        Style="{DynamicResource MahApps.Styles.Button}">
 
                                     <StackPanel Orientation="Horizontal">
                                         <iconPacks:PackIconCodicons Margin="3 0 3 0"

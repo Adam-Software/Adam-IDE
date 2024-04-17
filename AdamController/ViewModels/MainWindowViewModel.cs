@@ -29,8 +29,7 @@ namespace AdamController.ViewModels
         #region ~
 
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, 
-            IStatusBarNotificationDeliveryService statusBarNotification, ICommunicationProviderService communicationProviderService) 
-
+                                    IStatusBarNotificationDeliveryService statusBarNotification, ICommunicationProviderService communicationProviderService) 
         {
             RegionManager = regionManager;
             mSubRegionChangeAwareService = subRegionChangeAwareService;

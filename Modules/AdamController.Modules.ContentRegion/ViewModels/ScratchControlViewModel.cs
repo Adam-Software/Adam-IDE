@@ -11,8 +11,6 @@ using AdamController.Modules.ContentRegion.Views;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1;
-using ControlzEx.Standard;
-using MessageDialogManagerLib;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
@@ -26,6 +24,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 {
     public class ScratchControlViewModel : RegionViewModelBase 
     {
+        #region DelegateCommands
+
+        public DelegateCommand ReloadWebViewDelegateCommand { get; }
+        public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
+        public DelegateCommand ShowOpenFileDialogDelegateCommand { get; }
+        public DelegateCommand ShowSaveFileSourceTextDialogDelegateCommand { get; }
+        public DelegateCommand CleanExecuteEditorDelegateCommand { get; }
+        public DelegateCommand RunPythonCodeDelegateCommand { get; }
+        public DelegateCommand StopPythonCodeExecuteDelegateCommand { get; }
+        public DelegateCommand SendCodeToExternalSourceEditorDelegateCommand { get; }
+        public DelegateCommand ToZeroPositionDelegateCommand { get; } 
+
+        #endregion
 
         #region Services
 
@@ -33,6 +44,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IWebViewProvider mWebViewProvider;
+        private readonly IDialogManagerService mDialogManager;
+
+        #endregion
+
+        #region Const
+
+        private const string cFilter = "XML documents (.xml) | *.xml";
+
+        #endregion
+
+        #region Var
+
+        private bool mIsWarningStackOwerflowAlreadyShow;
 
         #endregion
 
@@ -42,19 +66,28 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-        private readonly IMessageDialogManager IDialogManager;
-        private bool mIsWarningStackOwerflowAlreadyShow;
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, 
-            IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider) : base(regionManager, dialogService)
+        #region ~
+
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
             mWebViewProvider = webViewProvider;
+            mDialogManager = dialogManager;
 
-            IDialogManager = new MessageDialogManagerMahapps(Application.Current);
+            ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
+            ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
+            ShowOpenFileDialogDelegateCommand = new DelegateCommand(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
+            ShowSaveFileSourceTextDialogDelegateCommand = new DelegateCommand(ShowSaveFileSourceTextDialog, ShowSaveFileSourceTextDialogCanExecute);
+            CleanExecuteEditorDelegateCommand = new DelegateCommand(CleanExecuteEditor, CleanExecuteEditorCanExecute);
+            RunPythonCodeDelegateCommand = new DelegateCommand(RunPythonCode, RunPythonCodeCanExecute);
+            StopPythonCodeExecuteDelegateCommand = new DelegateCommand(StopPythonCodeExecute, StopPythonCodeExecuteCanExecute);
+            SendCodeToExternalSourceEditorDelegateCommand = new(SendCodeToExternalSourceEditor, SendCodeToExternalSourceEditorCanExecute);
+            ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
         }
+        #endregion
 
         #region Navigation
 
@@ -65,6 +98,27 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
+            Subscribe();
+
+            //#29
+            mWebViewProvider.ReloadWebView();
+
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            Unsubscribe();
+
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+        #endregion
+
+        #region Subscribes
+
+        private void Subscribe()
+        {
             mCommunicationProvider.RaiseTcpServiceCientConnectedEvent += OnRaiseTcpServiceCientConnected;
             mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcperviceClientDisconnect;
 
@@ -74,25 +128,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent += RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
-
-            base.OnNavigatedTo(navigationContext);
         }
 
-        private void RaiseWebViewNavigationCompleteEvent(object sender)
-        {
-            InitBlockly();
-            //throw new NotImplementedException();
-        }
-
-        private void RaiseWebViewbMessageReceivedEvent(object sender, WebMessageJsonReceived webMessageReceived)
-        {
-            if (webMessageReceived.Action == "sendSourceCode")
-            {
-                SourceTextEditor = webMessageReceived.Data;
-            }
-        }
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        private void Unsubscribe()
         {
             mCommunicationProvider.RaiseTcpServiceCientConnectedEvent -= OnRaiseTcpServiceCientConnected;
             mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent -= OnRaiseTcperviceClientDisconnect;
@@ -104,7 +142,345 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider.RaiseWebViewMessageReceivedEvent -= RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
 
-            base.OnNavigatedFrom(navigationContext);
+        }
+
+        #endregion
+
+        #region DelegateCommand methods
+
+        private void ReloadWebView()
+        {
+            SourceTextEditor = string.Empty;
+            mWebViewProvider.ReloadWebView();
+        }
+
+        private bool ReloadWebViewCanExecute()
+        {
+            return true;
+        }
+
+        private async void ShowSaveFileDialog()
+        {
+            string workspace = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()");
+            string xmlWorkspace = JsonConvert.DeserializeObject<dynamic>(workspace);
+            string dialogTitle = "Сохранить рабочую область";
+            string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+            string fileName = "workspace";
+            string defaultExt = ".xml";
+            //string filter = "XML documents (.xml)|*.xml";
+
+            if (mDialogManager.ShowSaveFileDialog(dialogTitle, initialPath, fileName, defaultExt, cFilter))
+            {
+                string path = mDialogManager.FilePathToSave;
+                await FileHelper.WriteAsync(path, xmlWorkspace);
+
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
+            }
+            else
+            {
+                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
+            }
+        }
+
+        private bool ShowSaveFileDialogCanExecute()
+        {
+            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
+            return isSourceNotEmpty;
+        }
+
+        private async void ShowOpenFileDialog()
+        {
+            string title = "Выберите сохранененную рабочую область";
+            string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+
+            if (mDialogManager.ShowFileBrowser(title, initialPath, cFilter))
+            {
+                string path = mDialogManager.FilePath;
+                if (path == "") return;
+
+                string xml = await FileHelper.ReadTextAsStringAsync(path);
+                _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
+
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {path} загружен";
+            }
+            else
+            {
+                mStatusBarNotificationDelivery.AppLogMessage = "Файл рабочей области не выбран";
+            }
+        }
+
+        private bool ShowOpenFileDialogCanExecute()
+        {
+            return true;
+        }
+
+        private async void ShowSaveFileSourceTextDialog()
+        {
+            string pythonProgram = SourceTextEditor;
+            string title = "Сохранить файл программы";
+            string initialPath = Settings.Default.SavedUserScriptsFolderPath;
+            string fileName = "new_program";
+            string defaultExt = ".py";
+            string filter = "PythonScript file (.py)|*.py|Все файлы|*.*";
+
+
+            if (mDialogManager.ShowSaveFileDialog(title, initialPath, fileName, defaultExt, filter))
+            {
+                string path = mDialogManager.FilePathToSave;
+                await FileHelper.WriteAsync(path, pythonProgram);
+
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
+            }
+            else
+            {
+                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
+            }
+        }
+
+        private bool ShowSaveFileSourceTextDialogCanExecute()
+        {
+            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
+            return isSourceNotEmpty;
+        }
+
+        private void CleanExecuteEditor()
+        {
+            ResultTextEditorError = string.Empty;
+            ResultTextEditor = string.Empty;
+        }
+
+        private bool CleanExecuteEditorCanExecute()
+        {
+            var isResultNotEmpty = ResultTextEditor?.Length > 0;
+            return isResultNotEmpty;
+        }
+
+        private async void RunPythonCode()
+        {
+            ResultTextEditorError = string.Empty;
+            WebApi.Client.v1.ResponseModel.ExtendedCommandExecuteResult executeResult = new();
+
+            try
+            {
+                var command = new WebApi.Client.v1.RequestModel.PythonCommand
+                {
+                    Command = SourceTextEditor
+                };
+
+                executeResult = await BaseApi.PythonExecuteAsync(command);
+            }
+            catch (Exception ex)
+            {
+                ResultTextEditorError = ex.Message.ToString();
+            }
+
+            if (Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
+            {
+                ResultTextEditor += "Отчет о инициализации процесса программы\n" +
+                 "======================\n" +
+                 $"Начало инициализации: {executeResult.StartTime}\n" +
+                 $"Завершение инициализации: {executeResult.EndTime}\n" +
+                 $"Общее время инициализации: {executeResult.RunTime}\n" +
+                 $"Код выхода: {executeResult.ExitCode}\n" +
+                 $"Статус успешности инициализации: {executeResult.Succeesed}" +
+                 "\n======================\n";
+            }
+
+            if (!string.IsNullOrEmpty(executeResult?.StandardError))
+                ResultTextEditor += $"Ошибка: {executeResult.StandardError}" +
+                    "\n======================";
+        }
+
+        private bool RunPythonCodeCanExecute()
+        {
+            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
+            bool isTcpConnected = IsTcpClientConnected;
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+
+            return isSourceNotEmpty && isTcpConnected && isPythonCodeNotExecute;
+        }
+
+        private async void StopPythonCodeExecute()
+        {
+            try
+            {
+                await BaseApi.StopPythonExecute();
+            }
+            catch (Exception ex)
+            {
+                ResultTextEditorError = ex.Message.ToString();
+            }
+        }
+
+        private bool StopPythonCodeExecuteCanExecute()
+        {
+            bool isConnected = IsTcpClientConnected;
+            bool isPythonCodeExecute = IsPythonCodeExecute;
+
+            return isConnected && isPythonCodeExecute;
+        }
+
+        private void SendCodeToExternalSourceEditor()
+        {
+            NavigationParameters parameters = new()
+            {
+                { NavigationParametersKey.SourceCode, SourceTextEditor }
+            };
+
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScriptEditor, parameters);
+        }
+
+        private bool SendCodeToExternalSourceEditorCanExecute()
+        {
+            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
+            bool isTcpConnected = IsTcpClientConnected;
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+
+            return isSourceNotEmpty && isTcpConnected && isPythonCodeNotExecute;
+        }
+
+        private async void ToZeroPosition()
+        {
+            try
+            {
+                await BaseApi.StopPythonExecute();
+            }
+            catch (Exception ex)
+            {
+                ResultTextEditorError = ex.Message.ToString();
+            }
+        }
+
+        private bool ToZeroPositionCanExecute()
+        {
+            bool isTcpConnected = IsTcpClientConnected;
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+
+            return isTcpConnected && isPythonCodeNotExecute;
+        }
+
+
+        #endregion
+
+        #region Public fields
+
+        private bool isTcpClientConnected;
+        public bool IsTcpClientConnected
+        {
+            get => isTcpClientConnected;
+            set
+            {
+                bool isNewValue = SetProperty(ref isTcpClientConnected, value);
+
+                if (isNewValue)
+                {
+                    RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
+                    StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
+                    SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
+                    ToZeroPositionDelegateCommand.RaiseCanExecuteChanged(); 
+                }
+            }
+        }
+
+        private bool isPythonCodeExecute;
+        public bool IsPythonCodeExecute
+        {
+            get => isPythonCodeExecute;
+            set
+            {
+                var isNewValue = SetProperty(ref isPythonCodeExecute, value);
+                
+                if (isNewValue)
+                {
+                    RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
+                    StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
+                    SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
+                    ToZeroPositionDelegateCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+
+        private string sourceTextEditor;
+        public string SourceTextEditor
+        {
+            get => sourceTextEditor;
+            set
+            {
+                bool isNewValue = SetProperty(ref sourceTextEditor, value);
+
+                if (isNewValue)
+                {
+                    ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();
+                    ShowSaveFileSourceTextDialogDelegateCommand.RaiseCanExecuteChanged();
+                    RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
+                    SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
+                }
+
+            }
+        }
+
+        private string resultTextEditor;
+        public string ResultTextEditor
+        {
+            get => resultTextEditor;
+            set
+            {
+                bool isNewValue = SetProperty(ref resultTextEditor, value);
+
+                if (isNewValue)
+                    ResultTextEditorLength = ResultTextEditor.Length;
+            }
+        }
+
+        private int resultTextEditorLength;
+        public int ResultTextEditorLength
+        {
+            get => resultTextEditorLength;
+            set
+            {
+                bool isNewValue = SetProperty(ref resultTextEditorLength, value);
+
+                if (isNewValue)
+                    CleanExecuteEditorDelegateCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string resultTextEditorError;
+        public string ResultTextEditorError
+        {
+            get => resultTextEditorError;
+            set
+            {
+                bool isNewValue = SetProperty(ref resultTextEditorError, value);
+
+                if (isNewValue)
+                {
+                    if (ResultTextEditorError.Length > 0)
+                        resultTextEditorError = $"Error: {ResultTextEditorError}";
+                }
+            }
+        }
+
+        private string pythonVersion;
+        public string PythonVersion
+        {
+            get => pythonVersion;
+            set => SetProperty(ref pythonVersion, value);
+        }
+
+        private string pythonBinPath;
+        public string PythonBinPath
+        {
+            get => pythonBinPath;
+            set => SetProperty(ref pythonBinPath, value);
+        }
+
+        private string pythonWorkDir;
+        public string PythonWorkDir
+        {
+            get => pythonWorkDir;
+            set => SetProperty(ref pythonWorkDir, value);
         }
 
 
@@ -112,8 +488,23 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Event methods
 
+        private void RaiseWebViewNavigationCompleteEvent(object sender)
+        {
+            InitBlockly();
+        }
+
+        private void RaiseWebViewbMessageReceivedEvent(object sender, WebMessageJsonReceived webMessageReceived)
+        {
+            if (webMessageReceived.Action == "sendSourceCode")
+            {
+                SourceTextEditor = webMessageReceived.Data;
+            }
+        }
+
         private async void OnRaiseTcpServiceCientConnected(object sender)
         {
+            IsTcpClientConnected = mCommunicationProvider.IsTcpClientConnected;
+
             var pythonVersionResult = await BaseApi.GetPythonVersion();
             var pythonBinPathResult = await BaseApi.GetPythonBinDir();
             var pythonWorkDirResult = await BaseApi.GetPythonWorkDir();
@@ -127,12 +518,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void OnRaiseTcperviceClientDisconnect(object sender)
         {
+            IsTcpClientConnected = mCommunicationProvider.IsTcpClientConnected;
+
             UpdatePythonInfo();
         }
 
-
         private void OnRaisePythonScriptExecuteStart(object sender)
         {
+            IsPythonCodeExecute = true;
+
             mIsWarningStackOwerflowAlreadyShow = false;
             StartExecuteProgram();
         }
@@ -158,7 +552,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void OnRaisePythonScriptExecuteFinish(object sender, string message)
         {
-            FinishExecuteProgram();
+            IsPythonCodeExecute = false;
+
+            OnStopExecuteProgram("Сеанс отладки закончен");
             ResultTextEditor += message;
         }
 
@@ -179,15 +575,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
         }
 
-        #region Execute program event
-
         private async void StartExecuteProgram()
         {
             mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки запущен";
             mStatusBarNotificationDelivery.ProgressRingStart = true;
 
-            IsEnabledShowOpenDialogButton = false;
-            IsEnabledStopExecuteButton = true;
             ResultTextEditor = string.Empty;
             
 
@@ -196,14 +588,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
                 await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowEnable);
-                //await ScratchControlView.ExecuteScript(Scripts.ShadowEnable);
             }));
         }
 
-        private void FinishExecuteProgram()
-        {
-            OnStopExecuteProgram("Сеанс отладки закончен");
-        }
 
         private async void OnStopExecuteProgram(string compileLogStatusBarAction)
         {
@@ -214,30 +601,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mStatusBarNotificationDelivery.CompileLogMessage = compileLogStatusBarAction;
             mStatusBarNotificationDelivery.ProgressRingStart = false;
-
-            IsEnabledShowOpenDialogButton = true;
-            IsEnabledStopExecuteButton = false;
         }
-
-        #endregion
-
-        #region IsEnabled buttons field
-
-        private bool isEnabledStopExecuteButton = false;
-        public bool IsEnabledStopExecuteButton
-        {
-            get => isEnabledStopExecuteButton;
-            set => SetProperty(ref isEnabledStopExecuteButton, value);
-        }
-
-        private bool isEnabledShowOpenDialogButton = true;
-        public bool IsEnabledShowOpenDialogButton
-        {
-            get => isEnabledShowOpenDialogButton;
-            set => SetProperty(ref isEnabledShowOpenDialogButton, value);
-        }
-
-        #endregion
 
         #region Initialize Blockly
 
@@ -247,22 +611,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             try
             {
-                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
+                await LoadBlocklySrc();
+                await LoadBlocklyBlockLocalLangSrc(language);
+
+                await mWebViewProvider.ExecuteJavaScript(InitWorkspace());
+                await mWebViewProvider.ExecuteJavaScript(Scripts.ListenerCreatePythonCode);
+                await mWebViewProvider.ExecuteJavaScript(Scripts.ListenerSavedBlocks);
+
+                if (Settings.Default.BlocklyRestoreBlockOnLoad)
                 {
-                    await LoadBlocklySrc();
-                    await LoadBlocklyBlockLocalLangSrc(language);
-
-                    await mWebViewProvider.ExecuteJavaScript(InitWorkspace());
-                    await mWebViewProvider.ExecuteJavaScript(Scripts.ListenerCreatePythonCode);
-                    await mWebViewProvider.ExecuteJavaScript(Scripts.ListenerSavedBlocks);
-
-                    if (Settings.Default.BlocklyRestoreBlockOnLoad)
-                    {
-                        await mWebViewProvider.ExecuteJavaScript(Scripts.RestoreSavedBlocks);
-                    }
-
-
-                }));
+                    await mWebViewProvider.ExecuteJavaScript(Scripts.RestoreSavedBlocks);
+                }
 
                 mStatusBarNotificationDelivery.AppLogMessage = "Загрузка скретч редактора завершена";
             }
@@ -272,7 +631,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
-        private string InitWorkspace()
+        private static string InitWorkspace()
         {
             Toolbox toolbox = InitDefaultToolbox(Settings.Default.BlocklyToolboxLanguage);
             BlocklyGrid blocklyGrid = InitGrid();
@@ -291,7 +650,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return workspaceString;
         }
 
-        private BlocklyGrid InitGrid()
+        private static BlocklyGrid InitGrid()
         {
             BlocklyGrid blocklyGrid = new();
 
@@ -312,7 +671,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return blocklyGrid;
         }
 
-        private Toolbox InitDefaultToolbox(BlocklyLanguage language)
+        private static Toolbox InitDefaultToolbox(BlocklyLanguage language)
         {
             Toolbox toolbox = new DefaultSimpleCategoryToolbox(language)
             {
@@ -450,245 +809,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     }
             }
         }
-
-        #endregion
-
-        #region Result text editor
-
-        private string resultTextEditor;
-        public string ResultTextEditor
-        {
-            get => resultTextEditor;
-            set
-            {
-                bool isNewValue = SetProperty(ref resultTextEditor, value);
-                
-                if (isNewValue)
-                    ResultTextEditorLength = ResultTextEditor.Length;
-            }
-        }
-
-        #endregion
-
-        #region Result text editor length
-
-        private int resultTextEditorLength;
-        public int ResultTextEditorLength
-        {
-            get => resultTextEditorLength;
-            set => SetProperty(ref resultTextEditorLength, value);
-        }
-
-        #endregion
-
-        #region Result text editor panel field
-
-        private string resultTextEditorError;
-        public string ResultTextEditorError
-        {
-            get => resultTextEditorError;
-            set
-            {
-                
-                if (value == resultTextEditorError) return;
-
-                if (value.Length > 0)
-                    resultTextEditorError = $"Error: {value}";
-                else
-                    resultTextEditorError = value;
-
-                SetProperty(ref resultTextEditorError, value);
-            }
-        }
-
-        private string pythonVersion;
-        public string PythonVersion
-        {
-            get => pythonVersion;
-            set => SetProperty(ref pythonVersion, value);
-        }
-
-        private string pythonBinPath;
-        public string PythonBinPath
-        {
-            get => pythonBinPath;
-            set => SetProperty(ref pythonBinPath, value);
-        }
-
-        private string pythonWorkDir;
-        public string PythonWorkDir
-        {
-            get => pythonWorkDir;
-            set => SetProperty(ref pythonWorkDir, value);
-        }
-
-        #endregion
-
-        #region Source text editor
-
-        private string sourceTextEditor;
-        public string SourceTextEditor
-        {
-            get => sourceTextEditor;
-            set => SetProperty(ref sourceTextEditor, value);
-        }
-
-        #endregion
-
-        #region Command
-
-        private DelegateCommand reloadWebViewCommand;
-        public DelegateCommand ReloadWebViewCommand => reloadWebViewCommand ??= new DelegateCommand(() =>
-        {
-            SourceTextEditor = string.Empty;
-            mWebViewProvider.ReloadWebView();
-        });
-
-        private DelegateCommand sendToExternalSourceEditor;
-        public DelegateCommand SendToExternalSourceEditor => sendToExternalSourceEditor ??= new DelegateCommand(() =>
-        {
-            SendSourceToScriptEditor(SourceTextEditor);
-
-        }, () => SourceTextEditor?.Length > 0);
-
-        private DelegateCommand showSaveFileDialogCommand;
-        public DelegateCommand ShowSaveFileDialogCommand => showSaveFileDialogCommand ??= new DelegateCommand(async () =>
-        {
-            string workspace = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()");
-            string xmlWorkspace = JsonConvert.DeserializeObject<dynamic>(workspace);
-
-            if (IDialogManager.ShowSaveFileDialog("Сохранить рабочую область", Settings.Default.SavedUserWorkspaceFolderPath, "workspace", ".xml", "XML documents (.xml)|*.xml"))
-            {
-                string path = IDialogManager.FilePathToSave;
-                await FileHelper.WriteAsync(path, xmlWorkspace);
-
-                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {IDialogManager.FilePathToSave} сохранен";
-            }
-            else
-            {
-                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
-            }
-        });
-
-        private DelegateCommand showOpenFileDialogCommand;
-        public DelegateCommand ShowOpenFileDialogCommand => showOpenFileDialogCommand ??= new DelegateCommand(async () =>
-            {
-                if (IDialogManager.ShowFileBrowser("Выберите сохранененную рабочую область", Settings.Default.SavedUserWorkspaceFolderPath, "XML documents(.xml) | *.xml"))
-                {
-                    string path = IDialogManager.FilePath;
-                    if (path == "") return;
-
-                    string xml = await FileHelper.ReadTextAsStringAsync(path);
-                    _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
-
-                    mStatusBarNotificationDelivery.AppLogMessage = $"Файл {path} загружен";
-                }
-                else
-                {
-                    mStatusBarNotificationDelivery.AppLogMessage = "Файл рабочей области не выбран";
-                }
-            });
-
-        private DelegateCommand runCode;
-        public DelegateCommand RunCode => runCode ??= new DelegateCommand(async () =>
-        {
-            ResultTextEditorError = string.Empty;
-            WebApi.Client.v1.ResponseModel.ExtendedCommandExecuteResult executeResult = new();
-
-            try
-            {
-                var command = new WebApi.Client.v1.RequestModel.PythonCommand
-                {
-                    Command = SourceTextEditor
-                };
-
-                executeResult = await BaseApi.PythonExecuteAsync(command);
-            }
-            catch (Exception ex)
-            {
-                ResultTextEditorError = ex.Message.ToString();
-            }
-
-            if (Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
-            {
-                ResultTextEditor += "Отчет о инициализации процесса программы\n" +
-                 "======================\n" +
-                 $"Начало инициализации: {executeResult.StartTime}\n" +
-                 $"Завершение инициализации: {executeResult.EndTime}\n" +
-                 $"Общее время инициализации: {executeResult.RunTime}\n" +
-                 $"Код выхода: {executeResult.ExitCode}\n" +
-                 $"Статус успешности инициализации: {executeResult.Succeesed}" +
-                 "\n======================\n";
-            }
-
-            if (!string.IsNullOrEmpty(executeResult?.StandardError))
-                ResultTextEditor += $"Ошибка: {executeResult.StandardError}" +
-                    "\n======================";
-
-        }, () => true/*!string.IsNullOrEmpty(SourceTextEditor)*/ && true /*mCommunicationProvider.IsTcpClientConnected*/);
-
-        private DelegateCommand stopExecute;
-        public DelegateCommand StopExecute => stopExecute ??= new DelegateCommand( async () =>
-        {
-            if (mCommunicationProvider.IsTcpClientConnected)
-            {
-                try
-                {
-                    await BaseApi.StopPythonExecute();
-                }
-                catch (Exception ex)
-                {
-                    ResultTextEditorError = ex.Message.ToString();
-                }
-            }
-        });
-
-        private DelegateCommand toZeroPositionCommand;
-        public DelegateCommand ToZeroPositionCommand => toZeroPositionCommand ??= new DelegateCommand(async () =>
-        {
-            try
-            {
-                await BaseApi.StopPythonExecute();
-            }
-            catch (Exception ex)
-            {
-                ResultTextEditorError = ex.Message.ToString();
-            }
-
-        }, () => mCommunicationProvider.IsTcpClientConnected);
-
-        private DelegateCommand cleanExecuteEditor;
-        public DelegateCommand CleanExecuteEditor => cleanExecuteEditor ??= new DelegateCommand(async () =>
-        {
-            await Task.Run(() => 
-            {
-                ResultTextEditorError = string.Empty;
-                ResultTextEditor = string.Empty;
-            });
-        });
-
-        #region ShowSaveFileDialogCommand
-
-        private DelegateCommand showSaveFileSourceTextDialogCommand;
-        public DelegateCommand ShowSaveFileSourceTextDialogCommand => showSaveFileSourceTextDialogCommand ??= new DelegateCommand(async () =>
-        {
-            string pythonProgram = SourceTextEditor;
-
-            if (IDialogManager.ShowSaveFileDialog("Сохранить файл программы", Core.Properties.Settings.Default.SavedUserScriptsFolderPath,
-                "new_program", ".py", "PythonScript file (.py)|*.py|Все файлы|*.*"))
-            {
-                string path = IDialogManager.FilePathToSave;
-                await FileHelper.WriteAsync(path, pythonProgram);
-
-                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {IDialogManager.FilePathToSave} сохранен";
-            }
-            else
-            {
-                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
-            }
-        }, () => SourceTextEditor?.Length > 0);
-
-        #endregion
 
         #endregion
 

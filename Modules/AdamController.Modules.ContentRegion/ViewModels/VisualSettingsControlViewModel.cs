@@ -5,6 +5,7 @@ using AdamController.Core.DataSource;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
+using AdamController.Services.Interfaces;
 using ControlzEx.Theming;
 using Prism.Commands;
 using Prism.Regions;
@@ -43,15 +44,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Service
 
-        private IFlyoutManager FlyoutManager { get; }
+        private readonly IFlyoutManager mFlyoutManager;
+        private readonly IWebViewProvider mWebViewProvider;
 
         #endregion
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager) : base(regionManager, dialogService)
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IWebViewProvider webViewProvider) : base(regionManager, dialogService)
         {
-            FlyoutManager = flyoutManager;
+            mFlyoutManager = flyoutManager;
+            mWebViewProvider = webViewProvider;
 
             OpenAdvancedBlocklySettingsDelegateCommand = new DelegateCommand(OpenAdvancedBlocklySettings, OpenAdvancedBlocklySettingsCanExecute);
             ChangeBaseThemeDelegateCommand = new DelegateCommand<string>(ChangeBaseTheme, ChangeBaseThemeCanExecute);
@@ -64,7 +67,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void OpenAdvancedBlocklySettings()
         {
-            FlyoutManager.OpenFlyout(FlyoutNames.FlyotAdvancedBlocklySettings);
+            mFlyoutManager.OpenFlyout(FlyoutNames.FlyotAdvancedBlocklySettings);
         }
 
         private bool OpenAdvancedBlocklySettingsCanExecute()

@@ -31,7 +31,6 @@ namespace AdamController.Services.Interfaces
         /* in view model */
         public void ReloadWebView();
         public void NavigationComplete();
-
         public void WebViewMessageReceived(WebMessageJsonReceived receivedResult);
     }
 }
