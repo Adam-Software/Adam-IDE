@@ -17,37 +17,10 @@ namespace AdamController.Modules.ContentRegion.Views
 {
     public partial class ScratchControlView : UserControl
     {
-        #region Singelton
-
-        //private static ScratchControlView mInstance = null;
-        //private static readonly object padlock = new();
-
-        //public static ScratchControlView Instance
-        //{
-        //    get
-        //    {
-        //        lock (padlock)
-        //        {
-        //            if (mInstance == null)
-        //            {
-        //                mInstance = new ScratchControlView();
-        //            }
-        //            return mInstance;
-        //        }
-        //    }
-        //}
-
-        #endregion
-
-        #region Action
-        //public static Action NavigationComplete { get; set; }
-        //public static Action<WebMessageJsonReceived> WebMessageReceived { get; set; }
-
-        #endregion
-
         #region Services
 
         private readonly IWebViewProvider mWebViewProvider;
+        
         #endregion
 
         private readonly string mPathToSource = Path.Combine(FolderHelper.CommonDirAppData, "BlocklySource");
@@ -56,8 +29,6 @@ namespace AdamController.Modules.ContentRegion.Views
 
         public ScratchControlView(IWebViewProvider webViewProvider)
         {
-            //mInstance = this;
-
             InitializeComponent();
             InitializeWebViewCore();
 
@@ -71,13 +42,6 @@ namespace AdamController.Modules.ContentRegion.Views
             mWebViewProvider.RaiseExecuteReloadWebViewEvent += RaiseExecuteReloadWebViewEvent;
 
             TextResulEditor.TextChanged += TextResulEditorTextChanged;
-
-            //ScratchControlViewModel viewModel = DataContext as ScratchControlViewModel;
-
-            //if (viewModel.ReloadWebView == null)
-            //{
-            //    viewModel.ReloadWebView = new Action(() => WebView?.CoreWebView2?.Reload());
-            //}
         }
 
         private void RaiseExecuteReloadWebViewEvent(object sender)
@@ -89,8 +53,6 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             string result = await WebView.ExecuteScriptAsync(script);
             return result;
-            //string result = await ExecuteScripts(script);//WebView.ExecuteScriptAsync(script).Result;
-            //return result;
         }
 
         private void WebViewNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
@@ -120,19 +82,6 @@ namespace AdamController.Modules.ContentRegion.Views
             WebView.CoreWebView2.Navigate("https://localhost/index.html");
         }
         
-        #region Func
-
-        //public static Func<string, Task<string>> ExecuteScript = async script => await mInstance.ExecuteScripts(script);
-
-        //public async Task<string> ExecuteScripts(string script)
-        //{
-        //    string result = await WebView.ExecuteScriptAsync(script);
-        //    return result;
-        //}
-
-        #endregion
-
-        //private void WebViewNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e) => NavigationComplete();
 
         private void WebViewWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
@@ -141,19 +90,6 @@ namespace AdamController.Modules.ContentRegion.Views
             if (receivedResult == null) return;
 
             mWebViewProvider.WebViewMessageReceived(receivedResult);
-            //ParseJsonReceived(e.WebMessageAsJson);
-        }
-
-        private async void ParseJsonReceived(string json)
-        {
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-            {
-                dynamic jsonClean = JsonConvert.DeserializeObject(json);
-                WebMessageJsonReceived results = JsonConvert.DeserializeObject<WebMessageJsonReceived>(jsonClean);
-                if (results == null) return;
-
-                //WebMessageReceived(results);
-            }));
         }
     }
 

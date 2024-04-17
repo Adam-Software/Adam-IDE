@@ -18,7 +18,6 @@ using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -35,13 +34,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IWebViewProvider mWebViewProvider;
 
-
         #endregion
 
         #region Action field 
 
         public static Action<string> SendSourceToScriptEditor { get; set; }
-        //public Action ReloadWebView { get; set; }
 
         #endregion
 
@@ -57,8 +54,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider = webViewProvider;
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
-
-            //InitAction();
         }
 
         #region Navigation
@@ -79,7 +74,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent += RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
-            //ReloadWebViewCommand.Execute();
 
             base.OnNavigatedTo(navigationContext);
         }
@@ -185,16 +179,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
         }
 
-        #region Action initialize
-
-        //private void InitAction()
-        //{
-        //    ScratchControlView.NavigationComplete ??= new Action(NavigationComplete);
-        //    ScratchControlView.WebMessageReceived ??= new Action<WebMessageJsonReceived>(WebMessageReceived);
-        //}
-
-        #endregion
-
         #region Execute program event
 
         private async void StartExecuteProgram()
@@ -226,7 +210,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
                 await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
-                //await ScratchControlView.ExecuteScript(Scripts.ShadowDisable);
             }));
 
             mStatusBarNotificationDelivery.CompileLogMessage = compileLogStatusBarAction;
@@ -237,14 +220,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         }
 
         #endregion
-
-        //private void WebMessageReceived(WebMessageJsonReceived results)
-        //{
-        //    if (results.Action == "sendSourceCode")
-        //    {
-        //        SourceTextEditor = results.Data;
-        //    }
-        //}
 
         #region IsEnabled buttons field
 
@@ -266,14 +241,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Initialize Blockly
 
-        /// <summary>
-        /// Run js-script after web view navigation complete 
-        /// </summary>
-        //private void NavigationComplete()
-        //{
-        //    InitBlockly();
-       // }
-
         private async void InitBlockly()
         {
             BlocklyLanguage language = Settings.Default.BlocklyWorkspaceLanguage;
@@ -289,14 +256,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     await mWebViewProvider.ExecuteJavaScript(Scripts.ListenerCreatePythonCode);
                     await mWebViewProvider.ExecuteJavaScript(Scripts.ListenerSavedBlocks);
 
-                    //_ = await ScratchControlView.ExecuteScript(InitWorkspace());
-                    //_ = await ScratchControlView.ExecuteScript(Scripts.ListenerCreatePythonCode);
-                    //_ = await ScratchControlView.ExecuteScript(Scripts.ListenerSavedBlocks);
-
                     if (Settings.Default.BlocklyRestoreBlockOnLoad)
                     {
                         await mWebViewProvider.ExecuteJavaScript(Scripts.RestoreSavedBlocks);
-                        //_ = await ScratchControlView.ExecuteScript(Scripts.RestoreSavedBlocks);
                     }
 
 
@@ -459,17 +421,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             });
 
             await mWebViewProvider.ExecuteJavaScript(loadLocalSrc);
-            //_ = await ScratchControlView.ExecuteScript(loadLocalSrc);
-
-            //Thread.Sleep(1000);
-            //Thread.Sleep(500);
             await mWebViewProvider.ExecuteJavaScript(loadLocalAdamBlockSrc);
-            //_ = await ScratchControlView.ExecuteScript(loadLocalAdamBlockSrc);
-
-            //Thread.Sleep(1000);
-            //Thread.Sleep(500);
             await mWebViewProvider.ExecuteJavaScript(loadLocalAdamPythonGenSrc);
-            //_ = await ScratchControlView.ExecuteScript(loadLocalAdamPythonGenSrc);
         }
 
         /// <summary>
@@ -589,7 +542,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             SourceTextEditor = string.Empty;
             mWebViewProvider.ReloadWebView();
-            //ReloadWebView();
         });
 
         private DelegateCommand sendToExternalSourceEditor;
@@ -603,7 +555,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public DelegateCommand ShowSaveFileDialogCommand => showSaveFileDialogCommand ??= new DelegateCommand(async () =>
         {
             string workspace = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()");
-            //string workspace = await ScratchControlView.ExecuteScript("getSavedWorkspace()");
             string xmlWorkspace = JsonConvert.DeserializeObject<dynamic>(workspace);
 
             if (IDialogManager.ShowSaveFileDialog("Сохранить рабочую область", Settings.Default.SavedUserWorkspaceFolderPath, "workspace", ".xml", "XML documents (.xml)|*.xml"))
@@ -747,7 +698,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             string script = Scripts.SerealizeObject(functionName, parameters);
             return await mWebViewProvider.ExecuteJavaScript(script);
-            //return await ScratchControlView.ExecuteScript(script);
         }
 
         #endregion
