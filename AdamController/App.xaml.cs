@@ -192,9 +192,9 @@ namespace AdamController
 
             containerRegistry.RegisterSingleton<IPythonRemoteRunnerService>(containerRegistry =>
             {
-                ICommunicationProviderService communicationProvider = containerRegistry.Resolve<ICommunicationProviderService>();
+                IUdpClientService udpClient = containerRegistry.Resolve<IUdpClientService>();
 
-                PythonRemoteRunnerService remoteRunnerService = new(communicationProvider);
+                PythonRemoteRunnerService remoteRunnerService = new(udpClient);
                 return remoteRunnerService;
             });
 

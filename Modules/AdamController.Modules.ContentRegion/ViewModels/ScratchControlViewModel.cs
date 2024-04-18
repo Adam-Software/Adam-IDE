@@ -9,6 +9,7 @@ using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Modules.ContentRegion.Views;
 using AdamController.Services.Interfaces;
+using AdamController.Services.PythonRemoteRunnerDependency;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1;
 using Newtonsoft.Json;
@@ -61,8 +62,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #endregion
 
         #region Action field 
-
-        public static Action<string> SendSourceToScriptEditor { get; set; }
+        //public static Action<string> SendSourceToScriptEditor { get; set; }
 
         #endregion
 
@@ -145,7 +145,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-        #region DelegateCommand methods
+        #region DelegateCommands methods
 
         private void ReloadWebView()
         {
@@ -261,6 +261,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             try
             {
+                IsPythonCodeExecute = true;
+
                 var command = new WebApi.Client.v1.RequestModel.PythonCommand
                 {
                     Command = SourceTextEditor
@@ -271,6 +273,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             catch (Exception ex)
             {
                 ResultTextEditorError = ex.Message.ToString();
+            }
+            finally
+            {
+                
             }
 
             if (Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
@@ -301,6 +307,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void StopPythonCodeExecute()
         {
+            IsPythonCodeExecute = false;
+
             try
             {
                 await BaseApi.StopPythonExecute();
@@ -524,7 +532,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void OnRaisePythonScriptExecuteStart(object sender)
         {
-            IsPythonCodeExecute = true;
+            //IsPythonCodeExecute = true;
 
             mIsWarningStackOwerflowAlreadyShow = false;
             StartExecuteProgram();
@@ -549,12 +557,69 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ResultTextEditor += message;
         }
 
-        private void OnRaisePythonScriptExecuteFinish(object sender, string message)
+        /*
+         *  private static string ParseFinishExecuteMessage(string resultJson = null)
         {
+            string message = "\n======================\n<<Выполнение программы завершено>>";
+
+            if (string.IsNullOrEmpty(resultJson))
+                return message;
+
+            RemoteCommandExecuteResult executeResult = resultJson.ToCommandResult();
+
+            string messageWithResult = $"{message}\n" +
+                $"\n" +
+                $"Отчет о выполнении\n" +
+                $"======================\n" +
+                $"Начало выполнения: {executeResult.StartTime}\n" +
+                $"Завершение выполнения: {executeResult.EndTime}\n" +
+                $"Общее время выполнения: {executeResult.RunTime}\n" +
+                $"Код выхода: {executeResult.ExitCode}\n" +
+                $"Статус успешности завершения: {executeResult.Succeeded}" +
+                $"\n======================\n";
+
+            if (!string.IsNullOrEmpty(executeResult.StandardError))
+                messageWithResult += $"Ошибка: {executeResult.StandardError}" +
+                    $"\n======================\n";
+
+            return messageWithResult;
+        }
+         */
+
+        private async void OnRaisePythonScriptExecuteFinish(object sender, RemoteCommandExecuteResult remoteCommandExecuteResult)
+        {
+
             IsPythonCodeExecute = false;
 
-            OnStopExecuteProgram("Сеанс отладки закончен");
-            ResultTextEditor += message;
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
+            {
+                await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
+            }));
+
+            mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки закончен";
+            mStatusBarNotificationDelivery.ProgressRingStart = false;
+
+            string message = "\n======================\n<<Выполнение программы завершено>>";
+
+            if (remoteCommandExecuteResult == null)
+                return;
+
+            string messageWithResult = $"{message}\n" +
+                $"\n" +
+                $"Отчет о выполнении\n" +
+                $"======================\n" +
+                $"Начало выполнения: {remoteCommandExecuteResult.StartTime}\n" +
+                $"Завершение выполнения: {remoteCommandExecuteResult.EndTime}\n" +
+                $"Общее время выполнения: {remoteCommandExecuteResult.RunTime}\n" +
+                $"Код выхода: {remoteCommandExecuteResult.ExitCode}\n" +
+                $"Статус успешности завершения: {remoteCommandExecuteResult.Succeeded}" +
+                $"\n======================\n";
+
+            if (!string.IsNullOrEmpty(remoteCommandExecuteResult.StandardError))
+                messageWithResult += $"Ошибка: {remoteCommandExecuteResult.StandardError}" +
+                    $"\n======================\n";
+
+            ResultTextEditor += messageWithResult;
         }
 
         #endregion
@@ -593,13 +658,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void OnStopExecuteProgram(string compileLogStatusBarAction)
         {
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
-            {
-                await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
-            }));
-
-            mStatusBarNotificationDelivery.CompileLogMessage = compileLogStatusBarAction;
-            mStatusBarNotificationDelivery.ProgressRingStart = false;
         }
 
         #region Initialize Blockly

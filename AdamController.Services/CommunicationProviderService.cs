@@ -1,4 +1,5 @@
 ﻿using AdamController.Services.Interfaces;
+using AdamController.Services.UdpClientServiceDependency;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace AdamController.Services
         public event TcpServiceClientDisconnectEventHandler RaiseTcpServiceClientDisconnectEvent;
         public event TcpServiceClientReconnectedEventHandler RaiseTcpServiceClientReconnectedEvent;
         public event UdpServiceServerReceivedEventHandler RaiseUdpServiceServerReceivedEvent;
-        public event UdpServiceClientReceivedEventHandler RaiseUdpServiceClientReceivedEvent;
+        public event UdpServiceClientMessageEnqueueEvent RaiseUdpServiceClientMessageEnqueueEvent;
 
         #endregion
 
@@ -94,16 +95,21 @@ namespace AdamController.Services
             mTcpClientService.RaiseTcpClientReconnectedEvent += RaiseServiceTcpClientReconnected;
             mTcpClientService.RaiseTcpCientConnectedEvent += RaiseServiceTcpCientConnected;
             mTcpClientService.RaiseTcpClientDisconnectedEvent += RaiseTcpClientDisconnected;
-            mUdpClientService.RaiseUdpClientReceivedEvent += RaiseServiceUdpClientReceived;
+            
+            mUdpClientService.RaiseUdpClientMessageEnqueueEvent += RaiseUdpClientMessageEnqueueEvent;
+
             mUdpServerService.RaiseUdpServerReceivedEvent += RaiseServiceUdpServerReceived;
         }
+
 
         private void Unsubscribe()
         {
             mTcpClientService.RaiseTcpClientReconnectedEvent -= RaiseServiceTcpClientReconnected;
             mTcpClientService.RaiseTcpCientConnectedEvent -= RaiseServiceTcpCientConnected;
             mTcpClientService.RaiseTcpClientDisconnectedEvent -= RaiseTcpClientDisconnected;
-            mUdpClientService.RaiseUdpClientReceivedEvent -= RaiseServiceUdpClientReceived;
+
+            mUdpClientService.RaiseUdpClientMessageEnqueueEvent -= RaiseUdpClientMessageEnqueueEvent;
+
             mUdpServerService.RaiseUdpServerReceivedEvent -= RaiseServiceUdpServerReceived;
         }
 
@@ -138,17 +144,13 @@ namespace AdamController.Services
             OnRaiseTcpServiceClientReconnectedEvent(reconnectCount);
         }
 
-        private void RaiseServiceUdpClientReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
+        private void RaiseUdpClientMessageEnqueueEvent(object sender, ReceivedData data)
         {
-            //string encodedMessage = Encoding.UTF8.GetString(buffer);
-            string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            OnRaiseUdpServiceClientReceivedEvent(encodedMessage);
+            OnRaiseUdpServiceClientMessageEnqueueEvent(data);
         }
-
 
         private void RaiseServiceUdpServerReceived(object sender, EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            //string encodedMessage = Encoding.UTF8.GetString(buffer);
             string encodedMessage = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             OnRaiseUdpServiceServerReceivedEvent(encodedMessage);
         }
@@ -181,10 +183,10 @@ namespace AdamController.Services
             raiseEvent?.Invoke(this, message);
         }
 
-        protected virtual void OnRaiseUdpServiceClientReceivedEvent(string message)
+        protected virtual void OnRaiseUdpServiceClientMessageEnqueueEvent(ReceivedData data)
         {
-            UdpServiceClientReceivedEventHandler raiseEvent = RaiseUdpServiceClientReceivedEvent;
-            raiseEvent?.Invoke(this, message);
+            UdpServiceClientMessageEnqueueEvent raiseEvent = RaiseUdpServiceClientMessageEnqueueEvent;
+            raiseEvent?.Invoke(this, data);
         }
 
         #endregion

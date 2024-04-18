@@ -1,12 +1,12 @@
-﻿using System;
+﻿using AdamController.Services.UdpClientServiceDependency;
+using System;
 using System.Net;
-using System.Net.Sockets;
 
 namespace AdamController.Services.Interfaces
 {
     #region Delegate
 
-    public delegate void UdpClientReceivedEventHandler(object sender, EndPoint endpoint, byte[] buffer, long offset, long size);
+    public delegate void UdpClientMessageEnqueueEventHandler(object sender, ReceivedData data);
 
     #endregion
 
@@ -14,7 +14,7 @@ namespace AdamController.Services.Interfaces
     {
         #region Events
 
-        public event UdpClientReceivedEventHandler RaiseUdpClientReceivedEvent;
+        public event UdpClientMessageEnqueueEventHandler RaiseUdpClientMessageEnqueueEvent;
 
         #endregion
 

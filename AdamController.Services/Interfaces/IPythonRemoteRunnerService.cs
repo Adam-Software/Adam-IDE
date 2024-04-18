@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdamController.Services.PythonRemoteRunnerDependency;
+using System;
 
 namespace AdamController.Services.Interfaces
 {
@@ -6,7 +7,7 @@ namespace AdamController.Services.Interfaces
 
     public delegate void PythonStandartOutputEventHandler(object sender, string message);
     public delegate void PythonScriptExecuteStartEventHandler(object sender);
-    public delegate void PythonScriptExecuteFinishEventHandler(object sender, string message);
+    public delegate void PythonScriptExecuteFinishEventHandler(object sender, RemoteCommandExecuteResult remoteCommandExecuteResult);
 
     #endregion
 
