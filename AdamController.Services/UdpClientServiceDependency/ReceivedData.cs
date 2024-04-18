@@ -23,7 +23,6 @@ namespace AdamController.Services.UdpClientServiceDependency
         {
             string @string = Encoding.UTF8.GetString(Buffer, (int) Offset, (int) Size);
             return @string;
-        
         }
     }
 }

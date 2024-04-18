@@ -41,8 +41,7 @@ namespace AdamController.Core.Behaviors
             }
         }
 
-        private static void PropertyChangedCallback(DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             AvalonEditBehaviour behavior = dependencyObject as AvalonEditBehaviour;
             if (behavior.AssociatedObject != null)

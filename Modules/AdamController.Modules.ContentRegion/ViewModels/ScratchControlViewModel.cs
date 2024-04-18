@@ -269,7 +269,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void ReloadWebView()
         {
-            SourceTextEditor = string.Empty;
+            //Need to clear the field? Test
+            //SourceTextEditor = string.Empty;
             mWebViewProvider.ReloadWebView();
         }
 
@@ -518,7 +519,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки запущен";
             mStatusBarNotificationDelivery.ProgressRingStart = true;
 
-            ThemeManager.Current.ChangeThemeColorScheme(Application.Current, cDebugColorScheme);
+            //#8 p 6
+            //ThemeManager.Current.ChangeThemeColorScheme(Application.Current, cDebugColorScheme);
 
             ResultTextEditor = string.Empty;
 
