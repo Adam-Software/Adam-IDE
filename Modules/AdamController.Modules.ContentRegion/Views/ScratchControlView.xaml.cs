@@ -1,7 +1,6 @@
 ﻿
 using AdamController.Core.Helpers;
 using AdamController.Core.Properties;
-using AdamController.Modules.ContentRegion.ViewModels;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using Microsoft.Web.WebView2.Core;
@@ -36,7 +35,6 @@ namespace AdamController.Modules.ContentRegion.Views
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
             WebView.NavigationCompleted += WebViewNavigationCompleted;
-            
             WebView.WebMessageReceived += WebViewWebMessageReceived;
 
             mWebViewProvider.RaiseExecuteJavaScriptEvent += RaiseExecuteJavaScriptEvent;
@@ -76,14 +74,11 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             WebView.CoreWebView2.Settings.AreDevToolsEnabled = true; 
             WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Settings.Default.DontShowBrowserMenuInBlockly;
-            
             WebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
-            
             WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
             WebView.CoreWebView2.Navigate("https://localhost/index.html");
         }
         
-
         private void WebViewWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             dynamic jsonClean = JsonConvert.DeserializeObject(e.WebMessageAsJson);
@@ -93,23 +88,4 @@ namespace AdamController.Modules.ContentRegion.Views
             mWebViewProvider.WebViewMessageReceived(receivedResult);
         }
     }
-
-    public static class Extensions
-    {
-        public static string ToRbgColor(this string hexColorString)
-        {
-            if(string.IsNullOrEmpty(hexColorString))
-            {
-                return "";
-            }
-
-            byte R = Convert.ToByte(hexColorString.Substring(3, 2), 16);
-            byte G = Convert.ToByte(hexColorString.Substring(5, 2), 16);
-            byte B = Convert.ToByte(hexColorString.Substring(7, 2), 16);
-            
-            return $"rgb({R}, {G}, {B})";
-        }
-    }
-
-    //TODO To HUE COLOR
 }

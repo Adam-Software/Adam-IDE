@@ -1,15 +1,10 @@
 ﻿using AdamController.Services.Interfaces;
 using AdamController.Services.PythonRemoteRunnerDependency;
 using AdamController.Services.UdpClientServiceDependency;
-using ControlzEx.Standard;
-using System;
 using System.Linq;
-using System.Reactive.Joins;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace AdamController.Services
 {
@@ -31,12 +26,20 @@ namespace AdamController.Services
 
         #region Const
 
-        private const string cPattern = $"{cStartMessage}|{cErrorMessage}|{cFinishMessage}";
         private const string cStartMessage = "start";
         private const string cErrorMessage = "error";
         private const string cFinishMessage = "finish";
+        private const string cPattern = $"{cStartMessage}|{cErrorMessage}|{cFinishMessage}";
 
-        private Regex mRegex;
+        #endregion
+
+        #region var
+
+        private readonly Regex mRegex;
+
+        [GeneratedRegex($"{cPattern}", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace | RegexOptions.NonBacktracking)]
+        private static partial Regex MyRegex();
+
         #endregion
 
         #region ~
@@ -53,8 +56,6 @@ namespace AdamController.Services
 
         #endregion
 
-        [GeneratedRegex($"{cStartMessage}|{cErrorMessage}|{cFinishMessage}", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline)]
-        private static partial Regex MyRegex();
 
         #region Public method
 
@@ -85,8 +86,6 @@ namespace AdamController.Services
                         OnRaisePythonScriptExecuteFinishEvent(executeResult);
                         break;
                     }
-       
-       
             }
         }
 
@@ -99,11 +98,13 @@ namespace AdamController.Services
                 foreach(Match match in matches.Cast<Match>())
                 {
                     ParseEvents(match, message);
-                    return;
                 }
-            }
 
+                return;
+            }
+            
             OnRaisePythonStandartOutputEvent($"{message}\n");
+            
         }
 
         #endregion
@@ -126,8 +127,7 @@ namespace AdamController.Services
 
         private void RaiseUdpClientMessageEnqueueEvent(object sender, ReceivedData data)
         {
-            var @string = Encoding.UTF8.GetString(data.Buffer, (int)data.Offset, (int)data.Size);
-            ParseMessage(@string);
+            ParseMessage(data.ToString());
         }
 
         #endregion

@@ -4,6 +4,7 @@ using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
 using AdamController.Core;
+using AdamController.Core.Extensions;
 using AdamController.Core.Helpers;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
@@ -12,6 +13,7 @@ using AdamController.Services.Interfaces;
 using AdamController.Services.PythonRemoteRunnerDependency;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1;
+using ControlzEx.Theming;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
@@ -52,6 +54,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Const
 
         private const string cFilter = "XML documents (.xml) | *.xml";
+        private const string cDebugColorScheme = "Red";
 
         #endregion
 
@@ -59,10 +62,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool mIsWarningStackOwerflowAlreadyShow;
 
-        #endregion
-
-        #region Action field 
-        //public static Action<string> SendSourceToScriptEditor { get; set; }
+        //#8 p 6
+        //private string mCurrentColorScheme;
 
         #endregion
 
@@ -98,6 +99,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             Subscribe();
+            
+            //#8 p 6
+            //mCurrentColorScheme = ThemeManager.Current.DetectTheme(Application.Current).ColorScheme;
 
             //#29
             mWebViewProvider.ReloadWebView();
@@ -109,8 +113,124 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             Unsubscribe();
 
+            //#8 p 6
+            //ThemeManager.Current.ChangeThemeColorScheme(Application.Current, mCurrentColorScheme);
+
             base.OnNavigatedFrom(navigationContext);
         }
+
+        #endregion
+
+        #region Public fields
+
+        private bool isTcpClientConnected;
+        public bool IsTcpClientConnected
+        {
+            get => isTcpClientConnected;
+            set
+            {
+                bool isNewValue = SetProperty(ref isTcpClientConnected, value);
+
+                if (isNewValue)
+                {
+                    RaiseDelegateCommandsCanExecuteChanged();
+                }
+            }
+        }
+
+        private bool isPythonCodeExecute;
+        public bool IsPythonCodeExecute
+        {
+            get => isPythonCodeExecute;
+            set
+            {
+                bool isNewValue = SetProperty(ref isPythonCodeExecute, value);
+
+                if (isNewValue)
+                {
+                    OnPythonCodeExecuteStatusChange(IsPythonCodeExecute);
+                    RaiseDelegateCommandsCanExecuteChanged();
+                }
+            }
+        }
+
+        private string sourceTextEditor;
+        public string SourceTextEditor
+        {
+            get => sourceTextEditor;
+            set
+            {
+                bool isNewValue = SetProperty(ref sourceTextEditor, value);
+
+                if (isNewValue)
+                {
+                    RaiseDelegateCommandsCanExecuteChanged();
+                }
+            }
+        }
+
+        private string resultTextEditor;
+        public string ResultTextEditor
+        {
+            get => resultTextEditor;
+            set
+            {
+                bool isNewValue = SetProperty(ref resultTextEditor, value);
+
+                if (isNewValue)
+                {
+                    ResultTextEditorLength = ResultTextEditor.Length;
+                    RaiseDelegateCommandsCanExecuteChanged();
+                }       
+            }
+        }
+
+        private int resultTextEditorLength;
+        public int ResultTextEditorLength
+        {
+            get => resultTextEditorLength;
+            set => SetProperty(ref resultTextEditorLength, value);
+        }
+
+        private string resultTextEditorError;
+        public string ResultTextEditorError
+        {
+            get => resultTextEditorError;
+            set
+            {
+                bool isNewValue = SetProperty(ref resultTextEditorError, value);
+
+                if (isNewValue)
+                {
+                    RaiseDelegateCommandsCanExecuteChanged();
+
+                    if (ResultTextEditorError.Length > 0)
+                        resultTextEditorError = $"Error: {ResultTextEditorError}";
+                }
+            }
+        }
+
+        private string pythonVersion;
+        public string PythonVersion
+        {
+            get => pythonVersion;
+            set => SetProperty(ref pythonVersion, value);
+        }
+
+        private string pythonBinPath;
+        public string PythonBinPath
+        {
+            get => pythonBinPath;
+            set => SetProperty(ref pythonBinPath, value);
+        }
+
+        private string pythonWorkDir;
+        public string PythonWorkDir
+        {
+            get => pythonWorkDir;
+            set => SetProperty(ref pythonWorkDir, value);
+        }
+
 
         #endregion
 
@@ -155,7 +275,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool ReloadWebViewCanExecute()
         {
-            return true;
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+            return isPythonCodeNotExecute;
         }
 
         private async void ShowSaveFileDialog()
@@ -183,8 +304,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool ShowSaveFileDialogCanExecute()
         {
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
             bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
-            return isSourceNotEmpty;
+
+            return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
         private async void ShowOpenFileDialog()
@@ -210,7 +333,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool ShowOpenFileDialogCanExecute()
         {
-            return true;
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+            return isPythonCodeNotExecute;
         }
 
         private async void ShowSaveFileSourceTextDialog()
@@ -238,8 +362,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool ShowSaveFileSourceTextDialogCanExecute()
         {
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
             bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
-            return isSourceNotEmpty;
+            return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
         private void CleanExecuteEditor()
@@ -250,8 +375,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool CleanExecuteEditorCanExecute()
         {
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
             var isResultNotEmpty = ResultTextEditor?.Length > 0;
-            return isResultNotEmpty;
+            return isPythonCodeNotExecute &&  isResultNotEmpty;
         }
 
         private async void RunPythonCode()
@@ -261,8 +387,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             try
             {
-                IsPythonCodeExecute = true;
-
                 var command = new WebApi.Client.v1.RequestModel.PythonCommand
                 {
                     Command = SourceTextEditor
@@ -369,127 +493,70 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-        #region Public fields
+        #region Private methods
 
-        private bool isTcpClientConnected;
-        public bool IsTcpClientConnected
+        private void OnPythonCodeExecuteStatusChange(bool isPythonCodeExecute)
         {
-            get => isTcpClientConnected;
-            set
+            
+            if (!isPythonCodeExecute)
             {
-                bool isNewValue = SetProperty(ref isTcpClientConnected, value);
-
-                if (isNewValue)
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
                 {
-                    RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
-                    StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
-                    SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
-                    ToZeroPositionDelegateCommand.RaiseCanExecuteChanged(); 
-                }
-            }
-        }
+                    await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
+                }));
 
-        private bool isPythonCodeExecute;
-        public bool IsPythonCodeExecute
-        {
-            get => isPythonCodeExecute;
-            set
+                mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки закончен";
+                mStatusBarNotificationDelivery.ProgressRingStart = false;
+
+                //#8 p 6
+                //ThemeManager.Current.ChangeThemeColorScheme(Application.Current, mCurrentColorScheme);
+
+                return;
+            }
+
+            mIsWarningStackOwerflowAlreadyShow = false;
+            mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки запущен";
+            mStatusBarNotificationDelivery.ProgressRingStart = true;
+
+            ThemeManager.Current.ChangeThemeColorScheme(Application.Current, cDebugColorScheme);
+
+            ResultTextEditor = string.Empty;
+
+            if (!Settings.Default.ShadowWorkspaceInDebug) return;
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
-                bool isNewValue = SetProperty(ref isPythonCodeExecute, value);
-                
-                if (isNewValue)
-                {
-                    RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
-                    StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
-                    SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
-                    ToZeroPositionDelegateCommand.RaiseCanExecuteChanged();
-                }
-            }
+                await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowEnable);
+            }));
         }
 
-
-        private string sourceTextEditor;
-        public string SourceTextEditor
+        private void UpdatePythonInfo(string pythonVersion = "", string pythonBinPath = "", string pythonWorkDir = "")
         {
-            get => sourceTextEditor;
-            set
+            if (string.IsNullOrEmpty(pythonVersion))
             {
-                bool isNewValue = SetProperty(ref sourceTextEditor, value);
-
-                if (isNewValue)
-                {
-                    ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();
-                    ShowSaveFileSourceTextDialogDelegateCommand.RaiseCanExecuteChanged();
-                    RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
-                    SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
-                }
-
+                PythonVersion = "Не подключена";
+                PythonBinPath = string.Empty;
+                PythonWorkDir = string.Empty;
+                return;
             }
+
+            PythonVersion = pythonVersion;
+            PythonBinPath = $"[{pythonBinPath}]";
+            PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
         }
 
-        private string resultTextEditor;
-        public string ResultTextEditor
+        private void RaiseDelegateCommandsCanExecuteChanged()
         {
-            get => resultTextEditor;
-            set
-            {
-                bool isNewValue = SetProperty(ref resultTextEditor, value);
-
-                if (isNewValue)
-                    ResultTextEditorLength = ResultTextEditor.Length;
-            }
+            ReloadWebViewDelegateCommand.RaiseCanExecuteChanged();
+            ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();
+            ShowOpenFileDialogDelegateCommand.RaiseCanExecuteChanged();
+            ShowSaveFileSourceTextDialogDelegateCommand.RaiseCanExecuteChanged();
+            CleanExecuteEditorDelegateCommand.RaiseCanExecuteChanged();
+            RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
+            StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
+            SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
+            ToZeroPositionDelegateCommand.RaiseCanExecuteChanged();
         }
-
-        private int resultTextEditorLength;
-        public int ResultTextEditorLength
-        {
-            get => resultTextEditorLength;
-            set
-            {
-                bool isNewValue = SetProperty(ref resultTextEditorLength, value);
-
-                if (isNewValue)
-                    CleanExecuteEditorDelegateCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        private string resultTextEditorError;
-        public string ResultTextEditorError
-        {
-            get => resultTextEditorError;
-            set
-            {
-                bool isNewValue = SetProperty(ref resultTextEditorError, value);
-
-                if (isNewValue)
-                {
-                    if (ResultTextEditorError.Length > 0)
-                        resultTextEditorError = $"Error: {ResultTextEditorError}";
-                }
-            }
-        }
-
-        private string pythonVersion;
-        public string PythonVersion
-        {
-            get => pythonVersion;
-            set => SetProperty(ref pythonVersion, value);
-        }
-
-        private string pythonBinPath;
-        public string PythonBinPath
-        {
-            get => pythonBinPath;
-            set => SetProperty(ref pythonBinPath, value);
-        }
-
-        private string pythonWorkDir;
-        public string PythonWorkDir
-        {
-            get => pythonWorkDir;
-            set => SetProperty(ref pythonWorkDir, value);
-        }
-
 
         #endregion
 
@@ -530,12 +597,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             UpdatePythonInfo();
         }
 
-        private void OnRaisePythonScriptExecuteStart(object sender)
+        private  void OnRaisePythonScriptExecuteStart(object sender)
         {
-            //IsPythonCodeExecute = true;
-
-            mIsWarningStackOwerflowAlreadyShow = false;
-            StartExecuteProgram();
+            IsPythonCodeExecute = true;
         }
 
         private void OnRaisePythonStandartOutput(object sender, string message)
@@ -557,47 +621,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ResultTextEditor += message;
         }
 
-        /*
-         *  private static string ParseFinishExecuteMessage(string resultJson = null)
+        private void OnRaisePythonScriptExecuteFinish(object sender, RemoteCommandExecuteResult remoteCommandExecuteResult)
         {
-            string message = "\n======================\n<<Выполнение программы завершено>>";
-
-            if (string.IsNullOrEmpty(resultJson))
-                return message;
-
-            RemoteCommandExecuteResult executeResult = resultJson.ToCommandResult();
-
-            string messageWithResult = $"{message}\n" +
-                $"\n" +
-                $"Отчет о выполнении\n" +
-                $"======================\n" +
-                $"Начало выполнения: {executeResult.StartTime}\n" +
-                $"Завершение выполнения: {executeResult.EndTime}\n" +
-                $"Общее время выполнения: {executeResult.RunTime}\n" +
-                $"Код выхода: {executeResult.ExitCode}\n" +
-                $"Статус успешности завершения: {executeResult.Succeeded}" +
-                $"\n======================\n";
-
-            if (!string.IsNullOrEmpty(executeResult.StandardError))
-                messageWithResult += $"Ошибка: {executeResult.StandardError}" +
-                    $"\n======================\n";
-
-            return messageWithResult;
-        }
-         */
-
-        private async void OnRaisePythonScriptExecuteFinish(object sender, RemoteCommandExecuteResult remoteCommandExecuteResult)
-        {
-
             IsPythonCodeExecute = false;
-
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
-            {
-                await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
-            }));
-
-            mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки закончен";
-            mStatusBarNotificationDelivery.ProgressRingStart = false;
 
             string message = "\n======================\n<<Выполнение программы завершено>>";
 
@@ -623,42 +649,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         }
 
         #endregion
-
-        private void UpdatePythonInfo(string pythonVersion = "", string pythonBinPath = "", string pythonWorkDir = "")
-        {
-            if (string.IsNullOrEmpty(pythonVersion))
-            {
-                PythonVersion = "Не подключена";
-                PythonBinPath = string.Empty;
-                PythonWorkDir = string.Empty;
-                return;
-            }
-
-            PythonVersion = pythonVersion;
-            PythonBinPath = $"[{pythonBinPath}]";
-            PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
-        }
-
-        private async void StartExecuteProgram()
-        {
-            mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки запущен";
-            mStatusBarNotificationDelivery.ProgressRingStart = true;
-
-            ResultTextEditor = string.Empty;
-            
-
-            if (!Settings.Default.ShadowWorkspaceInDebug) return;
-
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
-            {
-                await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowEnable);
-            }));
-        }
-
-
-        private async void OnStopExecuteProgram(string compileLogStatusBarAction)
-        {
-        }
 
         #region Initialize Blockly
 
@@ -722,7 +712,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 blocklyGrid.Spacing = 0;
             }
 
-            blocklyGrid.Colour = Settings.Default.BlocklyGridColour.ToRbgColor();
+            blocklyGrid.Colour = Settings.Default.BlocklyGridColour.HexToRbgColor();
             blocklyGrid.Snap = Settings.Default.BlocklySnapToGridNodes;
 
             return blocklyGrid;

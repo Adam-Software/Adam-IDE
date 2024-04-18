@@ -19,11 +19,11 @@ namespace AdamController.Services.UdpClientServiceDependency
         public long Offset { get;  }
         public long Size { get;  }
 
-        //public override string ToString()
-        //{
-        //    string @string = Encoding.UTF8.GetString(Buffer, (int) Offset, (int) Size);
-        //    return @string;
-        //
-        //}
+        public override string ToString()
+        {
+            string @string = Encoding.UTF8.GetString(Buffer, (int) Offset, (int) Size);
+            return @string;
+        
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AdamController.Services.PythonRemoteRunnerDependency
 {
-    public class RemoteCommandExecuteResult
+    public class RemoteCommandExecuteResult : EventArgs
     {
         /// <summary>
         /// The succeeded status of an executable.

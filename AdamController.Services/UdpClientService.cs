@@ -1,7 +1,9 @@
 ﻿using AdamController.Services.Interfaces;
 using AdamController.Services.UdpClientServiceDependency;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AdamController.Services
 {
@@ -24,17 +26,11 @@ namespace AdamController.Services
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            Task.Run(() =>
+            Task.Run(() => 
             {
                 mMessageQueue.Enqueue(new(endpoint, buffer, offset, size));
                 ReceiveAsync();
             });
-        }
-
-
-        protected override void OnSent(EndPoint endpoint, long sent)
-        {
-            ReceiveAsync();
         }
 
         protected override void OnStarted()

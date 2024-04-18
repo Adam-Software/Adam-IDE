@@ -1,6 +1,5 @@
 ﻿using AdamController.Services.UdpClientServiceDependency;
 using System;
-using System.Net;
 
 namespace AdamController.Services.Interfaces
 {
@@ -19,7 +18,6 @@ namespace AdamController.Services.Interfaces
         #endregion
 
         #region Public fields
-
         public bool IsStarted { get; }
 
         #endregion
