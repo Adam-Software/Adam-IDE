@@ -1,12 +1,17 @@
 ﻿
+using AdamBlocklyLibrary;
 using AdamController.Core.Helpers;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
+using ImTools;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
+
+//using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -75,15 +80,22 @@ namespace AdamController.Modules.ContentRegion.Views
             WebView.CoreWebView2.Settings.AreDevToolsEnabled = true; 
             WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Settings.Default.DontShowBrowserMenuInBlockly;
             WebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
-            WebView.CoreWebView2.Settings.IsScriptEnabled = true;
             WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
             WebView.CoreWebView2.Navigate("https://localhost/index.html");
         }
         
         private void WebViewWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
-            dynamic jsonClean = JsonConvert.DeserializeObject(e.WebMessageAsJson);
-            WebMessageJsonReceived receivedResult = JsonConvert.DeserializeObject<WebMessageJsonReceived>(jsonClean);
+            var options = new JsonSerializerOptions { WriteIndented = true };
+
+            dynamic jsonClean = System.Text.Json.JsonSerializer.Deserialize<dynamic>(e.WebMessageAsJson, options);
+            WebMessageJsonReceived receivedResult = System.Text.Json.JsonSerializer.Deserialize<WebMessageJsonReceived>(jsonClean);
+
+            //WebMessageJsonReceived receivedResult = JsonConvert.DeserializeObject<WebMessageJsonReceived>(e.WebMessageAsJson);
+
+            //dynamic jsonClean = JsonConvert.DeserializeObject(e.WebMessageAsJson);
+            //WebMessageJsonReceived receivedResult = JsonConvert.DeserializeObject<WebMessageJsonReceived>(jsonClean);
+
             if (receivedResult == null) return;
 
             mWebViewProvider.WebViewMessageReceived(receivedResult);

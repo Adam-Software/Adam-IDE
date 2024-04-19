@@ -13,7 +13,7 @@ namespace AdamBlocklyLibrary.Toolbox
         /// If <see cref="CategoryToolboxContents"/> is given, then <see cref="SimpleToolboxContents"/> in <see cref="Contents"/> will not be serialized
         /// </summary>
         [JsonPropertyName("contents")]
-        internal object Contents => CategoryToolboxContents ?? (object)SimpleToolboxContents;
+        public object Contents => CategoryToolboxContents ?? (object)SimpleToolboxContents;
 
         /// <summary>
         /// If <see cref="CategoryToolboxContents"/> is given, then <see cref="SimpleToolboxContents"/> in <see cref="Contents"/> will not be serialized

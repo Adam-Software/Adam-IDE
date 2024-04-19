@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace AdamController.Services.WebViewProviderDependency
 {
     public class WebMessageJsonReceived : EventArgs
     {
-        [JsonProperty("action")]
+        [JsonPropertyName("action")]
         public string Action { get; set; }
 
-        [JsonProperty("data")]
+        [JsonPropertyName("data")]
         public string Data { get; set; }
     }
 }
