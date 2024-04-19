@@ -4,9 +4,10 @@ using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using Microsoft.Web.WebView2.Core;
-using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,19 +20,21 @@ namespace AdamController.Modules.ContentRegion.Views
         #region Services
 
         private readonly IWebViewProvider mWebViewProvider;
-        
+        private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
+
         #endregion
 
         private readonly string mPathToSource = Path.Combine(FolderHelper.CommonDirAppData, "BlocklySource");
         private readonly string mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
 
 
-        public ScratchControlView(IWebViewProvider webViewProvider)
+        public ScratchControlView(IWebViewProvider webViewProvider, IStatusBarNotificationDeliveryService statusBarNotification)
         {
             InitializeComponent();
             InitializeWebViewCore();
 
             mWebViewProvider = webViewProvider;
+            mStatusBarNotification = statusBarNotification;
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
             WebView.NavigationCompleted += WebViewNavigationCompleted;
@@ -72,18 +75,34 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void WebViewCoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
         {
-            WebView.CoreWebView2.Settings.AreDevToolsEnabled = true; 
+            //unused options?
+            //WebView.CoreWebView2.Settings.AreDevToolsEnabled = true; 
+            //WebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
+
             WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Settings.Default.DontShowBrowserMenuInBlockly;
-            WebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
             WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
             WebView.CoreWebView2.Navigate("https://localhost/index.html");
         }
         
         private void WebViewWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
-            dynamic jsonClean = JsonConvert.DeserializeObject(e.WebMessageAsJson);
-            WebMessageJsonReceived receivedResult = JsonConvert.DeserializeObject<WebMessageJsonReceived>(jsonClean);
-            if (receivedResult == null) return;
+            JsonSerializerOptions options = new()
+            {
+                NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString
+            };
+
+            WebMessageJsonReceived receivedResult;
+
+            try
+            {
+                string receivedString = e.TryGetWebMessageAsString();
+                receivedResult = JsonSerializer.Deserialize<WebMessageJsonReceived>(receivedString, options);
+            }
+            catch
+            {
+                mStatusBarNotification.AppLogMessage = "Error reading blokly code";
+                receivedResult = new WebMessageJsonReceived { Action = string.Empty, Data = string.Empty };
+            }
 
             mWebViewProvider.WebViewMessageReceived(receivedResult);
         }

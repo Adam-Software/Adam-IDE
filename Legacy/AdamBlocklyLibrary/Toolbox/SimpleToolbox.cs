@@ -1,17 +1,17 @@
 ﻿using AdamBlocklyLibrary.Enum;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdamBlocklyLibrary.Toolbox
 {
     public class SimpleToolbox
     {
-        [JsonProperty("kind")]
+        [JsonPropertyName("kind")]
         public string Kind { get; } = "block";
 
         [JsonIgnore]
         public BlockType Type { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string TypeString => Type.ToString();
     }
 }
