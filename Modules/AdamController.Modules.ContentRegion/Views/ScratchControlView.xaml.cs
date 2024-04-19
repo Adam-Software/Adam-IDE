@@ -75,6 +75,7 @@ namespace AdamController.Modules.ContentRegion.Views
             WebView.CoreWebView2.Settings.AreDevToolsEnabled = true; 
             WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Settings.Default.DontShowBrowserMenuInBlockly;
             WebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
+            WebView.CoreWebView2.Settings.IsScriptEnabled = true;
             WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
             WebView.CoreWebView2.Navigate("https://localhost/index.html");
         }

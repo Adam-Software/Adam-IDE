@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 
 namespace AdamBlocklyLibrary
 {
@@ -56,7 +56,9 @@ namespace AdamBlocklyLibrary
             string script = functionName + "('";
             for (int i = 0; i < parameters.Length; i++)
             {
-                script += JsonConvert.SerializeObject(parameters[i]);
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                script += JsonSerializer.Serialize(parameters[i]);
+                //script += JsonConvert.SerializeObject(parameters[i]);
                 if (i < parameters.Length - 1)
                 {
                     script += ", ";
@@ -72,7 +74,10 @@ namespace AdamBlocklyLibrary
             string script = functionName + "(";
             for (int i = 0; i < parameters.Length; i++)
             {
-                script += JsonConvert.SerializeObject(parameters[i]);
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                script += JsonSerializer.Serialize(parameters[i]);
+                //script += JsonConvert.SerializeObject(parameters[i]);
                 if (i < parameters.Length - 1)
                 {
                     script += ", ";
