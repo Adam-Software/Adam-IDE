@@ -12,7 +12,7 @@ namespace AdamController.Core.Behaviors
     /// The Selector (combobox) generates a SelectionChanged event which in turn generates a
     /// Command (in this behavior), which in turn is, when bound, invoked on the viewmodel.
     /// </summary>
-    [Obsolete("Remove if dont`t need")]
+    /*[Obsolete("Remove if dont`t need")]
     public static class SelectionChangedCommand
     {
         // Field of attached ICommand property
@@ -132,5 +132,5 @@ namespace AdamController.Core.Behaviors
                 changedCommand.Execute(e.AddedItems);
             }
         }
-    }
+    }*/
 }

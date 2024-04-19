@@ -24,17 +24,23 @@ namespace AdamController.Modules.ContentRegion.Views
 
         #endregion
 
-        private readonly string mPathToSource = Path.Combine(FolderHelper.CommonDirAppData, "BlocklySource");
-        private readonly string mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
+        #region Var
 
+        private readonly string mPathToSource;
+        private readonly string mPath;
 
-        public ScratchControlView(IWebViewProvider webViewProvider, IStatusBarNotificationDeliveryService statusBarNotification)
+        #endregion
+
+        public ScratchControlView(IWebViewProvider webViewProvider, IStatusBarNotificationDeliveryService statusBarNotification, IFolderManagmentService folderManagment)
         {
             InitializeComponent();
             InitializeWebViewCore();
 
             mWebViewProvider = webViewProvider;
             mStatusBarNotification = statusBarNotification;
+
+            mPathToSource = Path.Combine(folderManagment.CommonDirAppData, "BlocklySource");
+            mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
             WebView.NavigationCompleted += WebViewNavigationCompleted;

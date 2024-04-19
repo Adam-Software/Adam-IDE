@@ -1,6 +1,6 @@
 ﻿using AdamController.WebApi.Client.v1.ResponseModel;
-using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json;
 using System.Web;
 
 namespace AdamController.WebApi.Client.Common
@@ -24,7 +24,7 @@ namespace AdamController.WebApi.Client.Common
 
             try
             {
-                executeResult = JsonConvert.DeserializeObject<CommandExecuteResult>(jsonString);
+                executeResult = JsonSerializer.Deserialize<CommandExecuteResult>(jsonString);
             }
             catch
             {
@@ -48,7 +48,9 @@ namespace AdamController.WebApi.Client.Common
 
             try
             {
-                executeResult = JsonConvert.DeserializeObject<ExtendedCommandExecuteResult>(jsonString);
+                
+                 executeResult = JsonSerializer.Deserialize<ExtendedCommandExecuteResult>(jsonString);
+                //executeResult = JsonConvert.DeserializeObject<ExtendedCommandExecuteResult>(jsonString);
             }
             catch
             {
@@ -96,7 +98,7 @@ namespace AdamController.WebApi.Client.Common
                 return new ExtendedCommandExecuteResult();
 
             var jsonString = await response.Content.ReadAsStringAsync();
-            ExtendedCommandExecuteResult result = JsonConvert.DeserializeObject<ExtendedCommandExecuteResult>(jsonString);
+            ExtendedCommandExecuteResult result = JsonSerializer.Deserialize<ExtendedCommandExecuteResult>(jsonString);
             return result;
         }
 
@@ -106,7 +108,7 @@ namespace AdamController.WebApi.Client.Common
                 return new CommandExecuteResult();
 
             var jsonString = await response.Content.ReadAsStringAsync();
-            CommandExecuteResult result = JsonConvert.DeserializeObject<CommandExecuteResult>(jsonString);
+            CommandExecuteResult result = JsonSerializer.Deserialize<CommandExecuteResult>(jsonString);
             return result;
         }
 

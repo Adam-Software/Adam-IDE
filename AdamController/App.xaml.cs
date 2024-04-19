@@ -77,12 +77,12 @@ namespace AdamController
         {
             base.OnStartup(e);
 
-            LoadHighlighting();
-
-            _ = FolderHelper.CreateAppDataFolder();
+            //_ = FolderHelper.CreateAppDataFolder();
 
             //TODO check theme before ChangeTheme
             _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
+
+            LoadHighlighting();
         }
 
         protected override void OnInitialized()
@@ -117,6 +117,11 @@ namespace AdamController
                 IRegionManager regionManager = containerRegistry.Resolve<IRegionManager>();
 
                 return new FlyoutManager(container, regionManager);
+            });
+
+            containerRegistry.RegisterSingleton<IFolderManagmentService>(containerRegistry =>
+            {
+                return new FolderManagmentService();
             });
 
             containerRegistry.RegisterSingleton<ITcpClientService>(containerRegistry =>
@@ -295,6 +300,7 @@ namespace AdamController
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
             Container.Resolve<IWebViewProvider>().Dispose();
             Container.Resolve<IDialogManagerService>().Dispose();
+            Container.Resolve<IFolderManagmentService>().Dispose();
 
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();

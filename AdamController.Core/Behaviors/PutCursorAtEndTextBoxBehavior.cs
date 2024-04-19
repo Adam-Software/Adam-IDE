@@ -1,11 +1,6 @@
-﻿using Microsoft.Xaml.Behaviors;
-using System;
-using System.Windows.Controls;
-
-
-namespace AdamController.Core.Behaviors
+﻿namespace AdamController.Core.Behaviors
 {
-    [Obsolete]
+    /*[Obsolete]
     public class PutCursorAtEndTextBoxBehavior : Behavior<TextBox>
     {
         protected override void OnAttached()
@@ -22,5 +17,5 @@ namespace AdamController.Core.Behaviors
         {
             AssociatedObject.ScrollToEnd();
         }
-    }
+    }*/
 }

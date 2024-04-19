@@ -21,7 +21,7 @@ namespace AdamController.Commands
     ////  Description = "A Trigger used to bind any event to an ICommand.",
     ////  UrlContacts = "http://www.galasoft.ch/contact_en.html",
     ////  Email = "laurent@galasoft.ch")]
-    public class EventToCommand : TriggerAction<DependencyObject>
+    /*public class EventToCommand : TriggerAction<DependencyObject>
     {
         /// <summary>
         /// Identifies the <see cref="CommandParameter" /> dependency property
@@ -411,5 +411,5 @@ namespace AdamController.Commands
         /// to set this value. This may be null.</param>
         /// <returns>The converted value.</returns>
         object Convert(object value, object parameter);
-    }
+    }*/
 }

@@ -1,11 +1,7 @@
-﻿using Microsoft.Xaml.Behaviors;
-using System;
-using System.Windows;
-
-namespace AdamController.Core.Behaviors
+﻿namespace AdamController.Core.Behaviors
 {
-    [Obsolete]
-    public class ActivateBehavior : Behavior<Window>
+    //[Obsolete]
+    /*public class ActivateBehavior : Behavior<Window>
     {
         private bool isActivated;
 
@@ -57,5 +53,5 @@ namespace AdamController.Core.Behaviors
             Activated = false;
         }
 
-    }
+    }*/
 }

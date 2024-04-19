@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 
 namespace AdamController.Services.PythonRemoteRunnerDependency
 {
@@ -18,7 +18,7 @@ namespace AdamController.Services.PythonRemoteRunnerDependency
 
             try
             {
-                executeResult = JsonConvert.DeserializeObject<RemoteCommandExecuteResult>(jsonString);
+                executeResult = JsonSerializer.Deserialize<RemoteCommandExecuteResult>(jsonString);
             }
             catch
             {

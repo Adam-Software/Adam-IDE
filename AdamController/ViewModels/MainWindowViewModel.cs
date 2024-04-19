@@ -1,5 +1,6 @@
 ﻿using AdamController.Core;
 using AdamController.Core.Mvvm;
+using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;
 using Prism.Commands;
@@ -23,18 +24,20 @@ namespace AdamController.ViewModels
         private readonly ISubRegionChangeAwareService mSubRegionChangeAwareService;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
         private readonly ICommunicationProviderService mCommunicationProviderService;
+        private readonly IFolderManagmentService mFolderManagment;
 
         #endregion
 
         #region ~
 
-        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, 
-                                    IStatusBarNotificationDeliveryService statusBarNotification, ICommunicationProviderService communicationProviderService) 
+        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
+                    ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment) 
         {
             RegionManager = regionManager;
             mSubRegionChangeAwareService = subRegionChangeAwareService;
             mStatusBarNotification = statusBarNotification;
             mCommunicationProviderService = communicationProviderService;
+            mFolderManagment = folderManagment;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
             Subscribe();
@@ -116,6 +119,37 @@ namespace AdamController.ViewModels
             }
         }
 
+        /// <summary>
+        /// starts when the application is first launched
+        /// </summary>
+        private void SaveFolderPathToSettings()
+        {
+            if (string.IsNullOrEmpty(Settings.Default.SavedUserWorkspaceFolderPath))
+            {
+                Settings.Default.SavedUserWorkspaceFolderPath = mFolderManagment.SavedWorkspaceDocumentsDir;
+            }
+
+            if (string.IsNullOrEmpty(Settings.Default.SavedUserToolboxFolderPath))
+            {
+                Settings.Default.SavedUserToolboxFolderPath = mFolderManagment.SavedToolboxDocumentsDir;
+            }
+
+            if (string.IsNullOrEmpty(Settings.Default.SavedUserCustomBlocksFolderPath))
+            {
+                Settings.Default.SavedUserCustomBlocksFolderPath = mFolderManagment.SavedUserCustomBlocksDocumentsDir;
+            }
+
+            if (string.IsNullOrEmpty(Settings.Default.SavedUserScriptsFolderPath))
+            {
+                Settings.Default.SavedUserScriptsFolderPath = mFolderManagment.SavedUserScriptsDocumentsDir;
+            }
+
+            if (string.IsNullOrEmpty(Settings.Default.SavedResultsNetworkTestsFolderPath))
+            {
+                Settings.Default.SavedResultsNetworkTestsFolderPath = mFolderManagment.SavedResultsNetworkTestsDir;
+            }
+        }
+
         #endregion
 
         #region Subscriptions
@@ -150,8 +184,8 @@ namespace AdamController.ViewModels
         /// </summary>
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
+            SaveFolderPathToSettings();
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
-
             mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";
         }
 
@@ -175,6 +209,5 @@ namespace AdamController.ViewModels
         }
 
         #endregion
-
     }
 }
