@@ -2,7 +2,6 @@
 
 namespace AdamBlocklyLibrary.Enum
 {
-    //[JsonConverter(typeof(StringEnumConverter))]
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CategoryStyle
     {

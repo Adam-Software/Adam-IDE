@@ -56,9 +56,8 @@ namespace AdamBlocklyLibrary
             string script = functionName + "('";
             for (int i = 0; i < parameters.Length; i++)
             {
-                var options = new JsonSerializerOptions { WriteIndented = true };
                 script += JsonSerializer.Serialize(parameters[i]);
-                //script += JsonConvert.SerializeObject(parameters[i]);
+                
                 if (i < parameters.Length - 1)
                 {
                     script += ", ";
@@ -74,10 +73,8 @@ namespace AdamBlocklyLibrary
             string script = functionName + "(";
             for (int i = 0; i < parameters.Length; i++)
             {
-
-                var options = new JsonSerializerOptions { WriteIndented = true };
                 script += JsonSerializer.Serialize(parameters[i]);
-                //script += JsonConvert.SerializeObject(parameters[i]);
+
                 if (i < parameters.Length - 1)
                 {
                     script += ", ";
