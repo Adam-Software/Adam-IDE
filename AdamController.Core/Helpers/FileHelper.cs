@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AdamController.Core.Helpers
 {
+    /*
     public class FileHelper
     {
         private const int cBufferSize = 0x4096;
@@ -45,7 +46,7 @@ namespace AdamController.Core.Helpers
         }
 
         /// <summary>
-        ///     Opens an existing file for asynchronous reading.
+        /// Opens an existing file for asynchronous reading.
         /// </summary>
         /// <param name="path">Full file path</param>
         /// <returns>A read-only FileStream on the specified path.</returns>
@@ -55,6 +56,7 @@ namespace AdamController.Core.Helpers
             return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: cBufferSize, useAsync: true);
         }
     }
+    */
 
 
 }

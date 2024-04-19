@@ -95,11 +95,15 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IFileManagmentService>(containerRegistry =>
+            {
+                return new FileManagmentService();
+            });
+
             containerRegistry.RegisterSingleton<IWebViewProvider>(containerRegistry =>
             {
                 return new WebViewProvider();
             });
-
 
             containerRegistry.RegisterSingleton<ISubRegionChangeAwareService>(containerRegistry =>
             {
@@ -300,6 +304,7 @@ namespace AdamController
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
             Container.Resolve<IWebViewProvider>().Dispose();
             Container.Resolve<IDialogManagerService>().Dispose();
+            Container.Resolve<IFileManagmentService>().Dispose();
             Container.Resolve<IFolderManagmentService>().Dispose();
 
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
