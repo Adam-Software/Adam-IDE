@@ -1,5 +1,4 @@
 ﻿
-using AdamController.Core.Helpers;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;

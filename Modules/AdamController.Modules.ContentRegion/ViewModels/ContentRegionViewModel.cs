@@ -1,5 +1,5 @@
 ﻿using AdamController.Core;
-using AdamController.Core.Helpers;
+using AdamController.Core.Extensions;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Modules.ContentRegion.Views;
@@ -85,7 +85,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             try
             {
-                SyslogMessage syslogMessage = SyslogParseMessage.Parse(message);
+                SyslogMessage syslogMessage = message.Parse();
+                // SyslogParseMessage.Parse(message);
                 //CompileLogStatusBar = $"{syslogMessage.TimeStamp:T} {syslogMessage.Message}";
             }
             catch (Exception ex)

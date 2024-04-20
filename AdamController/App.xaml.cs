@@ -22,7 +22,6 @@ using DryIoc;
 using AdamController.Views;
 using AdamController.Modules.MenuRegion;
 using AdamController.Modules.ContentRegion;
-using AdamController.Core.Helpers;
 using AdamController.Services;
 using AdamController.Modules.StatusBarRegion;
 using AdamController.Modules.FlayoutsRegion;

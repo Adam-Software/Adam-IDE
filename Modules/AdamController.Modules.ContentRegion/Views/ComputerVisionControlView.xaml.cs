@@ -1,5 +1,4 @@
-﻿using AdamController.Core.Helpers;
-using LibVLCSharp.Shared;
+﻿using LibVLCSharp.Shared;
 using LibVLCSharp.WPF;
 using System;
 using System.Windows;

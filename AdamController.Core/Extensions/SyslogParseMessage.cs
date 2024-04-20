@@ -2,9 +2,9 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace AdamController.Core.Helpers
+namespace AdamController.Core.Extensions
 {
-    public class SyslogParseMessage
+    public static class SyslogParseMessage
     {
         private static readonly string mSyslogMsgHeaderPattern = @"\<(?<PRIVAL>\d{1,3})\>(?<VERSION>[1-9]{0,2}) (?<TIMESTAMP>(\S|\w)+) (?<HOSTNAME>-|(\S|\w){1,255}) (?<APPNAME>-|(\S|\w){1,48}) (?<PROCID>-|(\S|\w){1,128}) (?<MSGID>-|(\S|\w){1,32})";
         private static readonly string mSyslogMsgStructuredDataPattern = @"(?<STRUCTUREDDATA>-|\[[^\[\=\x22\]\x20]{1,32}( ([^\[\=\x22\]\x20]{1,32}=\x22.+\x22))?\])";
@@ -18,9 +18,10 @@ namespace AdamController.Core.Helpers
         /// <exception cref="OverflowException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public static SyslogMessage Parse(string rawMessage)
+        public static SyslogMessage Parse(this string rawMessage)
         {
-            if (string.IsNullOrWhiteSpace(rawMessage)) { throw new ArgumentNullException(nameof(rawMessage)); }
+            if (string.IsNullOrWhiteSpace(rawMessage)) 
+            { throw new ArgumentNullException(nameof(rawMessage)); }
 
             var match = mExpression.Match(rawMessage);
             if (match.Success)
@@ -39,9 +40,9 @@ namespace AdamController.Core.Helpers
                     RawMessage = rawMessage
                 };
             }
-            else 
-            { 
-                throw new InvalidOperationException("Invalid message."); 
+            else
+            {
+                throw new InvalidOperationException("Invalid message.");
             }
         }
     }

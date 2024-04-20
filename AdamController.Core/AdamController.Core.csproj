@@ -11,6 +11,12 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Helpers\**" />
+    <EmbeddedResource Remove="Helpers\**" />
+    <None Remove="Helpers\**" />
+    <Page Remove="Helpers\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Properties\AdamPython.xshd" />
     <None Remove="Properties\Icons\main_app_icon.ico" />
   </ItemGroup>
