@@ -1,4 +1,6 @@
 ﻿using AdamController.Core;
+using AdamController.Core.Extensions;
+using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
@@ -150,6 +152,20 @@ namespace AdamController.ViewModels
             }
         }
 
+
+        private void ParseSyslogMessage(string message)
+        {
+            try
+            {
+                SyslogMessage syslogMessage = message.Parse();
+                mStatusBarNotification.CompileLogMessage = $"{syslogMessage.TimeStamp:T} {syslogMessage.Message}";   
+            }
+            catch
+            {
+                // If you couldn't read the message, it's okay, no one needs to know about it.
+            }
+        }
+
         #endregion
 
         #region Subscriptions
@@ -161,6 +177,7 @@ namespace AdamController.ViewModels
         {
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
+            mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
         }
 
@@ -206,6 +223,11 @@ namespace AdamController.ViewModels
         private void RaiseTcpServiceCientConnectedEvent(object sender)
         {
             _ = BaseApi.StopPythonExecute();
+        }
+
+        private void RaiseUdpServiceServerReceivedEvent(object sender, string message)
+        {
+            ParseSyslogMessage(message);
         }
 
         #endregion
