@@ -7,6 +7,11 @@ namespace AdamController.WebApi.Client.Common
 {
     public static class Extension
     {
+        private static JsonSerializerOptions mJsonSerializerOptions = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         public async static Task<ExtendedCommandExecuteResult> ToExtendedCommandResult(this HttpResponseMessage? response)
         {
             if (response == null)
@@ -17,7 +22,7 @@ namespace AdamController.WebApi.Client.Common
             return result;
         }
 
-        public async static Task<CommandExecuteResult> ToCommandResult(this HttpResponseMessage? response)
+        /*public async static Task<CommandExecuteResult> ToCommandResult(this HttpResponseMessage? response)
         {
             if (response == null)
                 return new CommandExecuteResult();
@@ -45,7 +50,7 @@ namespace AdamController.WebApi.Client.Common
             {
                 return result;
             }
-        }
+        }*/
 
         public static ExtendedCommandExecuteResult ToExtendedCommandResult(this string jsonString)
         {
@@ -53,7 +58,8 @@ namespace AdamController.WebApi.Client.Common
 
             try
             {
-                ExtendedCommandExecuteResult? deleserialize = JsonSerializer.Deserialize<ExtendedCommandExecuteResult>(jsonString);
+                
+                ExtendedCommandExecuteResult? deleserialize = JsonSerializer.Deserialize<ExtendedCommandExecuteResult>(jsonString, mJsonSerializerOptions);
 
                 if (deleserialize != null)
                     result = deleserialize;
@@ -68,13 +74,13 @@ namespace AdamController.WebApi.Client.Common
 
         #region internal extension
 
-        internal static string FromBase64ToString(this string base64string)
+        /*internal static string FromBase64ToString(this string base64string)
         {
             byte[] base64EncodedBytes = Convert.FromBase64String(base64string);
             string decodedString = Encoding.UTF8.GetString(base64EncodedBytes);
 
             return decodedString;
-        }
+        }*/
 
         internal static string FromStringToBase64String(this string @string)
         {
@@ -90,11 +96,11 @@ namespace AdamController.WebApi.Client.Common
             return encodedToUrlEncodeString;
         }
 
-        internal static string FromUrlEncodeToString(this string @string)
+        /*internal static string FromUrlEncodeToString(this string @string)
         {
             string encodedToUrlEncodeString = HttpUtility.UrlDecode(@string);
             return encodedToUrlEncodeString;
-        }
+        }*/
 
         #endregion
     }

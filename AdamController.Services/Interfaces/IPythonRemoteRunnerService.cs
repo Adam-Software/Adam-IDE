@@ -7,7 +7,7 @@ namespace AdamController.Services.Interfaces
 
     public delegate void PythonStandartOutputEventHandler(object sender, string message);
     public delegate void PythonScriptExecuteStartEventHandler(object sender);
-    public delegate void PythonScriptExecuteFinishEventHandler(object sender, CommandExecuteResult remoteCommandExecuteResult);
+    public delegate void PythonScriptExecuteFinishEventHandler(object sender, ExtendedCommandExecuteResult remoteCommandExecuteResult);
 
     #endregion
 

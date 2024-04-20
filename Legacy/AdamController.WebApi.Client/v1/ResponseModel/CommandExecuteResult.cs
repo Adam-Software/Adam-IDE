@@ -1,6 +1,6 @@
 ﻿namespace AdamController.WebApi.Client.v1.ResponseModel
 {
-    public class CommandExecuteResult
+    /*public class CommandExecuteResult
     {
         /// <summary>
         /// The succeeded status of an executable.
@@ -31,5 +31,5 @@
         /// The run time of an executable.
         /// </summary>
         public TimeSpan RunTime { get; set; }
-    }
+    }*/
 }

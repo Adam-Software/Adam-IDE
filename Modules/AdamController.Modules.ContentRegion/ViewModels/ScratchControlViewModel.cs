@@ -622,7 +622,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ResultTextEditor += message;
         }
 
-        private void OnRaisePythonScriptExecuteFinish(object sender, CommandExecuteResult remoteCommandExecuteResult)
+        private void OnRaisePythonScriptExecuteFinish(object sender, ExtendedCommandExecuteResult remoteCommandExecuteResult)
         {
             IsPythonCodeExecute = false;
 
@@ -639,7 +639,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 $"Завершение выполнения: {remoteCommandExecuteResult.EndTime}\n" +
                 $"Общее время выполнения: {remoteCommandExecuteResult.RunTime}\n" +
                 $"Код выхода: {remoteCommandExecuteResult.ExitCode}\n" +
-                $"Статус успешности завершения: {remoteCommandExecuteResult.Succeeded}" +
+                $"Статус успешности завершения: {remoteCommandExecuteResult.ExitCode == 0}" +
+
+                //The server returns an incorrect value, so the completion success status is determined by the exit code
+                //$"Статус успешности завершения: {remoteCommandExecuteResult.Succeesed}" +
                 $"\n======================\n";
 
             if (!string.IsNullOrEmpty(remoteCommandExecuteResult.StandardError))

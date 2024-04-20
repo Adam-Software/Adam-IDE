@@ -83,7 +83,7 @@ namespace AdamController.Services
                     {
                         string cleanMessage = message.Remove(0, 6);
 
-                        CommandExecuteResult executeResult = cleanMessage.ToCommandResult();
+                        ExtendedCommandExecuteResult executeResult = cleanMessage.ToExtendedCommandResult();
                         OnRaisePythonScriptExecuteFinishEvent(executeResult);
                         break;
                     }
@@ -147,7 +147,7 @@ namespace AdamController.Services
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnRaisePythonScriptExecuteFinishEvent(CommandExecuteResult remoteCommandExecuteResult)
+        protected virtual void OnRaisePythonScriptExecuteFinishEvent(ExtendedCommandExecuteResult remoteCommandExecuteResult)
         {
             PythonScriptExecuteFinishEventHandler raiseEvent = RaisePythonScriptExecuteFinishEvent;
             raiseEvent?.Invoke(this, remoteCommandExecuteResult);

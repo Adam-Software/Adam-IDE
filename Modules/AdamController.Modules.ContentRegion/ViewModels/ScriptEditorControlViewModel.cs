@@ -103,7 +103,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ResultTextEditor += message;
         }
 
-        private void OnRaisePythonScriptExecuteFinish(object sender, CommandExecuteResult remoteCommandExecuteResult)
+        private void OnRaisePythonScriptExecuteFinish(object sender, ExtendedCommandExecuteResult remoteCommandExecuteResult)
         {
             IsCodeExecuted = false;
             //ResultTextEditor += message;
