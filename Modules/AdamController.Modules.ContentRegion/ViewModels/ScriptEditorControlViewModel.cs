@@ -1,5 +1,4 @@
 ﻿using AdamController.Core;
-using AdamController.Core.Helpers;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
 using AdamController.Services.PythonRemoteRunnerDependency;
@@ -22,23 +21,22 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly ICommunicationProviderService mCommunicationProvider;
         private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
+        private readonly IFileManagmentService mFileManagment;
 
         #endregion
 
-        //public static Action<string> AppLogStatusBarAction { get; set; }
-
+        
         private bool mIsWarningStackOwerflowAlreadyShow;
         private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery) : base(regionManager, dialogService)
+        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFileManagmentService fileManagment) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
+            mFileManagment = fileManagment;
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
-            //InitAction();
-            //PythonExecuteEvent();
         }
 
         #region Navigation
@@ -55,6 +53,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mPythonRemoteRunner.RaisePythonScriptExecuteFinishEvent += OnRaisePythonScriptExecuteFinish;
 
             var sourceCode = string.Empty;
+
             navigationContext.Parameters.TryGetValue(NavigationParametersKey.SourceCode, out sourceCode);
             
             if(sourceCode != null)
@@ -180,17 +179,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
-        #region SendSourceToScriptEditor Action
-
-        //private void InitAction()
-        //{
-        //    if(ScratchControlViewModel.SendSourceToScriptEditor == null)
-        //    {
-        //        ScratchControlViewModel.SendSourceToScriptEditor = new Action<string>(source => SourceTextEditor = source);
-        //    }
-        //}
-
-        #endregion
 
         #region Result text editor
 
@@ -362,17 +350,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 string path = IDialogManager.FilePath;
                 if (path == "") return;
 
-                string pythonProgram = await FileHelper.ReadTextAsStringAsync(path);
+                string pythonProgram = await mFileManagment.ReadTextAsStringAsync(path);
                 SourceTextEditor = pythonProgram;
 
                 mStatusBarNotificationDelivery.AppLogMessage = $"Файл {path} загружен";
-                //AppLogStatusBarAction($"Файл {path} загружен");
             }
             else
             {
                 mStatusBarNotificationDelivery.AppLogMessage = "Файл c исходным кодом не выбран";
-                //AppLogStatusBarAction("Файл c исходным кодом не выбран");
-
             }
         });
 
@@ -390,10 +375,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 "new_program", ".py", "PythonScript file (.py)|*.py|Все файлы|*.*"))
             {
                 string path = IDialogManager.FilePathToSave;
-                await FileHelper.WriteAsync(path, pythonProgram);
+                await mFileManagment.WriteAsync(path, pythonProgram);
 
                 mStatusBarNotificationDelivery.AppLogMessage = $"Файл {IDialogManager.FilePathToSave} сохранен";
-                //AppLogStatusBarAction($"Файл {IDialogManager.FilePathToSave} сохранен");
             }
             else
             {

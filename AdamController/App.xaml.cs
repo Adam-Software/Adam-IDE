@@ -100,6 +100,11 @@ namespace AdamController
                 return new FileManagmentService();
             });
 
+            containerRegistry.RegisterSingleton<IFolderManagmentService>(containerRegistry =>
+            {
+                return new FolderManagmentService();
+            });
+
             containerRegistry.RegisterSingleton<IWebViewProvider>(containerRegistry =>
             {
                 return new WebViewProvider();
@@ -123,10 +128,7 @@ namespace AdamController
                 return new FlyoutManager(container, regionManager);
             });
 
-            containerRegistry.RegisterSingleton<IFolderManagmentService>(containerRegistry =>
-            {
-                return new FolderManagmentService();
-            });
+
 
             containerRegistry.RegisterSingleton<ITcpClientService>(containerRegistry =>
             {
@@ -300,12 +302,14 @@ namespace AdamController
         /// </summary>
         private void DisposeServices()
         {
+            Container.Resolve<IFileManagmentService>().Dispose();
+            Container.Resolve<IFolderManagmentService>().Dispose();
+
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
             Container.Resolve<IWebViewProvider>().Dispose();
             Container.Resolve<IDialogManagerService>().Dispose();
-            Container.Resolve<IFileManagmentService>().Dispose();
-            Container.Resolve<IFolderManagmentService>().Dispose();
+
 
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();

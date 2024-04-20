@@ -45,6 +45,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IWebViewProvider mWebViewProvider;
         private readonly IDialogManagerService mDialogManager;
+        private readonly IFileManagmentService mFileManagment;
 
         #endregion
 
@@ -66,13 +67,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager) : base(regionManager, dialogService)
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, IFileManagmentService fileManagment) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
             mWebViewProvider = webViewProvider;
             mDialogManager = dialogManager;
+            mFileManagment = fileManagment;
 
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
@@ -290,7 +292,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             if (mDialogManager.ShowSaveFileDialog(dialogTitle, initialPath, fileName, defaultExt, cFilter))
             {
                 string path = mDialogManager.FilePathToSave;
-                await FileHelper.WriteAsync(path, xmlWorkspace);
+                await mFileManagment.WriteAsync(path, xmlWorkspace);
 
                 mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
             }
@@ -318,7 +320,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 string path = mDialogManager.FilePath;
                 if (path == "") return;
 
-                string xml = await FileHelper.ReadTextAsStringAsync(path);
+                string xml = await mFileManagment.ReadTextAsStringAsync(path);
                 _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
 
                 mStatusBarNotificationDelivery.AppLogMessage = $"Файл {path} загружен";
@@ -348,7 +350,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             if (mDialogManager.ShowSaveFileDialog(title, initialPath, fileName, defaultExt, filter))
             {
                 string path = mDialogManager.FilePathToSave;
-                await FileHelper.WriteAsync(path, pythonProgram);
+                await mFileManagment.WriteAsync(path, pythonProgram);
 
                 mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
             }
