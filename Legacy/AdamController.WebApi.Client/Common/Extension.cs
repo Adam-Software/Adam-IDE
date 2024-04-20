@@ -7,60 +7,64 @@ namespace AdamController.WebApi.Client.Common
 {
     public static class Extension
     {
-        #region public extensions
-
-        [Obsolete]
-        /// <summary>
-        /// Deserealize jsonString to CommandExecuteResult
-        /// </summary>
-        /// <param name="jsonString">JSON string with CommandExecuteResult object</param>
-        /// <returns>Returns the CommandExecuteResult object with the result, if deserialization is successful, or a new CommandExecuteResult object otherwise</returns>
-        public static CommandExecuteResult ToCommandResult(this string jsonString)
+        public async static Task<ExtendedCommandExecuteResult> ToExtendedCommandResult(this HttpResponseMessage? response)
         {
-            if (jsonString == null)
-                return new CommandExecuteResult();
-
-            CommandExecuteResult executeResult = new();
-
-            try
-            {
-                executeResult = JsonSerializer.Deserialize<CommandExecuteResult>(jsonString);
-            }
-            catch
-            {
-
-            }
-
-            return executeResult;
-        }
-
-        /// <summary>
-        /// Deserealize jsonString to ExtendedCommandExecuteResult
-        /// </summary>
-        /// <param name="jsonString">JSON string with ExtendedCommandExecuteResult object</param>
-        /// <returns>Returns the ExtendedCommandExecuteResult object with the result, if deserialization is successful, or a new ExtendedCommandExecuteResult object otherwise</returns>
-        public static ExtendedCommandExecuteResult ToExtendedCommandResult(this string jsonString)
-        {
-            if (jsonString == null)
+            if (response == null)
                 return new ExtendedCommandExecuteResult();
 
-            ExtendedCommandExecuteResult executeResult = new();
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var result = jsonString.ToExtendedCommandResult();
+            return result;
+        }
+
+        public async static Task<CommandExecuteResult> ToCommandResult(this HttpResponseMessage? response)
+        {
+            if (response == null)
+                return new CommandExecuteResult();
+
+            string jsonString = await response.Content.ReadAsStringAsync();
+
+            var result = jsonString.ToCommandResult();
+            return result;
+        }
+
+        public static CommandExecuteResult ToCommandResult(this string jsonString)
+        {
+            CommandExecuteResult result = new();
 
             try
             {
-                
-                 executeResult = JsonSerializer.Deserialize<ExtendedCommandExecuteResult>(jsonString);
-                //executeResult = JsonConvert.DeserializeObject<ExtendedCommandExecuteResult>(jsonString);
+                CommandExecuteResult? deleserialize = JsonSerializer.Deserialize<CommandExecuteResult>(jsonString);
+
+                if (deleserialize != null)
+                    result = deleserialize;
+
+                return result;
             }
             catch
             {
-
+                return result;
             }
-
-            return executeResult;
         }
 
-        #endregion
+        public static ExtendedCommandExecuteResult ToExtendedCommandResult(this string jsonString)
+        {
+            ExtendedCommandExecuteResult result = new();
+
+            try
+            {
+                ExtendedCommandExecuteResult? deleserialize = JsonSerializer.Deserialize<ExtendedCommandExecuteResult>(jsonString);
+
+                if (deleserialize != null)
+                    result = deleserialize;
+
+                return result;
+            }
+            catch
+            {
+                return result;
+            }
+        }
 
         #region internal extension
 
@@ -90,26 +94,6 @@ namespace AdamController.WebApi.Client.Common
         {
             string encodedToUrlEncodeString = HttpUtility.UrlDecode(@string);
             return encodedToUrlEncodeString;
-        }
-
-        internal async static Task<ExtendedCommandExecuteResult> ToExtendedCommandResult(this HttpResponseMessage? response)
-        {
-            if(response == null)
-                return new ExtendedCommandExecuteResult();
-
-            var jsonString = await response.Content.ReadAsStringAsync();
-            ExtendedCommandExecuteResult result = JsonSerializer.Deserialize<ExtendedCommandExecuteResult>(jsonString);
-            return result;
-        }
-
-        internal async static Task<CommandExecuteResult> ToCommandResult(this HttpResponseMessage? response)
-        {
-            if(response == null)
-                return new CommandExecuteResult();
-
-            var jsonString = await response.Content.ReadAsStringAsync();
-            CommandExecuteResult result = JsonSerializer.Deserialize<CommandExecuteResult>(jsonString);
-            return result;
         }
 
         #endregion

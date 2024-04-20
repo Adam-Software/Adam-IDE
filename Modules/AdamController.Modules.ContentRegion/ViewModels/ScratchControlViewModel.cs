@@ -8,9 +8,9 @@ using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
-using AdamController.Services.PythonRemoteRunnerDependency;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1;
+using AdamController.WebApi.Client.v1.ResponseModel;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
@@ -622,7 +622,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ResultTextEditor += message;
         }
 
-        private void OnRaisePythonScriptExecuteFinish(object sender, RemoteCommandExecuteResult remoteCommandExecuteResult)
+        private void OnRaisePythonScriptExecuteFinish(object sender, CommandExecuteResult remoteCommandExecuteResult)
         {
             IsPythonCodeExecute = false;
 

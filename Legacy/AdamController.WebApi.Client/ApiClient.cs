@@ -1,5 +1,4 @@
-﻿using AdamController.WebApi.Client.v1;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
 
 namespace AdamController.WebApi.Client

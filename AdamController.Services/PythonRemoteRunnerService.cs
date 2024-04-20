@@ -1,10 +1,10 @@
 ﻿using AdamController.Services.Interfaces;
-using AdamController.Services.PythonRemoteRunnerDependency;
 using AdamController.Services.UdpClientServiceDependency;
+using AdamController.WebApi.Client.v1.ResponseModel;
+using AdamController.WebApi.Client.Common;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
+
 
 namespace AdamController.Services
 {
@@ -81,8 +81,9 @@ namespace AdamController.Services
 
                 case cFinishMessage:
                     {
-                        var cleanMessage = message.Remove(0, 6);
-                        RemoteCommandExecuteResult executeResult = cleanMessage.ToCommandResult();
+                        string cleanMessage = message.Remove(0, 6);
+
+                        CommandExecuteResult executeResult = cleanMessage.ToCommandResult();
                         OnRaisePythonScriptExecuteFinishEvent(executeResult);
                         break;
                     }
@@ -146,13 +147,11 @@ namespace AdamController.Services
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnRaisePythonScriptExecuteFinishEvent(RemoteCommandExecuteResult remoteCommandExecuteResult)
+        protected virtual void OnRaisePythonScriptExecuteFinishEvent(CommandExecuteResult remoteCommandExecuteResult)
         {
             PythonScriptExecuteFinishEventHandler raiseEvent = RaisePythonScriptExecuteFinishEvent;
             raiseEvent?.Invoke(this, remoteCommandExecuteResult);
         }
-
-
 
         #endregion
     }

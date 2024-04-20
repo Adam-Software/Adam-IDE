@@ -1,7 +1,6 @@
 ﻿using AdamController.Core;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
-using AdamController.Services.PythonRemoteRunnerDependency;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using MessageDialogManagerLib;
@@ -104,7 +103,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ResultTextEditor += message;
         }
 
-        private void OnRaisePythonScriptExecuteFinish(object sender, RemoteCommandExecuteResult remoteCommandExecuteResult)
+        private void OnRaisePythonScriptExecuteFinish(object sender, CommandExecuteResult remoteCommandExecuteResult)
         {
             IsCodeExecuted = false;
             //ResultTextEditor += message;
