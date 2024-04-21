@@ -1,4 +1,5 @@
-﻿using LibVLCSharp.Shared;
+﻿using AdamController.Services.Interfaces;
+using LibVLCSharp.Shared;
 using LibVLCSharp.WPF;
 using System;
 using System.Windows;
@@ -9,12 +10,20 @@ namespace AdamController.Modules.ContentRegion.Views
 
     public partial class ComputerVisionControlView : UserControl, IDisposable
     {
+        #region Service
+
+        private readonly IWebSocketClientService mWebSocketClient;
+
+        #endregion
+
         private LibVLC mLibVLC;
         private MediaPlayer mMediaPlayer;
 
-        public ComputerVisionControlView()
+        public ComputerVisionControlView(IWebSocketClientService webSocketClient)
         {
             InitializeComponent();
+
+            mWebSocketClient = webSocketClient;
 
             VideoView.Loaded += VideoView_Loaded;
             Unloaded += UserControlUnloaded;
@@ -77,7 +86,7 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void Button_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            //There is no solution for this situation
+            mWebSocketClient.SendTextAsync(DownRightDirection);
             //ComunicateHelper.WebSocketSendTextMessage(DownRightDirection);
         }
     }

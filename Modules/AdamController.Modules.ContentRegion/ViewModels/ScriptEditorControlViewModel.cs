@@ -1,10 +1,8 @@
 ﻿using AdamController.Core;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
-using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
-using MessageDialogManagerLib;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
