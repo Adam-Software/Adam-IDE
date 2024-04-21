@@ -268,7 +268,7 @@
                                            HorizontalScrollBarVisibility="Auto"
                                            VerticalScrollBarVisibility="Auto"
                                            ScrollViewer.PanningMode="HorizontalOnly"
-                                           SyntaxHighlighting="{DynamicResource core:HighlightingName.AdamPython}"
+                                           SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                            LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"

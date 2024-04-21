@@ -155,7 +155,6 @@ namespace AdamController.ViewModels
             }
         }
 
-
         private void ParseSyslogMessage(string message)
         {
             try
@@ -167,6 +166,14 @@ namespace AdamController.ViewModels
             {
                 // If you couldn't read the message, it's okay, no one needs to know about it.
             }
+        }
+
+        /// <summary>
+        /// Register highlighting for AvalonEdit. You need to call before loading the regions
+        /// </summary>
+        private void LoadCustomAvalonEditHighlighting()
+        {
+            mAvalonEditService.RegisterHighlighting(HighlightingName.AdamPython, Resource.AdamPython);
         }
 
         #endregion
@@ -205,9 +212,11 @@ namespace AdamController.ViewModels
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             SaveFolderPathToSettings();
+            LoadCustomAvalonEditHighlighting();
+
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
             mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";
-            mAvalonEditService.RegisterHighlighting(HighlightingName.AdamPython, Resource.AdamPython);
+            
 
             if (Settings.Default.AutoStartTcpConnect)
                 mCommunicationProviderService.ConnectAllAsync();

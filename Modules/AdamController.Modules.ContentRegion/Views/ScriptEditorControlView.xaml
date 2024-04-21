@@ -272,14 +272,13 @@
 				        FontStretch="Medium"
                         FontWeight="SemiBold"
                         ShowLineNumbers="True"
-                        SyntaxHighlighting="{DynamicResource core:HighlightingName.AdamPython}"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Auto"
+                        SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                        BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                
-                        HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Auto">
+                        BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}">
 
                 <i:Interaction.Behaviors>
                     <behaviors:AvalonEditBehaviour Text="{Binding SourceTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

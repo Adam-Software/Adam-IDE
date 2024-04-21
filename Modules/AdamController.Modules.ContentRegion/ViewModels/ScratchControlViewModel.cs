@@ -11,11 +11,13 @@ using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
+using ICSharpCode.AvalonEdit.Highlighting;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -68,7 +70,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, IFileManagmentService fileManagment, IWebApiService webApiService) : base(regionManager, dialogService)
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
+                        IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
+                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
@@ -87,7 +91,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             StopPythonCodeExecuteDelegateCommand = new DelegateCommand(StopPythonCodeExecute, StopPythonCodeExecuteCanExecute);
             SendCodeToExternalSourceEditorDelegateCommand = new(SendCodeToExternalSourceEditor, SendCodeToExternalSourceEditorCanExecute);
             ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
-            ;
+
+            HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
         }
         #endregion
 
@@ -233,6 +238,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set => SetProperty(ref pythonWorkDir, value);
         }
 
+        private IHighlightingDefinition highlightingDefinition;
+        public IHighlightingDefinition HighlightingDefinition
+        {
+            get => highlightingDefinition;
+            set => SetProperty(ref highlightingDefinition, value);
+        }
 
         #endregion
 

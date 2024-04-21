@@ -49,6 +49,7 @@ using System.Threading.Tasks;
 using System.Net;
 using AdamController.Services.TcpClientDependency;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using AdamController.Core;
 
 #endregion
 
@@ -80,7 +81,6 @@ namespace AdamController
             //TODO check theme before ChangeTheme
             _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
 
-            //LoadHighlighting();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -244,20 +244,6 @@ namespace AdamController
             moduleCatalog.AddModule<StatusBarRegionModule>();
             moduleCatalog.AddModule<FlayoutsRegionModule>();
         }
-
-        //private static void LoadHighlighting()
-        //{
-        //    try
-        //    {
-        //        using MemoryStream stream = new MemoryStream(Resource.AdamPython);
-        //        using XmlTextReader reader = new XmlTextReader(stream);
-        //        HighlightingManager.Instance.RegisterHighlighting("AdamPython", Array.Empty<string>(), HighlightingLoader.Load(reader, HighlightingManager.Instance));
-        //    }
-        //    catch
-        //    {
-        //
-        //    }
-        //}
 
         protected override void OnExit(ExitEventArgs e)
         {

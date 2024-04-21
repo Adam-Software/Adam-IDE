@@ -3,6 +3,7 @@ using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
 using AdamController.WebApi.Client.v1;
 using AdamController.WebApi.Client.v1.ResponseModel;
+using ICSharpCode.AvalonEdit.Highlighting;
 using MessageDialogManagerLib;
 using Prism.Commands;
 using Prism.Regions;
@@ -22,23 +23,24 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
+        private readonly IDialogManagerService mDialogManager;
 
         #endregion
 
-        
         private bool mIsWarningStackOwerflowAlreadyShow;
-        private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFileManagmentService fileManagment, IWebApiService webApiService) : base(regionManager, dialogService)
+        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, 
+                    IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, 
+                    IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IDialogManagerService dialogManager) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
+            mDialogManager = dialogManager;
 
-            IDialogManager = new MessageDialogManagerMahapps(Application.Current);
-            
+            HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
         }
 
         #region Navigation
@@ -114,6 +116,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #endregion
 
+        #region Public fields
+
+        private IHighlightingDefinition highlightingDefinition;
+        public IHighlightingDefinition HighlightingDefinition
+        {
+            get => highlightingDefinition;
+            set => SetProperty(ref highlightingDefinition, value);
+        }
+
+        #endregion
+
         #region Python execute event
 
         private void PythonExecuteEvent()
@@ -180,7 +193,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         }
 
         #endregion
-
 
         #region Result text editor
 
@@ -346,10 +358,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private DelegateCommand showOpenFileDialogCommand;
         public DelegateCommand ShowOpenFileDialogCommand => showOpenFileDialogCommand ??= new DelegateCommand(async () =>
         {
-            if (IDialogManager.ShowFileBrowser("Выберите файл с исходным кодом программы", 
+            if (mDialogManager.ShowFileBrowser("Выберите файл с исходным кодом программы", 
                     Core.Properties.Settings.Default.SavedUserScriptsFolderPath, "PythonScript file (.py)|*.py|Все файлы|*.*"))
             {
-                string path = IDialogManager.FilePath;
+                string path = mDialogManager.FilePath;
                 if (path == "") return;
 
                 string pythonProgram = await mFileManagment.ReadTextAsStringAsync(path);
@@ -373,13 +385,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             string pythonProgram = SourceTextEditor;
 
-            if (IDialogManager.ShowSaveFileDialog("Сохранить файл программы", Core.Properties.Settings.Default.SavedUserScriptsFolderPath,
+            if (mDialogManager.ShowSaveFileDialog("Сохранить файл программы", Core.Properties.Settings.Default.SavedUserScriptsFolderPath,
                 "new_program", ".py", "PythonScript file (.py)|*.py|Все файлы|*.*"))
             {
-                string path = IDialogManager.FilePathToSave;
+                string path = mDialogManager.FilePathToSave;
                 await mFileManagment.WriteAsync(path, pythonProgram);
 
-                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {IDialogManager.FilePathToSave} сохранен";
+                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
             }
             else
             {
