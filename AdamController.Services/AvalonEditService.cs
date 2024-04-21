@@ -9,12 +9,12 @@ namespace AdamController.Services
     public class AvalonEditService : IAvalonEditService
     {
         private readonly IFileManagmentService mFileManagmentService;
-        private readonly HighlightingManager mHighlightingManager;
+        //private readonly HighlightingManager mHighlightingManager;
 
         public AvalonEditService(IFileManagmentService fileManagmentService)
         {
             mFileManagmentService = fileManagmentService;
-            mHighlightingManager = new HighlightingManager();
+            //mHighlightingManager = new HighlightingManager();
         }
 
         
@@ -22,8 +22,10 @@ namespace AdamController.Services
         {
             var xml = mFileManagmentService.ReadTextAsXml(xmlByteArray);
             var definition = HighlightingLoader.Load(xml, HighlightingManager.Instance);
+            
+            HighlightingManager.Instance.RegisterHighlighting(highlightingName, Array.Empty<string>(), definition);   
 
-            mHighlightingManager.RegisterHighlighting(highlightingName, Array.Empty<string>(), definition);   
+            //mHighlightingManager.RegisterHighlighting(highlightingName, Array.Empty<string>(), definition);   
         }
 
         public void Dispose()

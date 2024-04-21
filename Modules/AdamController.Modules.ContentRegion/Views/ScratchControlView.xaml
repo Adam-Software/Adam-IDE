@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:AdamController.Core.Behaviors;assembly=AdamController.Core"
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
     
@@ -267,7 +268,7 @@
                                            HorizontalScrollBarVisibility="Auto"
                                            VerticalScrollBarVisibility="Auto"
                                            ScrollViewer.PanningMode="HorizontalOnly"
-                                           SyntaxHighlighting="AdamPython"
+                                           SyntaxHighlighting="{DynamicResource core:HighlightingName.AdamPython}"
                                            IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                            LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"

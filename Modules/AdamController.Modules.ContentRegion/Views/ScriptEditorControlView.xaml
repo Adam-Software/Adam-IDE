@@ -261,6 +261,7 @@
         
         <Grid Grid.Row="1">
 
+            <!--SyntaxHighlighting="AdamPython"-->
             <avalonEdit:TextEditor
 				        Name="textEditor"
                         BorderThickness="1"
@@ -270,8 +271,8 @@
 				        FontSize="13pt"
 				        FontStretch="Medium"
                         FontWeight="SemiBold"
-                        SyntaxHighlighting="AdamPython"
                         ShowLineNumbers="True"
+                        SyntaxHighlighting="{DynamicResource core:HighlightingName.AdamPython}"
                         Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         Background="{DynamicResource MahApps.Brushes.ThemeBackground}"

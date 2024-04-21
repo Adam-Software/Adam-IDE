@@ -207,7 +207,7 @@ namespace AdamController.ViewModels
             SaveFolderPathToSettings();
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
             mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";
-            mAvalonEditService.RegisterHighlighting("AdamPython", Resource.AdamPython);
+            mAvalonEditService.RegisterHighlighting(HighlightingName.AdamPython, Resource.AdamPython);
 
             if (Settings.Default.AutoStartTcpConnect)
                 mCommunicationProviderService.ConnectAllAsync();
