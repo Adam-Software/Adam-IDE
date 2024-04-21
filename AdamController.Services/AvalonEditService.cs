@@ -1,19 +1,34 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamBlocklyLibrary.Properties;
+using AdamController.Services.Interfaces;
 using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System;
 
 namespace AdamController.Services
 {
     public class AvalonEditService : IAvalonEditService
     {
-        public void Dispose()
+        private readonly IFileManagmentService mFileManagmentService;
+        private readonly HighlightingManager mHighlightingManager;
+
+        public AvalonEditService(IFileManagmentService fileManagmentService)
         {
-            //throw new NotImplementedException();
+            mFileManagmentService = fileManagmentService;
+            mHighlightingManager = new HighlightingManager();
         }
 
-        public void RegisterHighlighting(string name, string[] extensions, IHighlightingDefinition highlighting)
+        
+        public void RegisterHighlighting(string highlightingName, byte[] xmlByteArray)
         {
-            throw new NotImplementedException();
+            var xml = mFileManagmentService.ReadTextAsXml(xmlByteArray);
+            var definition = HighlightingLoader.Load(xml, HighlightingManager.Instance);
+
+            mHighlightingManager.RegisterHighlighting(highlightingName, Array.Empty<string>(), definition);   
         }
+
+        public void Dispose()
+        {
+        }
+
     }
 }

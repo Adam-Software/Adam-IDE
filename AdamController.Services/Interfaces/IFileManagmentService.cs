@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace AdamController.Services.Interfaces
 {
@@ -12,6 +13,8 @@ namespace AdamController.Services.Interfaces
         public Task<string> ReadTextAsStringAsync(string path);
 
         public Task<byte[]> ReadTextAsByteArray(string path);
+
+        public XmlTextReader ReadTextAsXml(byte[] xml);
 
         #endregion
     }

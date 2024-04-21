@@ -80,7 +80,7 @@ namespace AdamController
             //TODO check theme before ChangeTheme
             _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
 
-            LoadHighlighting();
+            //LoadHighlighting();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -93,6 +93,13 @@ namespace AdamController
             containerRegistry.RegisterSingleton<IFolderManagmentService>(containerRegistry =>
             {
                 return new FolderManagmentService();
+            });
+
+            containerRegistry.RegisterSingleton<IAvalonEditService>(containerRegistry =>
+            {
+                IFileManagmentService fileManagment = containerRegistry.Resolve<IFileManagmentService>();
+                AvalonEditService avalonService = new(fileManagment);
+                return avalonService;
             });
 
             containerRegistry.RegisterSingleton<IWebViewProvider>(containerRegistry =>
@@ -238,19 +245,19 @@ namespace AdamController
             moduleCatalog.AddModule<FlayoutsRegionModule>();
         }
 
-        private static void LoadHighlighting()
-        {
-            try
-            {
-                using var stream = new MemoryStream(Resource.AdamPython);
-                using var reader = new XmlTextReader(stream);
-                HighlightingManager.Instance.RegisterHighlighting("AdamPython", Array.Empty<string>(), HighlightingLoader.Load(reader, HighlightingManager.Instance));
-            }
-            catch
-            {
-
-            }
-        }
+        //private static void LoadHighlighting()
+        //{
+        //    try
+        //    {
+        //        using MemoryStream stream = new MemoryStream(Resource.AdamPython);
+        //        using XmlTextReader reader = new XmlTextReader(stream);
+        //        HighlightingManager.Instance.RegisterHighlighting("AdamPython", Array.Empty<string>(), HighlightingLoader.Load(reader, HighlightingManager.Instance));
+        //    }
+        //    catch
+        //    {
+        //
+        //    }
+        //}
 
         protected override void OnExit(ExitEventArgs e)
         {
@@ -281,6 +288,7 @@ namespace AdamController
         {
             Container.Resolve<IFileManagmentService>().Dispose();
             Container.Resolve<IFolderManagmentService>().Dispose();
+            Container.Resolve<IAvalonEditService>().Dispose();
 
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();

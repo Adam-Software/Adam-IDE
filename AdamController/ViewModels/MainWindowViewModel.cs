@@ -27,14 +27,14 @@ namespace AdamController.ViewModels
         private readonly ICommunicationProviderService mCommunicationProviderService;
         private readonly IFolderManagmentService mFolderManagment;
         private readonly IWebApiService mWebApiService;
-
+        private readonly IAvalonEditService mAvalonEditService;
 
         #endregion
 
         #region ~
 
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
-                    ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService) 
+                    ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, IAvalonEditService avalonEditService) 
         {
             RegionManager = regionManager;
             mWebApiService = webApiService;
@@ -42,8 +42,7 @@ namespace AdamController.ViewModels
             mStatusBarNotification = statusBarNotification;
             mCommunicationProviderService = communicationProviderService;
             mFolderManagment = folderManagment;
-
-
+            mAvalonEditService = avalonEditService;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
             Subscribe();
@@ -208,6 +207,7 @@ namespace AdamController.ViewModels
             SaveFolderPathToSettings();
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
             mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";
+            mAvalonEditService.RegisterHighlighting("AdamPython", Resource.AdamPython);
 
             if (Settings.Default.AutoStartTcpConnect)
                 mCommunicationProviderService.ConnectAllAsync();

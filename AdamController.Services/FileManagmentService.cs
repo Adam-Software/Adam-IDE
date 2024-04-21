@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace AdamController.Services
 {
@@ -21,6 +22,14 @@ namespace AdamController.Services
         #endregion
 
         #region Public methods
+
+        public XmlTextReader ReadTextAsXml(byte[] xmlByteArray)
+        {
+            MemoryStream stream = new(xmlByteArray);
+            XmlTextReader reader = new(stream);
+
+            return reader;
+        }
 
         public async Task<byte[]> ReadTextAsByteArray(string path)
         {
