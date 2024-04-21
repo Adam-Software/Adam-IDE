@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace AdamController.Core.Extensions
 {
-    public static class SyslogParseMessage
+    public static class SyslogParseMessageExtension
     {
         private static readonly string mSyslogMsgHeaderPattern = @"\<(?<PRIVAL>\d{1,3})\>(?<VERSION>[1-9]{0,2}) (?<TIMESTAMP>(\S|\w)+) (?<HOSTNAME>-|(\S|\w){1,255}) (?<APPNAME>-|(\S|\w){1,48}) (?<PROCID>-|(\S|\w){1,128}) (?<MSGID>-|(\S|\w){1,32})";
         private static readonly string mSyslogMsgStructuredDataPattern = @"(?<STRUCTUREDDATA>-|\[[^\[\=\x22\]\x20]{1,32}( ([^\[\=\x22\]\x20]{1,32}=\x22.+\x22))?\])";
@@ -18,7 +18,7 @@ namespace AdamController.Core.Extensions
         /// <exception cref="OverflowException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public static SyslogMessage Parse(this string rawMessage)
+        public static SyslogMessageModel Parse(this string rawMessage)
         {
             if (string.IsNullOrWhiteSpace(rawMessage)) 
             { throw new ArgumentNullException(nameof(rawMessage)); }
@@ -26,7 +26,7 @@ namespace AdamController.Core.Extensions
             var match = mExpression.Match(rawMessage);
             if (match.Success)
             {
-                return new SyslogMessage
+                return new SyslogMessageModel
                 {
                     Prival = Convert.ToInt32(match.Groups["PRIVAL"].Value),
                     Version = Convert.ToInt32(match.Groups["VERSION"].Value),

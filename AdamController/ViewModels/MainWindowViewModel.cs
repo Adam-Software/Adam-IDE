@@ -161,7 +161,7 @@ namespace AdamController.ViewModels
         {
             try
             {
-                SyslogMessage syslogMessage = message.Parse();
+                SyslogMessageModel syslogMessage = message.Parse();
                 mStatusBarNotification.CompileLogMessage = $"{syslogMessage.TimeStamp:T} {syslogMessage.Message}";   
             }
             catch

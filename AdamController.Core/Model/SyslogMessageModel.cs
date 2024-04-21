@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AdamController.Core.Model
 {
-    public class SyslogMessage
+    public class SyslogMessageModel
     {
         public int Prival { get;  set; }
         public int Version { get; set; }
@@ -19,7 +19,7 @@ namespace AdamController.Core.Model
 
         public override string ToString()
         {
-            var message = new StringBuilder($@"<{Prival:###}>{Version:##} {TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss.fffK")} {HostName} {AppName} {ProcId} {MessageId} {StructuredData}");
+            var message = new StringBuilder($@"<{Prival:###}>{Version:##} {TimeStamp:yyyy-MM-ddTHH:mm:ss.fffK} {HostName} {AppName} {ProcId} {MessageId} {StructuredData}");
 
             if (!string.IsNullOrWhiteSpace(Message))
             {
