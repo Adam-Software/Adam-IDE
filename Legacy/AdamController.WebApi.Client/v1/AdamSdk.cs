@@ -3,15 +3,47 @@ using AdamController.WebApi.Client.v1.ResponseModel;
 
 namespace AdamController.WebApi.Client.v1
 {
-    internal class AdamSdk
+    #region Interface
+
+    public interface IAdamSdk
     {
+        public Task<ExtendedCommandExecuteResult> MoveToZeroPosition();
+    }
+
+    #endregion
+
+    internal class AdamSdk : IAdamSdk
+    {
+        #region Const
+        
         private const string cApiPath = "AdamSdk";
 
-        internal static async Task<ExtendedCommandExecuteResult> MoveToZeroPosition()
+        #endregion
+
+        #region Var
+
+        private readonly ApiClient mClient;
+
+        #endregion
+
+        #region ~
+
+        internal AdamSdk(ApiClient client)
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/MoveToZeroPosition");
-            var result = await responseMessage.ToExtendedCommandResult();
+            mClient = client;
+        }
+
+        #endregion
+
+        #region Public methods
+
+        public Task<ExtendedCommandExecuteResult> MoveToZeroPosition()
+        {
+            Task<HttpResponseMessage> responseMessage = mClient.Get($"{cApiPath}/MoveToZeroPosition");
+            Task<ExtendedCommandExecuteResult> result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
+
+        #endregion
     }
 }

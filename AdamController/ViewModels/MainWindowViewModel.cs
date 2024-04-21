@@ -4,7 +4,6 @@ using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
-using AdamController.WebApi.Client.v1;
 using Prism.Commands;
 using Prism.Regions;
 using System.Reflection;
@@ -27,19 +26,24 @@ namespace AdamController.ViewModels
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
         private readonly ICommunicationProviderService mCommunicationProviderService;
         private readonly IFolderManagmentService mFolderManagment;
+        private readonly IWebApiService mWebApiService;
+
 
         #endregion
 
         #region ~
 
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
-                    ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment) 
+                    ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService) 
         {
             RegionManager = regionManager;
+            mWebApiService = webApiService;
             mSubRegionChangeAwareService = subRegionChangeAwareService;
             mStatusBarNotification = statusBarNotification;
             mCommunicationProviderService = communicationProviderService;
             mFolderManagment = folderManagment;
+
+
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
             Subscribe();
@@ -204,6 +208,9 @@ namespace AdamController.ViewModels
             SaveFolderPathToSettings();
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
             mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";
+
+            if (Settings.Default.AutoStartTcpConnect)
+                mCommunicationProviderService.ConnectAllAsync();
         }
 
         /// <summary>
@@ -222,7 +229,7 @@ namespace AdamController.ViewModels
         /// </summary>
         private void RaiseTcpServiceCientConnectedEvent(object sender)
         {
-            _ = BaseApi.StopPythonExecute();
+            mWebApiService.StopPythonExecute();
         }
 
         private void RaiseUdpServiceServerReceivedEvent(object sender, string message)

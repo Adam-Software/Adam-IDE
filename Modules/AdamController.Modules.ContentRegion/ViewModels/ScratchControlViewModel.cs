@@ -46,6 +46,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IWebViewProvider mWebViewProvider;
         private readonly IDialogManagerService mDialogManager;
         private readonly IFileManagmentService mFileManagment;
+        private readonly IWebApiService mWebApiService;
 
         #endregion
 
@@ -67,7 +68,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, IFileManagmentService fileManagment) : base(regionManager, dialogService)
+        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, IFileManagmentService fileManagment, IWebApiService webApiService) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
@@ -75,6 +76,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider = webViewProvider;
             mDialogManager = dialogManager;
             mFileManagment = fileManagment;
+            mWebApiService = webApiService;
 
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
@@ -85,6 +87,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             StopPythonCodeExecuteDelegateCommand = new DelegateCommand(StopPythonCodeExecute, StopPythonCodeExecuteCanExecute);
             SendCodeToExternalSourceEditorDelegateCommand = new(SendCodeToExternalSourceEditor, SendCodeToExternalSourceEditorCanExecute);
             ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
+            ;
         }
         #endregion
 
@@ -383,16 +386,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private async void RunPythonCode()
         {
             ResultTextEditorError = string.Empty;
-            WebApi.Client.v1.ResponseModel.ExtendedCommandExecuteResult executeResult = new();
+            ExtendedCommandExecuteResult executeResult = new();
 
             try
             {
-                var command = new WebApi.Client.v1.RequestModel.PythonCommand
+                var command = new WebApi.Client.v1.RequestModel.PythonCommandModel
                 {
                     Command = SourceTextEditor
                 };
 
-                executeResult = await BaseApi.PythonExecuteAsync(command);
+                executeResult = await mWebApiService.PythonExecuteAsync(command);
             }
             catch (Exception ex)
             {
@@ -435,7 +438,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             try
             {
-                await BaseApi.StopPythonExecute();
+                await mWebApiService.StopPythonExecute();
             }
             catch (Exception ex)
             {
@@ -474,7 +477,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             try
             {
-                await BaseApi.StopPythonExecute();
+                await mWebApiService.StopPythonExecute();
             }
             catch (Exception ex)
             {
@@ -580,9 +583,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             IsTcpClientConnected = mCommunicationProvider.IsTcpClientConnected;
 
-            var pythonVersionResult = await BaseApi.GetPythonVersion();
-            var pythonBinPathResult = await BaseApi.GetPythonBinDir();
-            var pythonWorkDirResult = await BaseApi.GetPythonWorkDir();
+            var pythonVersionResult = await mWebApiService.GetPythonVersion();
+            var pythonBinPathResult = await mWebApiService.GetPythonBinDir();
+            var pythonWorkDirResult = await mWebApiService.GetPythonWorkDir();
 
             string pythonVersion = pythonVersionResult?.StandardOutput?.Replace("\n", "");
             string pythonBinPath = pythonBinPathResult?.StandardOutput?.Replace("\n", "");

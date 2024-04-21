@@ -1,7 +1,6 @@
-﻿
-namespace AdamController.WebApi.Client.v1.RequestModel
+﻿namespace AdamController.WebApi.Client.v1.RequestModel
 {
-    public class PythonCommand
+    public class PythonCommandModel
     {
         /// <summary>
         /// Python command or programm

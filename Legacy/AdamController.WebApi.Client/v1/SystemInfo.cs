@@ -1,34 +1,72 @@
-﻿
-
-using AdamController.WebApi.Client.Common;
+﻿using AdamController.WebApi.Client.Common;
 using AdamController.WebApi.Client.v1.ResponseModel;
 
 namespace AdamController.WebApi.Client.v1
 {
-    internal class SystemInfo
+    #region Interface
+
+    public interface ISystemInfo
     {
+        public Task<ExtendedCommandExecuteResult> GetExtendedUptimeAndLoadAverage();
+        public Task<ExtendedCommandExecuteResult> GetUptimeAndLoadAverage();
+        public Task<ExtendedCommandExecuteResult> GetLoadAverage();
+        public Task<ExtendedCommandExecuteResult> GetOsReleaseVersion();
+        public Task<ExtendedCommandExecuteResult> GetDebianOsVersion();
+        public Task<ExtendedCommandExecuteResult> GetArchitectureOsVersion();
+        public Task<ExtendedCommandExecuteResult> GetKernelVersion();
+        public Task<ExtendedCommandExecuteResult> GetGpuTemp();
+        public Task<ExtendedCommandExecuteResult> GetCpuTemp();
+        public Task<ExtendedCommandExecuteResult> GetNetworkInfo();
+        public Task<ExtendedCommandExecuteResult> GetIpInfo();
+        public Task<ExtendedCommandExecuteResult> GetWiFiSsids();
+        public Task<ExtendedCommandExecuteResult> GetAdamServerVersion();
+    }
+
+    #endregion
+
+    internal class SystemInfo : ISystemInfo
+    {
+        #region Const
+
         private const string cApiPath = "SystemInfo";
+
+        #endregion
+
+        #region Var 
+
+        private readonly ApiClient mApiClient;
+
+        #endregion
+
+        #region ~
+
+        internal SystemInfo(ApiClient apiClient) 
+        {
+            mApiClient = apiClient;
+        }
+
+        #endregion
 
         #region System average
 
-        internal static async Task<ExtendedCommandExecuteResult> GetExtendedUptimeAndLoadAverage()
+        public Task<ExtendedCommandExecuteResult> GetExtendedUptimeAndLoadAverage()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetExtendedUptimeAndLoadAverage");
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetExtendedUptimeAndLoadAverage");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetUptimeAndLoadAverage()
+        public Task<ExtendedCommandExecuteResult> GetUptimeAndLoadAverage()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetUptimeAndLoadAverage");
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetUptimeAndLoadAverage");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetLoadAverage()
+        public Task<ExtendedCommandExecuteResult> GetLoadAverage()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetLoadAverage");
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetLoadAverage");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
@@ -36,35 +74,31 @@ namespace AdamController.WebApi.Client.v1
 
         #region OS version
 
-        internal static async Task<ExtendedCommandExecuteResult> GetOsReleaseVersion()
+        public Task<ExtendedCommandExecuteResult> GetOsReleaseVersion()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetOsReleaseVersion");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetOsReleaseVersion");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetDebianOsVersion()
+        public Task<ExtendedCommandExecuteResult> GetDebianOsVersion()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetDebianOsVersion");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetDebianOsVersion");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetArchitectureOsVersion()
+        public Task<ExtendedCommandExecuteResult> GetArchitectureOsVersion()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetArchitectureOsVersion");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetArchitectureOsVersion");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetKernelVersion()
+        public Task<ExtendedCommandExecuteResult> GetKernelVersion()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetKernelVersion");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetKernelVersion");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
@@ -72,19 +106,17 @@ namespace AdamController.WebApi.Client.v1
 
         #region CPU/GPU temperature
 
-        internal static async Task<ExtendedCommandExecuteResult> GetGpuTemp()
+        public Task<ExtendedCommandExecuteResult> GetGpuTemp()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetGpuTemp");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetGpuTemp");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetCpuTemp()
+        public Task<ExtendedCommandExecuteResult> GetCpuTemp()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetCpuTemp");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetCpuTemp");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
@@ -92,27 +124,24 @@ namespace AdamController.WebApi.Client.v1
 
         #region Network info
 
-        internal static async Task<ExtendedCommandExecuteResult> GetNetworkInfo()
+        public Task<ExtendedCommandExecuteResult> GetNetworkInfo()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetNetworkInfo");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetNetworkInfo");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetIpInfo()
+        public Task<ExtendedCommandExecuteResult> GetIpInfo()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetIpInfo");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetIpInfo");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
-        internal static async Task<ExtendedCommandExecuteResult> GetWiFiSsids()
+        public Task<ExtendedCommandExecuteResult> GetWiFiSsids()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetWiFiSsids");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetWiFiSsids");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 
@@ -120,11 +149,10 @@ namespace AdamController.WebApi.Client.v1
 
         #region AdamServer info
 
-        internal static async Task<ExtendedCommandExecuteResult> GetAdamServerVersion()
+        public Task<ExtendedCommandExecuteResult> GetAdamServerVersion()
         {
-            HttpResponseMessage? responseMessage = await ApiClient.Get($"{cApiPath}/GetAdamServerVersion");
-            
-            var result = await responseMessage.ToExtendedCommandResult();
+            var responseMessage = mApiClient.Get($"{cApiPath}/GetAdamServerVersion");
+            var result = responseMessage.ToExtendedCommandResultAsync();
             return result;
         }
 

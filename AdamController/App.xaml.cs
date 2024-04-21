@@ -76,20 +76,10 @@ namespace AdamController
         {
             base.OnStartup(e);
 
-            //_ = FolderHelper.CreateAppDataFolder();
-
             //TODO check theme before ChangeTheme
             _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
 
             LoadHighlighting();
-        }
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-
-            StartServices();
-            StartWebApi();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -126,8 +116,6 @@ namespace AdamController
 
                 return new FlyoutManager(container, regionManager);
             });
-
-
 
             containerRegistry.RegisterSingleton<ITcpClientService>(containerRegistry =>
             {
@@ -185,6 +173,17 @@ namespace AdamController
 
                 WebSocketClientService client = new(uri);
                 return client;
+            });
+
+            containerRegistry.RegisterSingleton<IWebApiService>(containerRegistry =>
+            {
+                string ip = Settings.Default.ServerIP;
+                int port = Settings.Default.ApiPort;
+                string login = Settings.Default.ApiLogin;
+                string password = Settings.Default.ApiPassword;
+
+                WebApiService client = new(ip, port, login, password);
+                return client;
 
             });
 
@@ -211,26 +210,6 @@ namespace AdamController
             RegisterDialogs(containerRegistry);
         }
 
-        private void StartServices()
-        {
-            if (Settings.Default.AutoStartTcpConnect)
-                Container.Resolve<ICommunicationProviderService>().ConnectAllAsync();
-        }
-
-        private void StartWebApi()
-        {
-            string ip = Settings.Default.ServerIP;
-            int port = Settings.Default.ApiPort;
-
-            Uri DefaultUri = new($"http://{ip}:{port}");
-            WebApi.Client.v1.BaseApi.SetApiClientUri(DefaultUri);
-
-            string login = Settings.Default.ApiLogin;
-            string password = Settings.Default.ApiPassword;
-
-            WebApi.Client.v1.BaseApi.SetAuthenticationHeader(login, password);
-        }
-
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
@@ -241,7 +220,6 @@ namespace AdamController
                 var app = Current;
                 return new DialogManager(app);
             });
-
         }
 
         protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
@@ -312,6 +290,7 @@ namespace AdamController
 
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();
+            Container.Resolve<IWebApiService>().Dispose();
         }
 
         #region Intercepting Unhandled Exception

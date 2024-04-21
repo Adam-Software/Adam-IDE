@@ -1,7 +1,6 @@
 ﻿using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
-using AdamController.WebApi.Client.v1;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
@@ -15,6 +14,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Services
 
         private readonly ICommunicationProviderService mCommunicationProvider;
+        private readonly IWebApiService mWebApiService;
 
         #endregion
 
@@ -27,9 +27,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider) : base(regionManager, dialogService)
+        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IWebApiService webApiService) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
+            mWebApiService = webApiService;
         }
 
         #endregion
@@ -119,8 +120,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             try
             {
-                await BaseApi.StopPythonExecute();
-                await BaseApi.MoveToZeroPosition();
+                await mWebApiService.StopPythonExecute();
+                await mWebApiService.MoveToZeroPosition();
             }
             catch
             {

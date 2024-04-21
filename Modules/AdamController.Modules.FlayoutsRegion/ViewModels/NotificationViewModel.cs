@@ -57,6 +57,8 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             {
                 Subscribe();
                 UpdateStatusConnection(mCommunicationProvider.IsTcpClientConnected);
+                
+                return;
             }
                 
 
@@ -67,11 +69,11 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                 ConnectButtonDelegateCommand = null;
                 ReconnectNotificationButtonDelegateCommand = null;
                 ResetNotificationsDelegateCommand = null;
-            }
                 
-
-            base.OnChanging(isOpening);
+                return;
+            }
         }
+
 
         #endregion
 

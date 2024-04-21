@@ -21,6 +21,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IFileManagmentService mFileManagment;
+        private readonly IWebApiService mWebApiService;
 
         #endregion
 
@@ -28,14 +29,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private bool mIsWarningStackOwerflowAlreadyShow;
         private readonly IMessageDialogManager IDialogManager;
 
-        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFileManagmentService fileManagment) : base(regionManager, dialogService)
+        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFileManagmentService fileManagment, IWebApiService webApiService) : base(regionManager, dialogService)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
             mFileManagment = fileManagment;
+            mWebApiService = webApiService;
 
             IDialogManager = new MessageDialogManagerMahapps(Application.Current);
+            
         }
 
         #region Navigation
@@ -255,11 +258,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 if(mCommunicationProvider.IsTcpClientConnected)
                 {
-                    var command = new WebApi.Client.v1.RequestModel.PythonCommand
+                    var command = new WebApi.Client.v1.RequestModel.PythonCommandModel
                     {
                         Command = SourceTextEditor
                     };
-                    executeResult = await BaseApi.PythonExecuteAsync(command);
+                    executeResult = await mWebApiService.PythonExecuteAsync(command);
                 }
                 
             }
@@ -319,7 +322,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             try
             {
-                await BaseApi.StopPythonExecute();
+                await mWebApiService.StopPythonExecute();
             }
             catch(Exception ex)
             {

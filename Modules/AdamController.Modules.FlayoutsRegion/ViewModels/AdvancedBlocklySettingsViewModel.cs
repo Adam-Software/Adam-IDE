@@ -38,6 +38,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                 UpdatePublicFields();
                 Subscribe();
                 CreateDelegateCommand();
+                return;
             }
 
 
@@ -46,9 +47,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                 ClearPublicFields();
                 Unsubscribe();
                 ResetDelegateCommand();
+                return;
             }
 
-            base.OnChanging(isOpening);
+            //base.OnChanging(isOpening);
         }
 
         #endregion
