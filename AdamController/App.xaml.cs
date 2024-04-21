@@ -48,6 +48,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net;
 using AdamController.Services.TcpClientDependency;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
 #endregion
 
@@ -243,8 +244,7 @@ namespace AdamController
             {
                 using var stream = new MemoryStream(Resource.AdamPython);
                 using var reader = new XmlTextReader(stream);
-                HighlightingManager.Instance.RegisterHighlighting("AdamPython", Array.Empty<string>(),
-                    ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance));
+                HighlightingManager.Instance.RegisterHighlighting("AdamPython", Array.Empty<string>(), HighlightingLoader.Load(reader, HighlightingManager.Instance));
             }
             catch
             {
