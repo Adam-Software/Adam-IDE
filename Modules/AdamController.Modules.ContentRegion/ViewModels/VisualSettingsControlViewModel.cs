@@ -30,17 +30,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Services
 
         private readonly IFlyoutManager mFlyoutManager;        
+        private readonly IAppThemeManager mAppThemeManager;
 
         #endregion
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IWebViewProvider webViewProvider) : base(regionManager, dialogService)
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IAppThemeManager appThemeManager) : base(regionManager, dialogService)
         {
             mFlyoutManager = flyoutManager;
+            mAppThemeManager = appThemeManager;
 
             OpenAdvancedBlocklySettingsDelegateCommand = new DelegateCommand(OpenAdvancedBlocklySettings, OpenAdvancedBlocklySettingsCanExecute);
             ChangeBaseThemeDelegateCommand = new DelegateCommand<string>(ChangeBaseTheme, ChangeBaseThemeCanExecute);
+            var s = mAppThemeManager.Name;
         }
 
         #endregion

@@ -17,7 +17,10 @@ namespace AdamController.Services
 
         #region ~
 
-        public FileManagmentService() { }
+        public FileManagmentService() 
+        {
+         
+        }
 
         #endregion
 

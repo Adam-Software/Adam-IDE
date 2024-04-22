@@ -1,9 +1,7 @@
 ﻿#region system
 
 using System;
-using System.IO;
 using System.Windows;
-using System.Xml;
 
 #endregion
 
@@ -42,14 +40,11 @@ using MahApps.Metro.Controls;
 #region other
 
 using ControlzEx.Theming;
-using ICSharpCode.AvalonEdit.Highlighting;
 using AdamController.Core.Properties;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net;
 using AdamController.Services.TcpClientDependency;
-using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using AdamController.Core;
 
 #endregion
 
@@ -85,7 +80,6 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
             containerRegistry.RegisterSingleton<IFileManagmentService>(() =>
             {
                 return new FileManagmentService();
@@ -102,7 +96,12 @@ namespace AdamController
                 AvalonEditService avalonService = new(fileManagment);
                 return avalonService;
             });
-
+            
+            containerRegistry.RegisterSingleton<IAppThemeManager>(() =>
+            {
+                return new AppThemeManager();
+            });
+            
             containerRegistry.RegisterSingleton<IWebViewProvider>(() =>
             {
                 return new WebViewProvider();
@@ -216,11 +215,7 @@ namespace AdamController
                 return remoteRunnerService;
             });
 
-            containerRegistry.RegisterSingleton<IThemeManagerService>(() =>
-            {
-                ThemeManagerService manager = new(5);
-                return manager;
-            });
+
 
             RegisterDialogs(containerRegistry);
         }
@@ -279,10 +274,10 @@ namespace AdamController
         /// </summary>
         private void DisposeServices()
         {
-            Container.Resolve<IThemeManagerService>().Dispose();
             Container.Resolve<IFileManagmentService>().Dispose();
             Container.Resolve<IFolderManagmentService>().Dispose();
             Container.Resolve<IAvalonEditService>().Dispose();
+            Container.Resolve<IAppThemeManager>().Dispose();
 
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
