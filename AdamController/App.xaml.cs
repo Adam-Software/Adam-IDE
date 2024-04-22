@@ -74,23 +74,24 @@ namespace AdamController
             return window;
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+        //protected override void OnStartup(StartupEventArgs e)
+        //{
+        //    base.OnStartup(e);
 
             //TODO check theme before ChangeTheme
-            _ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
+            //_ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
 
-        }
+        //}
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IFileManagmentService>(containerRegistry =>
+
+            containerRegistry.RegisterSingleton<IFileManagmentService>(() =>
             {
                 return new FileManagmentService();
             });
 
-            containerRegistry.RegisterSingleton<IFolderManagmentService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IFolderManagmentService>(() =>
             {
                 return new FolderManagmentService();
             });
@@ -102,17 +103,17 @@ namespace AdamController
                 return avalonService;
             });
 
-            containerRegistry.RegisterSingleton<IWebViewProvider>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IWebViewProvider>(() =>
             {
                 return new WebViewProvider();
             });
 
-            containerRegistry.RegisterSingleton<ISubRegionChangeAwareService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<ISubRegionChangeAwareService>(() =>
             {
                 return new SubRegionChangeAwareService();
             });
 
-            containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService>(() =>
             {
                 return new StatusBarNotificationDeliveryService();
             });
@@ -125,7 +126,7 @@ namespace AdamController
                 return new FlyoutManager(container, regionManager);
             });
 
-            containerRegistry.RegisterSingleton<ITcpClientService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<ITcpClientService>(() =>
             {
                 TcpClientOption option = new()
                 {
@@ -140,7 +141,7 @@ namespace AdamController
                 return client;
             });
 
-            containerRegistry.RegisterSingleton<IUdpClientService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IUdpClientService>(() =>
             {
                 IPAddress ip = IPAddress.Any;
                 int port = int.Parse(Settings.Default.MessageDataExchangePort);
@@ -154,7 +155,7 @@ namespace AdamController
                 return client;
             });
 
-            containerRegistry.RegisterSingleton<IUdpServerService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IUdpServerService>(() =>
             {
                 IPAddress ip = IPAddress.Any;
                 int port = Settings.Default.LogServerPort;
@@ -168,7 +169,7 @@ namespace AdamController
                 return server;
             });
 
-            containerRegistry.RegisterSingleton<IWebSocketClientService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IWebSocketClientService>(() =>
             {
                 string ip = Settings.Default.ServerIP;
                 int port = Settings.Default.SoketServerPort;
@@ -183,7 +184,7 @@ namespace AdamController
                 return client;
             });
 
-            containerRegistry.RegisterSingleton<IWebApiService>(containerRegistry =>
+            containerRegistry.RegisterSingleton<IWebApiService>(() =>
             {
                 string ip = Settings.Default.ServerIP;
                 int port = Settings.Default.ApiPort;
@@ -213,6 +214,12 @@ namespace AdamController
 
                 PythonRemoteRunnerService remoteRunnerService = new(udpClient);
                 return remoteRunnerService;
+            });
+
+            containerRegistry.RegisterSingleton<IThemeManagerService>(() =>
+            {
+                ThemeManagerService manager = new(5);
+                return manager;
             });
 
             RegisterDialogs(containerRegistry);
@@ -272,6 +279,7 @@ namespace AdamController
         /// </summary>
         private void DisposeServices()
         {
+            Container.Resolve<IThemeManagerService>().Dispose();
             Container.Resolve<IFileManagmentService>().Dispose();
             Container.Resolve<IFolderManagmentService>().Dispose();
             Container.Resolve<IAvalonEditService>().Dispose();
