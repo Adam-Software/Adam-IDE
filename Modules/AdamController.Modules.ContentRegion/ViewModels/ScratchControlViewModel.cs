@@ -862,11 +862,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                         _ = await ExecuteScriptFunctionAsync("loadSrc", Scripts.BlockLanguageRu);
                         break;
                     }
-                case BlocklyLanguage.zh:
-                    {
-                        _ = await ExecuteScriptFunctionAsync("loadSrc", Scripts.BlockLanguageZnHans);
-                        break;
-                    }
                 case BlocklyLanguage.en:
                     {
                         _ = await ExecuteScriptFunctionAsync("loadSrc", Scripts.BlockLanguageEn);

@@ -3,7 +3,6 @@
     public enum BlocklyLanguage
     {
         ru, 
-        en,
-        zh
+        en
     }
 }

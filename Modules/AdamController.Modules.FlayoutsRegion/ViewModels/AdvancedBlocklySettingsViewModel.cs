@@ -60,10 +60,12 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         private void UpdatePublicFields()
         {
             SelectedBlocklyGridColour = MahApps.Metro.Controls.ColorHelper.ColorFromString(Settings.Default.BlocklyGridColour);
-            BlocklyLanguageCollection = new ObservableCollection<BlocklyLanguageModel>(LanguagesCollection.BlocklyLanguageCollection);
-            SelectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyToolboxLanguage);
+            //BlocklyLanguageCollection = new ObservableCollection<BlocklyLanguageModel>(LanguagesCollection.BlocklyLanguageCollection);
+            //SelectedBlocklyToolboxLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyToolboxLanguage);
             BlocklyThemes = new ObservableCollection<BlocklyThemeModel>(ThemesCollection.BlocklyThemes);
             SelectedBlocklyTheme = BlocklyThemes.FirstOrDefault(x => x.BlocklyTheme == Settings.Default.BlocklyTheme);
+
+            //BlocklyGridLenth = Settings.Default.BlocklyGridLenth;
         }
 
         private void ClearPublicFields()
@@ -115,6 +117,19 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             get => selectedBlocklyTheme;
             set => SetProperty(ref selectedBlocklyTheme, value);
         }
+
+        /*private short blocklyGridLenth;
+        public short BlocklyGridLenth
+        {
+            get => blocklyGridLenth;
+            set
+            {
+                bool isNewValue = SetProperty(ref blocklyGridLenth, value);
+
+                if (isNewValue)
+                    Settings.Default.BlocklyGridLenth = BlocklyGridLenth;
+            }
+        }*/
 
         #endregion
 
