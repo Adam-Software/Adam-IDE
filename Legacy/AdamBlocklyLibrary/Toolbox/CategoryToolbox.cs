@@ -61,7 +61,7 @@ namespace AdamBlocklyLibrary.Toolbox
         /// For set ExpandedCategory use Expanded
         /// </summary>
         [JsonPropertyName("expanded")]
-        internal string ExpandedCategory => Expanded ? Expanded.ToString().ToLower() : null;
+        public string ExpandedCategory => Expanded ? Expanded.ToString().ToLower() : null;
 
         /// <summary>
         /// A category can be hidden when the toolbox is first injected, or it can be hidden later on through JavaScript.
@@ -73,7 +73,7 @@ namespace AdamBlocklyLibrary.Toolbox
         /// For set HiddenCategory use Hidden
         /// </summary>
         [JsonPropertyName("hidden")]
-        internal string HiddenCategory => Hidden.ToString().ToLower();
+        public string HiddenCategory => Hidden.ToString().ToLower();
 
     }
 }

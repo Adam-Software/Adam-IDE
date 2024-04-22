@@ -194,7 +194,6 @@
                     <mah:ToggleSwitch Grid.Row="1"
                                       Margin="20 0 0 0"
                                       IsOn="{Binding BlocklyLogicCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
                         <TextBlock Text="Логические"></TextBlock>
                     </mah:ToggleSwitch>
 
