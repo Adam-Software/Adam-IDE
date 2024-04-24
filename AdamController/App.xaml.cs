@@ -50,6 +50,9 @@ using System.Net;
 using AdamController.Services.TcpClientDependency;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using AdamController.Core;
+using System.Globalization;
+using System.Threading;
+using System.Windows.Markup;
 
 #endregion
 
@@ -62,7 +65,24 @@ namespace AdamController
         public App()
         {
             SetupUnhandledExceptionHandling();
+            InitializeCultures();
         }
+
+        #region InitializeCultures
+
+        private static void InitializeCultures()
+        {
+            var en = new CultureInfo("en-EN");
+            var ru = new CultureInfo("ru-RU");
+
+            Thread.CurrentThread.CurrentCulture = en;
+            Thread.CurrentThread.CurrentUICulture = en;
+            
+            //FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
+            //    new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+        }
+
+        #endregion
 
         #endregion
 

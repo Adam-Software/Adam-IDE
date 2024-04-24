@@ -56,4 +56,13 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="LocalizationDictionary\en.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="LocalizationDictionary\ru.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
 </Project>
