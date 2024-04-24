@@ -28,13 +28,15 @@ namespace AdamController.ViewModels
         private readonly IFolderManagmentService mFolderManagment;
         private readonly IWebApiService mWebApiService;
         private readonly IAvalonEditService mAvalonEditService;
+        private readonly IThemeManagerService mThemeManager;
 
         #endregion
 
         #region ~
 
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
-                    ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, IAvalonEditService avalonEditService) 
+                    ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
+                    IAvalonEditService avalonEditService, IThemeManagerService themeManager) 
         {
             RegionManager = regionManager;
             mWebApiService = webApiService;
@@ -43,6 +45,7 @@ namespace AdamController.ViewModels
             mCommunicationProviderService = communicationProviderService;
             mFolderManagment = folderManagment;
             mAvalonEditService = avalonEditService;
+            mThemeManager = themeManager;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
             Subscribe();
@@ -176,6 +179,12 @@ namespace AdamController.ViewModels
             mAvalonEditService.RegisterHighlighting(HighlightingName.AdamPython, Resource.AdamPython);
         }
 
+        private void LoadAppTheme()
+        {
+            var appThemeName = Settings.Default.AppThemeName;
+            mThemeManager.ChangeAppTheme(appThemeName);
+        }
+
         #endregion
 
         #region Subscriptions
@@ -213,6 +222,7 @@ namespace AdamController.ViewModels
         {
             SaveFolderPathToSettings();
             LoadCustomAvalonEditHighlighting();
+            LoadAppTheme();
 
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
             mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";

@@ -68,51 +68,20 @@
                     <ColumnDefinition Width="Auto" MinWidth="150"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Content="Базовый цвет схемы"  
+                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Content="Тема приложения" 
                        VerticalContentAlignment="Center" 
                        HorizontalContentAlignment="Center"
                        FontWeight="Medium"/>
-
-                <Button Grid.Row ="1" Grid.Column="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        Content="Темная"
-                        Margin="20 5 10 10"
-                        Command="{Binding ChangeBaseThemeDelegateCommand}"
-                        CommandParameter="Dark"
-                        Style="{DynamicResource MahApps.Styles.Button}"
-                        Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                        />
-
-                <Button Grid.Row ="1" Grid.Column="1" 
-                        Content="Светлая"
-                        Margin="10 5 20 10"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        Command="{Binding ChangeBaseThemeDelegateCommand}"
-                        CommandParameter="Light"
-                        Style="{DynamicResource MahApps.Styles.Button}"
-                        Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                        />
-
-                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Content="Цветовая палитра" 
-                       VerticalContentAlignment="Center" 
-                       HorizontalContentAlignment="Center"
-                       FontWeight="Medium"
-                       />
 
                 <mah:SplitButton Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                           FontWeight="Medium"
                           Margin="40 5 40 10"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Center"
-                          IsSynchronizedWithCurrentItem="True"
-                          SelectedItem="{Binding SelectedColorScheme}"
-                          ItemsSource="{Binding ColorScheme}">
+                          DisplayMemberPath="DisplayName"
+                          SelectedItem="{Binding SelectedTheme}"
+                          ItemsSource="{Binding ThemesCollection}">
                     
                     <mah:SplitButton.Icon>
                         <iconPacks:PackIconEvaIcons Kind="ColorPalette" Margin="0 0 5 0"/>
@@ -136,6 +105,7 @@
                                  SelectedIndex="0"
                                  ItemsSource="{Binding LanguageApp}"
                                  SelectedItem="{Binding SelectedLanguageApp}">
+                    
                     <mah:SplitButton.Icon>
                         <StackPanel Orientation="Horizontal">
                             <iconPacks:PackIconFeatherIcons Kind="Globe" Margin="0 0 5 0"/>

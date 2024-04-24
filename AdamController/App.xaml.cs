@@ -62,8 +62,6 @@ namespace AdamController
         public App()
         {
             SetupUnhandledExceptionHandling();
-            //?
-            //this.Dispatcher.UnhandledException += this.OnDispatcherUnhandledException;
         }
 
         #endregion
@@ -74,27 +72,10 @@ namespace AdamController
             return window;
         }
 
-        //protected override void OnStartup(StartupEventArgs e)
-        //{
-        //    base.OnStartup(e);
-
-            //TODO check theme before ChangeTheme
-            //_ = ThemeManager.Current.ChangeTheme(this, $"{Settings.Default.BaseTheme}.{Settings.Default.ThemeColorScheme}", false);
-
-        //}
-
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
-            containerRegistry.RegisterSingleton<IFileManagmentService>(() =>
-            {
-                return new FileManagmentService();
-            });
-
-            containerRegistry.RegisterSingleton<IFolderManagmentService>(() =>
-            {
-                return new FolderManagmentService();
-            });
+            containerRegistry.RegisterSingleton<IFileManagmentService, FileManagmentService>();
+            containerRegistry.RegisterSingleton<IFolderManagmentService, FolderManagmentService>();
 
             containerRegistry.RegisterSingleton<IAvalonEditService>(containerRegistry =>
             {
@@ -103,20 +84,9 @@ namespace AdamController
                 return avalonService;
             });
 
-            containerRegistry.RegisterSingleton<IWebViewProvider>(() =>
-            {
-                return new WebViewProvider();
-            });
-
-            containerRegistry.RegisterSingleton<ISubRegionChangeAwareService>(() =>
-            {
-                return new SubRegionChangeAwareService();
-            });
-
-            containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService>(() =>
-            {
-                return new StatusBarNotificationDeliveryService();
-            });
+            containerRegistry.RegisterSingleton<IWebViewProvider, WebViewProvider>();
+            containerRegistry.RegisterSingleton<ISubRegionChangeAwareService, SubRegionChangeAwareService>();
+            containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService, StatusBarNotificationDeliveryService>();
 
             containerRegistry.RegisterSingleton<IFlyoutManager>(containerRegistry =>
             {
@@ -216,11 +186,7 @@ namespace AdamController
                 return remoteRunnerService;
             });
 
-            containerRegistry.RegisterSingleton<IThemeManagerService>(() =>
-            {
-                ThemeManagerService manager = new(5);
-                return manager;
-            });
+            containerRegistry.RegisterSingleton<IThemeManagerService, ThemeManagerService>();
 
             RegisterDialogs(containerRegistry);
         }
@@ -268,8 +234,6 @@ namespace AdamController
 
         private void SaveSettiings()
         {
-            Settings.Default.BaseTheme = ThemeManager.Current.DetectTheme(Current).BaseColorScheme;
-            Settings.Default.ThemeColorScheme = ThemeManager.Current.DetectTheme(Current).ColorScheme;
             Settings.Default.Save();
         }
 
@@ -288,7 +252,6 @@ namespace AdamController
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
             Container.Resolve<IWebViewProvider>().Dispose();
             Container.Resolve<IDialogManagerService>().Dispose();
-
 
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();

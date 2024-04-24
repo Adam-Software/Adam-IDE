@@ -1,7 +1,6 @@
 ﻿using AdamBlocklyLibrary.Enum;
 using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
-using AdamController.Core.DataSource;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
@@ -12,8 +11,6 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 using System.Windows.Media;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
@@ -23,25 +20,26 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region DelegateCommands
 
         public DelegateCommand OpenAdvancedBlocklySettingsDelegateCommand { get; }
-        public DelegateCommand<string> ChangeBaseThemeDelegateCommand { get; }
         
         #endregion
 
         #region Services
 
-        private readonly IFlyoutManager mFlyoutManager;        
+        private readonly IFlyoutManager mFlyoutManager;
+        private readonly IThemeManagerService mThemeManager;
 
         #endregion
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IWebViewProvider webViewProvider) : base(regionManager, dialogService)
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IThemeManagerService themeManager) : base(regionManager, dialogService)
         {
             mFlyoutManager = flyoutManager;
+            mThemeManager = themeManager;
 
             OpenAdvancedBlocklySettingsDelegateCommand = new DelegateCommand(OpenAdvancedBlocklySettings, OpenAdvancedBlocklySettingsCanExecute);
-            ChangeBaseThemeDelegateCommand = new DelegateCommand<string>(ChangeBaseTheme, ChangeBaseThemeCanExecute);
         }
+
 
         #endregion
 
@@ -53,16 +51,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         }
 
         private bool OpenAdvancedBlocklySettingsCanExecute()
-        {
-            return true;
-        }
-
-        private void ChangeBaseTheme(string theme)
-        {
-            ChangeTheme(theme);
-        }
-
-        private bool ChangeBaseThemeCanExecute(string theme)
         {
             return true;
         }
@@ -80,6 +68,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
 
+            /*new*/
+            ThemesCollection = mThemeManager.AppThemesCollection;
+            SelectedTheme = mThemeManager.GetCurrentAppTheme();
+
             LanguageApp = new ObservableCollection<AppLanguageModel>
             {
                 new AppLanguageModel { AppLanguage = "ru", LanguageName = "Русский" }
@@ -92,14 +84,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 new BlocklyLanguageModel { BlocklyLanguage =  BlocklyLanguage.en, LanguageName = "Английский" }
             };
 
-            BlocklyThemes = ThemesCollection.BlocklyThemes;
-            ColorScheme = ThemeManager.Current.ColorSchemes;
-
             //SelectedLanguageApp = LanguageApp.FirstOrDefault(x => x.AppLanguage == Settings.Default.AppLanguage);
             //SelectedBlocklyWorkspaceLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyWorkspaceLanguage);
 
-            SelectedColorScheme = ThemeManager.Current.DetectTheme(Application.Current).ColorScheme;
             NotificationOpacity = Settings.Default.NotificationOpacity;
+
+            
+            
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -126,19 +117,39 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             private set => SetProperty(ref  blocklyLanguageCollection, value);
         }
 
-        private ObservableCollection<BlocklyThemeModel> blocklyThemes;
+        public ReadOnlyObservableCollection<Theme> themesCollection;
+        public ReadOnlyObservableCollection<Theme> ThemesCollection 
+        {
+            get => themesCollection;
+            set => SetProperty(ref themesCollection, value);
+        }
+
+        public Theme selectedTheme;
+        public Theme SelectedTheme
+        {
+            get => selectedTheme;
+            set 
+            {
+                bool isNewValue = SetProperty(ref selectedTheme, value);
+
+                if (isNewValue)
+                    ChangeTheme(SelectedTheme);
+            } 
+        }
+
+        /*private ObservableCollection<BlocklyThemeModel> blocklyThemes;
         public ObservableCollection<BlocklyThemeModel> BlocklyThemes 
         { 
             get => blocklyThemes; 
             private set => SetProperty(ref blocklyThemes, value); 
-        }
+        }*/
 
-        private ReadOnlyObservableCollection<string> colorScheme;
+        /*private ReadOnlyObservableCollection<string> colorScheme;
         public ReadOnlyObservableCollection<string> ColorScheme 
         { 
             get => colorScheme;
             private set => SetProperty(ref colorScheme, value); 
-        }
+        }*/
 
         /*private AppLanguageModel selectedLanguageApp;
         public AppLanguageModel SelectedLanguageApp
@@ -171,19 +182,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }*/
 
-        private string selectedColorScheme;
-        public string SelectedColorScheme
-        {
-            get => selectedColorScheme;
-            set
-            {
-                bool isNewValue = SetProperty(ref selectedColorScheme, value);
-
-                if (isNewValue)
-                    ChangeThemeColorScheme(SelectedColorScheme);
-            }
-        }
-
 
         private double notificationOpacity;
         public double NotificationOpacity
@@ -196,19 +194,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Private methods
 
-        private void ChangeTheme(string newTheme)
+        private void ChangeBlockllyTheme(string baseColorAppTheme)
         {
-            _ = ThemeManager.Current.ChangeThemeBaseColor(Application.Current, newTheme);
-
             if (!Settings.Default.ChangeBlocklyThemeToggleSwitchState)
             {
-                if (newTheme == "Dark")
+                if (baseColorAppTheme == "Dark")
                 {
                     Settings.Default.BlocklyTheme = BlocklyTheme.Dark;
                     Settings.Default.BlocklyGridColour = Colors.White.ToString();
                 }
                 
-                if (newTheme == "Light")
+                if (baseColorAppTheme == "Light")
                 {
                     Settings.Default.BlocklyTheme = BlocklyTheme.Classic;
                     Settings.Default.BlocklyGridColour = Colors.Black.ToString();
@@ -216,9 +212,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
-        private void ChangeThemeColorScheme(string colorScheme)
+        private void ChangeTheme(Theme theme)
         {
-           ThemeManager.Current.ChangeThemeColorScheme(Application.Current, colorScheme);
+            Theme chagedTheme = mThemeManager.ChangeAppTheme(theme);
+            ChangeBlockllyTheme(chagedTheme.BaseColorScheme);
+
+            Settings.Default.AppThemeName = chagedTheme.Name;
+
+            //Is it necessary to save here?
+            Settings.Default.Save();
         }
 
         #endregion
