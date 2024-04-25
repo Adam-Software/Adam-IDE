@@ -1,16 +1,16 @@
 ﻿using AdamController.Services.Interfaces;
+using Prism.Mvvm;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 
 namespace AdamController.Services
 {
-    public class CultureProvider : ICultureProvider
+    public class CultureProvider :  ICultureProvider
     {
         #region Const
 
@@ -21,18 +21,15 @@ namespace AdamController.Services
 
         #region ~
 
-        public CultureProvider() 
-        {
-            AppSupportCultureInfos = CreateSupportCultureInfos();
-        }
+        public CultureProvider() {}
 
         #endregion
 
         #region Public fields
 
-        public List<CultureInfo> AppSupportCultureInfos { get; }
+        public List<CultureInfo> AppSupportCultureInfos { get { return GetSupportAppCultures(); } }
 
-        public CultureInfo CurrentAppCultureInfo { get; private set; }
+        public CultureInfo CurrentAppCultureInfo {  get; private set; }
 
         #endregion
 
@@ -66,6 +63,7 @@ namespace AdamController.Services
             };
 
             Application.Current.Resources.MergedDictionaries.Add(resources);
+
             SetCurrentCulture(culture);
         }
 
@@ -78,40 +76,39 @@ namespace AdamController.Services
             CurrentAppCultureInfo = culture;
         }
 
+
+        public void Dispose()
+        {
+            
+        }
+
+        #region Private method
+
         private ResourceDictionary FindLoadedDictonary()
         {
             var supportedCulture = AppSupportCultureInfos;
-            
+
             foreach (var cultureInfo in supportedCulture)
             {
                 string resourceName = $"pack://application:,,,/AdamController.Core;component/LocalizationDictionary/{cultureInfo.TwoLetterISOLanguageName}.xaml";
                 var uri = new Uri(resourceName);
                 ResourceDictionary current = Application.Current.Resources.MergedDictionaries.FirstOrDefault(x => x.Source == uri);
-                
-                if (current != null) 
+
+                if (current != null)
                     return current;
             }
 
             return new ResourceDictionary();
         }
 
-
-        public void Dispose()
-        {
-            //throw new NotImplementedException();
-        }
-
-        #region Private method
-
-        private static List<CultureInfo> CreateSupportCultureInfos()
+        private static List<CultureInfo> GetSupportAppCultures()
         {
             CultureInfo en = new(cEnString);
             CultureInfo ru = new(cRuString);
 
             List<CultureInfo> cultureInfos = new()
             {
-                en,
-                ru
+                ru, en
             };
 
             return cultureInfos;

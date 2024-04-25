@@ -9,6 +9,7 @@ using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Media;
@@ -73,7 +74,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ThemesCollection = mThemeManager.AppThemesCollection;
             SelectedTheme = mThemeManager.GetCurrentAppTheme();
 
-            LanguageApp = new ReadOnlyObservableCollection<CultureInfo>(new ObservableCollection<CultureInfo>(mCultureProvider.AppSupportCultureInfos));
+            LanguageApp = mCultureProvider.AppSupportCultureInfos;
             SelectedLanguageApp = mCultureProvider.CurrentAppCultureInfo;
 
             NotificationOpacity = Settings.Default.NotificationOpacity;   
@@ -89,8 +90,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Public fields
 
-        private ReadOnlyObservableCollection<CultureInfo> languageApp;
-        public ReadOnlyObservableCollection<CultureInfo> LanguageApp 
+        private List<CultureInfo> languageApp;
+        public List<CultureInfo> LanguageApp 
         {
             get => languageApp;
             private set => SetProperty(ref languageApp, value); 

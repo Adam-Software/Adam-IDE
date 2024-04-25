@@ -75,13 +75,14 @@
                        FontWeight="Medium"/>
 
                 <mah:SplitButton Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                          FontWeight="Medium"
-                          Margin="40 5 40 10"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Center"
-                          DisplayMemberPath="DisplayName"
-                          SelectedItem="{Binding SelectedTheme}"
-                          ItemsSource="{Binding ThemesCollection}">
+                                 FontWeight="Medium"
+                                 Margin="40 5 40 10"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Center"
+                                 DisplayMemberPath="DisplayName"
+                                 
+                                 SelectedItem="{Binding SelectedTheme}"
+                                 ItemsSource="{Binding ThemesCollection}">
                     
                     <mah:SplitButton.Icon>
                         <iconPacks:PackIconEvaIcons Kind="ColorPalette" Margin="0 0 5 0"/>
@@ -92,17 +93,15 @@
                        Content="Язык приложения" 
                        VerticalContentAlignment="Center" 
                        HorizontalContentAlignment="Center"
-                       FontWeight="Medium"
-                       />
+                       FontWeight="Medium"/>
 
-                <mah:SplitButton x:Name="AppLanguage"
-                                 Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
-                                 VerticalContentAlignment="Center"
+                <mah:SplitButton Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                                  Margin="40 5 40 0"
-                                 DisplayMemberPath="DisplayName"
-                                 HorizontalContentAlignment="Center"
                                  FontWeight="Medium"
-                                 SelectedIndex="0"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Center"
+                                 DisplayMemberPath="DisplayName"
+                                 
                                  ItemsSource="{Binding LanguageApp}"
                                  SelectedItem="{Binding SelectedLanguageApp}">
                     
