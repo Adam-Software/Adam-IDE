@@ -36,7 +36,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery) 
         {
-            SetFlyoutParametrs();
+            
             
             mCommunicationProvider = communicationProvider;
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
@@ -55,6 +55,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             
             if (isOpening)
             {
+                SetFlyoutParametrs();
                 Subscribe();
                 UpdateStatusConnection(mCommunicationProvider.IsTcpClientConnected);
                 

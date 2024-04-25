@@ -1,9 +1,7 @@
 ﻿#region system
 
 using System;
-using System.IO;
 using System.Windows;
-using System.Xml;
 
 #endregion
 

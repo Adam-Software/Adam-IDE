@@ -76,8 +76,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             LanguageApp = mCultureProvider.SupportAppCultures;
             SelectedLanguageApp = mCultureProvider.CurrentAppCulture;
-
-            NotificationOpacity = Settings.Default.NotificationOpacity;   
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -128,13 +126,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 if (isNewValue)
                     ChangeTheme(SelectedTheme);
             } 
-        }
-
-        private double notificationOpacity;
-        public double NotificationOpacity
-        {
-            get => notificationOpacity;
-            set => SetProperty(ref notificationOpacity, value);
         }
 
         #endregion

@@ -439,10 +439,6 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!--#region Show Notification on abort connection -->
@@ -455,33 +451,12 @@
                                   
                                   mah:HeaderedControlHelper.HeaderFontSize="12"
                                   mah:HeaderedControlHelper.HeaderFontWeight="Medium"
-                                  IsOn="{Binding IsMessageShowOnAbortMainConnection, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                                  IsOn="{Binding IsMessageShowOnAbortMainConnection, 
+                                                 Mode=TwoWay, 
+                                                 Source={x:Static properties:Settings.Default}}"/>
 
                 <!--#endregion-->
 
-                <!--#region Notificattion center opacity-->
-                
-                <StackPanel Grid.Row="1" 
-                            Margin="20 0 20 0"
-                            Orientation="Vertical">
-
-                    <Label Margin="-5 0 0 5"
-                           HorizontalAlignment="Left"
-                           Content="Прозрачность панели"
-                           FontWeight="Medium"/>
-
-                    <Slider 
-                        Ticks="0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1"
-                        Maximum="1"
-                        Minimum="0.1"
-                        Orientation="Horizontal"
-                        TickPlacement="BottomRight"
-                        IsSnapToTickEnabled="True"
-                        Value="{Binding NotificationOpacity}"
-                        Style="{DynamicResource MahApps.Styles.Slider}"/> 
-                </StackPanel>
-
-                <!--#endregion-->
                 
             </Grid>
 

@@ -76,7 +76,7 @@ namespace AdamController.Services
                 currentResourceDictionary = Application.Current.Resources.MergedDictionaries.FirstOrDefault(x => x?.Source?.OriginalString == resourceName);
             }
 
-            if (currentResourceDictionary == null && currentResourceDictionary?.MergedDictionaries.Count == 0) 
+            if (currentResourceDictionary == null || currentResourceDictionary?.MergedDictionaries.Count == 0) 
                 return;
            
             foreach (ResourceDictionary dictionary in currentResourceDictionary.MergedDictionaries)
