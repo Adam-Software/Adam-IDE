@@ -190,10 +190,10 @@ namespace AdamController.ViewModels
 
         private void LoadDefaultCultureInfo()
         {
-            CultureInfo lastLoadLanguage = mCultureProvider.AppSupportCultureInfos.FirstOrDefault(x => x.Name == Settings.Default.AppLanguage);
-            lastLoadLanguage ??= mCultureProvider.AppSupportCultureInfos.FirstOrDefault();
+            CultureInfo lastLoadLanguage = mCultureProvider.SupportAppCultures.FirstOrDefault(x => x.Name == Settings.Default.AppLanguage);
+            lastLoadLanguage ??= mCultureProvider.SupportAppCultures.FirstOrDefault();
 
-            mCultureProvider.LoadCultureInfoDictonary(lastLoadLanguage);
+            mCultureProvider.ChangeAppCulture(lastLoadLanguage);
         }
 
         #endregion

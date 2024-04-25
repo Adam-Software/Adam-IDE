@@ -1,7 +1,5 @@
 ﻿using AdamController.Services.Interfaces;
-using Prism.Mvvm;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -27,78 +25,62 @@ namespace AdamController.Services
 
         #region Public fields
 
-        public List<CultureInfo> AppSupportCultureInfos { get { return GetSupportAppCultures(); } }
+        public List<CultureInfo> SupportAppCultures { get { return GetSupportAppCultures(); } }
 
-        public CultureInfo CurrentAppCultureInfo {  get; private set; }
+        public CultureInfo CurrentAppCulture {  get; private set; }
 
         #endregion
 
         #region Public methods
 
-        public void LoadCultureInfoDictonary(CultureInfo culture)
+        public void ChangeAppCulture(CultureInfo culture)
         {
-            string resourceName = string.Empty;
-            List<CultureInfo> supportedCulture = AppSupportCultureInfos;
-
-            foreach (CultureInfo cultureInfo in supportedCulture)
-            {
-                if (cultureInfo.Name == culture?.Name)
-                {
-                    resourceName = $"pack://application:,,,/AdamController.Core;component/LocalizationDictionary/{cultureInfo.TwoLetterISOLanguageName}.xaml";
-                }
-            }
-
-            ResourceDictionary current = FindLoadedDictonary();
-
-            if(current.Count != 0) 
-            {
-                Application.Current.Resources.MergedDictionaries.Remove(current);
-            }
-
+            string resourceName = $"pack://application:,,,/AdamController.Core;component/LocalizationDictionary/{culture.TwoLetterISOLanguageName}.xaml";
             Uri uri = new(resourceName);
-
-            var resources = new ResourceDictionary
+            ResourceDictionary resources = new()
             {
                 Source = uri
             };
 
+            RemoveLoadedDictonary();
+   
             Application.Current.Resources.MergedDictionaries.Add(resources);
-
-            SetCurrentCulture(culture);
-        }
-
-        #endregion
-
-        private void SetCurrentCulture(CultureInfo culture)
-        {
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-            CurrentAppCultureInfo = culture;
+            UpdateCurrentCulture(culture);
         }
 
 
         public void Dispose()
         {
-            
+
         }
+
+        #endregion
 
         #region Private method
 
-        private ResourceDictionary FindLoadedDictonary()
+        private void UpdateCurrentCulture(CultureInfo culture)
         {
-            var supportedCulture = AppSupportCultureInfos;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CurrentAppCulture = culture;
+        }
 
-            foreach (var cultureInfo in supportedCulture)
+        private void RemoveLoadedDictonary()
+        {
+            List<CultureInfo> supportedCultures = SupportAppCultures;
+            ResourceDictionary currentResourceDictionary = null;
+
+            foreach (var culture in supportedCultures)
             {
-                string resourceName = $"pack://application:,,,/AdamController.Core;component/LocalizationDictionary/{cultureInfo.TwoLetterISOLanguageName}.xaml";
-                var uri = new Uri(resourceName);
-                ResourceDictionary current = Application.Current.Resources.MergedDictionaries.FirstOrDefault(x => x.Source == uri);
-
-                if (current != null)
-                    return current;
+                string resourceName = $"pack://application:,,,/AdamController.Core;component/LocalizationDictionary/{culture.TwoLetterISOLanguageName}.xaml"; 
+                currentResourceDictionary = Application.Current.Resources.MergedDictionaries.FirstOrDefault(x => x?.Source?.OriginalString == resourceName);
             }
 
-            return new ResourceDictionary();
+            if (currentResourceDictionary == null && currentResourceDictionary?.MergedDictionaries.Count == 0) 
+                return;
+           
+            foreach (ResourceDictionary dictionary in currentResourceDictionary.MergedDictionaries)
+                Application.Current.Resources.MergedDictionaries.Remove(dictionary);
         }
 
         private static List<CultureInfo> GetSupportAppCultures()

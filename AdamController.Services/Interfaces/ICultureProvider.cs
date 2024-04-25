@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -8,8 +6,17 @@ namespace AdamController.Services.Interfaces
 {
     public interface ICultureProvider : IDisposable
     {
-        public List<CultureInfo> AppSupportCultureInfos { get; }
-        public void LoadCultureInfoDictonary(CultureInfo culture);
-        public CultureInfo CurrentAppCultureInfo { get; }
+        #region Public fields
+
+        public List<CultureInfo> SupportAppCultures { get; }
+        public CultureInfo CurrentAppCulture { get; }
+
+        #endregion
+
+        #region Public methods
+
+        public void ChangeAppCulture(CultureInfo culture);
+
+        #endregion
     }
 }

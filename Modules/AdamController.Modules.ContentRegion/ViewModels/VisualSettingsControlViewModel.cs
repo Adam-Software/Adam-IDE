@@ -74,8 +74,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ThemesCollection = mThemeManager.AppThemesCollection;
             SelectedTheme = mThemeManager.GetCurrentAppTheme();
 
-            LanguageApp = mCultureProvider.AppSupportCultureInfos;
-            SelectedLanguageApp = mCultureProvider.CurrentAppCultureInfo;
+            LanguageApp = mCultureProvider.SupportAppCultures;
+            SelectedLanguageApp = mCultureProvider.CurrentAppCulture;
 
             NotificationOpacity = Settings.Default.NotificationOpacity;   
         }
@@ -169,7 +169,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void ChangeAppLanguage(CultureInfo cultureInfo)
         {
-            mCultureProvider.LoadCultureInfoDictonary(cultureInfo);
+            mCultureProvider.ChangeAppCulture(cultureInfo);
             ChangeBlocklyLanguage(cultureInfo);
 
             Settings.Default.AppLanguage = cultureInfo.Name;
