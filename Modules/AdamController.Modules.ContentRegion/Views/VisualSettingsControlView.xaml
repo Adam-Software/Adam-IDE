@@ -296,7 +296,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
        
-                    <!--#region Blockly Language -->
+                    <!--#region Blockly Language 
 
                     <Label Grid.Row="0"
                            HorizontalAlignment="Center"
@@ -319,11 +319,11 @@
                     </mah:SplitButton>
 
 
-                    <!--#endregion-->
+                    #endregion-->
 
                     <!--#region  ShowTrash button-->
                     
-                    <ToggleButton Grid.Row="2" 
+                    <ToggleButton Grid.Row="0" 
                                   Margin="23 10 23 10"
                                   ToolTip="Показывать корзину в рабочей области"
                                   IsChecked="{Binding BlocklyShowTrashcan, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
@@ -342,7 +342,7 @@
 
                     <!--#region  ShowGrid button-->
 
-                    <ToggleButton Grid.Row="3"
+                    <ToggleButton Grid.Row="1"
                                   Margin="23 10 23 10"
                                   ToolTip="Показывать сетку в рабочей области"
                                   IsChecked="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
@@ -361,7 +361,7 @@
 
                     <!--#region SnapToGrid button -->
 
-                    <ToggleButton Grid.Row="4"
+                    <ToggleButton Grid.Row="2"
                                   Margin="23 10 23 10"
                                   ToolTip="Выравнивать блоки"
                                   IsChecked="{Binding BlocklySnapToGridNodes, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
@@ -379,7 +379,7 @@
                     
                     <!--#region Restore on load button -->
 
-                    <ToggleButton Grid.Row="5"
+                    <ToggleButton Grid.Row="3"
                                   Margin="23 10 23 10"
                                   ToolTip="Загружать последние сохраненые блоки"
                                   IsChecked="{Binding BlocklyRestoreBlockOnLoad, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
@@ -398,7 +398,7 @@
 
                     <!--#region Block workspace  -->
 
-                    <ToggleButton Grid.Row="6"
+                    <ToggleButton Grid.Row="4"
                                   Margin="23 10 23 10"
                                   ToolTip="Блокировать рабочий стол scrath редактора при запуске программы"
                                   IsChecked="{Binding ShadowWorkspaceInDebug, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
@@ -417,7 +417,7 @@
 
                     <!--#region Dont show browser right click menu in blockly -->
 
-                    <ToggleButton Grid.Row="7"
+                    <ToggleButton Grid.Row="5"
                                   Margin="23 10 23 10"
                                   ToolTip="Не показывать меню браузера в scrath редакторе"
                                   IsChecked="{Binding DontShowBrowserMenuInBlockly, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">

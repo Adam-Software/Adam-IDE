@@ -41,18 +41,12 @@ using MahApps.Metro.Controls;
 
 #region other
 
-using ControlzEx.Theming;
-using ICSharpCode.AvalonEdit.Highlighting;
 using AdamController.Core.Properties;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net;
 using AdamController.Services.TcpClientDependency;
-using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using AdamController.Core;
-using System.Globalization;
-using System.Threading;
-using System.Windows.Markup;
+using System.ComponentModel;
 
 #endregion
 
@@ -64,7 +58,7 @@ namespace AdamController
 
         public App()
         {
-            SetupUnhandledExceptionHandling();
+            Subscribe();
         }
 
         #endregion
@@ -94,7 +88,7 @@ namespace AdamController
 
             containerRegistry.RegisterSingleton<IFlyoutManager>(containerRegistry =>
             {
-                IContainer container = containerRegistry.GetContainer();
+                DryIoc.IContainer container = containerRegistry.GetContainer();
                 IRegionManager regionManager = containerRegistry.Resolve<IRegionManager>();
 
                 return new FlyoutManager(container, regionManager);
@@ -231,14 +225,9 @@ namespace AdamController
 
         private void OnAppCrashOrExit()
         {
-            SaveSettiings();
+            Unsubscribe();
             DisposeServices();
             Current.Shutdown();
-        }
-
-        private void SaveSettiings()
-        {
-            Settings.Default.Save();
         }
 
         /// <summary>
@@ -263,9 +252,31 @@ namespace AdamController
             Container.Resolve<ICultureProvider>().Dispose();
         }
 
+        #region Subscribes
+
+        private void Subscribe()
+        {
+            SubscribeUnhandledExceptionHandling();
+            Settings.Default.PropertyChanged += OnPropertyChange;
+        }
+
+        private void Unsubscribe()
+        {
+            Settings.Default.PropertyChanged -= OnPropertyChange;
+        }
+
+        #endregion
+
+        #region On raise event
+        private void OnPropertyChange(object sender, PropertyChangedEventArgs e)
+        {
+            Settings.Default.Save();
+        }
+        #endregion
+
         #region Intercepting Unhandled Exception
 
-        private void SetupUnhandledExceptionHandling()
+        private void SubscribeUnhandledExceptionHandling()
         {
             // Catch exceptions from all threads in the AppDomain.
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>

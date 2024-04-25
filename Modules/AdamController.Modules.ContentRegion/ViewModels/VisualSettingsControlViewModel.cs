@@ -219,9 +219,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ChangeBlockllyTheme(chagedTheme.BaseColorScheme);
 
             Settings.Default.AppThemeName = chagedTheme.Name;
-
-            //Is it necessary to save here?
-            Settings.Default.Save();
         }
 
         private void ChangeBlockllyTheme(string baseColorAppTheme)
@@ -248,8 +245,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ChangeBlocklyLanguage(cultureInfo);
 
             Settings.Default.AppLanguage = cultureInfo.Name;
-            //Is it necessary to save here?
-            Settings.Default.Save();
         }
 
         private void ChangeBlocklyLanguage(CultureInfo cultureInfo)
