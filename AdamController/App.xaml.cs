@@ -65,24 +65,7 @@ namespace AdamController
         public App()
         {
             SetupUnhandledExceptionHandling();
-            InitializeCultures();
         }
-
-        #region InitializeCultures
-
-        private static void InitializeCultures()
-        {
-            var en = new CultureInfo("en-EN");
-            var ru = new CultureInfo("ru-RU");
-
-            Thread.CurrentThread.CurrentCulture = en;
-            Thread.CurrentThread.CurrentUICulture = en;
-            
-            //FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
-            //    new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-        }
-
-        #endregion
 
         #endregion
 
@@ -94,6 +77,7 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<ICultureProvider, CultureProvider>();
             containerRegistry.RegisterSingleton<IFileManagmentService, FileManagmentService>();
             containerRegistry.RegisterSingleton<IFolderManagmentService, FolderManagmentService>();
 
@@ -276,6 +260,7 @@ namespace AdamController
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();
             Container.Resolve<IWebApiService>().Dispose();
+            Container.Resolve<ICultureProvider>().Dispose();
         }
 
         #region Intercepting Unhandled Exception

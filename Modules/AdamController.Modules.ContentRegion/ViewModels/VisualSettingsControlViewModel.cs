@@ -11,6 +11,7 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows.Media;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
@@ -27,15 +28,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private readonly IFlyoutManager mFlyoutManager;
         private readonly IThemeManagerService mThemeManager;
+        private readonly ICultureProvider mCultureProvider;
 
         #endregion
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IThemeManagerService themeManager) : base(regionManager, dialogService)
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IThemeManagerService themeManager, ICultureProvider cultureProvider ) : base(regionManager, dialogService)
         {
             mFlyoutManager = flyoutManager;
             mThemeManager = themeManager;
+            mCultureProvider = cultureProvider;
 
             OpenAdvancedBlocklySettingsDelegateCommand = new DelegateCommand(OpenAdvancedBlocklySettings, OpenAdvancedBlocklySettingsCanExecute);
         }
@@ -72,17 +75,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ThemesCollection = mThemeManager.AppThemesCollection;
             SelectedTheme = mThemeManager.GetCurrentAppTheme();
 
-            LanguageApp = new ObservableCollection<AppLanguageModel>
-            {
-                new AppLanguageModel { AppLanguage = "ru", LanguageName = "Русский" }
-            };
+            LanguageApp = new ReadOnlyObservableCollection<CultureInfo>(new ObservableCollection<CultureInfo>(mCultureProvider.AppSupportCultureInfos));
+            SelectedLanguageApp = mCultureProvider.CurrentAppCultureInfo;
 
+            //LanguageApp = new ObservableCollection<AppLanguageModel>
+            //{
+            //    new AppLanguageModel { AppLanguage = "ru", LanguageName = "Русский" }
+            //};
 
-            BlocklyLanguageCollection = new ObservableCollection<BlocklyLanguageModel>
+            /*old*/
+            /*BlocklyLanguageCollection = new ObservableCollection<BlocklyLanguageModel>
             {
                 new BlocklyLanguageModel { BlocklyLanguage = BlocklyLanguage.ru, LanguageName = "Русский" },
                 new BlocklyLanguageModel { BlocklyLanguage =  BlocklyLanguage.en, LanguageName = "Английский" }
-            };
+            };*/
 
             //SelectedLanguageApp = LanguageApp.FirstOrDefault(x => x.AppLanguage == Settings.Default.AppLanguage);
             //SelectedBlocklyWorkspaceLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyWorkspaceLanguage);
@@ -103,18 +109,24 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Public fields
 
-        private ObservableCollection<AppLanguageModel> languageApp;
-        public ObservableCollection<AppLanguageModel> LanguageApp 
+        private ReadOnlyObservableCollection<CultureInfo> languageApp;
+        public ReadOnlyObservableCollection<CultureInfo> LanguageApp 
         {
             get => languageApp;
             private set => SetProperty(ref languageApp, value); 
         }
 
-        private ObservableCollection<BlocklyLanguageModel> blocklyLanguageCollection;
-        public ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection 
+        private CultureInfo selectedLanguageApp;
+        public CultureInfo SelectedLanguageApp
         {
-            get => blocklyLanguageCollection;
-            private set => SetProperty(ref  blocklyLanguageCollection, value);
+            get => selectedLanguageApp;
+            set
+            {
+                bool isNewValue = SetProperty(ref selectedLanguageApp, value);
+
+                if(isNewValue)
+                    ChangeAppLanguage(SelectedLanguageApp);
+            }
         }
 
         public ReadOnlyObservableCollection<Theme> themesCollection;
@@ -136,6 +148,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     ChangeTheme(SelectedTheme);
             } 
         }
+
+        /*private ObservableCollection<BlocklyLanguageModel> blocklyLanguageCollection;
+        public ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection 
+        {
+            get => blocklyLanguageCollection;
+            private set => SetProperty(ref  blocklyLanguageCollection, value);
+        }*/
 
         /*private ObservableCollection<BlocklyThemeModel> blocklyThemes;
         public ObservableCollection<BlocklyThemeModel> BlocklyThemes 
@@ -194,6 +213,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Private methods
 
+        private void ChangeTheme(Theme theme)
+        {
+            Theme chagedTheme = mThemeManager.ChangeAppTheme(theme);
+            ChangeBlockllyTheme(chagedTheme.BaseColorScheme);
+
+            Settings.Default.AppThemeName = chagedTheme.Name;
+
+            //Is it necessary to save here?
+            Settings.Default.Save();
+        }
+
         private void ChangeBlockllyTheme(string baseColorAppTheme)
         {
             if (!Settings.Default.ChangeBlocklyThemeToggleSwitchState)
@@ -212,15 +242,29 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
-        private void ChangeTheme(Theme theme)
+        private void ChangeAppLanguage(CultureInfo cultureInfo)
         {
-            Theme chagedTheme = mThemeManager.ChangeAppTheme(theme);
-            ChangeBlockllyTheme(chagedTheme.BaseColorScheme);
+            mCultureProvider.LoadCultureInfoDictonary(cultureInfo);
+            ChangeBlocklyLanguage(cultureInfo);
 
-            Settings.Default.AppThemeName = chagedTheme.Name;
-
+            Settings.Default.AppLanguage = cultureInfo.Name;
             //Is it necessary to save here?
             Settings.Default.Save();
+        }
+
+        private void ChangeBlocklyLanguage(CultureInfo cultureInfo)
+        {
+            if (cultureInfo.TwoLetterISOLanguageName == "en")
+            {
+                Settings.Default.BlocklyWorkspaceLanguage = BlocklyLanguage.en;
+                Settings.Default.BlocklyToolboxLanguage = BlocklyLanguage.en;
+            }
+                
+            if (cultureInfo.TwoLetterISOLanguageName == "ru")
+            {
+                Settings.Default.BlocklyWorkspaceLanguage = BlocklyLanguage.ru;
+                Settings.Default.BlocklyToolboxLanguage = BlocklyLanguage.ru;
+            }
         }
 
         #endregion

@@ -6,6 +6,8 @@ using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using Prism.Commands;
 using Prism.Regions;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -29,14 +31,14 @@ namespace AdamController.ViewModels
         private readonly IWebApiService mWebApiService;
         private readonly IAvalonEditService mAvalonEditService;
         private readonly IThemeManagerService mThemeManager;
-
+        private readonly ICultureProvider mCultureProvider;
         #endregion
 
         #region ~
 
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
                     ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
-                    IAvalonEditService avalonEditService, IThemeManagerService themeManager) 
+                    IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider) 
         {
             RegionManager = regionManager;
             mWebApiService = webApiService;
@@ -46,6 +48,7 @@ namespace AdamController.ViewModels
             mFolderManagment = folderManagment;
             mAvalonEditService = avalonEditService;
             mThemeManager = themeManager;
+            mCultureProvider = cultureProvider;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
             Subscribe();
@@ -185,6 +188,14 @@ namespace AdamController.ViewModels
             mThemeManager.ChangeAppTheme(appThemeName);
         }
 
+        private void LoadDefaultCultureInfo()
+        {
+            CultureInfo lastLoadLanguage = mCultureProvider.AppSupportCultureInfos.FirstOrDefault(x => x.Name == Settings.Default.AppLanguage);
+            lastLoadLanguage ??= mCultureProvider.AppSupportCultureInfos.FirstOrDefault();
+
+            mCultureProvider.LoadCultureInfoDictonary(lastLoadLanguage);
+        }
+
         #endregion
 
         #region Subscriptions
@@ -220,6 +231,7 @@ namespace AdamController.ViewModels
         /// </summary>
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
+            LoadDefaultCultureInfo();
             SaveFolderPathToSettings();
             LoadCustomAvalonEditHighlighting();
             LoadAppTheme();

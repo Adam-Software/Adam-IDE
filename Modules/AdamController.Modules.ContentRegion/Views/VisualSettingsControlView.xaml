@@ -99,7 +99,7 @@
                                  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                                  VerticalContentAlignment="Center"
                                  Margin="40 5 40 0"
-                                 DisplayMemberPath="LanguageName"
+                                 DisplayMemberPath="DisplayName"
                                  HorizontalContentAlignment="Center"
                                  FontWeight="Medium"
                                  SelectedIndex="0"
