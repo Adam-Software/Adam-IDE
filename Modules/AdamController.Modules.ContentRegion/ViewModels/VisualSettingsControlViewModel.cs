@@ -1,7 +1,6 @@
 ﻿using AdamBlocklyLibrary.Enum;
 using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
-using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
@@ -71,32 +70,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
 
-            /*new*/
             ThemesCollection = mThemeManager.AppThemesCollection;
             SelectedTheme = mThemeManager.GetCurrentAppTheme();
 
             LanguageApp = new ReadOnlyObservableCollection<CultureInfo>(new ObservableCollection<CultureInfo>(mCultureProvider.AppSupportCultureInfos));
             SelectedLanguageApp = mCultureProvider.CurrentAppCultureInfo;
 
-            //LanguageApp = new ObservableCollection<AppLanguageModel>
-            //{
-            //    new AppLanguageModel { AppLanguage = "ru", LanguageName = "Русский" }
-            //};
-
-            /*old*/
-            /*BlocklyLanguageCollection = new ObservableCollection<BlocklyLanguageModel>
-            {
-                new BlocklyLanguageModel { BlocklyLanguage = BlocklyLanguage.ru, LanguageName = "Русский" },
-                new BlocklyLanguageModel { BlocklyLanguage =  BlocklyLanguage.en, LanguageName = "Английский" }
-            };*/
-
-            //SelectedLanguageApp = LanguageApp.FirstOrDefault(x => x.AppLanguage == Settings.Default.AppLanguage);
-            //SelectedBlocklyWorkspaceLanguage = BlocklyLanguageCollection.FirstOrDefault(x => x.BlocklyLanguage == Settings.Default.BlocklyWorkspaceLanguage);
-
-            NotificationOpacity = Settings.Default.NotificationOpacity;
-
-            
-            
+            NotificationOpacity = Settings.Default.NotificationOpacity;   
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -148,59 +128,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     ChangeTheme(SelectedTheme);
             } 
         }
-
-        /*private ObservableCollection<BlocklyLanguageModel> blocklyLanguageCollection;
-        public ObservableCollection<BlocklyLanguageModel> BlocklyLanguageCollection 
-        {
-            get => blocklyLanguageCollection;
-            private set => SetProperty(ref  blocklyLanguageCollection, value);
-        }*/
-
-        /*private ObservableCollection<BlocklyThemeModel> blocklyThemes;
-        public ObservableCollection<BlocklyThemeModel> BlocklyThemes 
-        { 
-            get => blocklyThemes; 
-            private set => SetProperty(ref blocklyThemes, value); 
-        }*/
-
-        /*private ReadOnlyObservableCollection<string> colorScheme;
-        public ReadOnlyObservableCollection<string> ColorScheme 
-        { 
-            get => colorScheme;
-            private set => SetProperty(ref colorScheme, value); 
-        }*/
-
-        /*private AppLanguageModel selectedLanguageApp;
-        public AppLanguageModel SelectedLanguageApp
-        {
-            get => selectedLanguageApp;
-            set
-            {
-                if (value == selectedLanguageApp)
-                {
-                    return;
-                }
-
-                bool isNewValue = SetProperty(ref selectedLanguageApp, value);
-
-                if (isNewValue)
-                    Settings.Default.AppLanguage = SelectedLanguageApp.AppLanguage;
-            }
-        }*/
-
-        /*private BlocklyLanguageModel selectedBlocklyWorkspaceLanguage;
-        public BlocklyLanguageModel SelectedBlocklyWorkspaceLanguage
-        {
-            get => selectedBlocklyWorkspaceLanguage;
-            set
-            {
-                bool isNewValue = SetProperty(ref selectedBlocklyWorkspaceLanguage, value);
-
-                if (isNewValue)
-                    Settings.Default.BlocklyWorkspaceLanguage = SelectedBlocklyWorkspaceLanguage.BlocklyLanguage;
-            }
-        }*/
-
 
         private double notificationOpacity;
         public double NotificationOpacity
