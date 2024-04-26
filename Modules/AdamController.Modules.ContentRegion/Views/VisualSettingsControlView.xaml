@@ -4,470 +4,327 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
+             xmlns:converters="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core" 
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
+    <UserControl.Resources>
+        <converters:MultiConverter x:Key="MultiConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!--#region Color Theme settigs-->
-        
-        <GroupBox Grid.Row="0" Grid.Column="0" 
-                  Header="Цветовая схема" 
-                  Margin="20 20 0 0"
-                  
+        <DockPanel Grid.Column="0" LastChildFill="False">
+
+            <GroupBox DockPanel.Dock="Top"
+                  Header="Язык и тема"
+                  Margin="0 0 0 10"
+                  Padding="0 0 0 20"
                   mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                  mah:HeaderedControlHelper.HeaderFontWeight="Bold"
-                  mah:ControlsHelper.ContentCharacterCasing="Normal"
-                  Style="{DynamicResource MahApps.Styles.GroupBox}">
+                  mah:ControlsHelper.ContentCharacterCasing="Normal">
 
-            <Grid HorizontalAlignment="Center">
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="150"/>
-                    <ColumnDefinition Width="Auto" MinWidth="150"/>
-                </Grid.ColumnDefinitions>
+                <StackPanel>
 
-                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Content="Тема приложения" 
-                       VerticalContentAlignment="Center" 
+                    <Label Content="Тема приложения" 
                        HorizontalContentAlignment="Center"
                        FontWeight="Medium"/>
 
-                <mah:SplitButton Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                                 FontWeight="Medium"
-                                 Margin="40 5 40 10"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Center"
+                    <mah:SplitButton FontWeight="Medium"
+                                 Margin="20 0 20 0"
                                  DisplayMemberPath="DisplayName"
-                                 
                                  SelectedItem="{Binding SelectedTheme}"
                                  ItemsSource="{Binding ThemesCollection}">
-                    
-                    <mah:SplitButton.Icon>
-                        <iconPacks:PackIconEvaIcons Kind="ColorPalette" Margin="0 0 5 0"/>
-                    </mah:SplitButton.Icon>
-                </mah:SplitButton>
 
-                <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Content="Язык приложения" 
-                       VerticalContentAlignment="Center" 
+                        <mah:SplitButton.Icon>
+                            <iconPacks:PackIconEvaIcons Kind="ColorPalette" Margin="0 0 5 0"/>
+                        </mah:SplitButton.Icon>
+                    </mah:SplitButton>
+
+                    <Label Content="Язык приложения" 
+                       
                        HorizontalContentAlignment="Center"
                        FontWeight="Medium"/>
 
-                <mah:SplitButton Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
-                                 Margin="40 5 40 0"
+                    <mah:SplitButton Grid.Row="3" 
+                                 Margin="20 0 20 0"
                                  FontWeight="Medium"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Center"
                                  DisplayMemberPath="DisplayName"
-                                 
                                  ItemsSource="{Binding LanguageApp}"
                                  SelectedItem="{Binding SelectedLanguageApp}">
-                    
-                    <mah:SplitButton.Icon>
-                        <StackPanel Orientation="Horizontal">
+
+                        <mah:SplitButton.Icon>
                             <iconPacks:PackIconFeatherIcons Kind="Globe" Margin="0 0 5 0"/>
-                        </StackPanel>
-                    </mah:SplitButton.Icon>
-                </mah:SplitButton>
-            </Grid>
-        </GroupBox>
-        
-        <!--#endregion-->
+                        </mah:SplitButton.Icon>
+                    </mah:SplitButton>
+                </StackPanel>
+            </GroupBox>
 
-        <GroupBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
-                  Header="Настройки скретч-редактора" 
-                  Margin="20 20 0 0"
-                  Style="{DynamicResource MahApps.Styles.GroupBox}"
-                  
-                  mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                  mah:HeaderedControlHelper.HeaderFontWeight="Bold"
-                  mah:ControlsHelper.ContentCharacterCasing="Normal">
-            
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
 
-                <!-- #region Block visible settings -->
-                
-                <Grid Grid.Column="0" Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-
-                    <Label Grid.Row="0"
-                           Margin="15 0 0 0"
-                           Content="Отображаемые наборы блоков" 
-                           VerticalContentAlignment="Center" 
-                           HorizontalContentAlignment="Left"
-                           FontWeight="Medium"/>
-
-                    <!--#region color category-->
-
-                    <mah:ToggleSwitch Grid.Row="1"
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyLogicCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-                        <TextBlock Text="Логические"></TextBlock>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region color category-->
-
-                    <mah:ToggleSwitch Grid.Row="2" 
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyColorCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <TextBlock Text="Цвета"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region lists category-->
-
-                    <mah:ToggleSwitch Grid.Row="3" 
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyListsCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <TextBlock Text="Списки"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region loop category-->
-
-                    <mah:ToggleSwitch Grid.Row="4"
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyLoopCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <TextBlock Text="Циклы"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region math category-->
-
-                    <mah:ToggleSwitch Grid.Row="5" 
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyMathCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <TextBlock Text="Математические"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region procedure category-->
-
-                    <mah:ToggleSwitch Grid.Row="6"
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyProcedureCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <TextBlock Text="Процедуры"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region text category-->
-
-                    <mah:ToggleSwitch Grid.Row="7"
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyTextCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <TextBlock Text="Текстовые"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region variable category-->
-
-                    <mah:ToggleSwitch Grid.Row="9"
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyVariableCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-                        <TextBlock Text="Переменные"></TextBlock>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region adam blocks category-->
-
-                    <mah:ToggleSwitch x:Name="BlocklyAdamCommonCategoryState"
-                                      Grid.Row="11"
-                                      Margin="20 0 0 0"
-                                      IsOn="{Binding BlocklyAdamCommonCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-                        <TextBlock Text="Блоки для Адама"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                    <!--#region adam v 2.6 blocks category-->
-
-                    <mah:ToggleSwitch Grid.Row="12"
-                                      Margin="20 0 0 0"
-                                      IsEnabled="{Binding ElementName=BlocklyAdamCommonCategoryState, Path=IsOn}"
-                                      IsOn="{Binding BlocklyAdamTwoCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-                        <TextBlock Text="Блоки для Adam v.2.6"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-                    
-                    <!--#region adam v 2.7 blocks category-->
-
-                    <mah:ToggleSwitch Grid.Row="13"
-                                      Margin="20 0 0 0"
-                                      IsEnabled="{Binding ElementName=BlocklyAdamCommonCategoryState, Path=IsOn}"
-                                      IsOn="{Binding BlocklyAdamThreeCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-                                      >
-                        <TextBlock Text="Блоки для Adam v.2.7"/>
-                    </mah:ToggleSwitch>
-
-                    <!--#endregion-->
-
-                </Grid>
-                
-                <!--#endregion-->
-
-                <Grid Grid.Row="0"  Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <!--#region  ShowTrash button-->
-                    
-                    <ToggleButton Grid.Row="0" 
-                                  Margin="23 10 23 10"
-                                  ToolTip="Показывать корзину в рабочей области"
-                                  IsChecked="{Binding BlocklyShowTrashcan, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="TrashCanOutline" Margin="10 0 5 0"/>
-
-                            <TextBlock Text="Показывать корзину" 
-                                       FontWeight="Normal"
-                                       VerticalAlignment="Center"/>
-
-                        </StackPanel>
-                    </ToggleButton>
-                    
-                    <!--#endregion-->
-
-                    <!--#region  ShowGrid button-->
-
-                    <ToggleButton Grid.Row="1"
-                                  Margin="23 10 23 10"
-                                  ToolTip="Показывать сетку в рабочей области"
-                                  IsChecked="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial HorizontalAlignment="Left" Kind="Grid" Margin="0 0 5 0"/>
-
-                            <TextBlock Text="Показывать сетку" 
-                                       FontWeight="Normal"
-                                       VerticalAlignment="Center"/>
-
-                        </StackPanel>
-                    </ToggleButton>
-
-                    <!--#endregion-->
-
-                    <!--#region SnapToGrid button -->
-
-                    <ToggleButton Grid.Row="2"
-                                  Margin="23 10 23 10"
-                                  ToolTip="Выравнивать блоки"
-                                  IsChecked="{Binding BlocklySnapToGridNodes, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial  Kind="ViewGrid" Margin="10 0 5 0"/>
-
-                            <TextBlock Text="Выравнивать блоки" 
-                                       FontWeight="Normal"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ToggleButton>
-                    
-                    <!--#endregion-->
-                    
-                    <!--#region Restore on load button -->
-
-                    <ToggleButton Grid.Row="3"
-                                  Margin="23 10 23 10"
-                                  ToolTip="Загружать последние сохраненые блоки"
-                                  IsChecked="{Binding BlocklyRestoreBlockOnLoad, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial  Kind="Restore" Margin="10 0 5 0"/>
-
-                            <TextBlock Text="Загружать последние" 
-                                       FontWeight="Normal"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ToggleButton>
-
-
-                    <!--#endregion-->
-
-                    <!--#region Block workspace  -->
-
-                    <ToggleButton Grid.Row="4"
-                                  Margin="23 10 23 10"
-                                  ToolTip="Блокировать рабочий стол scrath редактора при запуске программы"
-                                  IsChecked="{Binding ShadowWorkspaceInDebug, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial  Kind="BlockHelper" Margin="10 0 5 0"/>
-
-                            <TextBlock Text="Блокировать при запуске программы" 
-                                       FontWeight="Normal"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ToggleButton>
-
-
-                    <!--#endregion-->
-
-                    <!--#region Dont show browser right click menu in blockly -->
-
-                    <ToggleButton Grid.Row="5"
-                                  Margin="23 10 23 10"
-                                  ToolTip="Не показывать меню браузера в scrath редакторе"
-                                  IsChecked="{Binding DontShowBrowserMenuInBlockly, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
-
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial  Kind="Menu" Margin="10 0 5 0"/>
-
-                            <TextBlock Text="Не показывать меню браузера" 
-                                       FontWeight="Normal"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ToggleButton>
-
-
-                    <!--#endregion-->
-
-                    <!--#region Advanced Flayot open button -->
-
-                    <Button Grid.Row="8"
-                            Margin="20 5 20 5"
-                            Padding="10 5 10 5"
-                            Command="{Binding OpenAdvancedBlocklySettingsDelegateCommand}"
-                            Content="Продвинутые настройки"
-                            Style="{DynamicResource MahApps.Styles.Button.Split}"/>
-                    
-                    <!--#endregion-->
-
-                </Grid>
-
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Grid.Row="0" Grid.Column="3"
+            <GroupBox DockPanel.Dock="Top"
                   Header="Настройки центра уведомлений" 
-                  Margin="20 20 0 0"
-                  Style="{DynamicResource MahApps.Styles.GroupBox}"
-                  
+                  Margin="0 0 0 10"
+                  Padding="10"
                   mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                  mah:HeaderedControlHelper.HeaderFontWeight="Bold"
                   mah:ControlsHelper.ContentCharacterCasing="Normal">
 
-           
-                <!--#region Show Notification on abort connection -->
 
-                <mah:ToggleSwitch Grid.Row="0"
-                                  Margin="20 0 20 0"
+                <StackPanel>
+
+                    <mah:ToggleSwitch Padding="10 0 0 0"
                                   Header="Уведомлять об отключении от робота"
                                   OffContent="Не уведомлять"
                                   OnContent="Уведомлять"
-                                  
-                                  mah:HeaderedControlHelper.HeaderFontSize="12"
-                                  mah:HeaderedControlHelper.HeaderFontWeight="Medium"
-                                  IsOn="{Binding IsMessageShowOnAbortMainConnection, 
-                                                 Mode=TwoWay, 
-                                                 Source={x:Static properties:Settings.Default}}"/>
+                                  IsOn="{Binding IsMessageShowOnAbortMainConnection, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
-                <!--#endregion-->
-                
-                
-           
-
-            <!--#endregion-->
-            
-        </GroupBox>
-
-        <GroupBox Grid.Row="0" Grid.Column="4"
-                  Header="Настройки вывода результатов" 
-                  Margin="20 20 0 0"
-                  Style="{DynamicResource MahApps.Styles.GroupBox}"
-          
-                  mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                  mah:HeaderedControlHelper.HeaderFontWeight="Bold"
-                  mah:ControlsHelper.ContentCharacterCasing="Normal">
-
-            <StackPanel>
-                
-                <mah:ToggleSwitch Grid.Row="16" Grid.Column="0"
-                                  Margin="7 0 0 0"
-                                  Header="Показывать в области выполнения"
-                                  OnContent="Отчет о запуске и результат выполнения"
-                                  OffContent="Только результат выполнения"
-                                  VerticalAlignment="Bottom"
-                                  IsOn="{Binding ChangeExtendedExecuteReportToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
-
-            <CheckBox Grid.Row="16" Grid.Column="1"
-                      Grid.ColumnSpan="2"
-                      IsChecked="True"
-                      Content="Использовать так же для редактора скриптов"
-                      IsEnabled="False"
-                      HorizontalAlignment="Center"/>
-            </StackPanel>
-
-        </GroupBox>
+                </StackPanel>
 
 
+            </GroupBox>
+
+            <GroupBox DockPanel.Dock="Top"
+                      Header="Настройки вывода результатов" 
+                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
+                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+
+                <StackPanel>
+
+                    <mah:ToggleSwitch Padding="10 0 0 0"
+                                      Header="Показывать в области выполнения"
+                                      OnContent="Результат запуска и выполнения"
+                                      OffContent="Только результат выполнения"
+                                      IsOn="{Binding ChangeExtendedExecuteReportToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                </StackPanel>
+
+            </GroupBox>
+        </DockPanel>
+
+        <DockPanel Margin="10 0 0 0" Grid.Column="1" LastChildFill="False">
+
+            <GroupBox DockPanel.Dock="Top"
+                      Header="Настройки скретч редактора" 
+                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
+                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--#region Show blocks -->
+                    
+                    <DockPanel Grid.Column="0" 
+                               Grid.Row="0"
+                               Margin="10 0 10 0"
+                               LastChildFill="False">
+                        
+                        <Label DockPanel.Dock="Top"
+                               Content="Отображаемые наборы блоков" 
+                               VerticalContentAlignment="Center" 
+                               HorizontalContentAlignment="Left"
+                               FontWeight="Medium"/>
+
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Логические"
+                                          IsOn="{Binding BlocklyLogicCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                        
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Цвета"
+                                          IsOn="{Binding BlocklyColorCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Списки"
+                                          IsOn="{Binding BlocklyListsCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Циклы"
+                                          IsOn="{Binding BlocklyLoopCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Математические"
+                                          IsOn="{Binding BlocklyMathCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                        
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Процедуры"
+                                          IsOn="{Binding BlocklyProcedureCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Текстовые"
+                                          IsOn="{Binding BlocklyTextCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                        
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Переменные"
+                                          IsOn="{Binding BlocklyVariableCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                        <!--<mah:ToggleSwitch DockPanel.Dock="Top" x:Name="BlocklyAdamCommonCategoryState"
+                                          Content="Блоки для Адама"
+                                          IsOn="{Binding BlocklyAdamCommonCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />-->
+
+                        <mah:ToggleSwitch DockPanel.Dock="Top"
+                                          Content="Блоки Adam v.2.6"
+                                          IsOn="{Binding BlocklyAdamTwoCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                        <mah:ToggleSwitch DockPanel.Dock="Top"                                          
+                                          IsOn="{Binding BlocklyAdamThreeCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                          Content="Блоки Adam v.2.7">
+                        </mah:ToggleSwitch>
+
+                    </DockPanel>
+                    
+                    <!--#endregion-->
+
+                    <!--#region Button -->
+                    
+                    <DockPanel  Grid.Column="1" 
+                                Grid.Row="0" 
+                                Margin="10 0 10 0"
+                                LastChildFill="False">
+
+                        <ToggleButton DockPanel.Dock="Top"
+                                      Margin="0 30 0 0"
+                                      ToolTip="Показывать сетку в рабочей области"
+                                      IsChecked="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <iconPacks:PackIconMaterial Kind="Grid" Margin="0 0 5 0"/>
+
+                                <TextBlock Text="Показывать сетку" 
+                                           FontWeight="Normal"
+                                           VerticalAlignment="Center"/>
+
+                            </StackPanel>
+                        </ToggleButton>
+                        
+                        <ToggleButton DockPanel.Dock="Top"
+                                      Margin="0 10 0 0"
+                                      ToolTip="Показывать корзину в рабочей области"
+                                      IsChecked="{Binding BlocklyShowTrashcan, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+
+                            <StackPanel Orientation="Horizontal">
+                                
+                                <iconPacks:PackIconMaterial Kind="TrashCanOutline" Margin="0 0 5 0"/>
+
+                                <TextBlock Text="Показывать корзину" 
+                                           FontWeight="Normal"
+                                           VerticalAlignment="Center"/>
+
+                            </StackPanel>
+                            
+                        </ToggleButton>
+
+                        <ToggleButton DockPanel.Dock="Top"
+                                      Margin="0 10 0 0"
+                                      ToolTip="Выравнивать блоки"
+                                      IsChecked="{Binding BlocklySnapToGridNodes, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+
+                            <StackPanel Orientation="Horizontal">
+                                
+                                <iconPacks:PackIconMaterial  Kind="ViewGrid" Margin="0 0 5 0"/>
+
+                                <TextBlock Text="Выравнивать блоки" 
+                                           FontWeight="Normal"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            
+                        </ToggleButton>
+
+                        <ToggleButton DockPanel.Dock="Top"
+                                      Margin="0 10 0 0"
+                                      ToolTip="Загружать последние сохраненые блоки"
+                                      IsChecked="{Binding BlocklyRestoreBlockOnLoad, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+
+                            <StackPanel Orientation="Horizontal">
+                            
+                                <iconPacks:PackIconMaterial  Kind="Restore" Margin="0 0 5 0"/>
+
+                                <TextBlock Text="Загружать последние" 
+                                           FontWeight="Normal"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ToggleButton>
+
+                        <ToggleButton DockPanel.Dock="Top"
+                                      Margin="0 10 0 0"
+                                      IsChecked="{Binding DontShowBrowserMenuInBlockly, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <iconPacks:PackIconMaterial  Kind="Menu" Margin="10 0 5 0"/>
+
+                                <TextBlock Text="Не показывать меню браузера" 
+                                           FontWeight="Normal"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ToggleButton>
+
+
+                        <ToggleButton DockPanel.Dock="Top"
+                                      Margin="0 10 0 0"
+                                      IsChecked="{Binding ShadowWorkspaceInDebug, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <iconPacks:PackIconMaterial  Kind="BlockHelper" Margin="0 0 5 0"/>
+
+                                <TextBlock Text="Затемнять при запуске скрипта" 
+                                           FontWeight="Normal"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ToggleButton>
+                    </DockPanel>
+                    
+                    <!--#endregion-->
+
+                    <!--#region ChangeSpacingSwitch -->
+
+                    <DockPanel Grid.Column="0"
+                               Grid.Row="1"
+                               Grid.ColumnSpan="2"
+                               Margin="10 0 10 0">
+
+                        <mah:ToggleSwitch DockPanel.Dock="Left"
+                                          x:Name="ChangeSpacingSwitch"
+                                          Header="Размер ячейки сетки"
+                                          OnContent="Пользовательский"
+                                          OffContent="По умолчанию"
+                                          IsOn="{Binding  ChangeSpacingSwitchToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                          IsEnabled="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                          Command="{Binding ChangeSpacingToggleSwitchDelegateCommand}"  
+                                          CommandParameter="{Binding ElementName=ChangeSpacingSwitch, Path=IsOn}"/>
+
+                        <mah:NumericUpDown DockPanel.Dock="Right"
+                                           Margin="70 20 0 20"
+                                           Value="{Binding BlocklyGridSpacing, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                           Minimum="5"
+                                           Maximum="50"
+                                           Interval="5"
+                                           FontWeight="Medium">
+
+                            <mah:NumericUpDown.IsEnabled>
+                                <MultiBinding Converter="{StaticResource MultiConverter}">
+                                    <Binding ElementName="ChangeSpacingSwitch" Path="IsOn"/>
+                                    <Binding ElementName="ChangeSpacingSwitch" Path="IsEnabled"/>
+                                </MultiBinding>
+                            </mah:NumericUpDown.IsEnabled>
+                            
+                        </mah:NumericUpDown>
+                    </DockPanel>
+                    
+                    <!--#endregion-->
+                    
+                </Grid>
+            </GroupBox>
+        </DockPanel>
     </Grid>
 </UserControl>

@@ -36,8 +36,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery) 
         {
-            
-            
             mCommunicationProvider = communicationProvider;
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
 
@@ -126,7 +124,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void SetFlyoutParametrs()
         {
-            Theme = FlyoutTheme.Inverse;
+            Theme = FlyoutTheme.Adapt;
             Header = "Центр уведомлений";
             IsModal = false;
         }
