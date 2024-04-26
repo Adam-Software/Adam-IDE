@@ -102,8 +102,19 @@ namespace AdamController
 
                 string ip = Settings.Default.ServerIP;
                 int port = Settings.Default.TcpConnectStatePort;
+                
+                TcpClientService client;
 
-                TcpClientService client = new(ip, port, option);
+                if (!string.IsNullOrEmpty(ip))
+                {
+                    client = new(ip, port, option);
+                }
+                else
+                {
+                    client = new("127.0.0.1", port, option);
+                }
+
+                
                 return client;
             });
 
@@ -139,9 +150,19 @@ namespace AdamController
             {
                 string ip = Settings.Default.ServerIP;
                 int port = Settings.Default.SoketServerPort;
+                Uri uri;
+
+                if (!string.IsNullOrEmpty(ip))
+                {
+                    uri = new($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement");
+                }
+                else
+                {
+                    uri = new($"ws://127.0.0.1:9001/adam-2.7/movement");
+                }
 
                 // debug, use only with debug server, which runs separately, not as a service
-                Uri uri = new($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement");
+                //Uri uri = new($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement");
 
                 // work in production, connect to socket-server run as service
                 // Uri uri = new($"ws://{ip}:{port}/adam-2.7/movement");
@@ -157,6 +178,11 @@ namespace AdamController
                 string login = Settings.Default.ApiLogin;
                 string password = Settings.Default.ApiPassword;
 
+                if (string.IsNullOrEmpty(ip))
+                {
+                    ip = "127.0.0.1";
+                }
+                
                 WebApiService client = new(ip, port, login, password);
                 return client;
 

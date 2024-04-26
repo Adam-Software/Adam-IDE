@@ -169,7 +169,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             ChangeToolboxLanguageToggleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeToolboxLanguageToggleSwitch, ChangeToolboxLanguageToggleSwitchCanExecute);
             ChangeGridColorToggleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeGridColorToggleSwitch, ChangeGridColorToggleSwitchCanExecute);
             ChangeBlocklyThemeToogleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeBlocklyThemeToogleSwitch, ChangeBlocklyThemeToogleSwitchCanExecute);
-            ChangeSpacingToggleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeSpacingToggleSwitch, ChangeSpacingToggleSwitchCanExecute);
+            //ChangeSpacingToggleSwitchDelegateCommand = new DelegateCommand<bool?>(ChangeSpacingToggleSwitch, ChangeSpacingToggleSwitchCanExecute);
             EnableShowGridDelegateCommand = new DelegateCommand(EnableShowGridDelegate, EnableShowGridDelegateCanExecute);
         }
 
@@ -252,21 +252,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             return true;
         }
 
-        private void ChangeSpacingToggleSwitch(bool? obj)
-        {
-            bool? toogleSwitchState = obj;
-
-            if (toogleSwitchState == true) 
-                return;
-                
-            Settings.Default.BlocklyGridSpacing = 20;
-        }
-
-        private bool ChangeSpacingToggleSwitchCanExecute(bool? nullable)
-        {
-            return true;
-        }
-
+        
         private void EnableShowGridDelegate()
         {
             Settings.Default.BlocklyShowGrid = true;

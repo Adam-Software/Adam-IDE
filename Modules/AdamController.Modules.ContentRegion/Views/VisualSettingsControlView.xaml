@@ -16,46 +16,43 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
+        <!--#region Various settings -->
+        
         <DockPanel Grid.Column="0" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                  Header="Язык и тема"
-                  Margin="0 0 0 10"
-                  Padding="0 0 0 20"
-                  mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                  mah:ControlsHelper.ContentCharacterCasing="Normal">
+                      Header="Язык и тема"
+                      Margin="0 0 0 10"
+                      Padding="0 0 0 20"
+                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
+                      mah:ControlsHelper.ContentCharacterCasing="Normal">
 
                 <StackPanel>
-
                     <Label Content="Тема приложения" 
-                       HorizontalContentAlignment="Center"
-                       FontWeight="Medium"/>
-
+                           HorizontalContentAlignment="Center"
+                           FontWeight="Medium"/>
                     <mah:SplitButton FontWeight="Medium"
                                  Margin="20 0 20 0"
                                  DisplayMemberPath="DisplayName"
                                  SelectedItem="{Binding SelectedTheme}"
                                  ItemsSource="{Binding ThemesCollection}">
-
                         <mah:SplitButton.Icon>
                             <iconPacks:PackIconEvaIcons Kind="ColorPalette" Margin="0 0 5 0"/>
                         </mah:SplitButton.Icon>
                     </mah:SplitButton>
 
                     <Label Content="Язык приложения" 
-                       
-                       HorizontalContentAlignment="Center"
-                       FontWeight="Medium"/>
-
+                           HorizontalContentAlignment="Center"
+                           FontWeight="Medium"/>
                     <mah:SplitButton Grid.Row="3" 
-                                 Margin="20 0 20 0"
-                                 FontWeight="Medium"
-                                 DisplayMemberPath="DisplayName"
-                                 ItemsSource="{Binding LanguageApp}"
-                                 SelectedItem="{Binding SelectedLanguageApp}">
-
+                                     Margin="20 0 20 0"
+                                     FontWeight="Medium"
+                                     DisplayMemberPath="DisplayName"
+                                     ItemsSource="{Binding LanguageApp}"
+                                     SelectedItem="{Binding SelectedLanguageApp}">
                         <mah:SplitButton.Icon>
                             <iconPacks:PackIconFeatherIcons Kind="Globe" Margin="0 0 5 0"/>
                         </mah:SplitButton.Icon>
@@ -63,35 +60,11 @@
                 </StackPanel>
             </GroupBox>
 
-
-            <GroupBox DockPanel.Dock="Top"
-                  Header="Настройки центра уведомлений" 
-                  Margin="0 0 0 10"
-                  Padding="10"
-                  mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                  mah:ControlsHelper.ContentCharacterCasing="Normal">
-
-
-                <StackPanel>
-
-                    <mah:ToggleSwitch Padding="10 0 0 0"
-                                  Header="Уведомлять об отключении от робота"
-                                  OffContent="Не уведомлять"
-                                  OnContent="Уведомлять"
-                                  IsOn="{Binding IsMessageShowOnAbortMainConnection, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
-
-                </StackPanel>
-
-
-            </GroupBox>
-
             <GroupBox DockPanel.Dock="Top"
                       Header="Настройки вывода результатов" 
                       mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
                       mah:ControlsHelper.ContentCharacterCasing="Normal">
-
                 <StackPanel>
-
                     <mah:ToggleSwitch Padding="10 0 0 0"
                                       Header="Показывать в области выполнения"
                                       OnContent="Результат запуска и выполнения"
@@ -99,10 +72,13 @@
                                       IsOn="{Binding ChangeExtendedExecuteReportToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                 </StackPanel>
-
             </GroupBox>
         </DockPanel>
 
+        <!--#endregion-->
+        
+        <!--#region  Scrath settings -->
+        
         <DockPanel Margin="10 0 0 0" Grid.Column="1" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
@@ -161,14 +137,10 @@
                         <mah:ToggleSwitch DockPanel.Dock="Top"
                                           Content="Текстовые"
                                           IsOn="{Binding BlocklyTextCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
-                        
+
                         <mah:ToggleSwitch DockPanel.Dock="Top"
                                           Content="Переменные"
                                           IsOn="{Binding BlocklyVariableCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
-
-                        <!--<mah:ToggleSwitch DockPanel.Dock="Top" x:Name="BlocklyAdamCommonCategoryState"
-                                          Content="Блоки для Адама"
-                                          IsOn="{Binding BlocklyAdamCommonCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />-->
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
                                           Content="Блоки Adam v.2.6"
@@ -300,16 +272,15 @@
                                           OffContent="По умолчанию"
                                           IsOn="{Binding  ChangeSpacingSwitchToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                                           IsEnabled="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-                                          Command="{Binding ChangeSpacingToggleSwitchDelegateCommand}"  
-                                          CommandParameter="{Binding ElementName=ChangeSpacingSwitch, Path=IsOn}"/>
+                                          Command="{Binding ChangeSpacingToggleSwitchDelegateCommand}"/>
 
-                        <mah:NumericUpDown DockPanel.Dock="Right"
-                                           Margin="70 20 0 20"
-                                           Value="{Binding BlocklyGridSpacing, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-                                           Minimum="5"
-                                           Maximum="50"
-                                           Interval="5"
-                                           FontWeight="Medium">
+                            <mah:NumericUpDown DockPanel.Dock="Right"
+                                               Margin="70 20 0 20"
+                                               Value="{Binding BlocklyGridSpacing, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                               Minimum="5"
+                                               Maximum="50"
+                                               Interval="5"
+                                               FontWeight="Medium">
 
                             <mah:NumericUpDown.IsEnabled>
                                 <MultiBinding Converter="{StaticResource MultiConverter}">
@@ -326,5 +297,77 @@
                 </Grid>
             </GroupBox>
         </DockPanel>
+        
+        <!--#endregion-->
+
+        <!--#region Connect settings -->
+
+        <DockPanel Margin="10 0 0 0" Grid.Column="2" LastChildFill="False">
+
+            <GroupBox DockPanel.Dock="Top"
+                      Header="Настройки подключения"  
+                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
+                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+
+                <DockPanel>
+
+                    <StackPanel DockPanel.Dock="Top" 
+                                Margin="10 10 0 0"
+                                Orientation="Horizontal">
+                        
+                        <Label FontSize="14" 
+                               HorizontalAlignment="Center"
+                               Content="Адрес робота"/>
+
+                        <TextBox DockPanel.Dock="Right"
+                                 Margin="15 0 10 10"
+                                 HorizontalContentAlignment="Center"
+                                 Text="{Binding ServerIP, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                                 Width="130"
+                                 
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="192.168.50.10"/>
+                    </StackPanel>
+
+                    <Button DockPanel.Dock="Top"
+                            Margin="15 0 15 10"
+                            Content="Настройки WebApi"
+                            Command="{Binding OpenWebApiSettingsDelegateCommand}"/>
+
+                    <Button DockPanel.Dock="Top"
+                            Margin="15 0 15 10"
+                            Content="Настройки портов"
+                            Command="{Binding OpenPortSettingsDelegateCommand}"/>
+
+
+                    <mah:ToggleSwitch DockPanel.Dock="Top"
+                                      Margin="15 0 0 0"
+                                      Header="Подключение к роботу"
+                                      OnContent="При запуске"
+                                      OffContent="Вручную"
+                                      IsOn="{Binding AutoStartTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                </DockPanel>
+
+            </GroupBox>
+
+            <GroupBox DockPanel.Dock="Top"
+                      Header="Настройки центра уведомлений" 
+                      Margin="0 10 0 0"
+                      Padding="10"
+                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
+                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+
+                <mah:ToggleSwitch Padding="10 0 0 0"
+                                  Header="Уведомлять об отключении от робота"
+                                  OffContent="Не уведомлять"
+                                  OnContent="Уведомлять"
+                                  IsOn="{Binding IsMessageShowOnAbortMainConnection, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+            </GroupBox>
+        </DockPanel>
+        
+        <!--#endregion-->
+
     </Grid>
+    
 </UserControl>

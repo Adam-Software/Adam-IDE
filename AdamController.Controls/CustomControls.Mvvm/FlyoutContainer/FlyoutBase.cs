@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using System.Drawing;
 using System.Windows.Input;
 
 namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
@@ -27,8 +28,25 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         private string mHeader = string.Empty;
         private string mTheme = FlyoutTheme.Adapt;
 
+        private double mBorderThickness = 1.0;
+        private Color mBorderBrush = Color.AliceBlue;
+
         private ICommand mCloseCommand;
         private MouseButton mExternalCloseButton;
+
+
+        public double BorderThickness
+        {
+            get => mBorderThickness;
+            set => SetProperty(ref  mBorderThickness, value);
+        }
+
+        public Color BorderBrush
+        {
+            get => mBorderBrush;
+            set => SetProperty(ref mBorderBrush, value);
+        }
+
 
         /// <summary>
         /// Bindable property to determine open/closed staus of flyout, based on private field isOpen.

@@ -20,8 +20,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         #region DelegateCommands
 
-        public DelegateCommand OpenAdvancedBlocklySettingsDelegateCommand { get; }
-        
+        public DelegateCommand OpenPortSettingsDelegateCommand { get; }
+        public DelegateCommand OpenWebApiSettingsDelegateCommand { get; }
+        public DelegateCommand ChangeSpacingToggleSwitchDelegateCommand { get; }
+
         #endregion
 
         #region Services
@@ -34,26 +36,47 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IThemeManagerService themeManager, ICultureProvider cultureProvider ) : base(regionManager, dialogService)
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IThemeManagerService themeManager, ICultureProvider cultureProvider) : base(regionManager, dialogService)
         {
             mFlyoutManager = flyoutManager;
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
 
-            OpenAdvancedBlocklySettingsDelegateCommand = new DelegateCommand(OpenAdvancedBlocklySettings, OpenAdvancedBlocklySettingsCanExecute);
+            OpenPortSettingsDelegateCommand = new DelegateCommand(OpenPortSettings, OpenPortSettingsCanExecute);
+            OpenWebApiSettingsDelegateCommand = new DelegateCommand(OpenWebApiSettings, OpenWebApiSettingsCanExecute);
+            ChangeSpacingToggleSwitchDelegateCommand = new DelegateCommand(ChangeSpacingToggleSwitch, ChangeSpacingToggleSwitchCanExecute);
         }
-
 
         #endregion
 
         #region  DelegateCommand methods
 
-        private void OpenAdvancedBlocklySettings()
+        private void OpenPortSettings()
         {
-            mFlyoutManager.OpenFlyout(FlyoutNames.FlyotAdvancedBlocklySettings);
+            mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutPortSettings);
         }
 
-        private bool OpenAdvancedBlocklySettingsCanExecute()
+        private bool OpenPortSettingsCanExecute()
+        {
+            return true;
+        }
+
+        private void OpenWebApiSettings()
+        {
+            mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutWebApiSettings);
+        }
+
+        private bool OpenWebApiSettingsCanExecute()
+        {
+            return true;
+        }
+
+        private void ChangeSpacingToggleSwitch()
+        {
+            Settings.Default.BlocklyGridSpacing = 20;
+        }
+
+        private bool ChangeSpacingToggleSwitchCanExecute()
         {
             return true;
         }

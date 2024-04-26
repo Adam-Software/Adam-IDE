@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Drawing;
+using System.Windows.Input;
 
 namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
 {
@@ -9,6 +10,10 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         public event EventHandler<FlyoutEventArgs> OnOpened;
 
         public event EventHandler<FlyoutEventArgs> OnOpenChanged;
+
+        public double BorderThickness { get; set; }
+
+        public Color BorderBrush { get; set; }  
 
         public string Position { get; set; }
 

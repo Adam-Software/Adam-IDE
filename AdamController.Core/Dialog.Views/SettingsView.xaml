@@ -74,7 +74,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!--#region API Login -->
+                    <!--#region API Login 
 
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
@@ -95,9 +95,9 @@
                              mah:TextBoxHelper.ClearTextButton="True"
                              mah:TextBoxHelper.Watermark="adam"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
-                    <!--#region API Password -->
+                    <!--#region API Password
 
                     <Label Grid.Column="0" 
                            Grid.Row="1" 
@@ -118,9 +118,9 @@
                              mah:TextBoxHelper.ClearTextButton="True"
                              mah:TextBoxHelper.Watermark="password"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
-                    <!--#region Server API IP  -->
+                    <!--#region Server API IP  
 
                     <Label Grid.Column="0" 
                                Grid.Row="2" 
@@ -141,9 +141,9 @@
                              mah:TextBoxHelper.ClearTextButton="True"
                              mah:TextBoxHelper.Watermark="192.168.50.10"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
-                    <!--#region API port -->
+                    <!--#region API port 
 
                     <Label Grid.Column="0" 
                            Grid.Row="3" 
@@ -164,7 +164,7 @@
                              mah:TextBoxHelper.ClearTextButton="True"
                              mah:TextBoxHelper.Watermark="5147"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
 
                     <Grid Grid.Row="4"
@@ -182,7 +182,7 @@
 
                         <!--#region Automatic main connect -->
 
-                        <mah:ToggleSwitch Grid.Column="0"
+                        <!--<mah:ToggleSwitch Grid.Column="0"
                                           IsEnabled="False"
                                           Margin="5 5 0 0" 
                                           Header="Проверять версию сервера"
@@ -192,7 +192,7 @@
                                           OffContent="Не проверять"
                                           mah:HeaderedControlHelper.HeaderFontSize="12"
                                           mah:HeaderedControlHelper.HeaderFontWeight="DemiBold"
-                                          IsOn="{Binding CheckServerVersion, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                                          IsOn="{Binding CheckServerVersion, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>-->
 
                         <!--#endregion-->
 
@@ -228,7 +228,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!--#region  VideoDataExchangePort -->
+                    <!--#region  VideoDataExchangePort 
 
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
@@ -249,15 +249,15 @@
                              mah:TextBoxHelper.ClearTextButton="True"
                              mah:TextBoxHelper.Watermark="4998"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
-                    <!--#region SocketServerPort -->
+                    <!--#region SocketServerPort 
 
                     <Label Grid.Column="0" Grid.Row="1" Margin="0 5 0 0" Content="Порт сокет-сервера" FontWeight="DemiBold" />
 
                     <TextBox Grid.Column="1" Grid.Row="1" 
-                                 FontWeight="Medium"
-                                 Text="{Binding SoketServerPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                             FontWeight="Medium"
+                             Text="{Binding SoketServerPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
                                  VerticalAlignment="Center" 
                                  HorizontalAlignment="Right"
                                  Width="80" 
@@ -267,9 +267,9 @@
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="8000"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
-                    <!--#region MessageDataExchangePort -->
+                    <!--#region MessageDataExchangePort 
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="0 5 0 0" Content="Порт сервера приема сообщений" FontWeight="DemiBold"/>
 
@@ -285,9 +285,9 @@
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="15005"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
-                    <!--#region LogServerPort -->
+                    <!--#region LogServerPort
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="0 5 0 0" Content="Порт сервера логов" FontWeight="DemiBold"/>
 
@@ -303,9 +303,9 @@
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="7071"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
-                    <!--#region TcpConnectStatePort -->
+                    <!--#region TcpConnectStatePort 
 
                     <Label Grid.Column="0" Grid.Row="5" Margin="0 5 0 0" Content="Порт контроля состояния соединения" FontWeight="DemiBold"/>
 
@@ -321,9 +321,9 @@
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="15000"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
-                    <!--#region ServerIP -->
+                    <!--#region ServerIP 
 
                     <Label Grid.Column="0" 
                            Grid.Row="6" 
@@ -344,7 +344,7 @@
                              mah:TextBoxHelper.ClearTextButton="True"
                              mah:TextBoxHelper.Watermark="192.168.50.10"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
                     <Grid Grid.Row="7"
                           Grid.Column="0"
@@ -359,7 +359,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!--#region Automatic main connect -->
+                        <!--#region Automatic main connect 
                         
                         <mah:ToggleSwitch Grid.Column="0"
                                           Margin="5 5 0 0" 
@@ -373,9 +373,9 @@
                                           IsOn="{Binding AutoStartTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                                           />
 
-                        <!--#endregion-->
+                        endregion-->
 
-                        <!--#region Automatic test connect -->
+                        <!--#region Automatic test connect 
 
                         <mah:ToggleSwitch Grid.Column="1"
                                           Margin="5 5 0 0" 
@@ -389,7 +389,7 @@
                                           mah:HeaderedControlHelper.HeaderFontWeight="DemiBold"
                                           IsOn="{Binding AutoStartTestTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                                           />
-                        <!--#endregion-->
+                        endregion-->
 
                     </Grid>
                     
@@ -399,7 +399,7 @@
 
                     <!--#region Developers settings -->
 
-                    <!--#region TestTcpPort -->
+                    <!--#region TestTcpPort 
 
                     <Label Grid.Column="0" 
                                Grid.Row="8" 
@@ -422,9 +422,9 @@
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="15000"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
-                    <!--#region TestUdpPort -->
+                    <!--#region TestUdpPort 
 
                     <Label Grid.Column="0" 
                                Grid.Row="9" 
@@ -447,9 +447,9 @@
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="15000"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
-                    <!--#region TestTcpConnectStatePort -->
+                    <!--#region TestTcpConnectStatePort 
 
                     <Label Grid.Column="0" 
                                Grid.Row="10" 
@@ -472,9 +472,9 @@
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="15000"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
-                    <!--#region Test ServerIP -->
+                    <!--#region Test ServerIP 
 
                     <Label Grid.Column="0" 
                                Grid.Row="11" 
@@ -496,7 +496,7 @@
                              mah:TextBoxHelper.ClearTextButton="True"
                              mah:TextBoxHelper.Watermark="127.0.0.1"/>
 
-                    <!--#endregion-->
+                    endregion-->
 
                     <!--#endregion-->
 
@@ -633,7 +633,7 @@
                         
                         <!--#region Developers settings -->
 
-                        <!--#region SavedResultsNetworkTestsFolderPath -->
+                        <!--#region SavedResultsNetworkTestsFolderPath 
 
                         <Label Grid.Row="8" Grid.Column="0"
                                Margin="10 10 0 0"
@@ -661,7 +661,7 @@
                             </DockPanel>
                         </StackPanel>
 
-                        <!--#endregion-->
+                        endregion-->
 
                         <!--#endregion-->
                         
@@ -718,7 +718,7 @@
 
                     <!--#endregion-->
                     
-                    <!--#region Reconnect benchmark tcp state clients quantity-->
+                    <!--#region Reconnect benchmark tcp state clients quantity
 
                     <Label Grid.Row="3" 
                            Grid.Column="0"
@@ -741,7 +741,7 @@
                                        HorizontalAlignment="Right"
                                        Width="100"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
                     <!--#region Reconnect main tcp state clients quantity-->
 
@@ -768,7 +768,7 @@
 
                     <!--#endregion-->
 
-                    <!--#region Reconnect benchmark tcp state clients quantity-->
+                    <!--#region Reconnect benchmark tcp state clients quantity
 
                     <Label Grid.Row="5" 
                            Grid.Column="0"
@@ -791,7 +791,7 @@
                                        HorizontalAlignment="Right"
                                        Width="100"/>
 
-                    <!--#endregion-->
+                    #endregion-->
 
 
                 </Grid>

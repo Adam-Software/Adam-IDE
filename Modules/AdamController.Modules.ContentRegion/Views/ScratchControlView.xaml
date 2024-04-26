@@ -19,9 +19,9 @@
             <converters:GridLengthConverter x:Key="GridLengthConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"
                                                />
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            <!--<ResourceDictionary.MergedDictionaries>-->
+            <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Controls.xaml" />-->
+            <!--</ResourceDictionary.MergedDictionaries>-->
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -187,7 +187,8 @@
 
                         <Separator Margin="0 10 0 10" 
                                    Background="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
+                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                   />
 
                     </StatusBar>
 
