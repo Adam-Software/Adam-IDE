@@ -56,9 +56,16 @@ namespace AdamController.Modules.ContentRegion.Views
             WebView?.CoreWebView2?.Reload();
         }
 
-        private async Task<string> RaiseExecuteJavaScriptEvent(object sender, string script)
+        private async Task<string> RaiseExecuteJavaScriptEvent(object sender, string script, bool deserializeResultToString = false)
         {
             string result = await WebView.ExecuteScriptAsync(script);
+
+            if (deserializeResultToString)
+            {
+                string deserealizeString = JsonSerializer.Deserialize<string>(result);
+                return deserealizeString;
+            }
+
             return result;
         }
 

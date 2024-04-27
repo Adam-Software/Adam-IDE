@@ -11,10 +11,8 @@ using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -293,8 +291,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void ShowSaveFileDialog()
         {
-            string workspace = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()");
-            string xmlWorkspace = JsonConvert.DeserializeObject<dynamic>(workspace);
+            string workspace = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()", true);
             string dialogTitle = "Сохранить рабочую область";
             string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
             string fileName = "workspace";
@@ -304,7 +301,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             if (mDialogManager.ShowSaveFileDialog(dialogTitle, initialPath, fileName, defaultExt, cFilter))
             {
                 string path = mDialogManager.FilePathToSave;
-                await mFileManagment.WriteAsync(path, xmlWorkspace);
+                await mFileManagment.WriteAsync(path, workspace);
 
                 mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
             }

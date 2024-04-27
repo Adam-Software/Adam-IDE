@@ -11,7 +11,7 @@ namespace AdamController.Services.Interfaces
     public delegate void WebViewbMessageReceivedEventHandler(object sender, WebMessageJsonReceived webMessageReceived);
 
     /*event in view */
-    public delegate Task<string> ExecuteJavaScriptEventHandler(object sender, string script);
+    public delegate Task<string> ExecuteJavaScriptEventHandler(object sender, string script, bool deserializeResultToString = false);
     public delegate void ExecuteReloadWebViewEventHandler(object sender);
 
     #endregion
@@ -26,7 +26,12 @@ namespace AdamController.Services.Interfaces
         public event ExecuteJavaScriptEventHandler RaiseExecuteJavaScriptEvent;
         public event ExecuteReloadWebViewEventHandler RaiseExecuteReloadWebViewEvent;
 
-        public Task<string> ExecuteJavaScript(string script);
+
+        /// <summary>
+        /// Execute JS script
+        /// </summary>
+        /// <returns>Json objects as string if deserializeResultToString false, deserialize object as string otherwise</returns>
+        public Task<string> ExecuteJavaScript(string script, bool deserializeResultToString = false);
 
         /* in view model */
         public void ReloadWebView();
