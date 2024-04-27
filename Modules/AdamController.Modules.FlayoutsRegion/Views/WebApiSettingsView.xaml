@@ -16,7 +16,7 @@
                 <Label Width="120"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
-                       Content="Логин WebApi"/>
+                       Content="Логин"/>
 
                 <TextBox Width="200" 
                          FontWeight="Medium"
@@ -35,7 +35,7 @@
                 <Label Width="120"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
-                       Content="Пароль WebApi" />
+                       Content="Пароль" />
 
                 <TextBox Width="200"
                          FontWeight="Medium"
@@ -55,7 +55,7 @@
                 <Label  Width="120"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
-                        Content="Порт WebApi"/>
+                        Content="Порт"/>
 
                 <TextBox Width="200"
                          FontWeight="Medium"

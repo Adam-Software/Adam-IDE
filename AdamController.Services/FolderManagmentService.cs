@@ -10,7 +10,7 @@ namespace AdamController.Services
     {
         #region Var
 
-        private readonly string mAssemblyTitle;
+        private readonly string mAssemblyTitle = Assembly.GetEntryAssembly().GetName().Name;
 
         #endregion
 
@@ -18,7 +18,6 @@ namespace AdamController.Services
 
         public FolderManagmentService() 
         {
-            mAssemblyTitle = Assembly.GetEntryAssembly().GetName().Name;
         }
 
         #endregion
@@ -31,13 +30,13 @@ namespace AdamController.Services
 
         public string SavedWorkspaceDocumentsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "MyWorkspaces";
 
-        public string SavedToolboxDocumentsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "MyToolboxes";
+        //public string SavedToolboxDocumentsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "MyToolboxes";
 
-        public string SavedUserCustomBlocksDocumentsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "MyBlocks";
+        //public string SavedUserCustomBlocksDocumentsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "MyBlocks";
 
         public string SavedUserScriptsDocumentsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "MyScripts";
 
-        public string SavedResultsNetworkTestsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "NetworkResultsTests";
+        //public string SavedResultsNetworkTestsDir => SpecialProgramDocumentsDir + Path.DirectorySeparatorChar + "NetworkResultsTests";
 
         public string DirAppData => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar + mAssemblyTitle;
 
@@ -68,22 +67,22 @@ namespace AdamController.Services
                     _ = Directory.CreateDirectory(SavedWorkspaceDocumentsDir);
                 }
 
-                if (!Directory.Exists(SavedToolboxDocumentsDir))
-                {
-                    _ = Directory.CreateDirectory(SavedToolboxDocumentsDir);
-                }
-                if (!Directory.Exists(SavedUserCustomBlocksDocumentsDir))
-                {
-                    _ = Directory.CreateDirectory(SavedUserCustomBlocksDocumentsDir);
-                }
+                //if (!Directory.Exists(SavedToolboxDocumentsDir))
+                //{
+                //    _ = Directory.CreateDirectory(SavedToolboxDocumentsDir);
+                //}
+                //if (!Directory.Exists(SavedUserCustomBlocksDocumentsDir))
+                //{
+                //    _ = Directory.CreateDirectory(SavedUserCustomBlocksDocumentsDir);
+                //}
                 if (!Directory.Exists(SavedUserScriptsDocumentsDir))
                 {
                     _ = Directory.CreateDirectory(SavedUserScriptsDocumentsDir);
                 }
-                if (!Directory.Exists(SavedResultsNetworkTestsDir))
-                {
-                    _ = Directory.CreateDirectory(SavedResultsNetworkTestsDir);
-                }
+                //if (!Directory.Exists(SavedResultsNetworkTestsDir))
+                //{
+                //    _ = Directory.CreateDirectory(SavedResultsNetworkTestsDir);
+                //}
             }
             catch
             {

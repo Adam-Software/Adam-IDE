@@ -140,25 +140,25 @@ namespace AdamController.ViewModels
                 Settings.Default.SavedUserWorkspaceFolderPath = mFolderManagment.SavedWorkspaceDocumentsDir;
             }
 
-            if (string.IsNullOrEmpty(Settings.Default.SavedUserToolboxFolderPath))
-            {
-                Settings.Default.SavedUserToolboxFolderPath = mFolderManagment.SavedToolboxDocumentsDir;
-            }
+            //if (string.IsNullOrEmpty(Settings.Default.SavedUserToolboxFolderPath))
+            //{
+            //    Settings.Default.SavedUserToolboxFolderPath = mFolderManagment.SavedToolboxDocumentsDir;
+            //}
 
-            if (string.IsNullOrEmpty(Settings.Default.SavedUserCustomBlocksFolderPath))
-            {
-                Settings.Default.SavedUserCustomBlocksFolderPath = mFolderManagment.SavedUserCustomBlocksDocumentsDir;
-            }
+            //if (string.IsNullOrEmpty(Settings.Default.SavedUserCustomBlocksFolderPath))
+            //{
+            //    Settings.Default.SavedUserCustomBlocksFolderPath = mFolderManagment.SavedUserCustomBlocksDocumentsDir;
+            //}
 
             if (string.IsNullOrEmpty(Settings.Default.SavedUserScriptsFolderPath))
             {
                 Settings.Default.SavedUserScriptsFolderPath = mFolderManagment.SavedUserScriptsDocumentsDir;
             }
 
-            if (string.IsNullOrEmpty(Settings.Default.SavedResultsNetworkTestsFolderPath))
-            {
-                Settings.Default.SavedResultsNetworkTestsFolderPath = mFolderManagment.SavedResultsNetworkTestsDir;
-            }
+            //if (string.IsNullOrEmpty(Settings.Default.SavedResultsNetworkTestsFolderPath))
+            //{
+            //    Settings.Default.SavedResultsNetworkTestsFolderPath = mFolderManagment.SavedResultsNetworkTestsDir;
+            //}
         }
 
         private void ParseSyslogMessage(string message)
@@ -232,7 +232,14 @@ namespace AdamController.ViewModels
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             LoadDefaultCultureInfo();
-            SaveFolderPathToSettings();
+
+            if (Settings.Default.CreateUserDirrectory)
+            {
+                mFolderManagment.CreateAppDataFolder();
+                SaveFolderPathToSettings();
+            }
+                
+
             LoadCustomAvalonEditHighlighting();
             LoadAppTheme();
 

@@ -20,9 +20,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         #region DelegateCommands
 
+        public DelegateCommand ChangeSpacingToggleSwitchDelegateCommand { get; }
         public DelegateCommand OpenPortSettingsDelegateCommand { get; }
         public DelegateCommand OpenWebApiSettingsDelegateCommand { get; }
-        public DelegateCommand ChangeSpacingToggleSwitchDelegateCommand { get; }
+        public DelegateCommand OpenUserFolderSettingsDelegateCommand { get; }   
 
         #endregion
 
@@ -42,14 +43,25 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
 
+            ChangeSpacingToggleSwitchDelegateCommand = new DelegateCommand(ChangeSpacingToggleSwitch, ChangeSpacingToggleSwitchCanExecute);
             OpenPortSettingsDelegateCommand = new DelegateCommand(OpenPortSettings, OpenPortSettingsCanExecute);
             OpenWebApiSettingsDelegateCommand = new DelegateCommand(OpenWebApiSettings, OpenWebApiSettingsCanExecute);
-            ChangeSpacingToggleSwitchDelegateCommand = new DelegateCommand(ChangeSpacingToggleSwitch, ChangeSpacingToggleSwitchCanExecute);
+            OpenUserFolderSettingsDelegateCommand = new DelegateCommand(OpenUserFolderSettings, OpenUserFolderSettingsCanExecute);
         }
 
         #endregion
 
         #region  DelegateCommand methods
+
+        private void ChangeSpacingToggleSwitch()
+        {
+            Settings.Default.BlocklyGridSpacing = 20;
+        }
+
+        private bool ChangeSpacingToggleSwitchCanExecute()
+        {
+            return true;
+        }
 
         private void OpenPortSettings()
         {
@@ -71,15 +83,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return true;
         }
 
-        private void ChangeSpacingToggleSwitch()
+        private void OpenUserFolderSettings()
         {
-            Settings.Default.BlocklyGridSpacing = 20;
+            mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutUserFoldersSettings);
         }
 
-        private bool ChangeSpacingToggleSwitchCanExecute()
+        private bool OpenUserFolderSettingsCanExecute()
         {
             return true;
         }
+
 
         #endregion
 

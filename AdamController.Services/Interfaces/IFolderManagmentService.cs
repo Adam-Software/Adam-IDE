@@ -12,13 +12,13 @@ namespace AdamController.Services.Interfaces
 
         public  string SavedWorkspaceDocumentsDir { get; }
 
-        public string SavedToolboxDocumentsDir { get; }
+        //public string SavedToolboxDocumentsDir { get; }
 
-        public  string SavedUserCustomBlocksDocumentsDir { get; }
+        //public  string SavedUserCustomBlocksDocumentsDir { get; }
 
         public  string SavedUserScriptsDocumentsDir { get; }
 
-        public string SavedResultsNetworkTestsDir { get; }
+        //public string SavedResultsNetworkTestsDir { get; }
 
         public string DirAppData { get; }
 

@@ -19,10 +19,12 @@ namespace AdamController.Modules.FlayoutsRegion
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //mFlyoutManager.RegisterFlyout<NotificationView>(nameof(NotificationView), RegionNames.FlayoutsRegion);
-            mFlyoutManager.RegisterFlyout<NotificationView>(FlyoutNames.FlyoutNotification, RegionNames.FlayoutsRegion);
-            mFlyoutManager.RegisterFlyout<PortSettingsView>(FlyoutNames.FlyoutPortSettings, RegionNames.FlayoutsRegion);
-            mFlyoutManager.RegisterFlyout<WebApiSettingsView>(FlyoutNames.FlyoutWebApiSettings, RegionNames.FlayoutsRegion);
+            mFlyoutManager.SetDefaultFlyoutRegion(RegionNames.FlayoutsRegion);
+
+            mFlyoutManager.RegisterFlyoutWithDefaultRegion<NotificationView>(FlyoutNames.FlyoutNotification);
+            mFlyoutManager.RegisterFlyoutWithDefaultRegion<PortSettingsView>(FlyoutNames.FlyoutPortSettings);
+            mFlyoutManager.RegisterFlyoutWithDefaultRegion<UserFoldersSettingsView>(FlyoutNames.FlyoutUserFoldersSettings);
+            mFlyoutManager.RegisterFlyoutWithDefaultRegion<WebApiSettingsView>(FlyoutNames.FlyoutWebApiSettings);
         }
     }
 }

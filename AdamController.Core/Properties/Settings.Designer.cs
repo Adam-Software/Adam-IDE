@@ -1066,5 +1066,17 @@ namespace AdamController.Core.Properties {
                 this["AppThemeName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CreateUserDirrectory {
+            get {
+                return ((bool)(this["CreateUserDirrectory"]));
+            }
+            set {
+                this["CreateUserDirrectory"] = value;
+            }
+        }
     }
 }

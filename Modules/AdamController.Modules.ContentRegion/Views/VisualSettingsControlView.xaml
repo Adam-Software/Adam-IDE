@@ -9,11 +9,50 @@
              prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
-        <converters:MultiConverter x:Key="MultiConverter"/>
+
+        <ResourceDictionary>
+            <converters:MultiConverter x:Key="MultiConverter"/>
+
+            <!-- #region Current control style -->
+
+            <Style TargetType="GroupBox" BasedOn="{StaticResource MahApps.Styles.GroupBox}">
+                <Setter Property="mah:ControlsHelper.ContentCharacterCasing"  Value="Normal"/>
+                <Setter Property="mah:HeaderedControlHelper.HeaderHorizontalContentAlignment" Value="Center"/>
+                
+            </Style>
+
+            <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button}">
+                <Setter Property="mah:ControlsHelper.ContentCharacterCasing"  Value="Normal"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+            </Style>
+
+            <Style TargetType="ToggleButton" BasedOn="{StaticResource MahApps.Styles.ToggleButton}">
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+            </Style>
+
+            <Style TargetType="mah:ToggleSwitch" BasedOn="{StaticResource MahApps.Styles.ToggleSwitch}">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="12" />
+            </Style>
+
+            <Style TargetType="Label" BasedOn="{StaticResource MahApps.Styles.Label}">
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            </Style>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+
+            <!--#endregion-->
+
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -24,53 +63,34 @@
         <DockPanel Grid.Column="0" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Язык и тема"
-                      Margin="0 0 0 10"
-                      Padding="0 0 0 20"
-                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+                      Header="Язык и тема">
 
-                <StackPanel>
-                    <Label Content="Тема приложения" 
-                           HorizontalContentAlignment="Center"
-                           FontWeight="Medium"/>
-                    <mah:SplitButton FontWeight="Medium"
-                                 Margin="20 0 20 0"
-                                 DisplayMemberPath="DisplayName"
-                                 SelectedItem="{Binding SelectedTheme}"
-                                 ItemsSource="{Binding ThemesCollection}">
+                <StackPanel Margin="10 0 10 10">
+                    
+                    <Label Content="Тема приложения"/>
+
+                    <mah:SplitButton Width="160"
+                                     DisplayMemberPath="DisplayName"
+                                     SelectedItem="{Binding SelectedTheme}"
+                                     ItemsSource="{Binding ThemesCollection}">
+                        
                         <mah:SplitButton.Icon>
                             <iconPacks:PackIconEvaIcons Kind="ColorPalette" Margin="0 0 5 0"/>
                         </mah:SplitButton.Icon>
                     </mah:SplitButton>
 
                     <Label Content="Язык приложения" 
-                           HorizontalContentAlignment="Center"
-                           FontWeight="Medium"/>
-                    <mah:SplitButton Grid.Row="3" 
-                                     Margin="20 0 20 0"
-                                     FontWeight="Medium"
+                           HorizontalContentAlignment="Center"/>
+
+                    <mah:SplitButton Width="160"
                                      DisplayMemberPath="DisplayName"
                                      ItemsSource="{Binding LanguageApp}"
                                      SelectedItem="{Binding SelectedLanguageApp}">
+                        
                         <mah:SplitButton.Icon>
                             <iconPacks:PackIconFeatherIcons Kind="Globe" Margin="0 0 5 0"/>
                         </mah:SplitButton.Icon>
                     </mah:SplitButton>
-                </StackPanel>
-            </GroupBox>
-
-            <GroupBox DockPanel.Dock="Top"
-                      Header="Настройки вывода результатов" 
-                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                      mah:ControlsHelper.ContentCharacterCasing="Normal">
-                <StackPanel>
-                    <mah:ToggleSwitch Padding="10 0 0 0"
-                                      Header="Показывать в области выполнения"
-                                      OnContent="Результат запуска и выполнения"
-                                      OffContent="Только результат выполнения"
-                                      IsOn="{Binding ChangeExtendedExecuteReportToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
-
                 </StackPanel>
             </GroupBox>
         </DockPanel>
@@ -82,9 +102,7 @@
         <DockPanel Margin="10 0 0 0" Grid.Column="1" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Настройки скретч редактора" 
-                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+                      Header="Настройки скретч редактора">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -101,14 +119,10 @@
                     
                     <DockPanel Grid.Column="0" 
                                Grid.Row="0"
-                               Margin="10 0 10 0"
-                               LastChildFill="False">
+                               Margin="10 0 10 0">
                         
                         <Label DockPanel.Dock="Top"
-                               Content="Отображаемые наборы блоков" 
-                               VerticalContentAlignment="Center" 
-                               HorizontalContentAlignment="Left"
-                               FontWeight="Medium"/>
+                               Content="Отображаемые наборы блоков" />
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
                                           Content="Логические"
@@ -163,33 +177,25 @@
                                 LastChildFill="False">
 
                         <ToggleButton DockPanel.Dock="Top"
-                                      Margin="0 30 0 0"
-                                      ToolTip="Показывать сетку в рабочей области"
+                                      Margin="0 35 0 0"
                                       IsChecked="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
 
                             <StackPanel Orientation="Horizontal">
 
                                 <iconPacks:PackIconMaterial Kind="Grid" Margin="0 0 5 0"/>
-
-                                <TextBlock Text="Показывать сетку" 
-                                           FontWeight="Normal"
-                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="Показывать сетку" />
 
                             </StackPanel>
                         </ToggleButton>
                         
                         <ToggleButton DockPanel.Dock="Top"
                                       Margin="0 10 0 0"
-                                      ToolTip="Показывать корзину в рабочей области"
                                       IsChecked="{Binding BlocklyShowTrashcan, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
 
                             <StackPanel Orientation="Horizontal">
-                                
-                                <iconPacks:PackIconMaterial Kind="TrashCanOutline" Margin="0 0 5 0"/>
 
-                                <TextBlock Text="Показывать корзину" 
-                                           FontWeight="Normal"
-                                           VerticalAlignment="Center"/>
+                                <iconPacks:PackIconMaterial Kind="TrashCanOutline" Margin="0 0 5 0"/>
+                                <TextBlock Text="Показывать корзину" />
 
                             </StackPanel>
                             
@@ -197,32 +203,26 @@
 
                         <ToggleButton DockPanel.Dock="Top"
                                       Margin="0 10 0 0"
-                                      ToolTip="Выравнивать блоки"
                                       IsChecked="{Binding BlocklySnapToGridNodes, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
 
                             <StackPanel Orientation="Horizontal">
                                 
                                 <iconPacks:PackIconMaterial  Kind="ViewGrid" Margin="0 0 5 0"/>
 
-                                <TextBlock Text="Выравнивать блоки" 
-                                           FontWeight="Normal"
-                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="Выравнивать блоки"/>
                             </StackPanel>
                             
                         </ToggleButton>
 
                         <ToggleButton DockPanel.Dock="Top"
                                       Margin="0 10 0 0"
-                                      ToolTip="Загружать последние сохраненые блоки"
                                       IsChecked="{Binding BlocklyRestoreBlockOnLoad, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
 
                             <StackPanel Orientation="Horizontal">
                             
                                 <iconPacks:PackIconMaterial  Kind="Restore" Margin="0 0 5 0"/>
 
-                                <TextBlock Text="Загружать последние" 
-                                           FontWeight="Normal"
-                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="Загружать последние" />
                             </StackPanel>
                         </ToggleButton>
 
@@ -234,9 +234,7 @@
 
                                 <iconPacks:PackIconMaterial  Kind="Menu" Margin="10 0 5 0"/>
 
-                                <TextBlock Text="Не показывать меню браузера" 
-                                           FontWeight="Normal"
-                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="Не показывать меню браузера"/>
                             </StackPanel>
                         </ToggleButton>
 
@@ -249,9 +247,7 @@
 
                                 <iconPacks:PackIconMaterial  Kind="BlockHelper" Margin="0 0 5 0"/>
 
-                                <TextBlock Text="Затемнять при запуске скрипта" 
-                                           FontWeight="Normal"
-                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="Затемнять при запуске скрипта" />
                             </StackPanel>
                         </ToggleButton>
                     </DockPanel>
@@ -305,68 +301,96 @@
         <DockPanel Margin="10 0 0 0" Grid.Column="2" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Настройки подключения"  
-                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+                      Header="Настройки подключений и уведомлений">
 
-                <DockPanel>
+                <DockPanel Margin="10 10 10 0">
 
                     <StackPanel DockPanel.Dock="Top" 
-                                Margin="10 10 0 0"
+                                Margin="0 0 0 10"
                                 Orientation="Horizontal">
                         
                         <Label FontSize="14" 
-                               HorizontalAlignment="Center"
-                               Content="Адрес робота"/>
+                               Content="Адрес робота  "/>
 
                         <TextBox DockPanel.Dock="Right"
-                                 Margin="15 0 10 10"
-                                 HorizontalContentAlignment="Center"
+                                 Width="150"
+                                 HorizontalContentAlignment ="Center"
+                                 VerticalContentAlignment="Center"
                                  Text="{Binding ServerIP, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
                                  Style="{DynamicResource MahApps.Styles.TextBox}"
-                                 Width="130"
                                  
                                  mah:TextBoxHelper.ClearTextButton="True"
                                  mah:TextBoxHelper.Watermark="192.168.50.10"/>
                     </StackPanel>
 
                     <Button DockPanel.Dock="Top"
-                            Margin="15 0 15 10"
+                            Margin="0 0 0 10"
                             Content="Настройки WebApi"
                             Command="{Binding OpenWebApiSettingsDelegateCommand}"/>
 
                     <Button DockPanel.Dock="Top"
-                            Margin="15 0 15 10"
+                            Margin="0 0 0 10"
                             Content="Настройки портов"
                             Command="{Binding OpenPortSettingsDelegateCommand}"/>
 
+                    <ToggleButton DockPanel.Dock="Top"
+                                  Margin="0 0 0 10"
+                                  Content="Подключаться при запуске"
+                                  IsChecked="{Binding AutoStartTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
-                    <mah:ToggleSwitch DockPanel.Dock="Top"
-                                      Margin="15 0 0 0"
-                                      Header="Подключение к роботу"
-                                      OnContent="При запуске"
-                                      OffContent="Вручную"
-                                      IsOn="{Binding AutoStartTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                    <ToggleButton DockPanel.Dock="Top"
+                                  Margin="0 0 0 10"
+                                  Content="Уведомлять об отключении от робота"
+                                  IsChecked="{Binding IsMessageShowOnAbortMainConnection, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                </DockPanel>
+
+            </GroupBox>
+
+        </DockPanel>
+        
+        <!--#endregion-->
+
+        <!--#region Connect settings -->
+
+        <DockPanel Margin="10 0 0 0" Grid.Column="3" LastChildFill="False">
+
+            <GroupBox DockPanel.Dock="Top"
+                      Header="Настройки окружения">
+
+                <DockPanel Margin="10">
+
+                    <ToggleButton DockPanel.Dock="Top"
+                                  Margin="0 0 0 10"
+                                  
+                                  Content="Создавать папки пользователя "
+                                  IsChecked="{Binding CreateUserDirrectory, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+
+                    <Button DockPanel.Dock="Top"
+                            Content="Настройка папок пользователя"
+                            IsEnabled="{Binding CreateUserDirrectory, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                            Command="{Binding OpenUserFolderSettingsDelegateCommand}"/>
+
                 </DockPanel>
 
             </GroupBox>
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Настройки центра уведомлений" 
                       Margin="0 10 0 0"
-                      Padding="10"
-                      mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                      mah:ControlsHelper.ContentCharacterCasing="Normal">
+                      Header="Настройки вывода результатов" >
+                
+                <StackPanel>
+                    
+                    <mah:ToggleSwitch Padding="10 0 0 0"
+                                      Header="Показывать в области выполнения"
+                                      OnContent="Результат запуска и выполнения"
+                                      OffContent="Только результат выполнения"
+                                      IsOn="{Binding ChangeExtendedExecuteReportToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
-                <mah:ToggleSwitch Padding="10 0 0 0"
-                                  Header="Уведомлять об отключении от робота"
-                                  OffContent="Не уведомлять"
-                                  OnContent="Уведомлять"
-                                  IsOn="{Binding IsMessageShowOnAbortMainConnection, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
+                </StackPanel>
             </GroupBox>
         </DockPanel>
-        
-        <!--#endregion-->
+
 
     </Grid>
     

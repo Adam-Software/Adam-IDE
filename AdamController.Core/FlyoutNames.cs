@@ -8,6 +8,7 @@
     {
         public const string FlyoutNotification = "NotificationView";
         public const string FlyoutPortSettings = "PortSettingsView";
+        public const string FlyoutUserFoldersSettings = "UserFoldersSettingsView";
         public const string FlyoutWebApiSettings = "WebApiSettingsView";
         
     }
