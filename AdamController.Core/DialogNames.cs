@@ -1,9 +1,7 @@
-﻿using AdamController.Core.Dialog.Views;
-
-namespace AdamController.Core
+﻿namespace AdamController.Core
 {
     public class DialogNames
     {
-        public const string SettingsDialog = nameof(SettingsView);
+        //Dialog boxes are not used, but implemented
     }
 }

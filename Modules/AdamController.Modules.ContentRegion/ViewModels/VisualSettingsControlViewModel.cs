@@ -37,7 +37,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, IThemeManagerService themeManager, ICultureProvider cultureProvider) : base(regionManager, dialogService)
+        public VisualSettingsControlViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, IThemeManagerService themeManager, ICultureProvider cultureProvider) : base(regionManager)
         {
             mFlyoutManager = flyoutManager;
             mThemeManager = themeManager;

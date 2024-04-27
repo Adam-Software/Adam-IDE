@@ -5,7 +5,6 @@ using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
 using Prism.Commands;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,9 +26,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool mIsWarningStackOwerflowAlreadyShow;
 
-        public ScriptEditorControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, 
+        public ScriptEditorControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, 
                     IPythonRemoteRunnerService pythonRemoteRunner, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, 
-                    IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IDialogManagerService dialogManager) : base(regionManager, dialogService)
+                    IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IDialogManagerService dialogManager) : base(regionManager)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;

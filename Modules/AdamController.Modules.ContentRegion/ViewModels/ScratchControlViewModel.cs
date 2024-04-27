@@ -68,9 +68,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public ScratchControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
+        public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
-                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService) : base(regionManager, dialogService)
+                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService) : base(regionManager)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;

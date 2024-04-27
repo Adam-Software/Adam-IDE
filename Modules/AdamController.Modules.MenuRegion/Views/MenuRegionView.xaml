@@ -81,16 +81,6 @@
 
             </MenuItem>
 
-            <MenuItem Header="{DynamicResource MainMenu.Tools.MainHeader}"
-                      Style="{DynamicResource MahApps.Styles.MenuItem}"
-                      Background="Transparent">
-
-                <MenuItem Header="{DynamicResource MainMenu.Tools.SettingsHeader}" 
-                          Command="{Binding ShowDialogCommand}"
-                          CommandParameter="{x:Static core:DialogNames.SettingsDialog}"/>
-
-            </MenuItem>
-            
         </Menu>
     </StackPanel>
 

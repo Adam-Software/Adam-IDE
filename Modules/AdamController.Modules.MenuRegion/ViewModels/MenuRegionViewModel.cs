@@ -1,5 +1,4 @@
-﻿using AdamController.Core.Extensions;
-using AdamController.Core;
+﻿using AdamController.Core;
 using AdamController.Core.Mvvm;
 using Prism.Commands;
 using Prism.Regions;
@@ -16,7 +15,7 @@ namespace AdamController.Modules.MenuRegion.ViewModels
         #region DelegateCommands
 
         public DelegateCommand CloseAppCommand { get; }
-        public DelegateCommand<string> ShowDialogCommand { get; }
+       
         public DelegateCommand<string> ShowRegionCommand { get; }
 
         #endregion
@@ -27,12 +26,11 @@ namespace AdamController.Modules.MenuRegion.ViewModels
 
         #endregion
 
-        public MenuRegionViewModel(IRegionManager regionManager, IDialogService dialogService, ISubRegionChangeAwareService subRegionChangeAware) : base(regionManager, dialogService)
+        public MenuRegionViewModel(IRegionManager regionManager,ISubRegionChangeAwareService subRegionChangeAware) : base(regionManager)
         {
             mSubRegionChangeAware = subRegionChangeAware;
 
             CloseAppCommand = new DelegateCommand(CloseApp);
-            ShowDialogCommand = new DelegateCommand<string>(ShowDialog);
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
         }
 
@@ -148,16 +146,6 @@ namespace AdamController.Modules.MenuRegion.ViewModels
         #endregion
 
         #region Command methods
-
-        private void ShowDialog(string dialogNames)
-        {
-            switch (dialogNames)
-            {
-                case DialogNames.SettingsDialog:
-                    DialogService.ShowSettingsDialog();
-                    break;
-            }
-        }
 
         private void ShowRegion(string subRegionName)
         {

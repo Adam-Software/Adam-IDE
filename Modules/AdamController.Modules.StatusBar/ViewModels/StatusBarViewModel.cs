@@ -40,7 +40,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         #region ~
 
-        public StatusBarViewModel(IRegionManager regionManager, IDialogService dialogService, IFlyoutManager flyoutManager, ICommunicationProviderService communicationProviderService, IStatusBarNotificationDeliveryService statusBarNotification) : base(regionManager, dialogService)
+        public StatusBarViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, ICommunicationProviderService communicationProviderService, IStatusBarNotificationDeliveryService statusBarNotification) : base(regionManager)
         {
             mFlyoutManager = flyoutManager;
             mCommunicationProviderService = communicationProviderService;

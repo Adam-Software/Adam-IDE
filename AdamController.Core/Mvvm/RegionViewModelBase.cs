@@ -1,5 +1,4 @@
 ﻿using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
 
 
@@ -11,16 +10,14 @@ namespace AdamController.Core.Mvvm
         #region private service
 
         protected IRegionManager RegionManager { get; }
-        protected IDialogService DialogService { get; }
 
         #endregion
 
         #region ~
 
-        public RegionViewModelBase(IRegionManager regionManager, IDialogService dialogService)
+        public RegionViewModelBase(IRegionManager regionManager)
         {
             RegionManager = regionManager;
-            DialogService = dialogService;
         }
 
         #endregion

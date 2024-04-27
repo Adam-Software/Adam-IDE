@@ -3,7 +3,6 @@ using AdamController.Core.Mvvm;
 using AdamController.Modules.ContentRegion.Views;
 using AdamController.Services.Interfaces;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
@@ -12,7 +11,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         private ISubRegionChangeAwareService RegionChangeAwareService { get; }
 
-        public ContentRegionViewModel(IRegionManager regionManager, IDialogService dialogService, ISubRegionChangeAwareService regionChangeAwareService) : base(regionManager, dialogService)
+        public ContentRegionViewModel(IRegionManager regionManager, ISubRegionChangeAwareService regionChangeAwareService) : base(regionManager)
         {
             RegionChangeAwareService = regionChangeAwareService;
         }

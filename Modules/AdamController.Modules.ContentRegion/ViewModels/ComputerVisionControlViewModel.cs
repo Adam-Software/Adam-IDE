@@ -27,7 +27,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public ComputerVisionControlViewModel(IRegionManager regionManager, IDialogService dialogService, ICommunicationProviderService communicationProvider, IWebApiService webApiService) : base(regionManager, dialogService)
+        public ComputerVisionControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IWebApiService webApiService) : base(regionManager)
         {
             mCommunicationProvider = communicationProvider;
             mWebApiService = webApiService;

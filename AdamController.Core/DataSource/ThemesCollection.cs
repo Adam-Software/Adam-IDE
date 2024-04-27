@@ -1,10 +1,6 @@
-﻿using AdamBlocklyLibrary.Enum;
-using AdamController.Core.Model;
-using System.Collections.ObjectModel;
-
-namespace AdamController.Core.DataSource
+﻿namespace AdamController.Core.DataSource
 {
-    public class ThemesCollection
+    /*public class ThemesCollection
     {
         public static ObservableCollection<BlocklyThemeModel> BlocklyThemes { get; private set; } = new()
         {
@@ -16,5 +12,5 @@ namespace AdamController.Core.DataSource
             new BlocklyThemeModel() { BlocklyTheme = BlocklyTheme.Tritanopia, BlocklyThemeName = "Tritanopia" },
             new BlocklyThemeModel() { BlocklyTheme = BlocklyTheme.Zelos, BlocklyThemeName = "Zelos" },
         };
-    }
+    }*/
 }

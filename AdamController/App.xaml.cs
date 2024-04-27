@@ -23,8 +23,6 @@ using AdamController.Modules.ContentRegion;
 using AdamController.Services;
 using AdamController.Modules.StatusBarRegion;
 using AdamController.Modules.FlayoutsRegion;
-using AdamController.Core.Dialog.Views;
-using AdamController.Core.Dialog.ViewModels;
 using AdamController.Services.Interfaces;
 using AdamController.Controls.CustomControls.Services;
 using AdamController.Controls.CustomControls.RegionAdapters;
@@ -215,7 +213,8 @@ namespace AdamController
 
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
+            //Dialog boxes are not used, but implemented
+            //containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
 
             //The old dialog call type integrated into the service
             containerRegistry.RegisterSingleton<IDialogManagerService>(containerRegistry =>
