@@ -1,8 +1,10 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
+using AdamController.Controls.CustomControls.Services;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
+using System.ComponentModel;
 using System.Windows;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
@@ -21,6 +23,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private ICommunicationProviderService mCommunicationProvider;
         private IStatusBarNotificationDeliveryService mStatusBarNotificationDeliveryService;
+        private IFlyoutStateChecker mFlyoutState;
 
         #endregion
 
@@ -34,10 +37,11 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #region ~
 
-        public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery) 
+        public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFlyoutStateChecker flyoutState) 
         {
             mCommunicationProvider = communicationProvider;
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
+            mFlyoutState = flyoutState;
 
             ConnectButtonDelegateCommand = new(ConnectButton, ConnectButtonCanExecute);
             ReconnectNotificationButtonDelegateCommand = new(ReconnectNotificationButton, ReconnectNotificationButtonCanExecute);
@@ -50,7 +54,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         protected override void OnChanging(bool isOpening)
         {
-            
             if (isOpening)
             {
                 SetFlyoutParametrs();
@@ -59,8 +62,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                 
                 return;
             }
-                
-
+            
             if (!isOpening)
             {
                 Unsubscribe();
@@ -73,6 +75,34 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             }
         }
 
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            
+            if (args.PropertyName == "IsOpen")
+            {
+                if (mFlyoutState.IsOpened)
+                {
+                    mFlyoutState.IsOpened = false;
+                }
+                else
+                {
+                    mFlyoutState.IsOpened = true;   
+                }
+            }
+            
+
+            base.OnPropertyChanged(args);
+        }
+
+        protected override void OnClosing(FlyoutParameters flyoutParameters)
+        {
+            base.OnClosing(flyoutParameters);
+        }
+
+        protected override void OnOpening(FlyoutParameters flyoutParameters)
+        {
+            base.OnOpening(flyoutParameters);
+        }
 
         #endregion
 

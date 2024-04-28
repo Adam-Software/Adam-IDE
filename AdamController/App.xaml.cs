@@ -67,6 +67,9 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            //#15 test
+            containerRegistry.RegisterSingleton<IFlyoutStateChecker, FlyoutStateChecker>();
+
             containerRegistry.RegisterSingleton<ICultureProvider, CultureProvider>();
             containerRegistry.RegisterSingleton<IFileManagmentService, FileManagmentService>();
             containerRegistry.RegisterSingleton<IFolderManagmentService, FolderManagmentService>();

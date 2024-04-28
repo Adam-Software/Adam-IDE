@@ -24,6 +24,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         private readonly IFlyoutManager mFlyoutManager;
         private readonly ICommunicationProviderService mCommunicationProviderService;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
+        private readonly IFlyoutStateChecker mFlyoutState;
 
         #endregion
 
@@ -40,11 +41,12 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         #region ~
 
-        public StatusBarViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, ICommunicationProviderService communicationProviderService, IStatusBarNotificationDeliveryService statusBarNotification) : base(regionManager)
+        public StatusBarViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, IFlyoutStateChecker flyoutState, ICommunicationProviderService communicationProviderService, IStatusBarNotificationDeliveryService statusBarNotification) : base(regionManager)
         {
             mFlyoutManager = flyoutManager;
             mCommunicationProviderService = communicationProviderService;
             mStatusBarNotificationDelivery = statusBarNotification; 
+            mFlyoutState = flyoutState;
 
             OpenNotificationPanelDelegateCommand = new DelegateCommand(OpenNotificationPanel, OpenNotificationPanelCanExecute);
         }
@@ -165,6 +167,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent += RaiseNewCompileLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent += RaiseNewAppLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseUpdateNotificationCounterEvent += RaiseUpdateNotificationCounterEvent;
+
+            mFlyoutState.IsOpenedStateChangeEvent += IsOpenedStateChangeEvent;
         }
 
         private void Unsubscribe() 
@@ -176,6 +180,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mStatusBarNotificationDelivery.RaiseChangeProgressRingStateEvent -= RaiseChangeProgressRingStateEvent;
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent -= RaiseNewCompileLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent -= RaiseNewAppLogMessageEvent;
+
+            mFlyoutState.IsOpenedStateChangeEvent -= IsOpenedStateChangeEvent;
         }
 
         #endregion
@@ -217,10 +223,14 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             AppLogStatusBar = message;
         }
 
-
         private void RaiseUpdateNotificationCounterEvent(object sender, int counter)
         {
             BadgeCounter = counter;
+        }
+
+        private void IsOpenedStateChangeEvent(object sender)
+        {
+            OpenNotificationPanelDelegateCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -234,7 +244,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private bool OpenNotificationPanelCanExecute()
         {
-            return true;
+            return !mFlyoutState.IsOpened;
         }
 
         #endregion
