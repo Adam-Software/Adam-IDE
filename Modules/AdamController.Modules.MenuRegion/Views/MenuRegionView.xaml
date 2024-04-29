@@ -5,85 +5,40 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
+    <Menu>
 
-    <!--#region UserControl.Resources -->
+        <MenuItem Header="{DynamicResource MainMenu.File.MainHeader}">
 
-    <UserControl.Resources>
-        <ControlTemplate x:Key="MenuItemTemplate"
-                         TargetType="{x:Type MenuItem}">
-            <Grid Background="{TemplateBinding Background}">
-                <TextBlock Text="{TemplateBinding Header}"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-                
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Badged.Background}"/>
-                </Trigger>
-                
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+            <MenuItem Header="{DynamicResource MainMenu.File.CloseAppHeader}"
+                      Command="{Binding CloseAppCommand}"/>
+        </MenuItem>
 
-        <Style BasedOn="{StaticResource MahApps.Styles.MenuItem}" 
-               TargetType="MenuItem"
-               x:Key="MenuStyle">
-            
-            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}"/>
-            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForeground}"/>
-            
-        </Style>
-    </UserControl.Resources> 
+        <MenuItem Header="{DynamicResource MainMenu.View.MainHeader}"
+                  Style="{DynamicResource MahApps.Styles.MenuItem}">
 
-    <!--#endregion-->
-
-    <!--#region Main menu content -->
-
-    <StackPanel Orientation="Horizontal" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Margin="40 0 20 0">
-
-        <Menu Style="{DynamicResource MahApps.Styles.Menu}" Background="Transparent">
-            <Menu.Resources>
-                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuStyle}"/>
-            </Menu.Resources>
-
-            <MenuItem Header="{DynamicResource MainMenu.File.MainHeader}"
-                      Style="{DynamicResource MahApps.Styles.MenuItem}"
-                      Background="Transparent">
-
-                <MenuItem Header="{DynamicResource MainMenu.File.CloseAppHeader}"
-                          Command="{Binding CloseAppCommand}"/>
-            </MenuItem>
-
-            <MenuItem Header="{DynamicResource MainMenu.View.MainHeader}"
-                      Style="{DynamicResource MahApps.Styles.MenuItem}"
-                      Background="Transparent">
-
-                <MenuItem Header="{DynamicResource MainMenu.View.ScratchEditorHeader}" 
+            <MenuItem Header="{DynamicResource MainMenu.View.ScratchEditorHeader}" 
                           Command="{Binding ShowRegionCommand}"
                           CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"
                           IsChecked="{Binding IsCheckedScratchMenuItem}" />
 
-                <MenuItem Header="{DynamicResource MainMenu.View.ScriptEditorHeader}" 
+            <MenuItem Header="{DynamicResource MainMenu.View.ScriptEditorHeader}" 
                           Command="{Binding ShowRegionCommand}"
                           CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}" 
                           IsChecked="{Binding IsCheckedScriptEditorMenuItem}"/>
 
-                <MenuItem Header="{DynamicResource MainMenu.View.ComputerVisionHeader }" 
+            <MenuItem Header="{DynamicResource MainMenu.View.ComputerVisionHeader }" 
                           Command="{Binding ShowRegionCommand}"
                           CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"
                           IsChecked="{Binding IsCheckedComputerVisionMenuItem}"/>
 
-                <MenuItem Header="{DynamicResource MainMenu.View.VisualSettingsHeader}" 
+            <MenuItem Header="{DynamicResource MainMenu.View.VisualSettingsHeader}" 
                           Command="{Binding ShowRegionCommand}"
                           CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}" 
                           IsChecked="{Binding IsCheckedVisualSettingsMenuItem}"/>
 
-            </MenuItem>
+        </MenuItem>
 
-        </Menu>
-    </StackPanel>
+    </Menu>
 
-    <!--#endregion-->
 
 </UserControl>

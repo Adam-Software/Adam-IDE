@@ -13,11 +13,9 @@
                 <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Controls.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
 
-
-
             <!-- Change IsChecked menu item color -->
             <SolidColorBrush x:Key="MahApps.Brushes.CheckmarkFill" Color="{StaticResource MahApps.Colors.SystemChromeWhite}"/>
-            
+
         </ResourceDictionary>
             
     </Application.Resources>

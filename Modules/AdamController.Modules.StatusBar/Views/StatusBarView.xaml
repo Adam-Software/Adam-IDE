@@ -1,18 +1,16 @@
 ﻿<UserControl x:Class="AdamController.Modules.StatusBarRegion.Views.StatusBarView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AdamController.Modules.StatusBarRegion.Views"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/" 
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             prism:ViewModelLocator.AutoWireViewModel="True" >
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
 
         <!--#region  Status bar -->
 
-        <StatusBar Style="{StaticResource MahApps.Styles.StatusBar}">
+        <StatusBar Style="{StaticResource MahApps.Styles.StatusBar}" 
+                   Background="{DynamicResource MahApps.Brushes.Accent}" >
 
             <!--#region  Item temlate -->
 
@@ -37,7 +35,7 @@
             <!--#endregion-->
 
             <Separator Grid.Column="0" 
-                       Margin="10 0 5 0"
+                       Margin="0 0 5 0"
                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
                        Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
 
@@ -54,7 +52,7 @@
                                       IsActive="{Binding ProgressRingStart}" />
 
                     <TextBlock Margin="5 0 0 0"
-                               FontWeight="Medium"
+                               
                                Text="{Binding CompileLogStatusBar }" 
                                VerticalAlignment="Center"  
                                HorizontalAlignment="Left"/>
@@ -72,7 +70,7 @@
             <!--#region AppLog status bar -->
 
             <StatusBarItem Grid.Column="3"
-                           FontWeight="Medium"
+                           
                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
                            Content="{Binding AppLogStatusBar}"/>
 
@@ -103,7 +101,7 @@
 
                     <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
-                               FontWeight="Medium"
+                               
                                Text="{Binding TextOnStatusConnectToolbar, Mode=TwoWay}" />
                 </Grid>
             </StatusBarItem>

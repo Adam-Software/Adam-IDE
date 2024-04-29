@@ -3,33 +3,23 @@
                   xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
-                  xmlns:uiConverter="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
                   xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
                   TitleCharacterCasing="Normal" WindowState="Maximized" ShowIconOnTitleBar="True"
                   xmlns:prism="http://prismlibrary.com/" 
                   xmlns:customusercontrol="clr-namespace:AdamController.Controls.CustomControls;assembly=AdamController.Controls"
                   prism:ViewModelLocator.AutoWireViewModel="True"
+                  WindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
+                  NonActiveWindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
                   Title="{Binding WindowTitle}">
-
-    <!--#region Window resources -->
-
-    <mah:MetroWindow.Resources>
-        <ResourceDictionary>
-            <uiConverter:MultiConverter x:Key="MultiConverter"/>
-            
-        </ResourceDictionary>
-        
-    </mah:MetroWindow.Resources>
-
-    <!--#endregion-->
 
     <!--#region LeftWindowCommands -->
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
-            <StackPanel Orientation="Horizontal">
-                <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
-            </StackPanel>
+             
+                <ContentControl Margin="40 0 10 0"
+                                prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
+           
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
 
@@ -43,20 +33,10 @@
                         VerticalAlignment="Center"  
                         HorizontalAlignment="Right">
 
-                <iconPacks:PackIconUnicons Kind="Robot" 
-                                       Height="15"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
+                <iconPacks:PackIconUnicons Kind="Robot" />
 
                 <TextBlock Text="{Binding}"
-                           FontWeight="Medium"
-                           FontSize="15"
-                           Margin="10 2 10 0"
-                           HorizontalAlignment="Center"
-                           TextAlignment="Right"
-                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
+                           Margin="10 2 10 0"/>
             </StackPanel>
         </DataTemplate>
     </mah:MetroWindow.TitleTemplate>
@@ -77,14 +57,15 @@
 
         <Grid.Resources>
             <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
-                <Grid Height="48">
+                <Grid Height="30"
+                      >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition Width="30" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0"
-                               FontSize="16"
+                               FontSize="14"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontFamily="Segoe MDL2 Assets"
@@ -92,27 +73,27 @@
 
                     <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
-                               FontSize="16"
+                               FontSize="14"
                                Text="{Binding Label}" />
                 </Grid>
             </DataTemplate>
 
             <DataTemplate x:Key="OptionsMenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
-                <Grid Height="48">
+                <Grid Height="30">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="48" />
+                        <ColumnDefinition  Width="30" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0"
-                               FontSize="16"
+                               FontSize="14"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontFamily="Segoe MDL2 Assets"
                                Text="{Binding Glyph}" />
                     <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
-                               FontSize="16"
+                               FontSize="14"
                                Text="{Binding Label}" />
                 </Grid>
             </DataTemplate>
@@ -133,13 +114,16 @@
 
 
         <!-- Menu open blocked because the language does not change on the fly, only after restarting the application #49 p.1
-             To unlock, delete the parameters: OpenPaneLength="48" and MaximumOpenPaneLength="48"
+             To unlock, delete the parameters: CompactPaneLength="30" and MaximumOpenPaneLength="30"
         -->
         <mah:HamburgerMenu Grid.Column="0"
                            Grid.Row="0"
-                           IsPaneOpen="False"
-                           OpenPaneLength="48"
-                           MaximumOpenPaneLength="48"
+                           Margin="0 -30 0 0"
+                           IsPaneOpen="True"
+                           HamburgerWidth="30"
+                           CompactPaneLength="30"
+                           MaximumOpenPaneLength="30"
+                           HamburgerMargin="0 -20 0 0"
                            SelectedIndex="{Binding HamburgerMenuSelectedIndex}"
                            SelectedOptionsIndex="{Binding HamburgerMenuSelectedOptionsIndex}"
                            ItemTemplate="{ StaticResource MenuItemTemplate}"
@@ -186,14 +170,17 @@
 
             <mah:HamburgerMenu.Content>
 
-                <ContentControl prism:RegionManager.RegionManager="{Binding RegionManager}"
+                <ContentControl Margin="0 30 0 0" 
+                                prism:RegionManager.RegionManager="{Binding RegionManager}"
                                 prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
 
             </mah:HamburgerMenu.Content>
 
         </mah:HamburgerMenu>
 
-        <ContentControl  Grid.ColumnSpan="5" Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
+        <ContentControl  Grid.ColumnSpan="5" Grid.Row="1" 
+                         Height="25"
+                         prism:RegionManager.RegionName="{x:Static core:RegionNames.StatusBarRegion}" />
 
 
     </Grid>
