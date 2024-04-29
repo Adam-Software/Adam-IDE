@@ -132,14 +132,18 @@
         </Grid.ColumnDefinitions>
 
 
+        <!-- Menu open blocked because the language does not change on the fly, only after restarting the application #49 p.1
+             To unlock, delete the parameters: OpenPaneLength="48" and MaximumOpenPaneLength="48"
+        -->
         <mah:HamburgerMenu Grid.Column="0"
                            Grid.Row="0"
                            IsPaneOpen="False"
+                           OpenPaneLength="48"
+                           MaximumOpenPaneLength="48"
                            SelectedIndex="{Binding HamburgerMenuSelectedIndex}"
                            SelectedOptionsIndex="{Binding HamburgerMenuSelectedOptionsIndex}"
                            ItemTemplate="{ StaticResource MenuItemTemplate}"
                            OptionsItemTemplate="{ StaticResource OptionsMenuItemTemplate}"
-                           
                            DisplayMode="CompactInline">
 
             
