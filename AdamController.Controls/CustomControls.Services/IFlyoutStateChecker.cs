@@ -1,11 +1,11 @@
 ﻿namespace AdamController.Controls.CustomControls.Services
 {
-    public delegate void IsOpenedStateChangeEventHandler(object sender);
+    public delegate void IsNotificationFlyoutOpenedStateChangeEventHandler(object sender);
 
     public interface IFlyoutStateChecker
     {
-        public event IsOpenedStateChangeEventHandler IsOpenedStateChangeEvent;
+        public event IsNotificationFlyoutOpenedStateChangeEventHandler IsNotificationFlyoutOpenedStateChangeEvent;
 
-        public bool IsOpened { get; set; }
+        public bool IsNotificationFlyoutOpened { get; set; }
     }
 }

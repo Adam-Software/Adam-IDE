@@ -56,6 +56,8 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         {
             if (isOpening)
             {
+                mFlyoutState.IsNotificationFlyoutOpened = true;
+
                 SetFlyoutParametrs();
                 Subscribe();
                 UpdateStatusConnection(mCommunicationProvider.IsTcpClientConnected);
@@ -65,33 +67,16 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             
             if (!isOpening)
             {
+                mFlyoutState.IsNotificationFlyoutOpened = false;
+
                 Unsubscribe();
 
                 ConnectButtonDelegateCommand = null;
                 ReconnectNotificationButtonDelegateCommand = null;
                 ResetNotificationsDelegateCommand = null;
-                
+
                 return;
             }
-        }
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-        {
-            
-            if (args.PropertyName == "IsOpen")
-            {
-                if (mFlyoutState.IsOpened)
-                {
-                    mFlyoutState.IsOpened = false;
-                }
-                else
-                {
-                    mFlyoutState.IsOpened = true;   
-                }
-            }
-            
-
-            base.OnPropertyChanged(args);
         }
 
         protected override void OnClosing(FlyoutParameters flyoutParameters)

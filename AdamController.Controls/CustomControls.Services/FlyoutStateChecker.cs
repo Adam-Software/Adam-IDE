@@ -3,27 +3,26 @@ namespace AdamController.Controls.CustomControls.Services
 {
     public class FlyoutStateChecker : IFlyoutStateChecker
     {
-        public event IsOpenedStateChangeEventHandler IsOpenedStateChangeEvent;
+        public event IsNotificationFlyoutOpenedStateChangeEventHandler IsNotificationFlyoutOpenedStateChangeEvent;
 
-        private bool _isFlyoutEnabled;
-        public bool IsOpened 
+        private bool isNotificationFlyoutOpened;
+        public bool IsNotificationFlyoutOpened 
         { 
-            get {  return _isFlyoutEnabled; }
+            get {  return isNotificationFlyoutOpened; }
             set 
             {  
-                if (_isFlyoutEnabled == value) 
+                if (isNotificationFlyoutOpened == value) 
                     return;
 
-                _isFlyoutEnabled = value;
-                OnOpenedStateChangeEvent();
+                isNotificationFlyoutOpened = value;
+                OnNotificationFlyoutOpenedStateChangeEvent();
             } 
         }
 
-        protected void OnOpenedStateChangeEvent()
+        protected void OnNotificationFlyoutOpenedStateChangeEvent()
         {
-            IsOpenedStateChangeEventHandler raiseEvent = IsOpenedStateChangeEvent;
+            IsNotificationFlyoutOpenedStateChangeEventHandler raiseEvent = IsNotificationFlyoutOpenedStateChangeEvent;
             raiseEvent?.Invoke(this);
         }
-
     }
 }

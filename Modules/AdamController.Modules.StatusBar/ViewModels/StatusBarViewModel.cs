@@ -168,7 +168,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent += RaiseNewAppLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseUpdateNotificationCounterEvent += RaiseUpdateNotificationCounterEvent;
 
-            mFlyoutState.IsOpenedStateChangeEvent += IsOpenedStateChangeEvent;
+            mFlyoutState.IsNotificationFlyoutOpenedStateChangeEvent += IsOpenedStateChangeEvent;
         }
 
         private void Unsubscribe() 
@@ -181,7 +181,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mStatusBarNotificationDelivery.RaiseNewCompileLogMessageEvent -= RaiseNewCompileLogMessageEvent;
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent -= RaiseNewAppLogMessageEvent;
 
-            mFlyoutState.IsOpenedStateChangeEvent -= IsOpenedStateChangeEvent;
+            mFlyoutState.IsNotificationFlyoutOpenedStateChangeEvent -= IsOpenedStateChangeEvent;
         }
 
         #endregion
@@ -244,7 +244,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private bool OpenNotificationPanelCanExecute()
         {
-            return !mFlyoutState.IsOpened;
+            return !mFlyoutState.IsNotificationFlyoutOpened;
         }
 
         #endregion

@@ -7,7 +7,6 @@ using AdamController.Services.Interfaces;
 using ControlzEx.Theming;
 using Prism.Commands;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,6 +31,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IFlyoutManager mFlyoutManager;
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
+
+        #endregion
+
+        #region Const
+
+        private const string cBaseColorAppThemeLightName = "Light";
+        private const string cBaseColorAppDarkLightName = "Dark";
 
         #endregion
 
@@ -178,20 +184,18 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void ChangeBlockllyTheme(string baseColorAppTheme)
         {
-            if (!Settings.Default.ChangeBlocklyThemeToggleSwitchState)
+            if (baseColorAppTheme == cBaseColorAppDarkLightName)
             {
-                if (baseColorAppTheme == "Dark")
-                {
-                    Settings.Default.BlocklyTheme = BlocklyTheme.Dark;
-                    Settings.Default.BlocklyGridColour = Colors.White.ToString();
-                }
-                
-                if (baseColorAppTheme == "Light")
-                {
-                    Settings.Default.BlocklyTheme = BlocklyTheme.Classic;
-                    Settings.Default.BlocklyGridColour = Colors.Black.ToString();
-                }
+                Settings.Default.BlocklyTheme = BlocklyTheme.Dark;
+                Settings.Default.BlocklyGridColour = Colors.White.ToString();
             }
+
+            if (baseColorAppTheme == cBaseColorAppThemeLightName)
+            {
+                Settings.Default.BlocklyTheme = BlocklyTheme.Classic;
+                Settings.Default.BlocklyGridColour = Colors.Black.ToString();
+            }
+
         }
 
         private void ChangeAppLanguage(CultureInfo cultureInfo)
