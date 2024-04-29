@@ -6,6 +6,6 @@
     <system:String x:Key="HamburgerMenu.ScratchEditorHeader">Scratch editor</system:String>
     <system:String x:Key="HamburgerMenu.ScriptEditorHeader">Script editor</system:String>
     <system:String x:Key="HamburgerMenu.ComputerVisionHeader">Computer vision</system:String>
-    <system:String x:Key="HamburgerMenu.VisualSettingsHeader">Visual settings</system:String>
+    <system:String x:Key="HamburgerMenu.VisualSettingsHeader">Settings</system:String>
     
 </ResourceDictionary>

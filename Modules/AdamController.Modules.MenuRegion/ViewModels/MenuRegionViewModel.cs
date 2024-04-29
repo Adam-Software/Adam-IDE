@@ -2,7 +2,6 @@
 using AdamController.Core.Mvvm;
 using Prism.Commands;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System.Windows;
 using System;
 using AdamController.Services.Interfaces;
@@ -14,8 +13,7 @@ namespace AdamController.Modules.MenuRegion.ViewModels
 
         #region DelegateCommands
 
-        public DelegateCommand CloseAppCommand { get; }
-       
+        public DelegateCommand CloseAppCommand { get; }    
         public DelegateCommand<string> ShowRegionCommand { get; }
 
         #endregion

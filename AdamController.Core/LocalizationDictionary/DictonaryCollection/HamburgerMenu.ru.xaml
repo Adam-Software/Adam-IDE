@@ -6,6 +6,6 @@
     <system:String x:Key="HamburgerMenu.ScratchEditorHeader">Скретч редактор</system:String>
     <system:String x:Key="HamburgerMenu.ScriptEditorHeader">Редактор скриптов</system:String>
     <system:String x:Key="HamburgerMenu.ComputerVisionHeader">Компьютерное зрение</system:String>
-    <system:String x:Key="HamburgerMenu.VisualSettingsHeader">Визуальные настройки</system:String>
+    <system:String x:Key="HamburgerMenu.VisualSettingsHeader">Настройки</system:String>
 
 </ResourceDictionary>

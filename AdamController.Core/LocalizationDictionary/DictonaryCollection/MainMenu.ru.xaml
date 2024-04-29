@@ -6,7 +6,6 @@
     <!--Main MenuItem Header-->
     <system:String x:Key="MainMenu.File.MainHeader">Файл</system:String>
     <system:String x:Key="MainMenu.View.MainHeader">Вид</system:String>
-    <system:String x:Key="MainMenu.Tools.MainHeader">Средства</system:String>
 
     <!--File MenuItem Header-->
     <system:String x:Key="MainMenu.File.CloseAppHeader">Закрыть</system:String>
@@ -15,9 +14,6 @@
     <system:String x:Key="MainMenu.View.ScratchEditorHeader">Скретч редактор</system:String>
     <system:String x:Key="MainMenu.View.ScriptEditorHeader">Редактор скриптов</system:String>
     <system:String x:Key="MainMenu.View.ComputerVisionHeader">Компьютерное зрение</system:String>
-    <system:String x:Key="MainMenu.View.VisualSettingsHeader">Визуальные настройки</system:String>
-
-    <!--Tools MenuItem Header-->
-    <system:String x:Key="MainMenu.Tools.SettingsHeader">Настройки</system:String>
+    <system:String x:Key="MainMenu.View.VisualSettingsHeader">Настройки</system:String>
 
 </ResourceDictionary>
