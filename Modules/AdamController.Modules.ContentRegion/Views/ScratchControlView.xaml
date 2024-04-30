@@ -14,15 +14,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True">
     
     <UserControl.Resources>
-        <ResourceDictionary>
-            
-            <converters:GridLengthConverter x:Key="GridLengthConverter" />
-            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
-            
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Controls.xaml" />
-             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <converters:GridLengthConverter x:Key="GridLengthConverter" />
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     </UserControl.Resources>
     
     <Grid>
@@ -38,6 +31,7 @@
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
+            
             <ColumnDefinition Width="{Binding Path=BlocklyEditorWidth, 
                               Mode=TwoWay, 
                               Converter={StaticResource GridLengthConverter}, 
@@ -47,228 +41,94 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <GroupBox Header="Скретч редактор"
-                  Grid.Column="0" 
-                  Grid.Row="0" 
-                  Grid.RowSpan="3"
-                  Margin="10 5 10 5"
-                  Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}"
-                      
-                  mah:ControlsHelper.ContentCharacterCasing="Normal"
-                  mah:HeaderedControlHelper.HeaderForeground="{DynamicResource MahApps.Brushes.ThemeForeground}">
+        <Grid Grid.Column="0" 
+              Grid.Row="0" 
+              Grid.RowSpan="3">
 
-            <Grid Margin="0 5 0 0"  
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.CanContentScroll="False">
-                
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <StatusBar Grid.Row="0"
+                       Grid.Column="0"  Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding ShowOpenFileDialogDelegateCommand}">
+                            <iconPacks:PackIconMaterial  Kind="FolderOpen" />
+                        </Button>
+                        <Button Command="{Binding ShowSaveFileDialogDelegateCommand}">
+                            <iconPacks:PackIconMaterial  Kind="ContentSave" />
+                        </Button>
+                        <Button Command="{Binding ReloadWebViewDelegateCommand}">
+                            <iconPacks:PackIconMaterial  Kind="Reload" />
+                        </Button>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+            <webControl:WebView2 Grid.Row="1" Name="WebView" DefaultBackgroundColor="Transparent" />
+        </Grid>
+        
+
+        <GridSplitter Grid.Column="1" 
+                      Grid.Row="0" 
+                      Grid.RowSpan="3" 
+                      Width="1" 
+                      Background="{DynamicResource MahApps.Brushes.Control.Border}"/>
+        
+            <Grid Grid.Row="0"
+                  Grid.Column="2" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0"
-                            Grid.Column="0" 
-                            Orientation="Horizontal">
-
-                    <StatusBar Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
-
-                        <Separator Margin="10 10 0 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-                        <StatusBarItem>
-
-                            <StackPanel Orientation="Horizontal">
-
-                                <Button Margin="5 0 3 0"
-                                        Padding="3"
-                                        Command="{Binding ShowOpenFileDialogDelegateCommand}"
-                                        Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <iconPacks:PackIconMaterial  Kind="FolderOpen" />
-                                    
-                                </Button>
-
-                                <Button Margin="0 0 5 0"
-                                        Padding="3"
-                                        Command="{Binding ShowSaveFileDialogDelegateCommand}"
-                                        Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <iconPacks:PackIconMaterial  Kind="ContentSave" />
-                                </Button>
-
-                                <Button Margin="0 0 5 0"
-                                        Padding="3"   
-                                        Command="{Binding ReloadWebViewDelegateCommand}"
-                                        Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <iconPacks:PackIconMaterial  Kind="Reload" />
-                                    
-                                </Button>
-                            </StackPanel>
-                        </StatusBarItem>
-
-                        <Separator Margin="0 10 0 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-                    </StatusBar>
-                </StackPanel>
-
-
-                <webControl:WebView2 Grid.Row="1" Margin="-2 -5 -5 -5" Name="WebView" DefaultBackgroundColor="Transparent" />
-
-            </Grid>
-
-        </GroupBox>
-        
-        <!--#endregion-->
-
-        <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Width="4" />
-        
-        <!--#region Source editor -->
-
-        <GroupBox Grid.Row="0"
-                  Grid.Column="2" 
-                  Header="Редактор исходного кода"
-                  Margin="10 5 10 5"
-                  Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}"
-                  mah:ControlsHelper.ContentCharacterCasing="Normal"
-                  mah:HeaderedControlHelper.HeaderForeground="{DynamicResource MahApps.Brushes.ThemeForeground}">
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0"
-                            Margin="0 5 0 0"
-                            Orientation="Horizontal">
-                    
-                    <!--#region Editor panel -->
-                    
-                    <StatusBar Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
-
-                        <Separator Margin="10 10 0 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-    
-                        <StatusBarItem>
-
-                            <StackPanel Orientation="Horizontal">
-                                
-                                <ToggleButton Margin="5 0 3 0"
-                                              Padding="3"
-                                              ToolTip="Показывать номера строк"
-                                              IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
-                                              Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                                              Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                              Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <iconPacks:PackIconMaterial Kind="Numeric" 
-                                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-
-                                </ToggleButton>
-
-                                <ToggleButton Margin="0 0 5 0" 
-                                              Padding="3"
-                                              ToolTip="Показывать перенос строк"
-                                              IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
-                                              Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                                              Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                              Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <iconPacks:PackIconVaadinIcons Kind="Paragraph" />
-                                </ToggleButton>
-
-                            </StackPanel>
-                            
-                        </StatusBarItem>
-
-                        <Separator Margin="0 10 0 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   />
-
-                    </StatusBar>
-
-                    <!--#endregion-->
-
-                    <!--#region Save source code -->
-
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal">
+                
+                <StatusBar>
                     <StatusBarItem>
-
                         <StackPanel Orientation="Horizontal">
-
-                            <Button ToolTip="Сохранить файл..."
-                                    Margin="5 0 5 0"
-                                    Padding="3"
-                                    Command="{Binding ShowSaveFileSourceTextDialogDelegateCommand}"
-                                    Style="{DynamicResource MahApps.Styles.Button}">
-                                
-                                <iconPacks:PackIconMaterial  Kind="ContentSave" />
+                            <ToggleButton x:Name="ShowLineNumberButton"
+                                          IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}">
+                                <iconPacks:PackIconMaterial Kind="Numeric" />
+                            </ToggleButton>
+                        </StackPanel>
+                    </StatusBarItem>
+                </StatusBar>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding ShowSaveFileSourceTextDialogDelegateCommand}">
+                            <iconPacks:PackIconMaterial  Kind="ContentSave" />
+                        </Button>
+                    </StackPanel>
+                </StatusBarItem>
+                <StatusBar>
+                    <StatusBarItem>
+                        <StackPanel>
+                            <Button Command="{Binding SendCodeToExternalSourceEditorDelegateCommand}">
+                                <StackPanel Orientation="Horizontal" >
+                                    <iconPacks:PackIconMaterial Kind="Send" />
+                                    <TextBlock Text="В редактор"/>
+                                </StackPanel>
                             </Button>
                         </StackPanel>
                     </StatusBarItem>
-
-                    <!--#endregion-->
-
-                    <!--#region To external editor button panel -->
-
-                    <StatusBar Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
-
-                        <Separator Margin="0 10 0 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-                        
-                        <StatusBarItem>
-                            
-                            <StackPanel>
-
-                                <Button Margin="5 0 5 0"
-                                        Padding="3"
-                                        Command="{Binding SendCodeToExternalSourceEditorDelegateCommand}"
-                                        Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <StackPanel Orientation="Horizontal" 
-                                                VerticalAlignment="Center" 
-                                                HorizontalAlignment="Center">
-
-                                        <iconPacks:PackIconMaterial Margin="3 0 3 0"
-                                                                    Width="12"
-                                                                    Kind="Send" />
-
-                                        <TextBlock Text="В редактор"
-                                                   FontSize="12"
-                                                   Margin="0 0 3 0"/>
-
-                                    </StackPanel>
-                                </Button>
-
-                            </StackPanel>
-                            
-                        </StatusBarItem>
-
-                        <Separator Margin="0 10 0 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-                    </StatusBar>
-
-                    <!--#endregion-->
-                    
-                </StackPanel>
+                </StatusBar>
+            </StackPanel>
 
                 
-                    <avalonEdit:TextEditor Margin="5 10 0 5"    
-                                           Grid.Row="1" 
+                    <avalonEdit:TextEditor Grid.Row="1" 
                                            FontFamily="Consolas"
 				                           FontSize="13pt"
 				                           FontStretch="Medium"
                                            FontWeight="SemiBold"
-                                           ShowLineNumbers="True"
                                            IsReadOnly="False"
                                            HorizontalScrollBarVisibility="Auto"
                                            VerticalScrollBarVisibility="Auto"
                                            ScrollViewer.PanningMode="HorizontalOnly"
+                                           ShowLineNumbers="{Binding IsChecked, ElementName=ShowLineNumberButton}"
                                            SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
@@ -282,231 +142,67 @@
                 
             </Grid>
 
-        </GroupBox>
-
-        <!--#endregion-->
-
         <GridSplitter Grid.Column="2" Grid.Row="1" Height="4" />
 
-        <!--#region result editor -->
+        <Grid Grid.Column="2" 
+              Grid.Row="2">
 
-        <GroupBox  Grid.Column="2" 
-                   Grid.Row="2"
-                   Header="Результат выполнения программы"
-                   Margin="10 5 10 5"
-                   Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}"
-                   
-                   mah:ControlsHelper.ContentCharacterCasing="Normal"
-                   mah:HeaderedControlHelper.HeaderForeground="{DynamicResource MahApps.Brushes.ThemeForeground}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <Grid Margin="0 5 0 0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" 
+                        Orientation="Horizontal">
 
-                <!--#region Result editor panel -->
-
-                <StackPanel Grid.Row="0" 
-                            Orientation="Horizontal">
-
-                    <StatusBar Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
-
-                        <Separator Margin="10 10 0 10"
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-                        <StatusBarItem>
-
-                            <StackPanel Orientation="Horizontal">
-
-                                <!--<ToggleButton Margin="5 0 0 0"
-                                              Padding="3"
-                                              ToolTip="Показывать номера строк"
-                                              IsChecked="{Binding ElementName=TextResulEditor, Path=ShowLineNumbers}"
-                                              Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <iconPacks:PackIconMaterial  Kind="Numeric"/>
-
-                                </ToggleButton>-->
-
-                                <Button Margin="3 0 0 0"
-                                        Padding="3"
-                                        ToolTip="Очистить окно результатов"
-                                        Command="{Binding CleanExecuteEditorDelegateCommand}"        
-                                        Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    
-                                        <StackPanel Orientation="Horizontal">
-                                            
-                                            <iconPacks:PackIconMaterialDesign Margin="3 0 3 0"
-                                                                              Kind="Clear"
-                                                                              Width="12"
-                                                                              />
-
-                                            <TextBlock Text="Очистить"
-                                                       Margin="0 0 3 0"
-                                                       FontSize="12"
-                                                       HorizontalAlignment="Center" 
-                                                       VerticalAlignment="Center" 
-                                                       FontWeight="Bold"/>
-
-                                    
-                                        
-                                    </StackPanel>
-                                    
-                                </Button>
-
-                            </StackPanel>
-
-                        </StatusBarItem>
-
-                    </StatusBar>
-
-                    <!--#region Compile panel -->
-
-                    <StatusBar Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
-
-                        <Separator Margin="5 10 5 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-                        <StatusBarItem>
-
-                            <StackPanel Orientation="Horizontal">
-
-                                <!--#region run code button -->
-
-                                <Button Margin="0 0 3 0"
-                                        Padding="3"
-                                        ToolTip="Запустить скрипт"
-                                        Command="{Binding RunPythonCodeDelegateCommand}"
-                                        Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                        Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <StackPanel Orientation="Horizontal">
-
-                                        <iconPacks:PackIconCodicons Margin="3 0 3 0"
-                                                                    Kind="DebugStart" 
-                                                                    Width="12"
-                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-
-                                        <TextBlock Text="Пуск"
-                                                   Margin="0 0 3 0"
-                                                   FontSize="12"
-                                                   Style="{DynamicResource MahApps.Styles.TextBlock}" 
-                                                   HorizontalAlignment="Center" 
-                                                   VerticalAlignment="Center" 
-                                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                                                   FontWeight="Bold" />
-
-                                    </StackPanel>
-
-                                </Button>
-
-                                <!--#endregion-->
-
-                                <!--#region stop code button -->
-
-                                <Button Padding="3"
-                                        ToolTip="Stop script execute"
-                                        Command="{Binding StopPythonCodeExecuteDelegateCommand}"        
-                                        Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                        
-                                        Style="{DynamicResource MahApps.Styles.Button}">
-
-                                    <StackPanel Orientation="Horizontal">
-                                        <iconPacks:PackIconCodicons Margin="3 0 3 0"
-                                                                    Kind="DebugStop" 
-                                                                    Width="12"
-                                                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-
-                                        <TextBlock Text="Стоп"
-                                                   Margin="0 0 3 0"
-                                                   FontSize="12"
-                                                   Style="{DynamicResource MahApps.Styles.TextBlock}" 
-                                                   HorizontalAlignment="Center" 
-                                                   VerticalAlignment="Center" 
-                                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" FontWeight="Bold" />
-
-                                    </StackPanel>
-
-                                </Button>
-
-                                <!--#endregion-->
-
-                            </StackPanel>
-
-                        </StatusBarItem>
-
-                        <Separator Margin="5 10 5 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-                    </StatusBar>
-
-                    <StatusBar Background="{DynamicResource MahApps.Brushes.ThemeBackground}" >
-
-                        <StatusBarItem>
-
-                            <!--#region ToZeroPosition button -->
-                            
-                            <Button Margin="0 0 3 0"
-                                    Padding="3"
-                                    ToolTip="Сбросить в нулевую позицию"
-                                    Command="{Binding ToZeroPositionDelegateCommand}"
-                                    Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                    Style="{DynamicResource MahApps.Styles.Button}">
-
+                <StatusBar>
+                    <StatusBarItem>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding CleanExecuteEditorDelegateCommand}"        >
                                 <StackPanel Orientation="Horizontal">
-
-                                    <iconPacks:PackIconMaterial Margin="3 0 3 0"
-                                                                Kind="HomeFloor0" 
-                                                                Width="14"
-                                                                Height="14"
-                                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-
-                                    <TextBlock Text="В нулевую позицию"
-                                               Margin="0 0 3 0"
-                                               FontSize="12"
-                                               Style="{DynamicResource MahApps.Styles.TextBlock}" 
-                                               HorizontalAlignment="Center" 
-                                               VerticalAlignment="Center" 
-                                               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                                               FontWeight="Bold" />
-
+                                    <iconPacks:PackIconMaterialDesign Kind="Clear"/>
+                                    <TextBlock Text="Очистить"/>
                                 </StackPanel>
-
                             </Button>
-                            
-                            <!--#endregion-->
+                        </StackPanel>
+                    </StatusBarItem>
+                </StatusBar>
+                <StatusBar>
+                    <StatusBarItem>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding RunPythonCodeDelegateCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconCodicons Kind="DebugStart" />
+                                    <TextBlock Text="Пуск"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{Binding StopPythonCodeExecuteDelegateCommand}" >
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconCodicons Kind="DebugStop" />
+                                    <TextBlock Text="Стоп" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StatusBarItem>
+                </StatusBar>
+                <StatusBar>
+                    <StatusBarItem>
+                        <Button Command="{Binding ToZeroPositionDelegateCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="HomeFloor0"/>
+                                <TextBlock Text="В нулевую позицию"/>
+                            </StackPanel>
+                        </Button>
+                    </StatusBarItem>
+                </StatusBar>
+            </StackPanel>
 
-                        </StatusBarItem>
 
-                        <Separator Margin="5 10 5 10" 
-                                   Background="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-
-                    </StatusBar>
-
-                </StackPanel>
-
-                <!--#endregion-->
-
-                <!--#endregion-->
-
-                <!--#region Result editor -->
-
-                <avalonEdit:TextEditor x:Name="TextResulEditor"
-                                       Margin="5 10 0 5"
-                                       Padding="10 5 5 5"
+            <avalonEdit:TextEditor x:Name="TextResulEditor"
                                        Grid.Row="1"
                                        IsReadOnly="True"
-                                       FontFamily="Consolas" 
-                                       FontSize="10pt" 
                                        ShowLineNumbers="False"
                                        HorizontalScrollBarVisibility="Auto"
                                        VerticalScrollBarVisibility="Auto"
@@ -514,84 +210,33 @@
                                        Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
 
-                    <i:Interaction.Behaviors>
-                        <behaviors:AvalonEditBehaviour  Text="{Binding ResultTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </i:Interaction.Behaviors>
+                <i:Interaction.Behaviors>
+                    <behaviors:AvalonEditBehaviour  Text="{Binding ResultTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </i:Interaction.Behaviors>
 
-                </avalonEdit:TextEditor>
+            </avalonEdit:TextEditor>
 
-                <!--#endregion-->
-                
-                <!--#region Report executed field -->
 
-                <StackPanel Grid.Row="2">
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="{Binding ResultTextEditorError}"/>
+            </StackPanel>
 
-                    <TextBlock Margin="10 5 0 5"
-                               Text="{Binding ResultTextEditorError}"
-                               FontFamily="Consolas"
-                               FontWeight="Bold"
-                               Style="{DynamicResource MahApps.Styles.TextBlock}" />
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal">
+
+                    <TextBlock Text="Среда выполнения: "/>
+                    <TextBlock Text="{Binding PythonVersion}"/>
+                    <TextBlock Text="{Binding PythonBinPath, StringFormat={} {0}}"/>
+                    <TextBlock Text="{Binding PythonWorkDir, StringFormat={} {0}}"/>
 
 
                 </StackPanel>
-
-                <Grid Grid.Row="3">
-
-                    <Grid.ColumnDefinitions>
-                        <!--<ColumnDefinition Width="0.10*"/>-->
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--<StackPanel Grid.Column="0"
-                                Margin="10 5 0 5" Orientation="Horizontal">-->
-
-                        <!--<TextBlock Text="Знаков: "-->
-                                   <!--FontFamily="Consolas"
-                                   Style="{DynamicResource MahApps.Styles.TextBlock}" />-->
-
-
-                        <!--<TextBlock Text="{Binding ResultTextEditorLength}"-->
-                                   <!--FontFamily="Consolas"
-                                   FontWeight="Bold"-->
-                                   <!--Style="{DynamicResource MahApps.Styles.TextBlock}" />-->
-
-                    <!--</StackPanel>-->
-
-                    <StackPanel Grid.Column="0"
-                                Margin="10 5 0 5"
-                                Orientation="Horizontal">
-
-                        <TextBlock Text="Среда выполнения: "
-                                   FontFamily="Consolas"
-                                   Style="{DynamicResource MahApps.Styles.TextBlock}" />
-
-                        <TextBlock Text="{Binding PythonVersion}"
-                                   FontFamily="Consolas"
-                                   FontWeight="Bold"
-                                   Style="{DynamicResource MahApps.Styles.TextBlock}" />
-
-                        <TextBlock Text="{Binding PythonBinPath, StringFormat={} {0}}"
-                                   FontFamily="Consolas"
-                                   FontWeight="Bold"
-                                   Style="{DynamicResource MahApps.Styles.TextBlock}" />
-
-                        <TextBlock Text="{Binding PythonWorkDir, StringFormat={} {0}}"
-                                   FontFamily="Consolas"
-                                   FontWeight="Bold"
-                                   Style="{DynamicResource MahApps.Styles.TextBlock}" />
-
-
-                    </StackPanel>
-
-                    <!--#endregion-->
-
-                </Grid>
-
             </Grid>
-        </GroupBox>
-        
-        <!--#endregion-->
-
-
+        </Grid>
     </Grid>
 </UserControl>
