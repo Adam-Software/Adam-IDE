@@ -15,7 +15,6 @@ using Prism.Commands;
 using Prism.Regions;
 using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Threading;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
@@ -172,28 +171,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
         }
 
-        private string resultTextEditor;
-        public string ResultTextEditor
+        private string resultText;
+        public string ResultText
         {
-            get => resultTextEditor;
-            set
+            get => resultText;
+            set 
             {
-                bool isNewValue = SetProperty(ref resultTextEditor, value);
+                bool isNewValue = SetProperty(ref resultText, value);
 
-                if (isNewValue)
-                {
-                    ResultTextEditorLength = ResultTextEditor.Length;
-                    RaiseDelegateCommandsCanExecuteChanged();
-                }       
-            }
+                if(isNewValue)
+                    CleanExecuteEditorDelegateCommand.RaiseCanExecuteChanged();
+            } 
         }
 
-        private int resultTextEditorLength;
-        public int ResultTextEditorLength
-        {
-            get => resultTextEditorLength;
-            set => SetProperty(ref resultTextEditorLength, value);
-        }
 
         private string resultTextEditorError;
         public string ResultTextEditorError
@@ -278,8 +268,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void ReloadWebView()
         {
-            //Need to clear the field? Test
-            //SourceTextEditor = string.Empty;
             mWebViewProvider.ReloadWebView();
         }
 
@@ -379,13 +367,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private void CleanExecuteEditor()
         {
             ResultTextEditorError = string.Empty;
-            ResultTextEditor = string.Empty;
+            ClearResultText();   
         }
 
         private bool CleanExecuteEditorCanExecute()
         {
             bool isPythonCodeNotExecute = !IsPythonCodeExecute;
-            var isResultNotEmpty = ResultTextEditor?.Length > 0;
+            var isResultNotEmpty = ResultText?.Length > 0;
             return isPythonCodeNotExecute &&  isResultNotEmpty;
         }
 
@@ -414,19 +402,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             if (Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
             {
-                ResultTextEditor += "Отчет о инициализации процесса программы\n" +
+                UpdateResultText("Отчет о инициализации процесса программы\n" +
                  "======================\n" +
                  $"Начало инициализации: {executeResult.StartTime}\n" +
                  $"Завершение инициализации: {executeResult.EndTime}\n" +
                  $"Общее время инициализации: {executeResult.RunTime}\n" +
                  $"Код выхода: {executeResult.ExitCode}\n" +
                  $"Статус успешности инициализации: {executeResult.Succeesed}" +
-                 "\n======================\n";
+                 "\n======================\n");
             }
 
             if (!string.IsNullOrEmpty(executeResult?.StandardError))
-                ResultTextEditor += $"Ошибка: {executeResult.StandardError}" +
-                    "\n======================";
+                UpdateResultText($"Ошибка: {executeResult.StandardError}" +
+                    "\n======================");
         }
 
         private bool RunPythonCodeCanExecute()
@@ -504,12 +492,51 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Private methods
 
+        private void UpdateResultText(string text, bool isFinishMessage = false)
+        {
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                if (isFinishMessage)
+                {
+                    ResultText += text;
+                    IsPythonCodeExecute = false;
+                }
+
+                if(!isFinishMessage)
+                {
+                    if (ResultText?.Length > 500)
+                    {
+                        if (!mIsWarningStackOwerflowAlreadyShow)
+                        {
+                            string warningMessage = "\nДальнейший вывод результата, будет скрыт.";
+                            warningMessage += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
+                            warningMessage += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
+                            warningMessage += "\n";
+
+                            ResultText += warningMessage;
+
+                            mIsWarningStackOwerflowAlreadyShow = true;
+                        }
+
+                        return;
+                    }
+
+                    ResultText += text;
+                }
+            }));
+        }
+
+        private void ClearResultText()
+        {
+            ResultText = string.Empty;
+        }
+
         private void OnPythonCodeExecuteStatusChange(bool isPythonCodeExecute)
         {
             
             if (!isPythonCodeExecute)
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
+                System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
                 {
                     await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
                 }));
@@ -530,11 +557,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             //#8 p 6
             //ThemeManager.Current.ChangeThemeColorScheme(Application.Current, cDebugColorScheme);
 
-            ResultTextEditor = string.Empty;
+            ClearResultText();
+
 
             if (!Settings.Default.ShadowWorkspaceInDebug) return;
 
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
                 await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowEnable);
             }));
@@ -614,27 +642,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void OnRaisePythonStandartOutput(object sender, string message)
         {
-            if (ResultTextEditorLength > 10000)
-            {
-                if (!mIsWarningStackOwerflowAlreadyShow)
-                {
-                    ResultTextEditor += "\nДальнейший вывод результата, будет скрыт.";
-                    ResultTextEditor += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
-                    ResultTextEditor += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
-
-                    mIsWarningStackOwerflowAlreadyShow = true;
-                }
-
-                return;
-            }
-
-            ResultTextEditor += message;
+            UpdateResultText(message);
         }
 
         private void OnRaisePythonScriptExecuteFinish(object sender, ExtendedCommandExecuteResult remoteCommandExecuteResult)
         {
-            IsPythonCodeExecute = false;
-
             string message = "\n======================\n<<Выполнение программы завершено>>";
 
             if (remoteCommandExecuteResult == null)
@@ -648,17 +660,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 $"Завершение выполнения: {remoteCommandExecuteResult.EndTime}\n" +
                 $"Общее время выполнения: {remoteCommandExecuteResult.RunTime}\n" +
                 $"Код выхода: {remoteCommandExecuteResult.ExitCode}\n" +
-                $"Статус успешности завершения: {remoteCommandExecuteResult.ExitCode == 0}" +
-
                 //The server returns an incorrect value, so the completion success status is determined by the exit code
                 //$"Статус успешности завершения: {remoteCommandExecuteResult.Succeesed}" +
+                $"Статус успешности завершения: {remoteCommandExecuteResult.ExitCode == 0}" +
                 $"\n======================\n";
 
             if (!string.IsNullOrEmpty(remoteCommandExecuteResult.StandardError))
                 messageWithResult += $"Ошибка: {remoteCommandExecuteResult.StandardError}" +
                     $"\n======================\n";
 
-            ResultTextEditor += messageWithResult;
+            UpdateResultText(messageWithResult, true);
         }
 
         #endregion

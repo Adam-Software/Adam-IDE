@@ -199,8 +199,14 @@
                 </StatusBar>
             </StackPanel>
 
+            <TextBox x:Name="TextResulEditor"
+                     HorizontalScrollBarVisibility="Auto"
+                     VerticalScrollBarVisibility="Auto"                 
+                     IsReadOnly="True"
+                     Grid.Row="1"
+                     Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <avalonEdit:TextEditor x:Name="TextResulEditor"
+            <!--<avalonEdit:TextEditor x:Name="TextResulEditor"
                                        Grid.Row="1"
                                        IsReadOnly="True"
                                        ShowLineNumbers="False"
@@ -214,7 +220,7 @@
                     <behaviors:AvalonEditBehaviour  Text="{Binding ResultTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </i:Interaction.Behaviors>
 
-            </avalonEdit:TextEditor>
+            </avalonEdit:TextEditor>-->
 
 
             <StackPanel Grid.Row="2">
