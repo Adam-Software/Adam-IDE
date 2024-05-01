@@ -20,39 +20,31 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            
-            <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, 
-                                            Mode=TwoWay, 
-                                            Converter={StaticResource GridLengthConverter}, 
-                                            Source={x:Static properties:Settings.Default }}"/>
-            
+            <!-- buttons -->
             <RowDefinition Height="Auto"/>
+            <!-- webview and source editor -->
             <RowDefinition Height="*"/>
+            
+            <!-- result expander height -->
+            <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, Mode=TwoWay, Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
-            
-            <ColumnDefinition Width="{Binding Path=BlocklyEditorWidth, 
-                              Mode=TwoWay, 
-                              Converter={StaticResource GridLengthConverter}, 
-                              Source={x:Static properties:Settings.Default }}"/>
-            
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
+            <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" 
-              Grid.Row="0" 
-              Grid.RowSpan="3">
+        <DockPanel Grid.Column="0" 
+                   Grid.Row="0"
+                   Grid.ColumnSpan="3"
+                   VerticalAlignment="Top">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <!--#region Button status bar -->
 
+            <StatusBar>
 
-            <StatusBar Grid.Row="0"
-                       Grid.Column="0"  Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal">
                         <Button Command="{Binding ShowOpenFileDialogDelegateCommand}">
@@ -66,83 +58,146 @@
                         </Button>
                     </StackPanel>
                 </StatusBarItem>
-            </StatusBar>
-            <webControl:WebView2 Grid.Row="1" Name="WebView" DefaultBackgroundColor="Transparent" />
-        </Grid>
-        
 
-        <GridSplitter Grid.Column="1" 
-                      Grid.Row="0" 
-                      Grid.RowSpan="3" 
-                      Width="1" 
-                      Background="{DynamicResource MahApps.Brushes.Control.Border}"/>
-        
-            <Grid Grid.Row="0"
-                  Grid.Column="2" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                <Separator Width="1" />
 
-            <StackPanel Grid.Row="0"
-                        Orientation="Horizontal">
-                
-                <StatusBar>
-                    <StatusBarItem>
-                        <StackPanel Orientation="Horizontal">
-                            <ToggleButton x:Name="ShowLineNumberButton"
-                                          IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}">
-                                <iconPacks:PackIconMaterial Kind="Numeric" />
-                            </ToggleButton>
-                        </StackPanel>
-                    </StatusBarItem>
-                </StatusBar>
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal">
+                        <ToggleButton x:Name="ShowLineNumberButton"
+                          IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}">
+
+                            <iconPacks:PackIconMaterial Kind="Numeric" />
+                        </ToggleButton>
+
                         <Button Command="{Binding ShowSaveFileSourceTextDialogDelegateCommand}">
                             <iconPacks:PackIconMaterial  Kind="ContentSave" />
                         </Button>
+                        <Button Command="{Binding SendCodeToExternalSourceEditorDelegateCommand}">
+                            <StackPanel Orientation="Horizontal" >
+                                <iconPacks:PackIconMaterial Kind="Send" />
+                                <TextBlock Text="В редактор"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </StatusBarItem>
-                <StatusBar>
-                    <StatusBarItem>
-                        <StackPanel>
-                            <Button Command="{Binding SendCodeToExternalSourceEditorDelegateCommand}">
-                                <StackPanel Orientation="Horizontal" >
-                                    <iconPacks:PackIconMaterial Kind="Send" />
-                                    <TextBlock Text="В редактор"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </StatusBarItem>
-                </StatusBar>
+
+                <Separator Width="1" />
+
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding CleanExecuteEditorDelegateCommand}"        >
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterialDesign Kind="Clear"/>
+                                <TextBlock Text="Очистить"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding RunPythonCodeDelegateCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconCodicons Kind="DebugStart" />
+                                <TextBlock Text="Пуск"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding StopPythonCodeExecuteDelegateCommand}" >
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconCodicons Kind="DebugStop" />
+                                <TextBlock Text="Стоп" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding ToZeroPositionDelegateCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="HomeFloor0"/>
+                                <TextBlock Text="В нулевую позицию"/>
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+            
+            <!--#endregion-->
+
+            <!--#region Python version status bar -->
+            
+            <StatusBar>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Среда выполнения: "/>
+                        <TextBlock Text="{Binding PythonVersion}"/>
+                        <TextBlock Text="{Binding PythonBinPath, StringFormat={} {0}}"/>
+                        <TextBlock Text="{Binding PythonWorkDir, StringFormat={} {0}}"/>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+            
+            <!--#endregion-->
+
+        </DockPanel>
+
+        <DockPanel Grid.Column="0" 
+                   Grid.Row="1" 
+                   Grid.RowSpan="2"
+                   LastChildFill="True">
+            
+            
+            <webControl:WebView2  DockPanel.Dock="Top"
+                                  Name="WebView" 
+                                  DefaultBackgroundColor="Transparent" />
+            
+        </DockPanel>
+        
+        
+        <GridSplitter Grid.Column="1" 
+                      Grid.Row="1" 
+                      Grid.RowSpan="2" 
+                      Width="2" 
+                      Margin="2 0 2 0"
+                      Background="{DynamicResource MahApps.Brushes.Control.Border}"/>
+
+
+        <avalonEdit:TextEditor Grid.Row="1"
+                               Grid.Column="2"
+                               Grid.RowSpan="2"
+                               FontFamily="Consolas"
+				               FontSize="13pt"
+				               FontStretch="Medium"
+                               IsReadOnly="True"
+                               HorizontalScrollBarVisibility="Auto"
+                               VerticalScrollBarVisibility="Auto"
+                               ScrollViewer.PanningMode="HorizontalOnly"
+                               ShowLineNumbers="{Binding IsChecked, ElementName=ShowLineNumberButton}"
+                               SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                               IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
+                               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                               LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+
+            <i:Interaction.Behaviors>
+                <behaviors:AvalonEditBehaviour Text="{Binding SourceTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </i:Interaction.Behaviors>
+        </avalonEdit:TextEditor>
+
+        <Expander Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  IsExpanded="False"
+                  Header="Результат"
+                  mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
+                  ExpandDirection="Down">
+
+            <StackPanel Orientation="Vertical">
+                <TextBox x:Name="TextResulEditor"
+                         HorizontalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto"                 
+                         IsReadOnly="True"
+                          Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
-                
-                    <avalonEdit:TextEditor Grid.Row="1" 
-                                           FontFamily="Consolas"
-				                           FontSize="13pt"
-				                           FontStretch="Medium"
-                                           FontWeight="SemiBold"
-                                           IsReadOnly="False"
-                                           HorizontalScrollBarVisibility="Auto"
-                                           VerticalScrollBarVisibility="Auto"
-                                           ScrollViewer.PanningMode="HorizontalOnly"
-                                           ShowLineNumbers="{Binding IsChecked, ElementName=ShowLineNumberButton}"
-                                           SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
-                                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                           LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                           Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+        </Expander>
 
-                        <i:Interaction.Behaviors>
-                            <behaviors:AvalonEditBehaviour Text="{Binding SourceTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </i:Interaction.Behaviors>
-                    </avalonEdit:TextEditor>
-                
-            </Grid>
-
-        <GridSplitter Grid.Column="2" Grid.Row="1" Height="4" />
+        <!--<GridSplitter Grid.Column="2" Grid.Row="1" Height="4" />
 
         <Grid Grid.Column="2" 
               Grid.Row="2">
@@ -154,74 +209,12 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" 
-                        Orientation="Horizontal">
-
-                <StatusBar>
-                    <StatusBarItem>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Command="{Binding CleanExecuteEditorDelegateCommand}"        >
-                                <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterialDesign Kind="Clear"/>
-                                    <TextBlock Text="Очистить"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </StatusBarItem>
-                </StatusBar>
-                <StatusBar>
-                    <StatusBarItem>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Command="{Binding RunPythonCodeDelegateCommand}">
-                                <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconCodicons Kind="DebugStart" />
-                                    <TextBlock Text="Пуск"/>
-                                </StackPanel>
-                            </Button>
-                            <Button Command="{Binding StopPythonCodeExecuteDelegateCommand}" >
-                                <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconCodicons Kind="DebugStop" />
-                                    <TextBlock Text="Стоп" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </StatusBarItem>
-                </StatusBar>
-                <StatusBar>
-                    <StatusBarItem>
-                        <Button Command="{Binding ToZeroPositionDelegateCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="HomeFloor0"/>
-                                <TextBlock Text="В нулевую позицию"/>
-                            </StackPanel>
-                        </Button>
-                    </StatusBarItem>
-                </StatusBar>
-            </StackPanel>
-
             <TextBox x:Name="TextResulEditor"
                      HorizontalScrollBarVisibility="Auto"
                      VerticalScrollBarVisibility="Auto"                 
                      IsReadOnly="True"
                      Grid.Row="1"
                      Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <!--<avalonEdit:TextEditor x:Name="TextResulEditor"
-                                       Grid.Row="1"
-                                       IsReadOnly="True"
-                                       ShowLineNumbers="False"
-                                       HorizontalScrollBarVisibility="Auto"
-                                       VerticalScrollBarVisibility="Auto"
-                                       IsEnabled="{Binding ElementName=SaveButton, Path=IsEnabled}"
-                                       Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
-
-                <i:Interaction.Behaviors>
-                    <behaviors:AvalonEditBehaviour  Text="{Binding ResultTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </i:Interaction.Behaviors>
-
-            </avalonEdit:TextEditor>-->
-
 
             <StackPanel Grid.Row="2">
                 <TextBlock Text="{Binding ResultTextEditorError}"/>
@@ -243,6 +236,6 @@
 
                 </StackPanel>
             </Grid>
-        </Grid>
+        </Grid>-->
     </Grid>
 </UserControl>
