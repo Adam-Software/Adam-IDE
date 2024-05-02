@@ -48,7 +48,7 @@ namespace AdamController.Modules.ContentRegion.Views
             mWebViewProvider.RaiseExecuteJavaScriptEvent += RaiseExecuteJavaScriptEvent;
             mWebViewProvider.RaiseExecuteReloadWebViewEvent += RaiseExecuteReloadWebViewEvent;
 
-            //TextResulEditor.TextChanged += TextResulEditorTextChanged;
+            TextResulEditor.TextChanged += TextResulEditorTextChanged;
         }
 
         private void RaiseExecuteReloadWebViewEvent(object sender)
@@ -76,7 +76,7 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void TextResulEditorTextChanged(object sender, EventArgs e)
         {
-            //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(TextResulEditor.ScrollToEnd));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(TextResulEditor.ScrollToEnd));
         }
 
         private async void InitializeWebViewCore()
