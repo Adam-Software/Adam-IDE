@@ -224,26 +224,47 @@
 
         <!--#region result textbox -->
 
-        <Expander  x:Name="ResultExpander"
-                   Grid.Row="3"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="3" 
-                   IsExpanded="False"
-                   Header="Результат"
-                   BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
-                   BorderThickness="0"
-                   mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
-                   ExpandDirection="Down">
+            <Expander  x:Name="ResultExpander"
+                       Grid.Row="3"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3" 
+                       IsExpanded="False"
+                       Header="Результат"
+                       BorderThickness="0"
+                       ExpandDirection="Down"
+                       BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                       mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
+                       mah:ControlsHelper.ContentCharacterCasing="Normal">
 
-            <TextBox x:Name="TextResulEditor"
-                     Height="{Binding Path=BlocklySourceEditorHeight, 
-                                       Mode=TwoWay, Converter={StaticResource GridLengthConverter}, 
-                                      Source={x:Static properties:Settings.Default }}"
-                     HorizontalScrollBarVisibility="Auto"
-                     VerticalScrollBarVisibility="Auto"                 
-                     IsReadOnly="True"
-                     BorderThickness="0"
-                     Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TabControl mah:TabControlHelper.CloseButtonEnabled="False"
+                            mah:HeaderedControlHelper.HeaderFontSize="14"
+                            mah:TabControlHelper.Transition="Up"
+                            mah:TabControlHelper.Underlined="TabPanel"
+                            mah:TabControlHelper.UnderlinePlacement="Top"
+                            mah:TabControlHelper.UnderlineSelectedBrush="{DynamicResource MahApps.Brushes.Button.Border}"
+                            mah:HeaderedControlHelper.HeaderFontWeight="Normal"             
+                            TabStripPlacement="Bottom"
+                            Height="{Binding Path=BlocklySourceEditorHeight,  
+                                             Mode=TwoWay, 
+                                             Converter={StaticResource GridLengthConverter},  Source={x:Static properties:Settings.Default }}">
+
+                    <mah:MetroTabItem Header="Вывод">
+                        
+                        <TextBox x:Name="TextResulEditor"
+                                 HorizontalScrollBarVisibility="Auto"
+                                 VerticalScrollBarVisibility="Auto"                 
+                                 IsReadOnly="True"
+                                 BorderThickness="0"
+                                 Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        
+                    </mah:MetroTabItem>
+
+                    <mah:MetroTabItem Header="Отчет о выполнении"></mah:MetroTabItem>
+                    
+                    <mah:MetroTabItem Header="Отчет о инициализации"></mah:MetroTabItem>
+
+                </TabControl>
+            
 
         </Expander>
 

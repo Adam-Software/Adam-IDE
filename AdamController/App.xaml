@@ -15,6 +15,7 @@
 
             <!-- Change IsChecked menu item color -->
             <SolidColorBrush x:Key="MahApps.Brushes.CheckmarkFill" Color="{StaticResource MahApps.Colors.SystemChromeWhite}"/>
+            
 
         </ResourceDictionary>
             
