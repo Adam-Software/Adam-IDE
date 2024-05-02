@@ -16,10 +16,14 @@
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
-             
-                <ContentControl Margin="40 0 10 0"
-                                prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
-           
+            <StackPanel Orientation="Horizontal">
+
+                <Separator Margin="29 0 0 0"
+                           Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+
+                <ContentControl Margin="5 0 10 0" prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
+            </StackPanel> 
+            
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
 

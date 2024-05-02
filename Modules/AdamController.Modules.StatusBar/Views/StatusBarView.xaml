@@ -35,7 +35,7 @@
             <!--#endregion-->
 
             <Separator Grid.Column="0" 
-                       Margin="0 0 5 0"
+                       Margin="30 0 5 0"
                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
                        Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
 

@@ -11,6 +11,7 @@
 
             <MenuItem Header="{DynamicResource MainMenu.File.CloseAppHeader}"
                       Command="{Binding CloseAppCommand}"/>
+            
         </MenuItem>
 
         <MenuItem Header="{DynamicResource MainMenu.View.MainHeader}"
