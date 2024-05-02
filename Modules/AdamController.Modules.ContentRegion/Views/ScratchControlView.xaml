@@ -168,17 +168,12 @@
 
         <!--#region  web view -->
         
-        <DockPanel Grid.Column="0" 
-                   Grid.Row="1"
-                   
-                   LastChildFill="True">
+        <webControl:WebView2  Grid.Column="0" 
+                              Grid.Row="1"
+                              Name="WebView" 
+                              DefaultBackgroundColor="Transparent" />
             
-            
-            <webControl:WebView2  DockPanel.Dock="Top"
-                                  Name="WebView" 
-                                  DefaultBackgroundColor="Transparent" />
-            
-        </DockPanel>
+        
         
         <!--#endregion-->
         
