@@ -210,6 +210,7 @@ namespace AdamController
             });
 
             containerRegistry.RegisterSingleton<IThemeManagerService, ThemeManagerService>();
+            containerRegistry.RegisterSingleton<IControlHelper, ControlHelper>();
 
             RegisterDialogs(containerRegistry);
         }
@@ -276,6 +277,8 @@ namespace AdamController
             Container.Resolve<ICommunicationProviderService>().Dispose();
             Container.Resolve<IWebApiService>().Dispose();
             Container.Resolve<ICultureProvider>().Dispose();
+
+            Container.Resolve<IControlHelper>().Dispose();
         }
 
         #region Subscribes

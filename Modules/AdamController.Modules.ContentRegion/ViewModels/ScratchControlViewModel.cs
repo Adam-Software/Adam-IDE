@@ -3,6 +3,7 @@ using AdamBlocklyLibrary.Enum;
 using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
+using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
@@ -11,10 +12,13 @@ using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
+using MahApps.Metro.Controls;
 using Prism.Commands;
 using Prism.Regions;
 using System;
+using System.Runtime;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
@@ -23,6 +27,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         #region DelegateCommands
 
+        public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
         public DelegateCommand ShowOpenFileDialogDelegateCommand { get; }
@@ -44,6 +49,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IDialogManagerService mDialogManager;
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
+        private readonly IControlHelper mControlHelper;
 
         #endregion
 
@@ -67,7 +73,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
-                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService) : base(regionManager)
+                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IControlHelper controlHelper) : base(regionManager)
         {
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
@@ -76,7 +82,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mDialogManager = dialogManager;
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
+            mControlHelper = controlHelper;
 
+            MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
             ShowOpenFileDialogDelegateCommand = new DelegateCommand(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
@@ -89,6 +97,14 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
         }
+
+        /*private double controlWidth;
+        public double ControlWidth
+        {
+            get  { return controlWidth; }
+            set => SetProperty(ref controlWidth, value);
+        }*/
+
         #endregion
 
         #region Navigation
@@ -266,6 +282,40 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region DelegateCommands methods
 
+        private void MoveSplitter(string arg)
+        {
+            var dividedScreen = mControlHelper.ActualWidth / 2;
+
+            if (arg == "Left")
+            {
+                if (Settings.Default.BlocklyEditorWidth >= mControlHelper.ActualWidth - 10)
+                {
+                    Settings.Default.BlocklyEditorWidth = dividedScreen;
+                    return;
+                }
+
+                if (Settings.Default.BlocklyEditorWidth <= mControlHelper.ActualWidth - 500)
+                    Settings.Default.BlocklyEditorWidth = 0;
+            }
+
+            if(arg == "Right")
+            {
+                if (Settings.Default.BlocklyEditorWidth == 0)
+                {
+                    Settings.Default.BlocklyEditorWidth = dividedScreen;
+                    return;
+                }
+                    
+
+                if (Settings.Default.BlocklyEditorWidth >= 500)
+                    Settings.Default.BlocklyEditorWidth = mControlHelper.ActualWidth;
+            }
+        }
+
+        private bool MoveSplitterCanExecute(string arg)
+        {
+            return true;
+        }
         private void ReloadWebView()
         {
             mWebViewProvider.ReloadWebView();

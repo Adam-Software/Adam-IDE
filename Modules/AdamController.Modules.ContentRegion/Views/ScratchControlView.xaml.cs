@@ -1,4 +1,5 @@
 ﻿
+using AdamController.Controls.CustomControls.Services;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
@@ -20,6 +21,7 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private readonly IWebViewProvider mWebViewProvider;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
+        private readonly IControlHelper mControlHelper;
 
         #endregion
 
@@ -30,13 +32,14 @@ namespace AdamController.Modules.ContentRegion.Views
 
         #endregion
 
-        public ScratchControlView(IWebViewProvider webViewProvider, IStatusBarNotificationDeliveryService statusBarNotification, IFolderManagmentService folderManagment)
+        public ScratchControlView(IWebViewProvider webViewProvider, IStatusBarNotificationDeliveryService statusBarNotification, IFolderManagmentService folderManagment, IControlHelper controlHelper)
         {
             InitializeComponent();
             InitializeWebViewCore();
 
             mWebViewProvider = webViewProvider;
             mStatusBarNotification = statusBarNotification;
+            mControlHelper = controlHelper;
 
             mPathToSource = Path.Combine(folderManagment.CommonDirAppData, "BlocklySource");
             mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
@@ -49,6 +52,13 @@ namespace AdamController.Modules.ContentRegion.Views
             mWebViewProvider.RaiseExecuteReloadWebViewEvent += RaiseExecuteReloadWebViewEvent;
 
             TextResulEditor.TextChanged += TextResulEditorTextChanged;
+
+            MainGrid.SizeChanged += MainGrid_SizeChanged; ;
+        }
+
+        private void MainGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            mControlHelper.ActualWidth = MainGrid.ActualWidth;
         }
 
         private void RaiseExecuteReloadWebViewEvent(object sender)

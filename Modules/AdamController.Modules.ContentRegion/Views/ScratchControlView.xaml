@@ -19,304 +19,264 @@
     </UserControl.Resources>
 
     <Border BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}" BorderThickness="1">
-    <Grid>
-        <Grid.RowDefinitions>
-            <!-- buttons 0 -->
-            <RowDefinition Height="Auto"/>
-            <!-- webview and source editor  1 -->
-            <RowDefinition Height="*"/>
-            
-            <!-- result expander height  2 
-            <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, 
-                                            Mode=TwoWay, 
-                                            Converter={StaticResource GridLengthConverter}, 
-                                            Source={x:Static properties:Settings.Default }}"/>-->
+        
+        <Grid x:Name="MainGrid">
 
-            <!--splitter 2-->
-            <RowDefinition Height="Auto"/>
-            <!-- result 3 -->
-            <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, 
+            <Grid.RowDefinitions>
+                <!-- buttons 0 Empty -->
+                <RowDefinition Height="0"/>
+                <!-- webview and source editor  1 -->
+                <RowDefinition Height="*"/>
+                <!--splitter 2-->
+                <RowDefinition Height="Auto"/>
+                <!-- result 3 -->
+                <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, 
                                                                   Mode=TwoWay, 
                                                                   Converter={StaticResource GridLengthConverter}, 
                                                                   Source={x:Static properties:Settings.Default }}">
-                <RowDefinition.Style>
-                    <Style TargetType="{x:Type RowDefinition}">
-                        
-                        <Setter Property="MinHeight" Value="150" />
-                        <Setter Property="MaxHeight" Value="500" />
-                        
-                        <!-- Default MinHeight -->
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=ResultExpander, Path=IsExpanded}" Value="False">
-                                <Setter Property="MinHeight" Value="25" />
-                                <!-- MinHeight when Collapsed -->
-                                <Setter Property="MaxHeight" Value="25" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>
+                    <RowDefinition.Style>
+                        <Style TargetType="{x:Type RowDefinition}">
+
+                            <Setter Property="MinHeight" Value="150" />
+                            <Setter Property="MaxHeight" Value="500" />
+
+                            <!-- Default MinHeight -->
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ResultExpander, Path=IsExpanded}" Value="False">
+                                    <Setter Property="MinHeight" Value="25" />
+                                    <!-- MinHeight when Collapsed -->
+                                    <Setter Property="MaxHeight" Value="25" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
 
 
-            </RowDefinition>
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
-            <ColumnDefinition Width="6"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <DockPanel Grid.Column="0" 
-                   Grid.Row="0"
-                   Grid.ColumnSpan="3"
-                   VerticalAlignment="Top">
-
-            <!--#region Button status bar -->
-
-            <StatusBar>
-
-                <StatusBarItem>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Command="{Binding ShowOpenFileDialogDelegateCommand}">
-                            <iconPacks:PackIconMaterial  Kind="FolderOpen" />
-                        </Button>
-                        <Button Command="{Binding ShowSaveFileDialogDelegateCommand}">
-                            <iconPacks:PackIconMaterial  Kind="ContentSave" />
-                        </Button>
-                        <Button Command="{Binding ReloadWebViewDelegateCommand}">
-                            <iconPacks:PackIconMaterial  Kind="Reload" />
-                        </Button>
-                    </StackPanel>
-                </StatusBarItem>
-
-                <Separator Width="1" />
-
-                <StatusBarItem>
-                    <StackPanel Orientation="Horizontal">
-                        <ToggleButton x:Name="ShowLineNumberButton"
-                          IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}">
-
-                            <iconPacks:PackIconMaterial Kind="Numeric" />
-                        </ToggleButton>
-
-                        <Button Command="{Binding ShowSaveFileSourceTextDialogDelegateCommand}">
-                            <iconPacks:PackIconMaterial  Kind="ContentSave" />
-                        </Button>
-                        <Button Command="{Binding SendCodeToExternalSourceEditorDelegateCommand}">
-                            <StackPanel Orientation="Horizontal" >
-                                <iconPacks:PackIconMaterial Kind="Send" />
-                                <TextBlock Text="В редактор"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </StatusBarItem>
-
-                <Separator Width="1" />
-
-                <StatusBarItem>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Command="{Binding CleanExecuteEditorDelegateCommand}"        >
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterialDesign Kind="Clear"/>
-                                <TextBlock Text="Очистить"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Command="{Binding RunPythonCodeDelegateCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconCodicons Kind="DebugStart" />
-                                <TextBlock Text="Пуск"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Command="{Binding StopPythonCodeExecuteDelegateCommand}" >
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconCodicons Kind="DebugStop" />
-                                <TextBlock Text="Стоп" />
-                            </StackPanel>
-                        </Button>
-
-                        <Button Command="{Binding ToZeroPositionDelegateCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="HomeFloor0"/>
-                                <TextBlock Text="В нулевую позицию"/>
-                            </StackPanel>
-                        </Button>
-
-                    </StackPanel>
-                </StatusBarItem>
-            </StatusBar>
-            
-            <!--#endregion-->
-
-            <!--#region Python version status bar -->
-            
-            <StatusBar>
-                <StatusBarItem>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Среда выполнения: "/>
-                        <TextBlock Text="{Binding PythonVersion}"/>
-                        <TextBlock Text="{Binding PythonBinPath, StringFormat={} {0}}"/>
-                        <TextBlock Text="{Binding PythonWorkDir, StringFormat={} {0}}"/>
-                    </StackPanel>
-                </StatusBarItem>
-            </StatusBar>
-            
-            <!--#endregion-->
-
-        </DockPanel>
-
-        <!--#region  web view -->
-        
-        <webControl:WebView2  Grid.Column="0" 
-                              Grid.Row="1"
-                              Name="WebView" 
-                              DefaultBackgroundColor="Transparent" />
-            
-        
-        
-        <!--#endregion-->
-        
-        <!--#region vertical splitter -->
-        
-        <GridSplitter Grid.Column="1" 
-                      Grid.Row="1" 
-                      Width="1" 
-                      Margin="2 0 2 0"
-                      Background="{DynamicResource MahApps.Brushes.Control.Border}"/>
-        
-        <!--#endregion-->
-
-        <!--#region code editor -->
-        
-        <avalonEdit:TextEditor Grid.Row="1"
-                               Grid.Column="2"
-                               FontFamily="Consolas"
-				               FontSize="13pt"
-				               FontStretch="Medium"
-                               IsReadOnly="True"
-                               HorizontalScrollBarVisibility="Auto"
-                               VerticalScrollBarVisibility="Auto"
-                               ScrollViewer.PanningMode="HorizontalOnly"
-                               ShowLineNumbers="{Binding IsChecked, ElementName=ShowLineNumberButton}"
-                               SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                               IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
-                               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                               LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
-
-            <i:Interaction.Behaviors>
-                <behaviors:AvalonEditBehaviour Text="{Binding SourceTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </i:Interaction.Behaviors>
-        </avalonEdit:TextEditor>
-        
-        <!--#endregion-->
-
-        <GridSplitter Grid.Column="0" 
-                      Grid.Row="2" 
-                      Grid.ColumnSpan="3" 
-                      Height="1"
-                      Margin="0"
-                      HorizontalAlignment="Stretch"
-                      
-                      Background="{DynamicResource MahApps.Brushes.Control.Border}"/>
-
-
-        <!--#region result textbox -->
-
-            <Expander  x:Name="ResultExpander"
-                       Grid.Row="3"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="3" 
-                       IsExpanded="False"
-                       Header="Результат"
-                       BorderThickness="0"
-                       ExpandDirection="Down"
-                       BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
-                       mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
-                       mah:ControlsHelper.ContentCharacterCasing="Normal">
-
-                <TabControl mah:TabControlHelper.CloseButtonEnabled="False"
-                            mah:HeaderedControlHelper.HeaderFontSize="14"
-                            mah:TabControlHelper.Transition="Up"
-                            mah:TabControlHelper.Underlined="TabPanel"
-                            mah:TabControlHelper.UnderlinePlacement="Top"
-                            mah:TabControlHelper.UnderlineSelectedBrush="{DynamicResource MahApps.Brushes.Button.Border}"
-                            mah:HeaderedControlHelper.HeaderFontWeight="Normal"             
-                            TabStripPlacement="Bottom"
-                            Height="{Binding Path=BlocklySourceEditorHeight,  
-                                             Mode=TwoWay, 
-                                             Converter={StaticResource GridLengthConverter},  Source={x:Static properties:Settings.Default }}">
-
-                    <mah:MetroTabItem Header="Вывод">
-                        
-                        <TextBox x:Name="TextResulEditor"
-                                 HorizontalScrollBarVisibility="Auto"
-                                 VerticalScrollBarVisibility="Auto"                 
-                                 IsReadOnly="True"
-                                 BorderThickness="0"
-                                 Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        
-                    </mah:MetroTabItem>
-
-                    <mah:MetroTabItem Header="Отчет о выполнении"></mah:MetroTabItem>
-                    
-                    <mah:MetroTabItem Header="Отчет о инициализации"></mah:MetroTabItem>
-
-                </TabControl>
-            
-
-        </Expander>
-
-        <!--#endregion-->
-       
-
-        
-        
-
-
-
-        <!-- OLD
-            <GridSplitter Grid.Column="2" Grid.Row="1" Height="4" />
-
-        <Grid Grid.Column="2" 
-              Grid.Row="2">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                </RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="TextResulEditor"
-                     HorizontalScrollBarVisibility="Auto"
-                     VerticalScrollBarVisibility="Auto"                 
-                     IsReadOnly="True"
-                     Grid.Row="1"
-                     Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--#region  web view -->
 
-            <StackPanel Grid.Row="2">
-                <TextBlock Text="{Binding ResultTextEditorError}"/>
-            </StackPanel>
+            <DockPanel Grid.Column="0" 
+                       Grid.Row="1"
+                       Margin="0 7 0 0"
+                       LastChildFill="True">
 
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <DockPanel Margin="7 0 0 0" DockPanel.Dock="Top">
 
-                <StackPanel Grid.Column="0"
-                            Orientation="Horizontal">
+                    <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}">
+                        <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
+                    </Button>
+                    <Button Padding="2" Margin="3 0 7 0" Command="{Binding ShowSaveFileDialogDelegateCommand}">
+                        <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
+                    </Button>
+                    <Button Padding="2"  Command="{Binding ReloadWebViewDelegateCommand}">
+                        <iconPacks:PackIconMaterial  Padding="2"  Kind="Reload" />
+                    </Button>
 
-                    <TextBlock Text="Среда выполнения: "/>
-                    <TextBlock Text="{Binding PythonVersion}"/>
-                    <TextBlock Text="{Binding PythonBinPath, StringFormat={} {0}}"/>
-                    <TextBlock Text="{Binding PythonWorkDir, StringFormat={} {0}}"/>
+                    <Button HorizontalAlignment="Right" 
+                            Margin="0 0 -1 0"
+                            Padding="0 0 4 0"
+                            mah:ControlsHelper.CornerRadius="0"
+                            Command="{Binding MoveSplitterDelegateCommand}"
+                            CommandParameter="Left">
+                        <iconPacks:PackIconModern Margin="6 2 0 2"  Kind="ChevronLeft" />
+                    </Button>
 
 
-                </StackPanel>
-            </Grid>
-        </Grid>-->
-    </Grid>
+                </DockPanel>
+
+                <webControl:WebView2  DockPanel.Dock="Top"
+                                      Margin="0 0 0 -5"
+                                      Name="WebView" 
+                                      DefaultBackgroundColor="Transparent" />
+            </DockPanel>
+
+            <!--#endregion-->
+
+            <!--#region vertical splitter -->
+
+            <GridSplitter Grid.Column="1" 
+                          Grid.Row="1" 
+                          Width="1" 
+                          Background="{DynamicResource MahApps.Brushes.Control.Border}"/>
+
+            <!--#endregion-->
+
+            <!--#region code editor -->
+
+            <DockPanel Grid.Row="1"
+                       Grid.Column="2"
+                       Margin="7 7 5 5"
+                       LastChildFill="True">
+
+                <DockPanel Margin="0 0 0 10" DockPanel.Dock="Top">
+
+                    <Button HorizontalAlignment="Left" 
+                            Margin="-8 0 10 0"
+                            Padding="0 0 4 0"
+                            mah:ControlsHelper.CornerRadius="0"
+                            Command="{Binding MoveSplitterDelegateCommand}"
+                            CommandParameter="Right">
+                        <iconPacks:PackIconModern Margin="6 2 0 2"  Kind="ChevronRight" />
+                    </Button>
+            
+                    
+                    <ToggleButton x:Name="ShowLineNumberButton" 
+                                  HorizontalAlignment="Left"     
+                                  Padding="2"
+                                  IsChecked="{Binding ShowLineNumber, Mode=TwoWay, Source={x:Static properties:Settings.Default }}"
+                                  IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}">
+                        <iconPacks:PackIconMaterial Padding="2" Kind="Numeric" />
+                    </ToggleButton>
+
+                    
+                    <ToggleButton x:Name="ReadOnlyButton" 
+                                  Margin="3 0 0 0"
+                                  HorizontalAlignment="Left"     
+                                  Padding="2"
+                                  IsChecked="{Binding EditorIsReadOnly, Mode=TwoWay, 
+                                              Source={x:Static properties:Settings.Default}}"
+                                  IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}">
+                        <iconPacks:PackIconCodicons Padding="2" Kind="Edit" />
+                    </ToggleButton>
+
+                    <Button HorizontalAlignment="Left" 
+                            Margin="3 0 7 0"
+                            Padding="2"
+                            Command="{Binding ShowSaveFileSourceTextDialogDelegateCommand}">
+                        <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
+                    </Button>
+
+                    <Button HorizontalAlignment="Left" 
+                            Padding="2"
+                            Command="{Binding RunPythonCodeDelegateCommand}">
+                        <iconPacks:PackIconCodicons Padding="2" Kind="DebugStart" />
+                    </Button>
+
+                    <Button HorizontalAlignment="Left" 
+                            Margin="3 0 7 0"
+                            Padding="2"
+                            Command="{Binding StopPythonCodeExecuteDelegateCommand}">
+                        <iconPacks:PackIconCodicons Padding="2" Kind="DebugStop" />
+                    </Button>
+
+                    <Button HorizontalAlignment="Left"
+                            Padding="2"
+                            Command="{Binding ToZeroPositionDelegateCommand}">
+
+                        <iconPacks:PackIconMaterial Padding="2"  Kind="HomeFloor0"/>
+
+                    </Button>
+
+
+                    <!--<TextBlock Text="Среда выполнения: "/>-->
+                        <TextBlock Margin="0 0 5 0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" 
+                                   Text="{Binding PythonVersion}"/>
+                        <!--<TextBlock Text="{Binding PythonBinPath, StringFormat={} {0}}"/>-->
+                        <!--<TextBlock Text="{Binding PythonWorkDir, StringFormat={} {0}}"/>-->
+                    
+                </DockPanel>
+
+                <avalonEdit:TextEditor DockPanel.Dock="Top"
+                                       FontFamily="Consolas"
+				                       FontSize="13pt"
+				                       FontStretch="Medium"
+                                       HorizontalScrollBarVisibility="Auto"
+                                       VerticalScrollBarVisibility="Auto"
+                                       ScrollViewer.PanningMode="HorizontalOnly"
+                                       IsReadOnly="{Binding IsChecked, ElementName=ReadOnlyButton, Converter={StaticResource InverseBooleanConverter}}"
+                                       ShowLineNumbers="{Binding IsChecked, ElementName=ShowLineNumberButton}"
+                                       SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                       IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
+                                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                       LineNumbersForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                       Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+
+                    <i:Interaction.Behaviors>
+                        <behaviors:AvalonEditBehaviour Text="{Binding SourceTextEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </i:Interaction.Behaviors>
+                </avalonEdit:TextEditor>
+
+            </DockPanel>
+
+            <!--#endregion-->
+
+            <!--#region result expander -->
+
+
+            <GridSplitter Grid.Column="0" 
+                          Grid.Row="2" 
+                          Grid.ColumnSpan="3" 
+                          Height="1"
+                          Background="{DynamicResource MahApps.Brushes.Control.Border}"/>
+
+            <Expander  x:Name="ResultExpander"
+                       Margin="10 0 0 0"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3" 
+                   IsExpanded="False"
+                   Header="Результат"
+                   BorderThickness="0"
+                   ExpandDirection="Down"
+                   BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                   mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
+                   mah:ControlsHelper.ContentCharacterCasing="Normal">
+
+                <DockPanel LastChildFill="True">
+
+                    <Button DockPanel.Dock="Right"
+                            VerticalAlignment="Top"
+                            Margin="5 0 5 0"
+                            Command="{Binding CleanExecuteEditorDelegateCommand}"        >
+                        <iconPacks:Codicons Kind="ClearAll"/>
+                    </Button>
+
+
+                    <TabControl DockPanel.Dock="Top"
+                                Padding="-4 0 0 2"
+                                mah:TabControlHelper.CloseButtonEnabled="False"
+                                mah:HeaderedControlHelper.HeaderFontSize="13"
+                                mah:TabControlHelper.Underlined="TabPanel"
+                                mah:TabControlHelper.UnderlinePlacement="Top"
+                                mah:TabControlHelper.UnderlineSelectedBrush="{DynamicResource MahApps.Brushes.Button.Border}"
+                                mah:TabControlHelper.UnderlineBrush="{DynamicResource MahApps.Brushes.Button.Border}"
+                                mah:HeaderedControlHelper.HeaderFontWeight="Normal"             
+                                TabStripPlacement="Bottom"
+                                Height="{Binding Path=BlocklySourceEditorHeight, Mode=TwoWay, 
+                                                 Converter={StaticResource GridLengthConverter},  
+                                                 Source={x:Static properties:Settings.Default }}">
+
+                        <mah:MetroTabItem Header="Вывод">
+
+                            <TextBox x:Name="TextResulEditor"
+                                     HorizontalScrollBarVisibility="Auto"
+                                     VerticalScrollBarVisibility="Auto"                 
+                                     IsReadOnly="True"
+                                     Margin="0 0 0 -4"
+                                     BorderThickness="1"
+                                     Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        </mah:MetroTabItem>
+
+                        <mah:MetroTabItem Header="Отчет о выполнении"></mah:MetroTabItem>
+
+                        <mah:MetroTabItem Header="Отчет о инициализации"></mah:MetroTabItem>
+
+                    </TabControl>
+                </DockPanel>
+            </Expander>
+
+            <!--#endregion-->
+
+        </Grid>
     </Border>
 </UserControl>

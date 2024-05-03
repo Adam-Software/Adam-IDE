@@ -1078,5 +1078,41 @@ namespace AdamController.Core.Properties {
                 this["CreateUserDirrectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowLineNumber {
+            get {
+                return ((bool)(this["ShowLineNumber"]));
+            }
+            set {
+                this["ShowLineNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EditorIsReadOnly {
+            get {
+                return ((bool)(this["EditorIsReadOnly"]));
+            }
+            set {
+                this["EditorIsReadOnly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double SourceEditorLength {
+            get {
+                return ((double)(this["SourceEditorLength"]));
+            }
+            set {
+                this["SourceEditorLength"] = value;
+            }
+        }
     }
 }
