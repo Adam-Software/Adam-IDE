@@ -22,11 +22,6 @@
                           CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"
                           IsChecked="{Binding IsCheckedScratchMenuItem}" />
 
-            <MenuItem Header="{DynamicResource MainMenu.View.ScriptEditorHeader}" 
-                          Command="{Binding ShowRegionCommand}"
-                          CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}" 
-                          IsChecked="{Binding IsCheckedScriptEditorMenuItem}"/>
-
             <MenuItem Header="{DynamicResource MainMenu.View.ComputerVisionHeader }" 
                           Command="{Binding ShowRegionCommand}"
                           CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"

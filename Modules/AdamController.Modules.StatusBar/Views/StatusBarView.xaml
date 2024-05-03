@@ -34,6 +34,17 @@
 
             <!--#endregion-->
 
+
+            <Separator Grid.Column="0" 
+                       Margin="0 -26 5 0" Height="1"
+                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+
+            <mah:ProgressRing Padding="2"
+                              Grid.Column="0"
+                              Width="Auto" Height="Auto"
+                              Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                              IsActive="{Binding ProgressRingStart}" />
+
             <Separator Grid.Column="0" 
                        Margin="30 0 5 0"
                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
@@ -46,10 +57,6 @@
 
                 <StackPanel Orientation="Horizontal">
                     
-                    <mah:ProgressRing Width="Auto" Height="Auto"
-                                      Padding="5"
-                                      Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                      IsActive="{Binding ProgressRingStart}" />
 
                     <TextBlock Margin="5 0 0 0"
                                

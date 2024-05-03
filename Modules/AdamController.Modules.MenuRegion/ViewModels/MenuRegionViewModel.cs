@@ -64,13 +64,6 @@ namespace AdamController.Modules.MenuRegion.ViewModels
             set => SetProperty(ref isCheckedScratchMenuItem, value);
         }
 
-        private bool isCheckedScriptEditorMenuItem;
-        public bool IsCheckedScriptEditorMenuItem
-        {
-            get => isCheckedScriptEditorMenuItem;
-            set => SetProperty(ref isCheckedScriptEditorMenuItem, value);
-        }
-
         private bool isCheckedComputerVisionMenuItem;
         public bool IsCheckedComputerVisionMenuItem
         {
@@ -98,9 +91,6 @@ namespace AdamController.Modules.MenuRegion.ViewModels
                 case SubRegionNames.SubRegionScratch:
                     IsCheckedScratchMenuItem = true;
                     break;
-                case SubRegionNames.SubRegionScriptEditor:
-                    IsCheckedScriptEditorMenuItem = true;
-                    break;
                 case SubRegionNames.SubRegionComputerVisionControl:
                     IsCheckedComputerVisionMenuItem = true;
                     break;
@@ -113,7 +103,6 @@ namespace AdamController.Modules.MenuRegion.ViewModels
         private void ResetIsCheckedMenuItem()
         {
             IsCheckedScratchMenuItem = false;
-            IsCheckedScriptEditorMenuItem = false;
             IsCheckedComputerVisionMenuItem = false;
             IsCheckedVisualSettingsMenuItem = false;
         }
@@ -151,9 +140,6 @@ namespace AdamController.Modules.MenuRegion.ViewModels
             {
                 case SubRegionNames.SubRegionScratch:
                     RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
-                    break;
-                case SubRegionNames.SubRegionScriptEditor:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScriptEditor);
                     break;
                 case SubRegionNames.SubRegionComputerVisionControl:
                     RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);

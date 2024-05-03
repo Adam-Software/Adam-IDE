@@ -145,10 +145,10 @@
                                                 Label="{DynamicResource HamburgerMenu.ScratchEditorHeader}" 
                                                 Command="{Binding ShowRegionCommand}" 
                                                 CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xEB7E;" 
+                    <!--<mah:HamburgerMenuGlyphItem Glyph="&#xEB7E;" 
                                                 Label="{DynamicResource HamburgerMenu.ScriptEditorHeader}" 
                                                 Command="{Binding ShowRegionCommand}" 
-                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}"/>
+                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}"/>-->
                     <mah:HamburgerMenuGlyphItem Glyph="&#xEA0C;" 
                                                 Label="{DynamicResource HamburgerMenu.ComputerVisionHeader}" 
                                                 Command="{Binding ShowRegionCommand}" 

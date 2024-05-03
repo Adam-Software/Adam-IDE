@@ -99,11 +99,8 @@ namespace AdamController.ViewModels
                 case SubRegionNames.SubRegionScratch:
                     HamburgerMenuSelectedIndex = 0;
                     break;
-                case SubRegionNames.SubRegionScriptEditor:
-                    HamburgerMenuSelectedIndex = 1;
-                    break;
                 case SubRegionNames.SubRegionComputerVisionControl:
-                    HamburgerMenuSelectedIndex = 2;
+                    HamburgerMenuSelectedIndex = 1;
                     break;
                 case SubRegionNames.SubRegionVisualSettings:
                     HamburgerMenuSelectedOptionsIndex = 0;
@@ -117,9 +114,6 @@ namespace AdamController.ViewModels
             {
                 case SubRegionNames.SubRegionScratch:
                     RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
-                    break;
-                case SubRegionNames.SubRegionScriptEditor:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScriptEditor);
                     break;
                 case SubRegionNames.SubRegionComputerVisionControl:
                     RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
@@ -140,25 +134,10 @@ namespace AdamController.ViewModels
                 Settings.Default.SavedUserWorkspaceFolderPath = mFolderManagment.SavedWorkspaceDocumentsDir;
             }
 
-            //if (string.IsNullOrEmpty(Settings.Default.SavedUserToolboxFolderPath))
-            //{
-            //    Settings.Default.SavedUserToolboxFolderPath = mFolderManagment.SavedToolboxDocumentsDir;
-            //}
-
-            //if (string.IsNullOrEmpty(Settings.Default.SavedUserCustomBlocksFolderPath))
-            //{
-            //    Settings.Default.SavedUserCustomBlocksFolderPath = mFolderManagment.SavedUserCustomBlocksDocumentsDir;
-            //}
-
             if (string.IsNullOrEmpty(Settings.Default.SavedUserScriptsFolderPath))
             {
                 Settings.Default.SavedUserScriptsFolderPath = mFolderManagment.SavedUserScriptsDocumentsDir;
             }
-
-            //if (string.IsNullOrEmpty(Settings.Default.SavedResultsNetworkTestsFolderPath))
-            //{
-            //    Settings.Default.SavedResultsNetworkTestsFolderPath = mFolderManagment.SavedResultsNetworkTestsDir;
-            //}
         }
 
         private void ParseSyslogMessage(string message)
@@ -218,6 +197,7 @@ namespace AdamController.ViewModels
         {
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent -= RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
+            mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
             Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }
 

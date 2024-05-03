@@ -12,11 +12,9 @@ using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
-using MahApps.Metro.Controls;
 using Prism.Commands;
 using Prism.Regions;
 using System;
-using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -36,7 +34,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public DelegateCommand CleanExecuteEditorDelegateCommand { get; }
         public DelegateCommand RunPythonCodeDelegateCommand { get; }
         public DelegateCommand StopPythonCodeExecuteDelegateCommand { get; }
-        public DelegateCommand SendCodeToExternalSourceEditorDelegateCommand { get; }
         public DelegateCommand ToZeroPositionDelegateCommand { get; } 
 
         #endregion
@@ -94,7 +91,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             CleanExecuteEditorDelegateCommand = new DelegateCommand(CleanExecuteEditor, CleanExecuteEditorCanExecute);
             RunPythonCodeDelegateCommand = new DelegateCommand(RunPythonCode, RunPythonCodeCanExecute);
             StopPythonCodeExecuteDelegateCommand = new DelegateCommand(StopPythonCodeExecute, StopPythonCodeExecuteCanExecute);
-            SendCodeToExternalSourceEditorDelegateCommand = new(SendCodeToExternalSourceEditor, SendCodeToExternalSourceEditorCanExecute);
             ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
 
             HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
@@ -507,25 +503,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isConnected && isPythonCodeExecute;
         }
 
-        private void SendCodeToExternalSourceEditor()
-        {
-            NavigationParameters parameters = new()
-            {
-                { NavigationParametersKey.SourceCode, SourceTextEditor }
-            };
-
-            RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScriptEditor, parameters);
-        }
-
-        private bool SendCodeToExternalSourceEditorCanExecute()
-        {
-            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
-            bool isTcpConnected = IsTcpClientConnected;
-            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
-
-            return isSourceNotEmpty && isTcpConnected && isPythonCodeNotExecute;
-        }
-
         private async void ToZeroPosition()
         {
             try
@@ -653,7 +630,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             CleanExecuteEditorDelegateCommand.RaiseCanExecuteChanged();
             RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
             StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
-            SendCodeToExternalSourceEditorDelegateCommand.RaiseCanExecuteChanged();
             ToZeroPositionDelegateCommand.RaiseCanExecuteChanged();
         }
 

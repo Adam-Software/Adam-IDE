@@ -59,10 +59,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ScratchControlView), parameters);
                     break;
 
-                case SubRegionNames.SubRegionScriptEditor:
-                    RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ScriptEditorControlView), parameters);
-                    break;
-
                 case SubRegionNames.SubRegionComputerVisionControl:
                     RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(ComputerVisionControlView), parameters);
                     break;

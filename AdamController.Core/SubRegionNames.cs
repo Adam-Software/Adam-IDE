@@ -9,8 +9,6 @@
 
         public const string SubRegionScratch = $"{nameof(SubRegionScratch)}";
 
-        public const string SubRegionScriptEditor = $"{nameof(SubRegionScriptEditor)}";
-
         public const string SubRegionComputerVisionControl = $"{nameof(SubRegionComputerVisionControl)}";
 
         public const string SubRegionVisualSettings = $"{nameof(SubRegionVisualSettings)}";

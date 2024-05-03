@@ -151,6 +151,7 @@
                                   Margin="3 0 3 0"
                                   HorizontalAlignment="Left"     
                                   Padding="2"
+                                  IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
                                   IsChecked="{Binding ElementName=SourceEditor, Path=Options.ShowEndOfLine}">
 
                         <iconPacks:PackIconVaadinIcons Padding="2" Kind="Paragraph"/>
@@ -159,6 +160,7 @@
                     <ToggleButton x:Name="ShowTabsButton"
                                   HorizontalAlignment="Left"     
                                   Padding="2"
+                                  IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
                                   IsChecked="{Binding ElementName=SourceEditor,Path=Options.ShowTabs}">
                         <iconPacks:PackIconVaadinIcons Padding="2" Kind="Tab"/>
                     </ToggleButton>
@@ -166,6 +168,7 @@
 
                     <Button Margin="7 0 0 0"
                             Padding="2"
+                            IsEnabled="{Binding IsPythonCodeExecute, Converter={StaticResource InverseBooleanConverter}}"
                             Command="{Binding CopyToClipboardDelegateCommand}">
 
                         <iconPacks:PackIconMaterial Padding="2" Kind="ContentCopy" />
