@@ -147,23 +147,14 @@
                             
                         </ToggleButton>
 
-                        <ToggleButton Padding="3"
-                                      ToolTip="Показывать перенос строк"
-                                      Style="{DynamicResource MahApps.Styles.Button}"
-                                      IsChecked="{Binding ElementName=textEditor,Path=Options.ShowEndOfLine}">
+                        <!--<ToggleButton IsChecked="{Binding ElementName=textEditor, Path=Options.ShowEndOfLine}">
                             
                             <iconPacks:PackIconVaadinIcons Kind="Paragraph"/>
                         </ToggleButton>
 
-                        <ToggleButton Margin="3 0 3 0"
-                                      Padding="3"
-                                      ToolTip="Показывать табуляцию"
-                                      
-                                      Style="{DynamicResource MahApps.Styles.Button}"
-                                      IsChecked="{Binding ElementName=textEditor,Path=Options.ShowTabs}">
-
+                        <ToggleButton IsChecked="{Binding ElementName=textEditor,Path=Options.ShowTabs}">
                             <iconPacks:PackIconVaadinIcons Kind="Tab"/>
-                        </ToggleButton>
+                        </ToggleButton>-->
 
                         <!--<ComboBox Padding="3"
                                   Margin="3 0 3 0"

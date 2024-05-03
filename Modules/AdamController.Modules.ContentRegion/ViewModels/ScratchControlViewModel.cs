@@ -27,6 +27,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         #region DelegateCommands
 
+        public DelegateCommand CopyToClipboardDelegateCommand { get; }
         public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
@@ -84,6 +85,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebApiService = webApiService;
             mControlHelper = controlHelper;
 
+            CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
@@ -97,13 +99,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
         }
-
-        /*private double controlWidth;
-        public double ControlWidth
-        {
-            get  { return controlWidth; }
-            set => SetProperty(ref controlWidth, value);
-        }*/
 
         #endregion
 
@@ -282,6 +277,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region DelegateCommands methods
 
+        private void CopyToClipboard()
+        {
+            Clipboard.SetText(SourceTextEditor);
+        }
+
+        private bool CopyToClipboardCanExecute()
+        {
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
+
+            return isPythonCodeNotExecute && isSourceNotEmpty;
+        }
+
         private void MoveSplitter(string arg)
         {
             var dividedScreen = mControlHelper.ActualWidth / 2;
@@ -314,7 +322,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool MoveSplitterCanExecute(string arg)
         {
-            return true;
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+            return isPythonCodeNotExecute;
         }
         private void ReloadWebView()
         {
@@ -586,7 +595,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             
             if (!isPythonCodeExecute)
             {
-                System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
                 {
                     await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
                 }));
@@ -612,7 +621,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             if (!Settings.Default.ShadowWorkspaceInDebug) return;
 
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(async () =>
             {
                 await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowEnable);
             }));
@@ -635,6 +644,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void RaiseDelegateCommandsCanExecuteChanged()
         {
+            MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
+            CopyToClipboardDelegateCommand.RaiseCanExecuteChanged();
             ReloadWebViewDelegateCommand.RaiseCanExecuteChanged();
             ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();
             ShowOpenFileDialogDelegateCommand.RaiseCanExecuteChanged();

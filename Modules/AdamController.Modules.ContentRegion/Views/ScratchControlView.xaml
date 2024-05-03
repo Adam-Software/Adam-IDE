@@ -146,6 +146,32 @@
                         <iconPacks:PackIconCodicons Padding="2" Kind="Edit" />
                     </ToggleButton>
 
+
+                    <ToggleButton x:Name="ShowEndOfLineButton"
+                                  Margin="3 0 3 0"
+                                  HorizontalAlignment="Left"     
+                                  Padding="2"
+                                  IsChecked="{Binding ElementName=SourceEditor, Path=Options.ShowEndOfLine}">
+
+                        <iconPacks:PackIconVaadinIcons Padding="2" Kind="Paragraph"/>
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="ShowTabsButton"
+                                  HorizontalAlignment="Left"     
+                                  Padding="2"
+                                  IsChecked="{Binding ElementName=SourceEditor,Path=Options.ShowTabs}">
+                        <iconPacks:PackIconVaadinIcons Padding="2" Kind="Tab"/>
+                    </ToggleButton>
+
+
+                    <Button Margin="7 0 0 0"
+                            Padding="2"
+                            Command="{Binding CopyToClipboardDelegateCommand}">
+
+                        <iconPacks:PackIconMaterial Padding="2" Kind="ContentCopy" />
+
+                    </Button>
+
                     <Button HorizontalAlignment="Left" 
                             Margin="3 0 7 0"
                             Padding="2"
@@ -186,6 +212,7 @@
                 </DockPanel>
 
                 <avalonEdit:TextEditor DockPanel.Dock="Top"
+                                       x:Name="SourceEditor"
                                        FontFamily="Consolas"
 				                       FontSize="13pt"
 				                       FontStretch="Medium"
