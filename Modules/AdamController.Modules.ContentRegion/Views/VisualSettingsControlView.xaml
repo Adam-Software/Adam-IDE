@@ -378,21 +378,7 @@
                 </DockPanel>
 
             </GroupBox>
-
-            <GroupBox DockPanel.Dock="Top"
-                      Margin="0 10 0 0"
-                      Header="Настройки вывода результатов" >
-                
-                <StackPanel>
-                    
-                    <mah:ToggleSwitch Padding="10 0 0 0"
-                                      Header="Показывать в области выполнения"
-                                      OnContent="Результат запуска и выполнения"
-                                      OffContent="Только результат выполнения"
-                                      IsOn="{Binding ChangeExtendedExecuteReportToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
-
-                </StackPanel>
-            </GroupBox>
+            
         </DockPanel>
 
 

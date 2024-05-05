@@ -195,7 +195,18 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ExtendedCommandExecuteResult ResultExecutionTime
         {
             get => resultExecutionTime;
-            set => SetProperty(ref resultExecutionTime, value);
+            set 
+            {
+                bool isNewValue = SetProperty(ref resultExecutionTime, value);
+
+                if (isNewValue)
+                {
+                    /*fix*/
+                    ResultExecutionTime.Succeesed = ResultExecutionTime.ExitCode == 0;
+                }
+            }
+
+                
         }
 
         private ExtendedCommandExecuteResult resultInitilizationTime;
@@ -203,25 +214,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             get => resultInitilizationTime;
             set => SetProperty(ref resultInitilizationTime, value);
-        }
-
-
-        private string resultTextEditorError;
-        public string ResultTextEditorError
-        {
-            get => resultTextEditorError;
-            set
-            {
-                bool isNewValue = SetProperty(ref resultTextEditorError, value);
-
-                if (isNewValue)
-                {
-                    RaiseDelegateCommandsCanExecuteChanged();
-
-                    if (ResultTextEditorError.Length > 0)
-                        resultTextEditorError = $"Error: {ResultTextEditorError}";
-                }
-            }
         }
 
         private string pythonVersion;
@@ -435,7 +427,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void CleanExecuteEditor()
         {
-            ResultTextEditorError = string.Empty;
             ClearResultText();   
         }
 
@@ -448,44 +439,27 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void RunPythonCode()
         {
-            ResultTextEditorError = string.Empty;
             ExtendedCommandExecuteResult executeResult = new();
+            string source = SourceTextEditor;
+            bool isErrorHappened = false;
 
             try
             {
                 var command = new WebApi.Client.v1.RequestModel.PythonCommandModel
                 {
-                    Command = SourceTextEditor
+                    Command = source
                 };
 
                 executeResult = await mWebApiService.PythonExecuteAsync(command);
             }
             catch (Exception ex)
             {
-                ResultTextEditorError = ex.Message.ToString();
+                isErrorHappened = true;
             }
             finally
             {
-                ResultInitilizationTime = executeResult;
-                
+                UpdateResultInitilizationTimeText(executeResult);
             }
-
-            /* remove with settings */
-            if (Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
-            {
-                UpdateResultText("Отчет о инициализации процесса программы\n" +
-                 "======================\n" +
-                 $"Начало инициализации: {executeResult.StartTime}\n" +
-                 $"Завершение инициализации: {executeResult.EndTime}\n" +
-                 $"Общее время инициализации: {executeResult.RunTime}\n" +
-                 $"Код выхода: {executeResult.ExitCode}\n" +
-                 $"Статус успешности инициализации: {executeResult.Succeesed}" +
-                 "\n======================\n");
-            }
-
-            if (!string.IsNullOrEmpty(executeResult?.StandardError))
-                UpdateResultText($"Ошибка: {executeResult.StandardError}" +
-                    "\n======================");
         }
 
         private bool RunPythonCodeCanExecute()
@@ -505,10 +479,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 await mWebApiService.StopPythonExecute();
             }
-            catch (Exception ex)
+            catch
             {
-                ResultTextEditorError = ex.Message.ToString();
+
             }
+
+            /*catch (Exception ex)
+            {
+                //ResultTextEditorError = ex.Message.ToString();
+            }*/
         }
 
         private bool StopPythonCodeExecuteCanExecute()
@@ -524,11 +503,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             try
             {
                 await mWebApiService.StopPythonExecute();
+                await mWebApiService.MoveToZeroPosition();
             }
-            catch (Exception ex)
+            catch
             {
-                ResultTextEditorError = ex.Message.ToString();
+
             }
+
+            /*catch (Exception ex)
+            {
+                //ResultTextEditorError = ex.Message.ToString();
+            }*/
         }
 
         private bool ToZeroPositionCanExecute()
@@ -550,8 +535,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 if (isFinishMessage)
                 {
-                    ResultText += text;
-                    IsPythonCodeExecute = false;
+                    ResultText += "\n======================\n<<Выполнение программы завершено>>";
                 }
 
                 if(!isFinishMessage)
@@ -578,9 +562,29 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }));
         }
 
+        private void UpdateResultExecutionTimeText(ExtendedCommandExecuteResult executeResult)
+        {
+            
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                ResultExecutionTime = executeResult;
+                IsPythonCodeExecute = false;
+            }));
+        }
+
+        private void UpdateResultInitilizationTimeText(ExtendedCommandExecuteResult executeResult)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                ResultInitilizationTime = executeResult;
+            }));
+        }
+
         private void ClearResultText()
         {
             ResultText = string.Empty;
+            ResultExecutionTime = null;
+            ResultInitilizationTime = null;
         }
 
         private void OnPythonCodeExecuteStatusChange(bool isPythonCodeExecute)
@@ -688,7 +692,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             UpdatePythonInfo();
         }
 
-        private  void OnRaisePythonScriptExecuteStart(object sender)
+        private void OnRaisePythonScriptExecuteStart(object sender)
         {
             IsPythonCodeExecute = true;
         }
@@ -700,32 +704,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void OnRaisePythonScriptExecuteFinish(object sender, ExtendedCommandExecuteResult remoteCommandExecuteResult)
         {
-            string message = "\n======================\n<<Выполнение программы завершено>>";
-
             if (remoteCommandExecuteResult == null)
                 return;
-
-            ResultExecutionTime = remoteCommandExecuteResult;
-
-            /* removed this */
-            string messageWithResult = $"{message}\n" +
-                $"\n" +
-                $"Отчет о выполнении\n" +
-                $"======================\n" +
-                $"Начало выполнения: {remoteCommandExecuteResult.StartTime}\n" +
-                $"Завершение выполнения: {remoteCommandExecuteResult.EndTime}\n" +
-                $"Общее время выполнения: {remoteCommandExecuteResult.RunTime}\n" +
-                $"Код выхода: {remoteCommandExecuteResult.ExitCode}\n" +
-                //The server returns an incorrect value, so the completion success status is determined by the exit code
-                //$"Статус успешности завершения: {remoteCommandExecuteResult.Succeesed}" +
-                $"Статус успешности завершения: {remoteCommandExecuteResult.ExitCode == 0}" +
-                $"\n======================\n";
-
-            if (!string.IsNullOrEmpty(remoteCommandExecuteResult.StandardError))
-                messageWithResult += $"Ошибка: {remoteCommandExecuteResult.StandardError}" +
-                    $"\n======================\n";
-
-            UpdateResultText(messageWithResult, true);
+   
+            UpdateResultText("", true);
+            UpdateResultExecutionTimeText(remoteCommandExecuteResult);
         }
 
         #endregion
