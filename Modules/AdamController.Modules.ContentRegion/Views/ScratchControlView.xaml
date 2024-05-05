@@ -10,6 +10,7 @@
              xmlns:behaviors="clr-namespace:AdamController.Core.Behaviors;assembly=AdamController.Core"
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
     
@@ -241,7 +242,6 @@
 
             <!--#region result expander -->
 
-
             <GridSplitter Grid.Column="0" 
                           Grid.Row="2" 
                           Grid.ColumnSpan="3" 
@@ -250,16 +250,16 @@
 
             <Expander  x:Name="ResultExpander"
                        Margin="10 0 0 0"
-                   Grid.Row="3"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="3" 
-                   IsExpanded="False"
-                   Header="Результат"
-                   BorderThickness="0"
-                   ExpandDirection="Down"
-                   BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
-                   mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
-                   mah:ControlsHelper.ContentCharacterCasing="Normal">
+                       Grid.Row="3"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3" 
+                       IsExpanded="False"
+                       Header="Результат"
+                       BorderThickness="0"
+                       ExpandDirection="Down"
+                       BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                       mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
+                       mah:ControlsHelper.ContentCharacterCasing="Normal">
 
                 <DockPanel LastChildFill="True">
 
@@ -272,34 +272,58 @@
 
 
                     <TabControl DockPanel.Dock="Top"
-                                Padding="-4 0 0 2"
+                                BorderThickness="1"
                                 mah:TabControlHelper.CloseButtonEnabled="False"
                                 mah:HeaderedControlHelper.HeaderFontSize="13"
-                                mah:TabControlHelper.Underlined="TabPanel"
+                                mah:TabControlHelper.Underlined="SelectedTabItem"
                                 mah:TabControlHelper.UnderlinePlacement="Top"
+                                mah:HeaderedControlHelper.HeaderFontWeight="Normal"            
                                 mah:TabControlHelper.UnderlineSelectedBrush="{DynamicResource MahApps.Brushes.Button.Border}"
                                 mah:TabControlHelper.UnderlineBrush="{DynamicResource MahApps.Brushes.Button.Border}"
-                                mah:HeaderedControlHelper.HeaderFontWeight="Normal"             
+                                BorderBrush="{DynamicResource MahApps.Brushes.Button.Border}"
+                                 
                                 TabStripPlacement="Bottom"
                                 Height="{Binding Path=BlocklySourceEditorHeight, Mode=TwoWay, 
                                                  Converter={StaticResource GridLengthConverter},  
                                                  Source={x:Static properties:Settings.Default }}">
 
-                        <mah:MetroTabItem Header="Вывод">
+                        <mah:MetroTabItem Header="Результат">
 
                             <TextBox x:Name="TextResulEditor"
+                                     Margin="5 0 0 0"
+                                     BorderThickness="0"
                                      HorizontalScrollBarVisibility="Auto"
                                      VerticalScrollBarVisibility="Auto"                 
                                      IsReadOnly="True"
-                                     Margin="0 0 0 -4"
-                                     BorderThickness="1"
                                      Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                         </mah:MetroTabItem>
 
-                        <mah:MetroTabItem Header="Отчет о выполнении"></mah:MetroTabItem>
+                        <mah:MetroTabItem Header="Время выполнения">
+                            <StackPanel Margin="5 5 0 0">
+                                <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.Succeesed, StringFormat=Succeesed: {0}}" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.ExitCode, StringFormat=Exit code: {0} }" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.StartTime, StringFormat=Start time: {0:HH:mm.ss.m}}" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.EndTime, StringFormat=End time: {0:HH:mm.ss.m}}" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.RunTime, StringFormat=Run time (ms): {0} }" />
 
-                        <mah:MetroTabItem Header="Отчет о инициализации"></mah:MetroTabItem>
+                                <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.StandardError}"/>
+                            </StackPanel>
+                        
+                        </mah:MetroTabItem>
+
+                        <mah:MetroTabItem Header="Время инициализации">
+                            <StackPanel Margin="5 5 0 0">
+                                <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.Succeesed, StringFormat=Succeesed: {0}}" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.ExitCode, StringFormat=Exit code: {0} }" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.StartTime, StringFormat=Start time: {0:HH:mm.ss.m}}" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.EndTime, StringFormat=End time: {0:HH:mm.ss.m}}" />
+                                <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.RunTime, StringFormat=Run time (ms): {0} }" />
+                                
+                                <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.StandardError}"/>
+                                
+                            </StackPanel>
+                        </mah:MetroTabItem>
 
                     </TabControl>
                 </DockPanel>

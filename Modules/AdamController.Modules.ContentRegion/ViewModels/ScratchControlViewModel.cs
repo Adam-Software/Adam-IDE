@@ -191,6 +191,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             } 
         }
 
+        private ExtendedCommandExecuteResult resultExecutionTime;
+        public ExtendedCommandExecuteResult ResultExecutionTime
+        {
+            get => resultExecutionTime;
+            set => SetProperty(ref resultExecutionTime, value);
+        }
+
+        private ExtendedCommandExecuteResult resultInitilizationTime;
+        public ExtendedCommandExecuteResult ResultInitilizationTime
+        {
+            get => resultInitilizationTime;
+            set => SetProperty(ref resultInitilizationTime, value);
+        }
+
 
         private string resultTextEditorError;
         public string ResultTextEditorError
@@ -452,9 +466,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             }
             finally
             {
+                ResultInitilizationTime = executeResult;
                 
             }
 
+            /* remove with settings */
             if (Settings.Default.ChangeExtendedExecuteReportToggleSwitchState)
             {
                 UpdateResultText("Отчет о инициализации процесса программы\n" +
@@ -530,7 +546,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void UpdateResultText(string text, bool isFinishMessage = false)
         {
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
                 if (isFinishMessage)
                 {
@@ -689,6 +705,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             if (remoteCommandExecuteResult == null)
                 return;
 
+            ResultExecutionTime = remoteCommandExecuteResult;
+
+            /* removed this */
             string messageWithResult = $"{message}\n" +
                 $"\n" +
                 $"Отчет о выполнении\n" +
