@@ -54,16 +54,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region Const
 
         private const string cFilter = "XML documents (.xml) | *.xml";
-        private const string cDebugColorScheme = "Red";
 
         #endregion
 
         #region Var
 
         private bool mIsWarningStackOwerflowAlreadyShow;
-
-        //#8 p 6
-        //private string mCurrentColorScheme;
 
         #endregion
 
@@ -109,9 +105,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             Subscribe();
             
-            //#8 p 6
-            //mCurrentColorScheme = ThemeManager.Current.DetectTheme(Application.Current).ColorScheme;
-
             //#29
             mWebViewProvider.ReloadWebView();
 
@@ -121,9 +114,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
             Unsubscribe();
-
-            //#8 p 6
-            //ThemeManager.Current.ChangeThemeColorScheme(Application.Current, mCurrentColorScheme);
 
             base.OnNavigatedFrom(navigationContext);
         }
@@ -195,18 +185,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ExtendedCommandExecuteResult ResultExecutionTime
         {
             get => resultExecutionTime;
-            set 
-            {
-                bool isNewValue = SetProperty(ref resultExecutionTime, value);
-
-                if (isNewValue)
-                {
-                    /*fix*/
-                    ResultExecutionTime.Succeesed = ResultExecutionTime.ExitCode == 0;
-                }
-            }
-
-                
+            set => SetProperty(ref resultExecutionTime, value);    
         }
 
         private ExtendedCommandExecuteResult resultInitilizationTime;
@@ -345,8 +324,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
             string fileName = "workspace";
             string defaultExt = ".xml";
-            //string filter = "XML documents (.xml)|*.xml";
-
+            
             if (mDialogManager.ShowSaveFileDialog(dialogTitle, initialPath, fileName, defaultExt, cFilter))
             {
                 string path = mDialogManager.FilePathToSave;
@@ -439,10 +417,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void RunPythonCode()
         {
-            ExtendedCommandExecuteResult executeResult = new();
             string source = SourceTextEditor;
-            bool isErrorHappened = false;
-
+            
             try
             {
                 var command = new WebApi.Client.v1.RequestModel.PythonCommandModel
@@ -450,15 +426,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     Command = source
                 };
 
-                executeResult = await mWebApiService.PythonExecuteAsync(command);
+                ExtendedCommandExecuteResult executeResult = await mWebApiService.PythonExecuteAsync(command);
+                UpdateResultInitilizationTimeText(executeResult);
             }
-            catch (Exception ex)
+            catch
             {
-                isErrorHappened = true;
+                
             }
             finally
             {
-                UpdateResultInitilizationTimeText(executeResult);
+               
             }
         }
 
@@ -483,11 +460,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
 
             }
-
-            /*catch (Exception ex)
-            {
-                //ResultTextEditorError = ex.Message.ToString();
-            }*/
         }
 
         private bool StopPythonCodeExecuteCanExecute()
@@ -509,11 +481,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
 
             }
-
-            /*catch (Exception ex)
-            {
-                //ResultTextEditorError = ex.Message.ToString();
-            }*/
         }
 
         private bool ToZeroPositionCanExecute()
@@ -567,17 +534,30 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
-                ResultExecutionTime = executeResult;
+                ExtendedCommandExecuteResult fixResult = new()
+                {
+                    StandardOutput = executeResult.StandardOutput,
+                    StandardError = executeResult.StandardError,
+
+                    StartTime = executeResult.StartTime,
+                    EndTime = executeResult.EndTime,
+                    RunTime = executeResult.RunTime,
+
+                    ExitCode = executeResult.ExitCode,
+
+                    // The server always returns False
+                    // Therefore, the success of completion is determined by the exit code
+                    Succeesed = executeResult.ExitCode == 0
+                };
+
+                ResultExecutionTime = fixResult;
                 IsPythonCodeExecute = false;
             }));
         }
 
         private void UpdateResultInitilizationTimeText(ExtendedCommandExecuteResult executeResult)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-            {
-                ResultInitilizationTime = executeResult;
-            }));
+            ResultInitilizationTime = executeResult;
         }
 
         private void ClearResultText()
@@ -599,21 +579,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
                 mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки закончен";
                 mStatusBarNotificationDelivery.ProgressRingStart = false;
-
-                //#8 p 6
-                //ThemeManager.Current.ChangeThemeColorScheme(Application.Current, mCurrentColorScheme);
-
                 return;
             }
 
             mIsWarningStackOwerflowAlreadyShow = false;
             mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки запущен";
             mStatusBarNotificationDelivery.ProgressRingStart = true;
-
-            //#8 p 6
-            //ThemeManager.Current.ChangeThemeColorScheme(Application.Current, cDebugColorScheme);
-
-            ClearResultText();
 
 
             if (!Settings.Default.ShadowWorkspaceInDebug) return;
