@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:intr="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -11,15 +11,15 @@
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <intr:Interaction.Triggers>
-        <intr:EventTrigger EventName="Loaded">
-            <intr:InvokeCommandAction Command="{Binding WindowLoaded}"/>
-        </intr:EventTrigger>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Loaded">
+            <behaviors:InvokeCommandAction Command="{Binding WindowLoaded}"/>
+        </behaviors:EventTrigger>
 
-        <intr:EventTrigger EventName="Unloaded">
-            <intr:InvokeCommandAction Command="{Binding WindowClose}"/>
-        </intr:EventTrigger>
-    </intr:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Unloaded">
+            <behaviors:InvokeCommandAction Command="{Binding WindowClose}"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
 
 
     <Border BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}" BorderThickness="1">
