@@ -63,6 +63,9 @@
     <Page Update="LocalizationDictionary\DictonaryCollection\DebuggerMessages.ru.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="LocalizationDictionary\DictonaryCollection\ScratchControlView.en.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="LocalizationDictionary\en.xaml">
       <CopyToOutputDirectory></CopyToOutputDirectory>
       <Generator>MSBuild:Compile</Generator>

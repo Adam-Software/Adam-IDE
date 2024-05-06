@@ -23,6 +23,8 @@
         
         <Grid x:Name="MainGrid">
 
+            <!--#region Definitions -->
+            
             <Grid.RowDefinitions>
                 <!-- buttons 0 Empty -->
                 <RowDefinition Height="0"/>
@@ -31,17 +33,13 @@
                 <!--splitter 2-->
                 <RowDefinition Height="Auto"/>
                 <!-- result 3 -->
-                <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, 
-                                                                  Mode=TwoWay, 
-                                                                  Converter={StaticResource GridLengthConverter}, 
-                                                                  Source={x:Static properties:Settings.Default }}">
+                <RowDefinition Height="{Binding Path=BlocklySourceEditorHeight, Mode=TwoWay, 
+                                                Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}">
                     <RowDefinition.Style>
                         <Style TargetType="{x:Type RowDefinition}">
-
+                            <!-- Default MinHeight -->
                             <Setter Property="MinHeight" Value="150" />
                             <Setter Property="MaxHeight" Value="500" />
-
-                            <!-- Default MinHeight -->
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=ResultExpander, Path=IsExpanded}" Value="False">
                                     <Setter Property="MinHeight" Value="25" />
@@ -51,8 +49,6 @@
                             </Style.Triggers>
                         </Style>
                     </RowDefinition.Style>
-
-
                 </RowDefinition>
             </Grid.RowDefinitions>
 
@@ -61,6 +57,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+
+            <!--#endregion-->
+
             <!--#region  web view -->
 
             <DockPanel Grid.Column="0" 
@@ -254,9 +253,9 @@
                        Grid.Column="0"
                        Grid.ColumnSpan="3" 
                        IsExpanded="False"
-                       Header="Результат"
                        BorderThickness="0"
                        ExpandDirection="Down"
+                       Header="{DynamicResource ScratchControlView.Expander.Header.OutputData}"
                        BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
                        mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}"
                        mah:ControlsHelper.ContentCharacterCasing="Normal">
@@ -273,21 +272,20 @@
 
                     <TabControl DockPanel.Dock="Top"
                                 BorderThickness="1"
+                                TabStripPlacement="Bottom"
                                 mah:TabControlHelper.CloseButtonEnabled="False"
                                 mah:HeaderedControlHelper.HeaderFontSize="13"
                                 mah:TabControlHelper.Underlined="SelectedTabItem"
                                 mah:TabControlHelper.UnderlinePlacement="Top"
-                                mah:HeaderedControlHelper.HeaderFontWeight="Normal"            
+                                mah:HeaderedControlHelper.HeaderFontWeight="Normal"   
                                 mah:TabControlHelper.UnderlineSelectedBrush="{DynamicResource MahApps.Brushes.Button.Border}"
                                 mah:TabControlHelper.UnderlineBrush="{DynamicResource MahApps.Brushes.Button.Border}"
                                 BorderBrush="{DynamicResource MahApps.Brushes.Button.Border}"
-                                 
-                                TabStripPlacement="Bottom"
                                 Height="{Binding Path=BlocklySourceEditorHeight, Mode=TwoWay, 
                                                  Converter={StaticResource GridLengthConverter},  
                                                  Source={x:Static properties:Settings.Default }}">
 
-                        <mah:MetroTabItem Header="Результат">
+                        <mah:MetroTabItem Header="{DynamicResource ScratchControlView.MetroTabItem.Header.Result}">
 
                             <TextBox x:Name="TextResulEditor"
                                      Margin="5 0 0 0"
@@ -299,20 +297,20 @@
 
                         </mah:MetroTabItem>
 
-                        <mah:MetroTabItem Header="Время выполнения">
+                        <mah:MetroTabItem Header="{DynamicResource ScratchControlView.MetroTabItem.Header.ExecutionTime}">
                             <StackPanel Margin="5 5 0 0">
                                 <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.Succeesed, StringFormat=Succeesed: {0}}" />
                                 <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.ExitCode, StringFormat=Exit code: {0} }" />
                                 <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.StartTime, StringFormat=Start time: {0:HH:mm.ss.m}}" />
                                 <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.EndTime, StringFormat=End time: {0:HH:mm.ss.m}}" />
                                 <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.RunTime, StringFormat=Run time (ms): {0} }" />
-
+                                
                                 <TextBox BorderThickness="0" Text="{Binding ResultExecutionTime.StandardError}"/>
                             </StackPanel>
                         
                         </mah:MetroTabItem>
 
-                        <mah:MetroTabItem Header="Время инициализации">
+                        <mah:MetroTabItem Header="{DynamicResource ScratchControlView.MetroTabItem.Header.InitilizationTime}">
                             <StackPanel Margin="5 5 0 0">
                                 <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.Succeesed, StringFormat=Succeesed: {0}}" />
                                 <TextBox BorderThickness="0" Text="{Binding ResultInitilizationTime.ExitCode, StringFormat=Exit code: {0} }" />
