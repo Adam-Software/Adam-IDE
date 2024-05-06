@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Compiler statusbar -->
+    <system:String x:Key="DebuggerMessages.CompileLogMessageStartDebug">The debugging session has started</system:String>
+    <system:String x:Key="DebuggerMessages.CompileLogMessageEndDebug">The debugging session is over</system:String>
+    
+    <!-- Result messages -->
+    <system:String x:Key="DebuggerMessages.ResultMessages.FinishAppExecute">The program has been completed</system:String>
+    <system:String x:Key="DebuggerMessages.ResultMessages.WarningStackOwerflow1">Further output of the result will be hidden.</system:String>
+    <system:String x:Key="DebuggerMessages.ResultMessages.WarningStackOwerflow2">The program continues to run interactively.</system:String>
+    <system:String x:Key="DebuggerMessages.ResultMessages.WarningStackOwerflow3">To stop the program, press "Stop" or wait for the completion.</system:String>
+
+
+</ResourceDictionary>

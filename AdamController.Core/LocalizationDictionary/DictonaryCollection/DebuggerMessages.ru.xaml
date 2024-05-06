@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Compiler statusbar -->
+    <system:String x:Key="DebuggerMessages.CompileLogMessageStartDebug">Сеанс отладки начат</system:String>
+    <system:String x:Key="DebuggerMessages.CompileLogMessageEndDebug">Сеанс отладки закончен</system:String>
+
+    <!-- Result messages -->
+    <system:String x:Key="DebuggerMessages.ResultMessages.FinishAppExecute">Выполнение программы завершено</system:String>
+    <system:String x:Key="DebuggerMessages.ResultMessages.WarningStackOwerflow1">Дальнейший вывод результата, будет скрыт.</system:String>
+    <system:String x:Key="DebuggerMessages.ResultMessages.WarningStackOwerflow2">Программа продолжает выполняться в неинтерактивном режиме.</system:String>
+    <system:String x:Key="DebuggerMessages.ResultMessages.WarningStackOwerflow3">Для остановки нажмите "Stop" или дождитесь завершения.</system:String>
+    
+
+</ResourceDictionary>

@@ -57,6 +57,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="LocalizationDictionary\DictonaryCollection\DebuggerMessages.en.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="LocalizationDictionary\DictonaryCollection\DebuggerMessages.ru.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="LocalizationDictionary\en.xaml">
       <CopyToOutputDirectory></CopyToOutputDirectory>
       <Generator>MSBuild:Compile</Generator>

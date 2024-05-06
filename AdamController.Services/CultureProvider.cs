@@ -1,4 +1,5 @@
 ﻿using AdamController.Services.Interfaces;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,12 +9,24 @@ using System.Windows;
 
 namespace AdamController.Services
 {
-    public class CultureProvider :  ICultureProvider
+    public class CultureProvider : BindableBase, ICultureProvider
     {
+        #region Events
+
+        public event CurrentAppCultureLoadOrChangeEventHandler RaiseCurrentAppCultureLoadOrChangeEvent;
+
+        #endregion
+
         #region Const
 
         private const string cEnString = "en-EN";
         private const string cRuString = "ru-RU";
+
+        #endregion
+
+        #region Var
+
+        private readonly Application mCurrentApp = Application.Current;
 
         #endregion
 
@@ -27,7 +40,19 @@ namespace AdamController.Services
 
         public List<CultureInfo> SupportAppCultures { get { return GetSupportAppCultures(); } }
 
-        public CultureInfo CurrentAppCulture {  get; private set; }
+        private CultureInfo currentAppCulture;
+        public CultureInfo CurrentAppCulture 
+        {  
+            get => currentAppCulture;
+            private set
+            {
+                bool isNewValue = SetProperty(ref currentAppCulture, value);
+
+                if (isNewValue)
+                    OnRaiseCurrentAppCultureLoadOrChangeEvent();
+            }
+            
+        }
 
         #endregion
 
@@ -43,8 +68,8 @@ namespace AdamController.Services
             };
 
             RemoveLoadedDictonary();
-   
-            Application.Current.Resources.MergedDictionaries.Add(resources);
+
+            mCurrentApp.Resources.MergedDictionaries.Add(resources);
             UpdateCurrentCulture(culture);
         }
 
@@ -52,6 +77,12 @@ namespace AdamController.Services
         public void Dispose()
         {
 
+        }
+
+        public string FindResource(string resource)
+        {
+            var @string = mCurrentApp.TryFindResource(resource) as string;
+            return @string;
         }
 
         #endregion
@@ -73,14 +104,14 @@ namespace AdamController.Services
             foreach (var culture in supportedCultures)
             {
                 string resourceName = $"pack://application:,,,/AdamController.Core;component/LocalizationDictionary/{culture.TwoLetterISOLanguageName}.xaml"; 
-                currentResourceDictionary = Application.Current.Resources.MergedDictionaries.FirstOrDefault(x => x?.Source?.OriginalString == resourceName);
+                currentResourceDictionary = mCurrentApp.Resources.MergedDictionaries.FirstOrDefault(x => x?.Source?.OriginalString == resourceName);
             }
 
             if (currentResourceDictionary == null || currentResourceDictionary?.MergedDictionaries.Count == 0) 
                 return;
            
             foreach (ResourceDictionary dictionary in currentResourceDictionary.MergedDictionaries)
-                Application.Current.Resources.MergedDictionaries.Remove(dictionary);
+                mCurrentApp.Resources.MergedDictionaries.Remove(dictionary);
         }
 
         private static List<CultureInfo> GetSupportAppCultures()
@@ -94,6 +125,16 @@ namespace AdamController.Services
             };
 
             return cultureInfos;
+        }
+
+        #endregion
+
+        #region OnRaise events
+
+        protected virtual void OnRaiseCurrentAppCultureLoadOrChangeEvent()
+        {
+            CurrentAppCultureLoadOrChangeEventHandler raiseEvent = RaiseCurrentAppCultureLoadOrChangeEvent;
+            raiseEvent?.Invoke(this);
         }
 
         #endregion

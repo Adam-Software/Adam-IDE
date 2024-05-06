@@ -48,6 +48,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
         private readonly IControlHelper mControlHelper;
+        private readonly ICultureProvider mCultureProvider;
 
         #endregion
 
@@ -61,14 +62,22 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private bool mIsWarningStackOwerflowAlreadyShow;
 
+        private string mCompileLogMessageStartDebug; 
+        private string mCompileLogMessageEndDebug;
+        private string mFinishAppExecute;
+        private string mWarningStackOwerflow1;
+        private string mWarningStackOwerflow2;
+        private string mWarningStackOwerflow3;
+
         #endregion
 
         #region ~
 
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
-                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IControlHelper controlHelper) : base(regionManager)
+                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IControlHelper controlHelper, ICultureProvider cultureProvider) : base(regionManager)
         {
+            
             mCommunicationProvider = communicationProvider;
             mPythonRemoteRunner = pythonRemoteRunner;
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
@@ -77,6 +86,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
             mControlHelper = controlHelper;
+            mCultureProvider = cultureProvider;
 
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
@@ -90,6 +100,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
 
             HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
+
+            LoadResources();
         }
 
         #endregion
@@ -238,6 +250,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent += RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
+
+            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent += RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         private void Unsubscribe()
@@ -252,6 +266,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider.RaiseWebViewMessageReceivedEvent -= RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
 
+            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent += RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         #endregion
@@ -502,7 +517,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 if (isFinishMessage)
                 {
-                    ResultText += "\n======================\n<<Выполнение программы завершено>>";
+                    ResultText += "\n======================\n";
+                    ResultText += $"<<{mFinishAppExecute}>>\n";
                 }
 
                 if(!isFinishMessage)
@@ -511,13 +527,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     {
                         if (!mIsWarningStackOwerflowAlreadyShow)
                         {
-                            string warningMessage = "\nДальнейший вывод результата, будет скрыт.";
-                            warningMessage += "\nПрограмма продолжает выполняться в неинтерактивном режиме.";
-                            warningMessage += "\nДля остановки нажмите \"Stop\". Или дождитесь завершения.";
-                            warningMessage += "\n";
-
+                            string warningMessage = $"\n{mWarningStackOwerflow1}\n{mWarningStackOwerflow2}\n{mWarningStackOwerflow3}\n";
                             ResultText += warningMessage;
-
                             mIsWarningStackOwerflowAlreadyShow = true;
                         }
 
@@ -577,13 +588,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     await mWebViewProvider.ExecuteJavaScript(Scripts.ShadowDisable);
                 }));
 
-                mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки закончен";
+                mStatusBarNotificationDelivery.CompileLogMessage = mCompileLogMessageEndDebug;
                 mStatusBarNotificationDelivery.ProgressRingStart = false;
                 return;
             }
 
             mIsWarningStackOwerflowAlreadyShow = false;
-            mStatusBarNotificationDelivery.CompileLogMessage = "Сеанс отладки запущен";
+            mStatusBarNotificationDelivery.CompileLogMessage = mCompileLogMessageStartDebug;
             mStatusBarNotificationDelivery.ProgressRingStart = true;
 
 
@@ -622,6 +633,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
             StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
             ToZeroPositionDelegateCommand.RaiseCanExecuteChanged();
+        }
+
+        private void LoadResources()
+        {
+            mCompileLogMessageStartDebug = mCultureProvider.FindResource("DebuggerMessages.CompileLogMessageStartDebug");
+            mCompileLogMessageEndDebug = mCultureProvider.FindResource("DebuggerMessages.CompileLogMessageEndDebug");
+            mFinishAppExecute = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.FinishAppExecute");
+
+            mWarningStackOwerflow1 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow1");
+            mWarningStackOwerflow2 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow2");
+            mWarningStackOwerflow3 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow3");
         }
 
         #endregion
@@ -680,6 +702,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
    
             UpdateResultText("", true);
             UpdateResultExecutionTimeText(remoteCommandExecuteResult);
+        }
+
+        private void RaiseCurrentAppCultureLoadOrChangeEvent(object sender)
+        {
+            LoadResources();
         }
 
         #endregion

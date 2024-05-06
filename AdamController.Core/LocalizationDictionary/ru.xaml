@@ -3,6 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/MainMenu.ru.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/HamburgerMenu.ru.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/DebuggerMessages.ru.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

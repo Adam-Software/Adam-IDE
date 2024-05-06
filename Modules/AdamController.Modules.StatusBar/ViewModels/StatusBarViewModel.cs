@@ -6,7 +6,6 @@ using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
 
 namespace AdamController.Modules.StatusBarRegion.ViewModels

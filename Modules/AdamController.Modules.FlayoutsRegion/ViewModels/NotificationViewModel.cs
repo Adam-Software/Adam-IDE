@@ -4,7 +4,6 @@ using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
-using System.ComponentModel;
 using System.Windows;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
@@ -176,7 +175,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                     return;
                 }
                     
-
                 if (Settings.Default.IsMessageShowOnAbortMainConnection)
                 {
                     if (!IsOpen)
