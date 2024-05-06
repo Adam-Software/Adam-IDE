@@ -27,6 +27,12 @@ namespace AdamController.Services
 
         #endregion
 
+        #region var
+
+        private bool mIsDisconnectByUserRequest = false;
+
+        #endregion
+
         #region ~
 
         public CommunicationProviderService(ITcpClientService adamTcpClientService, IUdpClientService adamUdpClientService, 
@@ -60,6 +66,18 @@ namespace AdamController.Services
 
         public void DisconnectAllAsync()
         {
+            mIsDisconnectByUserRequest = false;
+
+            _ = Task.Run(mTcpClientService.DisconnectAndStop);
+            _ = Task.Run(mUdpClientService.Stop);
+            _ = Task.Run(mUdpServerService.Stop);
+            _ = Task.Run(mWebSocketClientService.DisconnectAsync);
+        }
+
+        public void DisconnectAllAsync(bool isUserRequest)
+        {
+            mIsDisconnectByUserRequest = isUserRequest;
+
             _ = Task.Run(mTcpClientService.DisconnectAndStop);
             _ = Task.Run(mUdpClientService.Stop);
             _ = Task.Run(mUdpServerService.Stop);
@@ -83,6 +101,7 @@ namespace AdamController.Services
         }
 
         #endregion
+
 
         #region Private methods
 
@@ -168,7 +187,9 @@ namespace AdamController.Services
         protected virtual void OnRaiseTcpServiceClientDisconnectEvent()
         {
             TcpServiceClientDisconnectEventHandler raiseEvent = RaiseTcpServiceClientDisconnectEvent;
-            raiseEvent?.Invoke(this);
+            raiseEvent?.Invoke(this, mIsDisconnectByUserRequest);
+
+            mIsDisconnectByUserRequest = false;
         }
 
         public virtual void OnRaiseTcpServiceClientReconnectedEvent(int reconnectCounter)

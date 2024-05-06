@@ -35,6 +35,12 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
+        #region Var
+
+        private bool mIsDisconnectByUserRequest = false;
+
+        #endregion
+
         #region ~
 
         public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFlyoutStateChecker flyoutState) 
@@ -57,9 +63,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if (isOpening)
             {
                 mFlyoutState.IsNotificationFlyoutOpened = true;
+                
+                Subscribe();
 
                 SetFlyoutParametrs();
-                Subscribe();
                 UpdateStatusConnection(mCommunicationProvider.IsTcpClientConnected);
                 
                 return;
@@ -149,24 +156,32 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         /// </summary>
         /// <param name="connectionStatus">true is connected, false disconetcted, null reconected</param>
         /// <param name="reconnectCounter"></param>
-        private void UpdateStatusConnection(bool? connectionStatus, int reconnectCounter = 0)
+        private void UpdateStatusConnection(bool? connectionStatus, bool isDisconnectByUserRequest = false, int reconnectCounter = 0)
         {
             if (connectionStatus == true)
             {
+                mIsDisconnectByUserRequest = false;
                 ContentConnectButton = cConnectButtonStatusConnected;
                 IconConnectButton = PackIconMaterialKind.Robot;
             }
 
-            if(connectionStatus == false)
+            if(connectionStatus == false && mIsDisconnectByUserRequest == false)
             {
+                IconConnectButton = PackIconMaterialKind.RobotDead;
+                ContentConnectButton = cConnectButtonStatusDisconnected;
+
+                if (isDisconnectByUserRequest)
+                {
+                    mIsDisconnectByUserRequest = true;
+                    return;
+                }
+                    
+
                 if (Settings.Default.IsMessageShowOnAbortMainConnection)
                 {
                     if (!IsOpen)
                         FailConnectNotificationVisibility = Visibility.Visible;       
                 }
-
-                ContentConnectButton = cConnectButtonStatusDisconnected;
-                IconConnectButton = PackIconMaterialKind.RobotDead;
             }
 
             if(connectionStatus == null)
@@ -205,12 +220,12 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void OnRaiseTcpServiceClientReconnected(object sender, int reconnectCounter)
         {
-            UpdateStatusConnection(null, reconnectCounter);
+            UpdateStatusConnection(null, reconnectCounter: reconnectCounter);
         }
 
-        private void OnRaiseTcpServiceClientDisconnect(object sender)
+        private void OnRaiseTcpServiceClientDisconnect(object sender, bool isUserRequest)
         {
-            UpdateStatusConnection(false); 
+            UpdateStatusConnection(false, isDisconnectByUserRequest:isUserRequest); 
         }
 
         #endregion
@@ -223,7 +238,8 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
             if (isConnected)
             {
-                mCommunicationProvider.DisconnectAllAsync();
+                bool isUserRequest = true;
+                mCommunicationProvider.DisconnectAllAsync(isUserRequest);
                 return;
             }
             

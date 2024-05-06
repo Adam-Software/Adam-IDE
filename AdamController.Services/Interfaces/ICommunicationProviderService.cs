@@ -6,7 +6,7 @@ namespace AdamController.Services.Interfaces
     #region Delegate
 
     public delegate void TcpServiceCientConnectedEventHandler(object sender);
-    public delegate void TcpServiceClientDisconnectEventHandler(object sender);
+    public delegate void TcpServiceClientDisconnectEventHandler(object sender, bool isUserRequest);
     public delegate void TcpServiceClientReconnectedEventHandler(object sender, int reconnectCounter);
     public delegate void UdpServiceServerReceivedEventHandler(object sender, string message);
     public delegate void UdpServiceClientMessageEnqueueEvent(object sender, ReceivedData data);
@@ -37,6 +37,7 @@ namespace AdamController.Services.Interfaces
 
         public void ConnectAllAsync();
         public void DisconnectAllAsync();
+        public void DisconnectAllAsync(bool isUserRequest);
         public void WebSocketSendTextMessage(string message);
 
         #endregion

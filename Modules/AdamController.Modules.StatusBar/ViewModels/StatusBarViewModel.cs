@@ -201,11 +201,13 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             TextOnStatusConnectToolbar = $"{cTextOnStatusConnectToolbarReconnected} {reconnectCounter}";
         }
 
-        private void RaiseAdamTcpClientDisconnectEvent(object sender)
+        private void RaiseAdamTcpClientDisconnectEvent(object sender, bool isUserRequest)
         {
             ConnectIcon = PackIconModernKind.Connect;
             TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
-            mStatusBarNotificationDelivery.NotificationCounter++;
+            
+            if(!isUserRequest)
+                mStatusBarNotificationDelivery.NotificationCounter++;
         }
 
         private void RaiseChangeProgressRingStateEvent(object sender, bool newState)

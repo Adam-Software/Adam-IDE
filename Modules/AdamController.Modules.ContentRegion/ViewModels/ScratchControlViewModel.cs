@@ -230,7 +230,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private void Subscribe()
         {
             mCommunicationProvider.RaiseTcpServiceCientConnectedEvent += OnRaiseTcpServiceCientConnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcperviceClientDisconnect;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcpServiceClientDisconnect;
 
             mPythonRemoteRunner.RaisePythonScriptExecuteStartEvent += OnRaisePythonScriptExecuteStart;
             mPythonRemoteRunner.RaisePythonStandartOutputEvent += OnRaisePythonStandartOutput;
@@ -243,7 +243,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private void Unsubscribe()
         {
             mCommunicationProvider.RaiseTcpServiceCientConnectedEvent -= OnRaiseTcpServiceCientConnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent -= OnRaiseTcperviceClientDisconnect;
+            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent -= OnRaiseTcpServiceClientDisconnect;
 
             mPythonRemoteRunner.RaisePythonScriptExecuteStartEvent -= OnRaisePythonScriptExecuteStart;
             mPythonRemoteRunner.RaisePythonStandartOutputEvent -= OnRaisePythonStandartOutput;
@@ -656,7 +656,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             UpdatePythonInfo(pythonVersion, pythonBinPath, pythonWorkDir);
         }
 
-        private void OnRaiseTcperviceClientDisconnect(object sender)
+        private void OnRaiseTcpServiceClientDisconnect(object sender, bool isUserRequest)
         {
             IsTcpClientConnected = mCommunicationProvider.IsTcpClientConnected;
 
