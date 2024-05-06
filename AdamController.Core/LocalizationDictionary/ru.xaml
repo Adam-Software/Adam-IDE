@@ -6,6 +6,7 @@
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/DebuggerMessages.ru.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/SettingsControlView.ru.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ScratchControlView.ru.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ComputerVisionControlView.ru.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

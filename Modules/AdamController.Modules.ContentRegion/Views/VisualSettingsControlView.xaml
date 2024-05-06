@@ -358,12 +358,12 @@
 
             <!--#endregion-->
 
-            <!--#region Connect settings -->
+            <!--#region UserFolder settings -->
 
             <DockPanel Margin="10 0 0 0" Grid.Column="3" LastChildFill="False">
 
                 <GroupBox DockPanel.Dock="Top"
-                      Header="{DynamicResource SettingsControlView.GroupBox.Header.EnvironmentsSetting}">
+                          Header="{DynamicResource SettingsControlView.GroupBox.Header.EnvironmentsSetting}">
 
                     <DockPanel Margin="10">
 
@@ -382,8 +382,9 @@
                 </GroupBox>
 
             </DockPanel>
-
-
+            
+            <!--#endregion-->
+            
         </Grid>
     </Border>
 

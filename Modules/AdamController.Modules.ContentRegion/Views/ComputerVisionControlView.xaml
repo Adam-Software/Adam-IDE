@@ -50,7 +50,7 @@
                         <StackPanel Orientation="Vertical" 
                                     VerticalAlignment="Center">
 
-                            <TextBlock Text="Управление" >
+                            <TextBlock Text="{DynamicResource ComputerVisionControlView.Expander.Header.TextBlock.Management}" >
                                 <TextBlock.LayoutTransform>
                                     <RotateTransform Angle="90"/>
                                 </TextBlock.LayoutTransform>
