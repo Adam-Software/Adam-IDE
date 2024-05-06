@@ -21,10 +21,8 @@
         </intr:EventTrigger>
     </intr:Interaction.Triggers>
 
-    <GroupBox Margin="5 5 5 5"
-              Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}"                      
-              mah:ControlsHelper.ContentCharacterCasing="Normal"
-              mah:HeaderedControlHelper.HeaderForeground="{DynamicResource MahApps.Brushes.ThemeForeground}">
+
+    <Border BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}" BorderThickness="1">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -32,32 +30,33 @@
             </Grid.RowDefinitions>
 
             <vlc:VideoView Grid.Row="0"
-                           Margin="10"
-                           x:Name="VideoView"> 
+                           Margin="-1 0 0 -1"
+                           Foreground="Transparent"
+                           x:Name="VideoView">
 
-            <!--#region Buttons -->
+                <!--#region Buttons -->
 
                 <Expander Width="415" 
                           Height="210"
-                          Margin="0 0 0 0"
                           HorizontalContentAlignment="Center"
                           VerticalContentAlignment="Center"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Bottom"
                           ExpandDirection="Right"
-                          
-                          Style="{DynamicResource MahApps.Styles.Expander}">
+                          BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                          mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}">
+
                     <Expander.Header>
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0 10 0 10" 
->
-                            <TextBlock Text="Управление" 
-                                       Style="{DynamicResource MahApps.Styles.TextBlock}" 
-                                   Foreground="{DynamicResource MahApps.Brushes.Badged.Foreground}">
+                        <StackPanel Orientation="Vertical" 
+                                    VerticalAlignment="Center">
+
+                            <TextBlock Text="Управление" >
                                 <TextBlock.LayoutTransform>
                                     <RotateTransform Angle="90"/>
                                 </TextBlock.LayoutTransform>
                             </TextBlock>
                         </StackPanel>
+
                     </Expander.Header>
 
                     <Grid Width="450"
@@ -91,15 +90,15 @@
                         <!--#region row 0 -->
 
                         <Slider Grid.Column="4"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Margin="0 10 0 10"
-                        Minimum="0.1" Maximum="1"
-                        TickFrequency="0.1"
-                        Width="10"
-                        Orientation="Vertical" 
-                        Value="{Binding SliderValue}"
-                        Style="{DynamicResource  MahApps.Styles.Slider.Flat}"/>
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Margin="0 10 0 10"
+                                Minimum="0.1" Maximum="1"
+                                TickFrequency="0.1"
+                                Width="10"
+                                Orientation="Vertical" 
+                                Value="{Binding SliderValue}"
+                                Style="{DynamicResource  MahApps.Styles.Slider.Flat}"/>
 
                         <!--#endregion-->
 
@@ -110,73 +109,76 @@
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5"
-                                Command="{Binding ToZeroPositionCommand}"
-                                Style="{DynamicResource MahApps.Styles.Button}">
+                                Command="{Binding ToZeroPositionCommand}">
 
                             <iconPacks:PackIconMaterial Width="Auto"
                                                         Height="Auto"
                                                         Kind="HomeFloor0"
                                                         Margin="5"/>
                         </Button>
-                        
+
                         <Button Grid.Column="1"
-                        Grid.Row="0"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="0"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
                                                 Kind="ArrowTopLeft"
                                                 Margin="5"/>
+                            
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                     <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding ForwardLeftDirection}" />
+                                            Command="{Binding DirectionButtonCommandDown}"
+                                            CommandParameter="{Binding ForwardLeftDirection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                                     <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+                                            Command="{Binding DirectionButtonCommandUp}"
+                                            CommandParameter="{Binding StopDirrection}" />
                                 </i:EventTrigger>
+
                             </i:Interaction.Triggers>
                         </Button>
 
                         <Button Grid.Column="2"
-                        Grid.Row="0"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="0"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5"
+                                Style="{DynamicResource MahApps.Styles.Button}">
 
                             <iconPacks:PackIconMaterial Width="Auto"
-                                                Height="Auto"
-                                                Kind="ArrowUp"
-                                                Margin="5"/>
+                                                        Height="Auto"
+                                                        Kind="ArrowUp"
+                                                        Margin="5"/>
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding ForwardDirection}"/>
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding ForwardDirection}"/>
+
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
+
                                 </i:EventTrigger>
+
                             </i:Interaction.Triggers>
                         </Button>
 
 
                         <Button Grid.Column="3"
-                        Grid.Row="0"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="0"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
@@ -202,52 +204,51 @@
                         <!--#region row 2 -->
 
                         <Button Grid.Column="1"
-                        Grid.Row="1"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
-                                                Height="Auto"
-                                                Kind="ArrowLeft"
-                                                Margin="5"/>
+                                                        Height="Auto"
+                                                        Kind="ArrowLeft"
+                                                        Margin="5"/>
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding LeftDirection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding LeftDirection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
+
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
 
                         <Button Grid.Column="2"
-                        Grid.Row="1"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Click="Button_Click"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5"
+                                Click="Button_Click">
 
                             <iconPacks:PackIconMaterial Width="Auto"
-                                                Height="Auto"
-                                                Kind="Play"
-                                                Margin="5"/>
+                                                        Height="Auto"
+                                                        Kind="Play"
+                                                        Margin="5"/>
 
                         </Button>
 
                         <Button Grid.Column="3"
-                        Grid.Row="1"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
@@ -256,14 +257,16 @@
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding RightDirection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding RightDirection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
+
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
@@ -273,38 +276,37 @@
                         <!--#region row 3 -->
 
                         <Button Grid.Column="0"
-                        Grid.Row="2"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="2"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
-                                                Height="Auto"
-                                                Kind="RotateLeft"
-                                                Margin="5"/>
+                                                        Height="Auto"
+                                                        Kind="RotateLeft"
+                                                        Margin="5"/>
 
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding RotateLeftDirrection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding RotateLeftDirrection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
                                 </i:EventTrigger>
+
                             </i:Interaction.Triggers>
                         </Button>
 
                         <Button Grid.Column="1"
-                        Grid.Row="2"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="2"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
@@ -313,24 +315,25 @@
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding BackLeftDirection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding BackLeftDirection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
                                 </i:EventTrigger>
+
                             </i:Interaction.Triggers>
                         </Button>
 
                         <Button Grid.Column="2"
-                        Grid.Row="2"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="2"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5"
+                                Style="{DynamicResource MahApps.Styles.Button}">
 
                             <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
@@ -340,52 +343,52 @@
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding BackDirection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding BackDirection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
+
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
 
 
                         <Button Grid.Column="3"
-                        Grid.Row="2"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="2"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
-                                                Height="Auto"
-                                                Kind="ArrowBottomRight"
-                                                Margin="5"/>
-
-
+                                                        Height="Auto"
+                                                        Kind="ArrowBottomRight"
+                                                        Margin="5"/>
                             <i:Interaction.Triggers>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding BackRightDirection}" />
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding BackRightDirection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
+
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
 
                         <Button Grid.Column="4"
-                        Grid.Row="2"
-                        Width="Auto"
-                        Height="Auto"
-                        Margin="5"
-                        Style="{DynamicResource MahApps.Styles.Button}">
+                                Grid.Row="2"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="5">
 
                             <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
@@ -394,28 +397,25 @@
 
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
-                                CommandParameter="{Binding RotateRightDirrection}" />
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                                           CommandParameter="{Binding RotateRightDirrection}" />
                                 </i:EventTrigger>
+
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
-                                CommandParameter="{Binding StopDirrection}" />
+
+                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                                           CommandParameter="{Binding StopDirrection}" />
                                 </i:EventTrigger>
+
                             </i:Interaction.Triggers>
                         </Button>
-
-
-
                     </Grid>
                 </Expander>
-
             </vlc:VideoView>
         </Grid>
+    </Border>
+
+
+    <!--#endregion-->
         
-        
-        <!--#endregion-->
-        
-    </GroupBox>
 </UserControl>
