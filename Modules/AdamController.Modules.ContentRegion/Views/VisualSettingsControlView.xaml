@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
              xmlns:converters="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core" 
              xmlns:prism="http://prismlibrary.com/" 
@@ -67,11 +68,11 @@
         <DockPanel Grid.Column="0" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Язык и тема">
+                      Header="{ DynamicResource SettingsControlView.GroupBox.Header.LanguageAndTheme }">
 
                 <StackPanel Margin="10 0 10 10">
-                    
-                    <Label Content="Тема приложения"/>
+
+                    <Label Content="{ DynamicResource SettingsControlView.Label.Content.Theme }"/>
 
                     <mah:SplitButton Width="160"
                                      DisplayMemberPath="DisplayName"
@@ -83,7 +84,7 @@
                         </mah:SplitButton.Icon>
                     </mah:SplitButton>
 
-                    <Label Content="Язык приложения" 
+                    <Label Content="{DynamicResource SettingsControlView.Label.Content.Language}" 
                            HorizontalContentAlignment="Center"/>
 
                     <mah:SplitButton Width="160"
@@ -106,7 +107,7 @@
         <DockPanel Margin="10 0 0 0" Grid.Column="1" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Настройки скретч редактора">
+                      Header="{DynamicResource SettingsControlView.GroupBox.Header.ScratchEditorSettings}">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -126,47 +127,47 @@
                                Margin="10 0 10 0">
                         
                         <Label DockPanel.Dock="Top"
-                               Content="Отображаемые наборы блоков" />
+                               Content="{DynamicResource SettingsControlView.Label.Content.DisplayedSetsBlocks}" />
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Логические"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Logic}"
                                           IsOn="{Binding BlocklyLogicCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
                         
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Цвета"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Colors}"
                                           IsOn="{Binding BlocklyColorCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Списки"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Lists}"
                                           IsOn="{Binding BlocklyListsCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Циклы"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Loops}"
                                           IsOn="{Binding BlocklyLoopCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Математические"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Math}"
                                           IsOn="{Binding BlocklyMathCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
                         
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Процедуры"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Procedures}"
                                           IsOn="{Binding BlocklyProcedureCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Текстовые"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Texts}"
                                           IsOn="{Binding BlocklyTextCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Переменные"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Variables}"
                                           IsOn="{Binding BlocklyVariableCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"
-                                          Content="Блоки Adam v.2.6"
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Adam.2.6}"
                                           IsOn="{Binding BlocklyAdamTwoCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                         <mah:ToggleSwitch DockPanel.Dock="Top"                                          
                                           IsOn="{Binding BlocklyAdamThreeCategoryState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-                                          Content="Блоки Adam v.2.7">
+                                          Content="{DynamicResource SettingsControlView.ToggleSwitch.Content.BlockNames.Adam.2.7}">
                         </mah:ToggleSwitch>
 
                     </DockPanel>
@@ -187,7 +188,7 @@
                             <StackPanel Orientation="Horizontal">
 
                                 <iconPacks:PackIconMaterial Kind="Grid" Margin="0 0 5 0"/>
-                                <TextBlock Text="Показывать сетку" />
+                                <TextBlock Text="{DynamicResource SettingsControlView.ToggleButton.TextBox.ShowGridText}" />
 
                             </StackPanel>
                         </ToggleButton>
@@ -199,7 +200,7 @@
                             <StackPanel Orientation="Horizontal">
 
                                 <iconPacks:PackIconMaterial Kind="TrashCanOutline" Margin="0 0 5 0"/>
-                                <TextBlock Text="Показывать корзину" />
+                                <TextBlock Text="{DynamicResource SettingsControlView.ToggleButton.TextBox.ShowTrashCan}" />
 
                             </StackPanel>
                             
@@ -210,10 +211,10 @@
                                       IsChecked="{Binding BlocklySnapToGridNodes, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
 
                             <StackPanel Orientation="Horizontal">
-                                
-                                <iconPacks:PackIconMaterial  Kind="ViewGrid" Margin="0 0 5 0"/>
 
-                                <TextBlock Text="Выравнивать блоки"/>
+                                <iconPacks:PackIconMaterial  Kind="ViewGrid" Margin="0 0 5 0"/>
+                                <TextBlock Text="{DynamicResource SettingsControlView.ToggleButton.TextBox.AlignBlocks}"/>
+                                
                             </StackPanel>
                             
                         </ToggleButton>
@@ -223,10 +224,10 @@
                                       IsChecked="{Binding BlocklyRestoreBlockOnLoad, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
 
                             <StackPanel Orientation="Horizontal">
-                            
-                                <iconPacks:PackIconMaterial  Kind="Restore" Margin="0 0 5 0"/>
 
-                                <TextBlock Text="Загружать последние" />
+                                <iconPacks:PackIconMaterial  Kind="Restore" Margin="0 0 5 0"/>
+                                <TextBlock Text="{DynamicResource SettingsControlView.ToggleButton.TextBox.ShowLast}" />
+                                
                             </StackPanel>
                         </ToggleButton>
 
@@ -237,8 +238,8 @@
                             <StackPanel Orientation="Horizontal">
 
                                 <iconPacks:PackIconMaterial  Kind="Menu" Margin="10 0 5 0"/>
-
-                                <TextBlock Text="Не показывать меню браузера"/>
+                                <TextBlock Text="{DynamicResource SettingsControlView.ToggleButton.TextBox.BrowserMenuNotShow}"/>
+                                
                             </StackPanel>
                         </ToggleButton>
 
@@ -250,8 +251,8 @@
                             <StackPanel Orientation="Horizontal">
 
                                 <iconPacks:PackIconMaterial  Kind="BlockHelper" Margin="0 0 5 0"/>
-
-                                <TextBlock Text="Затемнять при запуске скрипта" />
+                                <TextBlock Text="{DynamicResource SettingsControlView.ToggleButton.TextBox.ShadowOnDebug}" />
+                                
                             </StackPanel>
                         </ToggleButton>
                     </DockPanel>
@@ -267,9 +268,9 @@
 
                         <mah:ToggleSwitch DockPanel.Dock="Left"
                                           x:Name="ChangeSpacingSwitch"
-                                          Header="Размер ячейки сетки"
-                                          OnContent="Пользовательский"
-                                          OffContent="По умолчанию"
+                                          Header="{DynamicResource SettingsControlView.ToggleSwitch.Header.ChangeSpacingSwitch}"
+                                          OnContent="{DynamicResource SettingsControlView.ToggleSwitch.OnContent.ChangeSpacingSwitch}"
+                                          OffContent="{DynamicResource SettingsControlView.ToggleSwitch.OffContent.ChangeSpacingSwitch}"
                                           IsOn="{Binding  ChangeSpacingSwitchToggleSwitchState, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                                           IsEnabled="{Binding BlocklyShowGrid, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                                           Command="{Binding ChangeSpacingToggleSwitchDelegateCommand}"/>
@@ -305,7 +306,7 @@
         <DockPanel Margin="10 0 0 0" Grid.Column="2" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Настройки подключений и уведомлений">
+                      Header="{DynamicResource SettingsControlView.GroupBox.Header.ConnectionAndNotificationSettings}">
 
                 <DockPanel Margin="10 10 10 0">
 
@@ -314,7 +315,7 @@
                                 Orientation="Horizontal">
                         
                         <Label FontSize="14" 
-                               Content="Адрес робота  "/>
+                               Content="{DynamicResource SettingsControlView.StackPanel.TextBox.RobotIp}"/>
 
                         <TextBox DockPanel.Dock="Right"
                                  Width="150"
@@ -329,22 +330,22 @@
 
                     <Button DockPanel.Dock="Top"
                             Margin="0 0 0 10"
-                            Content="Настройки WebApi"
+                            Content="{DynamicResource SettingsControlView.Button.Content.WebApiSettings}"
                             Command="{Binding OpenWebApiSettingsDelegateCommand}"/>
 
                     <Button DockPanel.Dock="Top"
                             Margin="0 0 0 10"
-                            Content="Настройки портов"
+                            Content="{DynamicResource SettingsControlView.Button.Content.PortSettings}"
                             Command="{Binding OpenPortSettingsDelegateCommand}"/>
 
                     <ToggleButton DockPanel.Dock="Top"
                                   Margin="0 0 0 10"
-                                  Content="Подключаться при запуске"
+                                  Content="{DynamicResource SettingsControlView.ToggleButton.Content.ConnectOnStart}"
                                   IsChecked="{Binding AutoStartTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                     <ToggleButton DockPanel.Dock="Top"
                                   Margin="0 0 0 10"
-                                  Content="Уведомлять об отключении от робота"
+                                  Content="{DynamicResource SettingsControlView.ToggleButton.Content.NotifyOnDisconnection}"
                                   IsChecked="{Binding IsMessageShowOnAbortMainConnection, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                 </DockPanel>
@@ -360,18 +361,17 @@
         <DockPanel Margin="10 0 0 0" Grid.Column="3" LastChildFill="False">
 
             <GroupBox DockPanel.Dock="Top"
-                      Header="Настройки окружения">
+                      Header="{DynamicResource SettingsControlView.GroupBox.Header.EnvironmentsSetting}">
 
                 <DockPanel Margin="10">
 
                     <ToggleButton DockPanel.Dock="Top"
                                   Margin="0 0 0 10"
-                                  
-                                  Content="Создавать папки пользователя "
+                                  Content="{DynamicResource SettingsControlView.ToggleButton.Content.CreateUserFolder}"
                                   IsChecked="{Binding CreateUserDirrectory, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>
 
                     <Button DockPanel.Dock="Top"
-                            Content="Настройка папок пользователя"
+                            Content="{DynamicResource SettingsControlView.Button.Content.SettingsUserFolder}"
                             IsEnabled="{Binding CreateUserDirrectory, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
                             Command="{Binding OpenUserFolderSettingsDelegateCommand}"/>
 
