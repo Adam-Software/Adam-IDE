@@ -12,7 +12,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
     {
         #region DelegateCommands
 
-        public DelegateCommand ConnectButtonDelegateCommand { get; private set; }
+        public DelegateCommand ConnectButtonDelegateCommand { get; private set;  }
         public DelegateCommand ReconnectNotificationButtonDelegateCommand { get; private set; }
         public DelegateCommand ResetNotificationsDelegateCommand { get; private set; }
 
@@ -20,17 +20,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #region Services
 
-        private ICommunicationProviderService mCommunicationProvider;
-        private IStatusBarNotificationDeliveryService mStatusBarNotificationDeliveryService;
-        private IFlyoutStateChecker mFlyoutState;
-
-        #endregion
-
-        #region Const
-
-        private const string cConnectButtonStatusDisconnected = "Подключить";
-        private const string cConnectButtonStatusConnected = "Отключить";
-        private const string cConnectButtonStatusReconnected = "Подождите";
+        private readonly ICommunicationProviderService mCommunicationProvider;
+        private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDeliveryService;
+        private readonly IFlyoutStateChecker mFlyoutState;
+        private readonly ICultureProvider mCultureProvider;
 
         #endregion
 
@@ -38,15 +31,21 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private bool mIsDisconnectByUserRequest = false;
 
+        private string mFlyoutHeader;
+        private string mConnectButtonStatusDisconnected;
+        private string mConnectButtonStatusConnected;
+        private string mConnectButtonStatusReconnected;
+
         #endregion
 
         #region ~
 
-        public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFlyoutStateChecker flyoutState) 
+        public NotificationViewModel(ICommunicationProviderService communicationProvider, IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IFlyoutStateChecker flyoutState, ICultureProvider cultureProvider) 
         {
             mCommunicationProvider = communicationProvider;
             mStatusBarNotificationDeliveryService = statusBarNotificationDelivery;
             mFlyoutState = flyoutState;
+            mCultureProvider = cultureProvider;
 
             ConnectButtonDelegateCommand = new(ConnectButton, ConnectButtonCanExecute);
             ReconnectNotificationButtonDelegateCommand = new(ReconnectNotificationButton, ReconnectNotificationButtonCanExecute);
@@ -61,11 +60,13 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         {
             if (isOpening)
             {
+                LoadResources();
+                LoadFlyoutParametrs();
+               
                 mFlyoutState.IsNotificationFlyoutOpened = true;
                 
                 Subscribe();
 
-                SetFlyoutParametrs();
                 UpdateStatusConnection(mCommunicationProvider.IsTcpClientConnected);
                 
                 return;
@@ -83,16 +84,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
                 return;
             }
-        }
-
-        protected override void OnClosing(FlyoutParameters flyoutParameters)
-        {
-            base.OnClosing(flyoutParameters);
-        }
-
-        protected override void OnOpening(FlyoutParameters flyoutParameters)
-        {
-            base.OnOpening(flyoutParameters);
         }
 
         #endregion
@@ -125,7 +116,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             }
         }
 
-        private string contentConnectButton = cConnectButtonStatusDisconnected;
+        private string contentConnectButton;
         public string ContentConnectButton
         {
             get => contentConnectButton;
@@ -143,10 +134,10 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #region Private methods
 
-        private void SetFlyoutParametrs()
+        private void LoadFlyoutParametrs()
         {
             Theme = FlyoutTheme.Adapt;
-            Header = "Центр уведомлений";
+            Header = mFlyoutHeader;
             IsModal = false;
         }
 
@@ -160,14 +151,14 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if (connectionStatus == true)
             {
                 mIsDisconnectByUserRequest = false;
-                ContentConnectButton = cConnectButtonStatusConnected;
+                ContentConnectButton = mConnectButtonStatusConnected;
                 IconConnectButton = PackIconMaterialKind.Robot;
             }
 
             if(connectionStatus == false && mIsDisconnectByUserRequest == false)
             {
                 IconConnectButton = PackIconMaterialKind.RobotDead;
-                ContentConnectButton = cConnectButtonStatusDisconnected;
+                ContentConnectButton = mConnectButtonStatusDisconnected;
 
                 if (isDisconnectByUserRequest)
                 {
@@ -184,20 +175,31 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
             if(connectionStatus == null)
             {
-                ContentConnectButton = $"{cConnectButtonStatusReconnected} {reconnectCounter}";
+                ContentConnectButton = $"{mConnectButtonStatusReconnected} {reconnectCounter}";
                 IconConnectButton = PackIconMaterialKind.RobotConfused;
             }
         }
 
+        private void LoadResources()
+        {
+            mFlyoutHeader = mCultureProvider.FindResource("NotificationView.ViewModel.Flyout.Header");
+            mConnectButtonStatusDisconnected = mCultureProvider.FindResource("NotificationView.ViewModel.Button.Content.StatusDisconnected"); 
+            mConnectButtonStatusConnected = mCultureProvider.FindResource("NotificationView.ViewModel.Button.Content.StatusConnected"); 
+            mConnectButtonStatusReconnected = mCultureProvider.FindResource("NotificationView.ViewModel.Button.Content.StatusReconnected");
+        }
+
+    
         #endregion
 
+    
         #region Subscription
 
+    
         private void Subscribe()
         {
             mCommunicationProvider.RaiseTcpServiceCientConnectedEvent += OnRaiseTcpServiceCientConnected;
             mCommunicationProvider.RaiseTcpServiceClientReconnectedEvent += OnRaiseTcpServiceClientReconnected;
-            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcpServiceClientDisconnect;   
+            mCommunicationProvider.RaiseTcpServiceClientDisconnectEvent += OnRaiseTcpServiceClientDisconnect;
         }
 
         private void Unsubscribe() 
@@ -225,6 +227,12 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
         {
             UpdateStatusConnection(false, isDisconnectByUserRequest:isUserRequest); 
         }
+
+        private void RaiseCurrentAppCultureLoadOrChangeEvent(object sender)
+        {
+            LoadResources();
+        }
+
 
         #endregion
 

@@ -27,7 +27,7 @@
                 <TextBlock Grid.Row="0" 
                            VerticalAlignment="Top"
                            HorizontalAlignment="Left"
-                           Text="Новых уведомлений нет"
+                           Text="{DynamicResource NotificationView.TextBlock.Text.NoNewMessage}"
                            Visibility="{Binding NoNewNotificationMessageVisibility}"/>
 
                 <!--#region FailConnect Notify -->
@@ -55,7 +55,7 @@
                                    FontStyle="Normal"
                                    FontWeight="Bold"
                                    FontSize="18"
-                                   Text="Робот Адам отключен!" />
+                                   Text="{DynamicResource NotificationView.TextBlock.Text.RobotDisconnect}" />
 
                         <TextBlock Grid.Row="1"
                                    Width="Auto" Height="Auto"
@@ -63,16 +63,16 @@
                                    FontStyle="Normal"
                                    FontWeight="Bold"
                                    FontSize="14"
-                                   Text="Проверьте связь и нажмите переподключить" />
+                                   Text="{DynamicResource NotificationView.TextBlock.Text.CheckConnectMessage}" />
 
                         <Button Grid.Row="2" Width="Auto"
                                 Margin="10 5 10 10"
-                                Content="Переподключить" 
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 mah:ControlsHelper.ContentCharacterCasing="Upper"
+                                Content="{DynamicResource NotificationView.Button.Content.Reconnect}" 
                                 Command="{Binding ReconnectNotificationButtonDelegateCommand}"
                                 Style="{StaticResource MahApps.Styles.Button.MetroSquare}"></Button>
                     </Grid>
@@ -87,8 +87,9 @@
                            HorizontalAlignment="Right"
                            FontWeight="Bold">
                     
-                        <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" Command="{Binding ResetNotificationsDelegateCommand}">
-                            Очистить уведомления
+                        <Hyperlink Style="{DynamicResource MahApps.Styles.Hyperlink}" 
+                                   Command="{Binding ResetNotificationsDelegateCommand}">
+                            <Run Text="{DynamicResource NotificationView.Hyperlink.Content.ClearMessage}"/>
                         </Hyperlink>
 
                 </TextBlock>
