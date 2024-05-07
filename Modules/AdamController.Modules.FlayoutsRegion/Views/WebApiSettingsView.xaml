@@ -16,7 +16,7 @@
                 <Label Width="120"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
-                       Content="Логин"/>
+                       Content="{DynamicResource WebApiSettingsView.Label.Content.Login}"/>
 
                 <TextBox Width="200" 
                          FontWeight="Medium"
@@ -35,7 +35,7 @@
                 <Label Width="120"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
-                       Content="Пароль" />
+                       Content="{DynamicResource WebApiSettingsView.Label.Content.Password}" />
 
                 <TextBox Width="200"
                          FontWeight="Medium"
@@ -55,7 +55,7 @@
                 <Label  Width="120"
                         FontWeight="DemiBold"
                         HorizontalAlignment="Center"
-                        Content="Порт"/>
+                        Content="{DynamicResource WebApiSettingsView.Label.Content.Port}"/>
 
                 <TextBox Width="200"
                          FontWeight="Medium"
