@@ -10,6 +10,7 @@
 
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/NotificationView.ru.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/PortSettingsView.ru.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/UserFoldersSettingsView.ru.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

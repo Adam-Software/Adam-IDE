@@ -17,6 +17,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private readonly IDialogManagerService mDialogManager;
         private readonly IFolderManagmentService mFolderManagment;
+        private readonly ICultureProvider mCultureProvider;
 
         #endregion
 
@@ -27,19 +28,51 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
-        public UserFoldersSettingsViewModel(IDialogManagerService dialogManager, IFolderManagmentService folderManagment) 
+        #region Var
+
+        private string mTitleSelectWorkspaceDialog;
+        private string mTitleSelectScriptDialog;
+
+        #endregion
+
+        public UserFoldersSettingsViewModel(IDialogManagerService dialogManager, IFolderManagmentService folderManagment, ICultureProvider cultureProvider) 
         {
             mDialogManager = dialogManager;
             mFolderManagment = folderManagment;
+            mCultureProvider = cultureProvider;
 
-            ShowOpenFolderDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFolderDialog, ShowOpenFolderDialogCanExecute);
-
-            BorderThickness = 0;
-            Header = "Настройки расположения папок пользователя";
+            BorderThickness = 1;
         }
 
         #region Navigation
 
+        protected override void OnChanging(bool isOpening)
+        {
+            if(isOpening)
+            {
+                LoadResource();
+
+                ShowOpenFolderDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFolderDialog, ShowOpenFolderDialogCanExecute);
+                return;
+            }
+
+            if (!isOpening)
+            {
+                ShowOpenFolderDialogDelegateCommand = null;
+                return;
+            }
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void LoadResource()
+        {
+            Header = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.Flyout.Header");
+            mTitleSelectWorkspaceDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectWorkspaceDialog");
+            mTitleSelectScriptDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectScriptDialog");
+        }
 
         #endregion
 
@@ -73,7 +106,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                         if (!string.IsNullOrEmpty(initialPath))
                             initialPath = mFolderManagment.MyDocumentsUserDir;
 
-                        mDialogManager.ShowFolderBrowser("Выберите директорию для сохранения рабочих областей", initialPath, allowMultiselect);
+                        mDialogManager.ShowFolderBrowser(mTitleSelectWorkspaceDialog, initialPath, allowMultiselect);
                         string selectedPart = mDialogManager.FolderPath;
 
                         if (string.IsNullOrEmpty(selectedPart))
@@ -91,7 +124,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                         if (!string.IsNullOrEmpty(initialPath))
                             initialPath = mFolderManagment.MyDocumentsUserDir;
 
-                        mDialogManager.ShowFolderBrowser("Выберите директорию для сохранения скриптов", initialPath, allowMultiselect);
+                        mDialogManager.ShowFolderBrowser(mTitleSelectScriptDialog, initialPath, allowMultiselect);
                         string selectedPart = mDialogManager.FolderPath;
 
                         if (string.IsNullOrEmpty(selectedPart)) return;
