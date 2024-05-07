@@ -224,8 +224,6 @@ namespace AdamController.ViewModels
             LoadAppTheme();
 
             ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
-            mStatusBarNotification.CompileLogMessage = "Загрузка приложения завершена";
-            
 
             if (Settings.Default.AutoStartTcpConnect)
                 mCommunicationProviderService.ConnectAllAsync();
