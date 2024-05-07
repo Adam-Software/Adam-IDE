@@ -8,6 +8,7 @@
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ScratchControlView.ru.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ComputerVisionControlView.ru.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/StatusBarViewModel.ru.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ScratchControlViewModel.ru.xaml"/>
 
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/NotificationView.ru.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/PortSettingsView.ru.xaml"/>

@@ -69,6 +69,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private string mWarningStackOwerflow2;
         private string mWarningStackOwerflow3;
 
+        private string mSaveFileDialogDialogTitle;
+        private string mSaveScriptFileDialogDialogTitle;
+
+        private string mOpenFileDialogDialogTitle;
+        private string mFileNotSavedLogMessage;
+        private string mFileNotSelectedLogMessage;
+        private string mSaveFileDialogFilter;
+        private string mFileSavedLogMessage;
+
+        private string mScretchLoadedCompleteLogMessage;
+        private string mScretchLoadedErrorLogMessage;
+        private string mChangAppLanguageLogMessage;
+
         #endregion
 
         #region ~
@@ -335,21 +348,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private async void ShowSaveFileDialog()
         {
             string workspace = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()", true);
-            string dialogTitle = "Сохранить рабочую область";
             string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
             string fileName = "workspace";
             string defaultExt = ".xml";
             
-            if (mDialogManager.ShowSaveFileDialog(dialogTitle, initialPath, fileName, defaultExt, cFilter))
+            if (mDialogManager.ShowSaveFileDialog(mSaveFileDialogDialogTitle, initialPath, fileName, defaultExt, cFilter))
             {
                 string path = mDialogManager.FilePathToSave;
                 await mFileManagment.WriteAsync(path, workspace);
 
-                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
+                mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {mDialogManager.FilePathToSave}";
             }
             else
             {
-                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
+                mStatusBarNotificationDelivery.AppLogMessage = mFileNotSavedLogMessage;
             }
         }
 
@@ -363,10 +375,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void ShowOpenFileDialog()
         {
-            string title = "Выберите сохранененную рабочую область";
             string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
 
-            if (mDialogManager.ShowFileBrowser(title, initialPath, cFilter))
+            if (mDialogManager.ShowFileBrowser(mOpenFileDialogDialogTitle, initialPath, cFilter))
             {
                 string path = mDialogManager.FilePath;
                 if (path == "") return;
@@ -374,11 +385,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 string xml = await mFileManagment.ReadTextAsStringAsync(path);
                 _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
 
-                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {path} загружен";
+
+                mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
             }
             else
             {
-                mStatusBarNotificationDelivery.AppLogMessage = "Файл рабочей области не выбран";
+                mStatusBarNotificationDelivery.AppLogMessage = mFileNotSelectedLogMessage;
             }
         }
 
@@ -391,23 +403,21 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private async void ShowSaveFileSourceTextDialog()
         {
             string pythonProgram = SourceTextEditor;
-            string title = "Сохранить файл программы";
             string initialPath = Settings.Default.SavedUserScriptsFolderPath;
             string fileName = "new_program";
             string defaultExt = ".py";
-            string filter = "PythonScript file (.py)|*.py|Все файлы|*.*";
 
 
-            if (mDialogManager.ShowSaveFileDialog(title, initialPath, fileName, defaultExt, filter))
+            if (mDialogManager.ShowSaveFileDialog(mSaveScriptFileDialogDialogTitle, initialPath, fileName, defaultExt, mSaveFileDialogFilter))
             {
                 string path = mDialogManager.FilePathToSave;
                 await mFileManagment.WriteAsync(path, pythonProgram);
 
-                mStatusBarNotificationDelivery.AppLogMessage = $"Файл {mDialogManager.FilePathToSave} сохранен";
+                mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {mDialogManager.FilePathToSave}";
             }
             else
             {
-                mStatusBarNotificationDelivery.AppLogMessage = "Файл не сохранен";
+                mStatusBarNotificationDelivery.AppLogMessage = mFileNotSavedLogMessage;
             }
         }
 
@@ -610,15 +620,15 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             if (string.IsNullOrEmpty(pythonVersion))
             {
-                PythonVersion = "Не подключена";
-                PythonBinPath = string.Empty;
-                PythonWorkDir = string.Empty;
+                PythonVersion = string.Empty;
+                //PythonBinPath = string.Empty;
+                //PythonWorkDir = string.Empty;
                 return;
             }
 
             PythonVersion = pythonVersion;
-            PythonBinPath = $"[{pythonBinPath}]";
-            PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
+            //PythonBinPath = $"[{pythonBinPath}]";
+            //PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
         }
 
         private void RaiseDelegateCommandsCanExecuteChanged()
@@ -644,6 +654,21 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWarningStackOwerflow1 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow1");
             mWarningStackOwerflow2 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow2");
             mWarningStackOwerflow3 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow3");
+
+            mSaveFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.DialogTitle");
+            mOpenFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.DialogTitle");
+            mFileNotSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSaved.LogMessage");
+            mFileNotSelectedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSelected.LogMessage");
+            mSaveFileDialogFilter = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.Filter");
+
+            mSaveScriptFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.DialogTitle2");
+            mFileSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileSaved.LogMessage");
+            mScretchLoadedCompleteLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedComplete.LogMessage");
+            mScretchLoadedErrorLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedError.LogMessage");
+
+            mChangAppLanguageLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ChangAppLanguage.LogMessage");
+
+            mStatusBarNotificationDelivery.AppLogMessage = mChangAppLanguageLogMessage;
         }
 
         #endregion
@@ -713,6 +738,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region Initialize Blockly
 
+
         private async void InitBlockly()
         {
             BlocklyLanguage language = Settings.Default.BlocklyWorkspaceLanguage;
@@ -731,11 +757,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     await mWebViewProvider.ExecuteJavaScript(Scripts.RestoreSavedBlocks);
                 }
 
-                mStatusBarNotificationDelivery.AppLogMessage = "Загрузка скретч редактора завершена";
+                mStatusBarNotificationDelivery.AppLogMessage = mScretchLoadedCompleteLogMessage;
             }
             catch
             {
-                mStatusBarNotificationDelivery.AppLogMessage = "Загрузка скретч-редактора внезапно прервана";
+                mStatusBarNotificationDelivery.AppLogMessage = mScretchLoadedErrorLogMessage;
             }
         }
 
