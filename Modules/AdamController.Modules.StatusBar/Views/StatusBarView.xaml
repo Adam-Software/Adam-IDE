@@ -108,8 +108,7 @@
 
                     <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
-                               
-                               Text="{Binding TextOnStatusConnectToolbar, Mode=TwoWay}" />
+                               Text="{Binding TextOnStatusConnectToolbar}" />
                 </Grid>
             </StatusBarItem>
 

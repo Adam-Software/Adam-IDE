@@ -1,7 +1,6 @@
 ﻿using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Mvvm;
-using AdamController.Services;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
@@ -24,30 +23,50 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         private readonly ICommunicationProviderService mCommunicationProviderService;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IFlyoutStateChecker mFlyoutState;
+        private readonly ICultureProvider mCultureProvider;
 
         #endregion
 
         #region Const
 
-        private const string cTextOnStatusConnectToolbarDisconnected = "Робот Адам: отключен";
-        private const string cTextOnStatusConnectToolbarConnected = "Робот Адам: подключен";
-        private const string cTextOnStatusConnectToolbarReconnected = "Робот Адам: переподключение";
+        private string mTextOnStatusConnectToolbarDisconnected;
+        private string mTextOnStatusConnectToolbarConnected;
+        private string mTextOnStatusConnectToolbarReconnected;
 
-        private const string cCompileLogStatusBar = "Лог робота";
-        private const string cAppLogStatusBar = "Лог приложения";
+        private string mCompileLogStatusBar;
+        private string mAppLogStatusBar;
 
         #endregion
 
         #region ~
 
-        public StatusBarViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, IFlyoutStateChecker flyoutState, ICommunicationProviderService communicationProviderService, IStatusBarNotificationDeliveryService statusBarNotification) : base(regionManager)
+        public StatusBarViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, IFlyoutStateChecker flyoutState, ICommunicationProviderService communicationProviderService, 
+                                    IStatusBarNotificationDeliveryService statusBarNotification, ICultureProvider cultureProvider) : base(regionManager)
         {
             mFlyoutManager = flyoutManager;
             mCommunicationProviderService = communicationProviderService;
             mStatusBarNotificationDelivery = statusBarNotification; 
             mFlyoutState = flyoutState;
+            mCultureProvider = cultureProvider;
 
             OpenNotificationPanelDelegateCommand = new DelegateCommand(OpenNotificationPanel, OpenNotificationPanelCanExecute);
+
+            LoadResource();
+            LoadDefaultFieldValue();
+        }
+
+        #endregion
+
+        #region DelegateCommands methods
+
+        private void OpenNotificationPanel()
+        {
+            mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutNotification);
+        }
+
+        private bool OpenNotificationPanelCanExecute()
+        {
+            return !mFlyoutState.IsNotificationFlyoutOpened;
         }
 
         #endregion
@@ -85,28 +104,28 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             set { SetProperty(ref progressRingStart, value); }
         }
 
-        private string compileLogStatusBar = cCompileLogStatusBar;
+        private string compileLogStatusBar; 
         public string CompileLogStatusBar
         {
             get { return compileLogStatusBar; }
             set { SetProperty(ref compileLogStatusBar, value); }
         }
 
-        private string appLogStatusBar = cAppLogStatusBar;
+        private string appLogStatusBar; 
         public string AppLogStatusBar
         {
             get { return appLogStatusBar; }
             set { SetProperty(ref appLogStatusBar, value); }
         }
 
-        private PackIconModernKind connectIcon = PackIconModernKind.Connect;
+        private PackIconModernKind connectIcon;
         public PackIconModernKind ConnectIcon
         {
             get { return connectIcon; }
             set { SetProperty(ref connectIcon, value); }
         }
 
-        private string textOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
+        private string textOnStatusConnectToolbar;
         public string TextOnStatusConnectToolbar
         {
             get { return textOnStatusConnectToolbar; }
@@ -132,7 +151,6 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             {
                 var isNewValue = SetProperty(ref badgeCounter, value);
 
-
                 if (isNewValue)
                     UpdateNotificationBagde();
 
@@ -141,7 +159,33 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             }
         }
 
+        private bool? isConnected = false;
+        public bool? IsConnected
+        {
+            get => isConnected;
+            set
+            {
+                var isNewValue = SetProperty(ref isConnected, value);
+
+                if (isNewValue)
+                    UpdateStatusConnectToolbar();
+            }
+
+        }
+
+
         #endregion
+
+        #region Private methods
+
+        private void LoadDefaultFieldValue()
+        {
+            CompileLogStatusBar = mCompileLogStatusBar;
+            AppLogStatusBar = mAppLogStatusBar;
+            TextOnStatusConnectToolbar = mTextOnStatusConnectToolbarDisconnected;
+            ConnectIcon = PackIconModernKind.Connect;
+
+        }
 
         /// <summary>
         /// <code>BadgeCounter < 2</code>
@@ -153,6 +197,33 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             if(BadgeCounter < 2)
                 NotificationBadge = $"{BadgeCounter}";
         }
+
+        private void LoadResource()
+        {
+            mTextOnStatusConnectToolbarDisconnected = mCultureProvider.FindResource("StatusBarViewModel.TextOnStatusConnectToolbarDisconnected");
+            mTextOnStatusConnectToolbarConnected = mCultureProvider.FindResource("StatusBarViewModel.TextOnStatusConnectToolbarConnected");
+            mTextOnStatusConnectToolbarReconnected = mCultureProvider.FindResource("StatusBarViewModel.TextOnStatusConnectToolbarReconnected");
+
+            mCompileLogStatusBar = mCultureProvider.FindResource("StatusBarViewModel.CompileLogStatusBar");
+            mAppLogStatusBar = mCultureProvider.FindResource("StatusBarViewModel.AppLogStatusBar");
+        }
+
+        private void UpdateStatusConnectToolbar()
+        {
+            if(IsConnected == true)
+            {
+                TextOnStatusConnectToolbar = mTextOnStatusConnectToolbarConnected;
+                ConnectIcon = PackIconModernKind.Disconnect;
+            }
+
+            if (IsConnected == false)
+            {
+                TextOnStatusConnectToolbar = mTextOnStatusConnectToolbarDisconnected;
+                ConnectIcon = PackIconModernKind.Connect;
+            }
+        }
+
+        #endregion
 
         #region Subscribes
 
@@ -168,6 +239,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mStatusBarNotificationDelivery.RaiseUpdateNotificationCounterEvent += RaiseUpdateNotificationCounterEvent;
 
             mFlyoutState.IsNotificationFlyoutOpenedStateChangeEvent += IsOpenedStateChangeEvent;
+
+            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent += RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         private void Unsubscribe() 
@@ -181,6 +254,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             mStatusBarNotificationDelivery.RaiseNewAppLogMessageEvent -= RaiseNewAppLogMessageEvent;
 
             mFlyoutState.IsNotificationFlyoutOpenedStateChangeEvent -= IsOpenedStateChangeEvent;
+
+            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent -= RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         #endregion
@@ -189,21 +264,20 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private void RaiseAdamTcpCientConnectedEvent(object sender)
         {
-            ConnectIcon = PackIconModernKind.Disconnect;
-            TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarConnected;
+            IsConnected = true;
         }
 
         private void RaiseTcpServiceClientReconnectedEvent(object sender, int reconnectCounter)
         {
             mStatusBarNotificationDelivery.NotificationCounter++;
             ConnectIcon = PackIconModernKind.TransitConnectionDeparture;
-            TextOnStatusConnectToolbar = $"{cTextOnStatusConnectToolbarReconnected} {reconnectCounter}";
+            TextOnStatusConnectToolbar = $"{mTextOnStatusConnectToolbarReconnected} {reconnectCounter}";
         }
 
         private void RaiseAdamTcpClientDisconnectEvent(object sender, bool isUserRequest)
         {
-            ConnectIcon = PackIconModernKind.Connect;
-            TextOnStatusConnectToolbar = cTextOnStatusConnectToolbarDisconnected;
+           
+            IsConnected = false;
             
             if(!isUserRequest)
                 mStatusBarNotificationDelivery.NotificationCounter++;
@@ -234,21 +308,14 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
             OpenNotificationPanelDelegateCommand.RaiseCanExecuteChanged();
         }
 
-        #endregion
-
-        #region DelegateCommands methods
-
-        private void OpenNotificationPanel()
+        private void RaiseCurrentAppCultureLoadOrChangeEvent(object sender)
         {
-            mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutNotification);
-        }
-
-        private bool OpenNotificationPanelCanExecute()
-        {
-            return !mFlyoutState.IsNotificationFlyoutOpened;
+            LoadResource();
+            UpdateStatusConnectToolbar();
         }
 
         #endregion
 
+        
     }
 }
