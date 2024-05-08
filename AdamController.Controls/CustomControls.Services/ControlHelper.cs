@@ -1,49 +1,85 @@
 ﻿using AdamController.Controls.Enums;
-using MahApps.Metro.Controls;
 using Prism.Mvvm;
 
 namespace AdamController.Controls.CustomControls.Services
 {
     public class ControlHelper : BindableBase, IControlHelper
     {
-        public ControlHelper() { }
+        public event BlocklyColumnWidthChangeEventHandler RaiseBlocklyColumnWidthChangeEvent;
 
-        private double mainGridActualWidth;
+        public ControlHelper() {}
+
+        private double mainGridActualWidth = double.NaN;
         public double MainGridActualWidth
         {
-            get { return mainGridActualWidth; } 
-            set 
-            {
-                SetProperty(ref mainGridActualWidth, value);
-                UpdateCurrentBlocklyViewMode();
-            }
+            get => mainGridActualWidth;  
+            set => SetProperty(ref mainGridActualWidth, value);
         }
 
-        private double blocklyColumnActualWidth;
+        private double blocklyColumnActualWidth = double.NaN;
         public double BlocklyColumnActualWidth
         {
             get { return blocklyColumnActualWidth;}
             set 
-            { 
-                SetProperty(ref blocklyColumnActualWidth, value);
-                UpdateCurrentBlocklyViewMode();
+            {
+                bool isNewValue = SetProperty(ref blocklyColumnActualWidth, value);
 
+                if (isNewValue)
+                {
+                    UpdateCurrentBlocklyViewMode();
+                }
+            }
+        }
+
+        private double blocklyColumnWidth = double.NaN;
+        public double BlocklyColumnWidth
+        {
+            get { return blocklyColumnWidth; }
+            set
+            {
+                bool isNewValue = SetProperty(ref blocklyColumnWidth, value);
+
+                if (isNewValue)
+                {
+                    OnRaiseBlocklyColumnWidthChangeEvent();
+                }
             }
         }
 
         private BlocklyViewMode currentBlocklyViewMode;
+
         public BlocklyViewMode CurrentBlocklyViewMode 
         {
             get => currentBlocklyViewMode;
-            private set => SetProperty(ref currentBlocklyViewMode, value);
+            set
+            {
+                bool isNewValue = SetProperty(ref currentBlocklyViewMode, value);
+
+                if (isNewValue)
+                    UpdateBlocklyColumnWidth();
+            }
         }
-        
+
+        private void UpdateBlocklyColumnWidth()
+        {
+            var dividedScreen = MainGridActualWidth/2;
+
+            switch (CurrentBlocklyViewMode)
+            {
+                case BlocklyViewMode.Hidden:
+                    BlocklyColumnWidth = 0;
+                    break;
+                case BlocklyViewMode.MiddleScreen:
+                    BlocklyColumnWidth = dividedScreen;
+                    break;
+                case BlocklyViewMode.FullScreen:
+                    BlocklyColumnWidth = MainGridActualWidth;
+                    break;
+            }
+        }
 
         private void UpdateCurrentBlocklyViewMode()
         {
-            double mainGridWidth = MainGridActualWidth;
-            double blocklyColumnWidth = BlocklyColumnActualWidth;
-
             if (BlocklyColumnActualWidth >= MainGridActualWidth - 10)
             {
                 CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
@@ -61,6 +97,12 @@ namespace AdamController.Controls.CustomControls.Services
 
         public void Dispose()
         {
+        }
+
+        protected virtual void OnRaiseBlocklyColumnWidthChangeEvent()
+        {
+            BlocklyColumnWidthChangeEventHandler raiseEvent = RaiseBlocklyColumnWidthChangeEvent;
+            raiseEvent?.Invoke(this);
         }
     }
 }

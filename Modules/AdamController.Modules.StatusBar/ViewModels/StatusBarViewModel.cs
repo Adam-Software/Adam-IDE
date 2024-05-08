@@ -1,7 +1,7 @@
 ﻿using AdamController.Controls.CustomControls.Services;
+using AdamController.Controls.Enums;
 using AdamController.Core;
 using AdamController.Core.Mvvm;
-using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
@@ -64,9 +64,9 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private void OpenNotificationPanel()
         {
-            if(mControlHelper.CurrentBlocklyViewMode == Controls.Enums.BlocklyViewMode.FullScreen)
+            if(mControlHelper.CurrentBlocklyViewMode == BlocklyViewMode.FullScreen)
             {
-                Settings.Default.BlocklyEditorWidth = mControlHelper.MainGridActualWidth / 2;
+                mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
             }
 
             mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutNotification);

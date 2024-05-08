@@ -1,5 +1,4 @@
-﻿
-using AdamController.Controls.CustomControls.Services;
+﻿using AdamController.Controls.CustomControls.Services;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
@@ -51,10 +50,20 @@ namespace AdamController.Modules.ContentRegion.Views
             mWebViewProvider.RaiseExecuteJavaScriptEvent += RaiseExecuteJavaScriptEvent;
             mWebViewProvider.RaiseExecuteReloadWebViewEvent += RaiseExecuteReloadWebViewEvent;
 
+            /*element event */
             TextResulEditor.TextChanged += TextResulEditorTextChanged;
-
             MainGrid.SizeChanged += MainGridSizeChanged;
             SourceEditor.SizeChanged += TextResulEditorSizeChanged;
+
+            /* service event */
+            mControlHelper.RaiseBlocklyColumnWidthChangeEvent += RaiseBlocklyColumnWidthChangeEvent;
+        }
+
+        private void RaiseBlocklyColumnWidthChangeEvent(object sender)
+        {
+            double doubleWidth = mControlHelper.BlocklyColumnWidth;
+            GridLength width = new(doubleWidth);
+            BlocklyColumn.Width = width;
         }
 
         private void TextResulEditorSizeChanged(object sender, SizeChangedEventArgs e)

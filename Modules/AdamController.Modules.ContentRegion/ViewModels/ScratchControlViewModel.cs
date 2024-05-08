@@ -4,6 +4,7 @@ using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
 using AdamController.Controls.CustomControls.Services;
+using AdamController.Controls.Enums;
 using AdamController.Core;
 using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
@@ -24,7 +25,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     public class ScratchControlViewModel : RegionViewModelBase 
     {
         #region DelegateCommands
-
         public DelegateCommand CopyToClipboardDelegateCommand { get; }
         public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
@@ -279,7 +279,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider.RaiseWebViewMessageReceivedEvent -= RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
 
-            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent += RaiseCurrentAppCultureLoadOrChangeEvent;
+            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent -= RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         #endregion
@@ -299,33 +299,26 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
-        private void MoveSplitter(string arg)
+        private void MoveSplitter(string commandArg)
         {
-            var dividedScreen = mControlHelper.MainGridActualWidth / 2;
+            BlocklyViewMode currentViewMode = mControlHelper.CurrentBlocklyViewMode;
 
-            if (arg == "Left")
+            if (commandArg == "Left")
             {
-                if (Settings.Default.BlocklyEditorWidth >= mControlHelper.MainGridActualWidth - 10)
-                {
-                    Settings.Default.BlocklyEditorWidth = dividedScreen;
-                    return;
-                }
+                if (currentViewMode == BlocklyViewMode.FullScreen)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
 
-                if (Settings.Default.BlocklyEditorWidth <= mControlHelper.MainGridActualWidth - 500)
-                    Settings.Default.BlocklyEditorWidth = 0;
+                if (currentViewMode == BlocklyViewMode.MiddleScreen)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.Hidden;
             }
 
-            if(arg == "Right")
+            if(commandArg == "Right")
             {
-                if (Settings.Default.BlocklyEditorWidth == 0)
-                {
-                    Settings.Default.BlocklyEditorWidth = dividedScreen;
-                    return;
-                }
-                    
-
-                if (Settings.Default.BlocklyEditorWidth >= 500)
-                    Settings.Default.BlocklyEditorWidth = mControlHelper.MainGridActualWidth;
+                if (currentViewMode == BlocklyViewMode.Hidden)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
+                
+                if (currentViewMode == BlocklyViewMode.MiddleScreen)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
             }
         }
 
