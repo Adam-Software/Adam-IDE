@@ -53,12 +53,18 @@ namespace AdamController.Modules.ContentRegion.Views
 
             TextResulEditor.TextChanged += TextResulEditorTextChanged;
 
-            MainGrid.SizeChanged += MainGrid_SizeChanged; ;
+            MainGrid.SizeChanged += MainGridSizeChanged;
+            SourceEditor.SizeChanged += TextResulEditorSizeChanged;
         }
 
-        private void MainGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void TextResulEditorSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            mControlHelper.ActualWidth = MainGrid.ActualWidth;
+            mControlHelper.BlocklyColumnActualWidth = BlocklyColumn.ActualWidth;
+        }
+
+        private void MainGridSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            mControlHelper.MainGridActualWidth = MainGrid.ActualWidth;   
         }
 
         private void RaiseExecuteReloadWebViewEvent(object sender)

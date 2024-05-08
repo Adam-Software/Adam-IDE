@@ -227,7 +227,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set => SetProperty(ref pythonVersion, value);
         }
 
-        private string pythonBinPath;
+        /*private string pythonBinPath;
         public string PythonBinPath
         {
             get => pythonBinPath;
@@ -239,7 +239,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             get => pythonWorkDir;
             set => SetProperty(ref pythonWorkDir, value);
-        }
+        }*/
 
         private IHighlightingDefinition highlightingDefinition;
         public IHighlightingDefinition HighlightingDefinition
@@ -301,17 +301,17 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void MoveSplitter(string arg)
         {
-            var dividedScreen = mControlHelper.ActualWidth / 2;
+            var dividedScreen = mControlHelper.MainGridActualWidth / 2;
 
             if (arg == "Left")
             {
-                if (Settings.Default.BlocklyEditorWidth >= mControlHelper.ActualWidth - 10)
+                if (Settings.Default.BlocklyEditorWidth >= mControlHelper.MainGridActualWidth - 10)
                 {
                     Settings.Default.BlocklyEditorWidth = dividedScreen;
                     return;
                 }
 
-                if (Settings.Default.BlocklyEditorWidth <= mControlHelper.ActualWidth - 500)
+                if (Settings.Default.BlocklyEditorWidth <= mControlHelper.MainGridActualWidth - 500)
                     Settings.Default.BlocklyEditorWidth = 0;
             }
 
@@ -325,7 +325,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     
 
                 if (Settings.Default.BlocklyEditorWidth >= 500)
-                    Settings.Default.BlocklyEditorWidth = mControlHelper.ActualWidth;
+                    Settings.Default.BlocklyEditorWidth = mControlHelper.MainGridActualWidth;
             }
         }
 

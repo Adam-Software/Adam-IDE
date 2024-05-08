@@ -1,6 +1,7 @@
 ﻿using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Mvvm;
+using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
@@ -24,6 +25,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IFlyoutStateChecker mFlyoutState;
         private readonly ICultureProvider mCultureProvider;
+        private readonly IControlHelper mControlHelper;
 
         #endregion
 
@@ -41,13 +43,14 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
         #region ~
 
         public StatusBarViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, IFlyoutStateChecker flyoutState, ICommunicationProviderService communicationProviderService, 
-                                    IStatusBarNotificationDeliveryService statusBarNotification, ICultureProvider cultureProvider) : base(regionManager)
+                                    IStatusBarNotificationDeliveryService statusBarNotification, ICultureProvider cultureProvider, IControlHelper controlHelper) : base(regionManager)
         {
             mFlyoutManager = flyoutManager;
             mCommunicationProviderService = communicationProviderService;
             mStatusBarNotificationDelivery = statusBarNotification; 
             mFlyoutState = flyoutState;
             mCultureProvider = cultureProvider;
+            mControlHelper = controlHelper;
 
             OpenNotificationPanelDelegateCommand = new DelegateCommand(OpenNotificationPanel, OpenNotificationPanelCanExecute);
 
@@ -61,7 +64,13 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private void OpenNotificationPanel()
         {
+            if(mControlHelper.CurrentBlocklyViewMode == Controls.Enums.BlocklyViewMode.FullScreen)
+            {
+                Settings.Default.BlocklyEditorWidth = mControlHelper.MainGridActualWidth / 2;
+            }
+
             mFlyoutManager.OpenFlyout(FlyoutNames.FlyoutNotification);
+
         }
 
         private bool OpenNotificationPanelCanExecute()

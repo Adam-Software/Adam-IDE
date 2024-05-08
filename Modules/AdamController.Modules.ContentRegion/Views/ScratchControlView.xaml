@@ -53,7 +53,7 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
+                <ColumnDefinition x:Name="BlocklyColumn" Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
