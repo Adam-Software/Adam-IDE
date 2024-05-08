@@ -275,5 +275,8 @@
     <Setting Name="SourceEditorLength" Type="System.Double" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="WebViewZoomFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.7</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

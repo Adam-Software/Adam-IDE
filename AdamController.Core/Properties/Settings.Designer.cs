@@ -1114,5 +1114,17 @@ namespace AdamController.Core.Properties {
                 this["SourceEditorLength"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.7")]
+        public double WebViewZoomFactor {
+            get {
+                return ((double)(this["WebViewZoomFactor"]));
+            }
+            set {
+                this["WebViewZoomFactor"] = value;
+            }
+        }
     }
 }
