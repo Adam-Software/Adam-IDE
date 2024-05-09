@@ -55,7 +55,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}" BorderThickness="1">
+   
 
         <Grid Margin="20">
             <Grid.ColumnDefinitions>
@@ -386,6 +386,6 @@
             <!--#endregion-->
             
         </Grid>
-    </Border>
+    
 
 </UserControl>

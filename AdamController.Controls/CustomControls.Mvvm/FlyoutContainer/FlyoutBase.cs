@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using MahApps.Metro.Controls;
+using Prism.Mvvm;
 using System.Drawing;
 using System.Windows.Input;
 
@@ -29,7 +30,7 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
         private string mTheme = FlyoutTheme.Adapt;
 
         private double mBorderThickness = 1.0;
-        private Color mBorderBrush = Color.AliceBlue;
+        private string mBorderBrush = "White";
 
         private ICommand mCloseCommand;
         private MouseButton mExternalCloseButton;
@@ -41,7 +42,7 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
             set => SetProperty(ref  mBorderThickness, value);
         }
 
-        public Color BorderBrush
+        public string BorderBrush
         {
             get => mBorderBrush;
             set => SetProperty(ref mBorderBrush, value);

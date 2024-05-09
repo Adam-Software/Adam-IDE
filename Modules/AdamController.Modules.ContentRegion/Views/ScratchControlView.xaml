@@ -19,7 +19,7 @@
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     </UserControl.Resources>
 
-    <Border BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}" BorderThickness="1">
+   
         
         <Grid x:Name="MainGrid">
 
@@ -336,5 +336,5 @@
             <!--#endregion-->
 
         </Grid>
-    </Border>
+    
 </UserControl>

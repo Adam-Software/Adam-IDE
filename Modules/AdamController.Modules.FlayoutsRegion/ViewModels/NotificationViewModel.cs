@@ -4,6 +4,7 @@ using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
+using System.Drawing;
 using System.Windows;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
@@ -139,6 +140,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             Theme = FlyoutTheme.Adapt;
             Header = mFlyoutHeader;
             IsModal = false;
+            //BorderBrush = Color.White;
         }
 
         /// <summary>
@@ -191,7 +193,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
     
         #endregion
 
-    
         #region Subscription
 
     

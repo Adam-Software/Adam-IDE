@@ -13,7 +13,7 @@ namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
 
         public double BorderThickness { get; set; }
 
-        public Color BorderBrush { get; set; }  
+        public string BorderBrush { get; set; }  
 
         public string Position { get; set; }
 

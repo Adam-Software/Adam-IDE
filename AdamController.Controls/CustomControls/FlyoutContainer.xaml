@@ -6,7 +6,7 @@
     <metro:FlyoutsControl.ItemContainerStyle>
 
         <Style TargetType="{x:Type metro:Flyout}">
-            <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent3}"/>
+            <Setter Property="BorderBrush" Value="{Binding BorderBrush}"/>
             <Setter Property="BorderThickness" Value="{Binding BorderThickness}"/>
             <Setter Property="Header" Value="{Binding Header}" />
             <Setter Property="IsOpen" Value="{Binding IsOpen, Mode=TwoWay}" />

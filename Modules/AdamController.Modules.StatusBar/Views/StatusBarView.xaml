@@ -10,7 +10,7 @@
         <!--#region  Status bar -->
 
         <StatusBar Style="{StaticResource MahApps.Styles.StatusBar}" 
-                   Background="{DynamicResource MahApps.Brushes.Accent}" >
+                   Background="{DynamicResource MahApps.Brushes.Accent3}" >
 
             <!--#region  Item temlate -->
 
@@ -34,10 +34,11 @@
 
             <!--#endregion-->
 
-
-            <Separator Grid.Column="0" 
-                       Margin="0 -26 5 0" Height="1"
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+            <Border Margin="-2 -13 0 13"
+                    Grid.Column="0"
+                    Width="30"
+                    BorderThickness="0.5" />
+            
 
             <mah:ProgressRing Padding="2"
                               Grid.Column="0"
@@ -45,15 +46,15 @@
                               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                               IsActive="{Binding ProgressRingStart}" />
 
-            <Separator Grid.Column="0" 
-                       Margin="30 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+            <Border Margin="27 -3 0 -3"
+                    Grid.Column="0"
+                    Height="30"
+                    BorderThickness="0.5" />
+
 
             <!--#region Compile status bar -->
 
-            <StatusBarItem Grid.Column="1"
-                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
+            <StatusBarItem Grid.Column="1" Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
 
                 <StackPanel Orientation="Horizontal">
                     
@@ -70,22 +71,19 @@
             <!--#endregion-->
 
             <Separator Grid.Column="2" 
-               Margin="10 0 5 0"
-               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-               Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+                       Margin="10 0 5 0"
+                       Style="{DynamicResource Adam.Separataror}"/>
 
             <!--#region AppLog status bar -->
 
-            <StatusBarItem Grid.Column="3"
-                           
+            <StatusBarItem Grid.Column="3"    
                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
                            Content="{Binding AppLogStatusBar}"/>
 
             <!--#endregion-->
 
             <Separator Grid.Column="4" Margin="5 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+                       Style="{DynamicResource Adam.Separataror}"/>
 
             <!--#region Connect/Disconnect status bar-->
 
@@ -116,12 +114,10 @@
 
             <Separator Grid.Column="6" 
                        Margin="5 0 5 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+                       Style="{DynamicResource Adam.Separataror}"/>
 
             <StatusBarItem  Grid.Column="7">
 
-             
                     <Button Command="{Binding OpenNotificationPanelDelegateCommand}"
                             Background="Transparent"
                             Margin="0"
@@ -146,9 +142,10 @@
                 
             </StatusBarItem>
 
-            <Separator Grid.Column="8" Margin="5 0 0 0"
-                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}" 
-                       Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+            <Border Grid.Column="8" Margin="5 0 0 0"/>
+
+            <!--<Separator Grid.Column="8" Margin="5 0 0 0"
+                       Style="{DynamicResource Adam.Separataror}"/>-->
 
         </StatusBar>
 

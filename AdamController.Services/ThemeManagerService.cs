@@ -39,9 +39,12 @@ namespace AdamController.Services
             return null;
         }
 
-        public Theme ChangeAppTheme(Theme themeName)
+        public Theme ChangeAppTheme(Theme theme)
         {
-            return mCurrentThemeManager.ChangeTheme(mCurrentApplication, themeName.Name, false);
+            //var resource = theme.Resources;
+
+            //mCurrentThemeManager.ApplyThemeResourcesFromTheme(resource, theme);
+            return mCurrentThemeManager.ChangeTheme(mCurrentApplication, theme.Name, false);
         }
 
         public Theme GetCurrentAppTheme()

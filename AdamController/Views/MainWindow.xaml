@@ -10,17 +10,17 @@
                   prism:ViewModelLocator.AutoWireViewModel="True"
                   WindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
                   NonActiveWindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
-                  Title="{Binding WindowTitle}">
+                  Title="{Binding WindowTitle}"
+                  TitleBarHeight="25">
 
     <!--#region LeftWindowCommands -->
 
     <mah:MetroWindow.LeftWindowCommands>
-        <mah:WindowCommands>
+        <mah:WindowCommands ShowLastSeparator="False">
             <StackPanel Orientation="Horizontal">
 
-                <Separator Margin="29 0 0 0"
-                           Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
-
+                <Border Margin="29 0 0 0" BorderThickness="0.5" />
+                
                 <ContentControl Margin="5 0 10 0" prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
             </StackPanel> 
             
@@ -37,10 +37,12 @@
                         VerticalAlignment="Center"  
                         HorizontalAlignment="Right">
 
-                <iconPacks:PackIconUnicons Kind="Robot" />
+                <iconPacks:PackIconUnicons Kind="Robot" 
+                                           Foreground="{DynamicResource MahApps.Brushes.Text}"/>
 
                 <TextBlock Text="{Binding}"
-                           Margin="10 2 10 0"/>
+                           Margin="10 2 10 0"
+                           Foreground="{DynamicResource MahApps.Brushes.Text}"/>
             </StackPanel>
         </DataTemplate>
     </mah:MetroWindow.TitleTemplate>
@@ -50,11 +52,12 @@
     <!--#region Flayouts -->
 
     <mah:MetroWindow.Flyouts>
-        <customusercontrol:FlyoutContainer Margin="0 30 0 30" prism:RegionManager.RegionName="{x:Static core:RegionNames.FlayoutsRegion}"/>
+        <customusercontrol:FlyoutContainer Margin="0 25 0 25" prism:RegionManager.RegionName="{x:Static core:RegionNames.FlayoutsRegion}"/>
     </mah:MetroWindow.Flyouts>
 
     <!--#endregion-->
 
+    
     <Grid>
 
         <!--#region GridResources -->
@@ -120,15 +123,16 @@
         <!-- Menu open blocked because the language does not change on the fly, only after restarting the application #49 p.1
              To unlock, delete the parameters: CompactPaneLength="30" and MaximumOpenPaneLength="30"
         -->
+
+        <Border BorderThickness="1" Margin="30 0 0 0"/>
+                 
         <mah:HamburgerMenu Grid.Column="0"
                            Grid.Row="0"
-                           Margin="0 -30 0 0"
+                           Margin="0 -25 0 0"
+                           PaneMargin="0 25 0 10"
                            IsPaneOpen="True"
-                           HamburgerWidth="30"
-                           CompactPaneLength="30"
-                           MaximumOpenPaneLength="30"
-                           HamburgerMargin="5 -20 5 0"
-                           
+                           HamburgerVisibility="Collapsed"
+                           MaximumOpenPaneLength="30"          
                            SelectedIndex="{Binding HamburgerMenuSelectedIndex}"
                            SelectedOptionsIndex="{Binding HamburgerMenuSelectedOptionsIndex}"
                            ItemTemplate="{ StaticResource MenuItemTemplate}"
@@ -145,10 +149,7 @@
                                                 Label="{DynamicResource HamburgerMenu.ScratchEditorHeader}" 
                                                 Command="{Binding ShowRegionCommand}" 
                                                 CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
-                    <!--<mah:HamburgerMenuGlyphItem Glyph="&#xEB7E;" 
-                                                Label="{DynamicResource HamburgerMenu.ScriptEditorHeader}" 
-                                                Command="{Binding ShowRegionCommand}" 
-                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionScriptEditor}"/>-->
+                   
                     <mah:HamburgerMenuGlyphItem Glyph="&#xEA0C;" 
                                                 Label="{DynamicResource HamburgerMenu.ComputerVisionHeader}" 
                                                 Command="{Binding ShowRegionCommand}" 
@@ -173,15 +174,20 @@
 
             <!--  Content -->
 
-            <mah:HamburgerMenu.Content>
 
-                <ContentControl Margin="0 30 0 0" 
+            <mah:HamburgerMenu.Content> 
+
+
+                <ContentControl Margin="0 25 0 0"
                                 prism:RegionManager.RegionManager="{Binding RegionManager}"
                                 prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+
 
             </mah:HamburgerMenu.Content>
 
         </mah:HamburgerMenu>
+
+        
 
         <ContentControl  Grid.ColumnSpan="5" Grid.Row="1" 
                          Height="25"

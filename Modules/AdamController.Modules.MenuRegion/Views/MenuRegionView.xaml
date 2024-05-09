@@ -3,14 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
              xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Height="25">
 
-    <Menu>
+    <Menu FontWeight="Normal" FontSize="12">
 
-        <MenuItem Header="{DynamicResource MainMenu.File.MainHeader}">
+        <MenuItem   Header="{DynamicResource MainMenu.File.MainHeader}">
 
             <MenuItem Header="{DynamicResource MainMenu.File.CloseAppHeader}"
-                      Command="{Binding CloseAppCommand}"/>
+                      Command="{Binding CloseAppCommand}"
+                      Style="{DynamicResource MahApps.Styles.MenuItem}"/>
             
         </MenuItem>
 
