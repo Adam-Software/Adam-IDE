@@ -273,7 +273,8 @@
                     <Button DockPanel.Dock="Right"
                             VerticalAlignment="Top"
                             Margin="5 5 5 0"
-                            Command="{Binding CleanExecuteEditorDelegateCommand}"        >
+                            
+                            Command="{Binding CleanExecuteEditorDelegateCommand}">
                         <iconPacks:Codicons Kind="ClearAll"/>
                     </Button>
 
@@ -297,7 +298,7 @@
                         <mah:MetroTabItem Header="{DynamicResource ScratchControlView.MetroTabItem.Header.Result}">
 
                             <TextBox x:Name="TextResulEditor"
-                                     Margin="5 0 0 0"
+                                     Margin="0 0 0 0"
                                      BorderThickness="0"
                                      HorizontalScrollBarVisibility="Auto"
                                      VerticalScrollBarVisibility="Auto"                 
