@@ -140,7 +140,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             Theme = FlyoutTheme.Adapt;
             Header = mFlyoutHeader;
             IsModal = false;
-            //BorderBrush = Color.White;
+            BorderBrush = Application.Current.TryFindResource("MahApps.Brushes.Text").ToString(); 
         }
 
         /// <summary>
@@ -184,6 +184,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void LoadResources()
         {
+
             mFlyoutHeader = mCultureProvider.FindResource("NotificationView.ViewModel.Flyout.Header");
             mConnectButtonStatusDisconnected = mCultureProvider.FindResource("NotificationView.ViewModel.Button.Content.StatusDisconnected"); 
             mConnectButtonStatusConnected = mCultureProvider.FindResource("NotificationView.ViewModel.Button.Content.StatusConnected"); 

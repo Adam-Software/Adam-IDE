@@ -8,9 +8,13 @@
                   xmlns:prism="http://prismlibrary.com/" 
                   xmlns:customusercontrol="clr-namespace:AdamController.Controls.CustomControls;assembly=AdamController.Controls"
                   prism:ViewModelLocator.AutoWireViewModel="True"
+                  
                   WindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
                   NonActiveWindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
+                  NonActiveBorderBrush="{DynamicResource MahApps.Brushes.Text}"
+                  BorderBrush="{DynamicResource MahApps.Brushes.Text}"
                   Title="{Binding WindowTitle}"
+                  SaveWindowPosition="True"
                   TitleBarHeight="25">
 
     <!--#region LeftWindowCommands -->
@@ -18,12 +22,9 @@
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands ShowLastSeparator="False">
             <StackPanel Orientation="Horizontal">
-
                 <Border Margin="29 0 0 0" BorderThickness="0.5" />
-                
                 <ContentControl Margin="5 0 10 0" prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
             </StackPanel> 
-            
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
 
@@ -35,7 +36,7 @@
         <DataTemplate>
             <StackPanel Orientation="Horizontal" 
                         VerticalAlignment="Center"  
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Center">
 
                 <iconPacks:PackIconUnicons Kind="Robot" 
                                            Foreground="{DynamicResource MahApps.Brushes.Text}"/>

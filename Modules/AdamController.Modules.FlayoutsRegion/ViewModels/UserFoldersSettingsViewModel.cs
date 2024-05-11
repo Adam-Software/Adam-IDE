@@ -2,6 +2,7 @@
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using Prism.Commands;
+using System.Windows;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
@@ -53,6 +54,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                 LoadResource();
 
                 ShowOpenFolderDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFolderDialog, ShowOpenFolderDialogCanExecute);
+                BorderBrush = Application.Current.TryFindResource("MahApps.Brushes.Text").ToString();
                 return;
             }
 
@@ -72,6 +74,8 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             Header = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.Flyout.Header");
             mTitleSelectWorkspaceDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectWorkspaceDialog");
             mTitleSelectScriptDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectScriptDialog");
+
+
         }
 
         #endregion

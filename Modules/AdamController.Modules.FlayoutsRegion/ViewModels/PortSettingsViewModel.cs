@@ -1,5 +1,6 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using AdamController.Services.Interfaces;
+using System.Windows;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
 {
@@ -23,6 +24,7 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if (isOpening)
             {
                 Header = mCultureProvider.FindResource("PortSettingsView.ViewModel.Flyout.Header");
+                BorderBrush = Application.Current.TryFindResource("MahApps.Brushes.Text").ToString();
                 return;
             }
         }

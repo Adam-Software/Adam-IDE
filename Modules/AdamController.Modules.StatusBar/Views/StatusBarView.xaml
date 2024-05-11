@@ -5,9 +5,9 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
 
-        <!--#region  Status bar -->
+
+    <Grid>
 
         <StatusBar Style="{StaticResource MahApps.Styles.StatusBar}" 
                    Background="{DynamicResource MahApps.Brushes.Accent3}" >
@@ -38,12 +38,11 @@
                     Grid.Column="0"
                     Width="30"
                     BorderThickness="0.5" />
-            
 
             <mah:ProgressRing Padding="2"
                               Grid.Column="0"
                               Width="Auto" Height="Auto"
-                              Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                              Foreground="{DynamicResource MahApps.Brushes.Text}"
                               IsActive="{Binding ProgressRingStart}" />
 
             <Border Margin="27 -3 0 -3"
@@ -57,7 +56,7 @@
             <StatusBarItem Grid.Column="1" Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
 
                 <StackPanel Orientation="Horizontal">
-                    
+
 
                     <TextBlock Margin="5 0 0 0"
                                
@@ -96,7 +95,7 @@
                         <ColumnDefinition Width="0.7*"/>
                         <ColumnDefinition Width="0.35*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <iconPacks:PackIconModern Margin="10 0 10 0"
                                               Grid.Column="0"
                                               VerticalAlignment="Center"
@@ -118,16 +117,16 @@
 
             <StatusBarItem  Grid.Column="7">
 
-                    <Button Command="{Binding OpenNotificationPanelDelegateCommand}"
+                <Button Command="{Binding OpenNotificationPanelDelegateCommand}"
                             Background="Transparent"
                             Margin="0"
                             Padding="0"
                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             Style="{StaticResource MahApps.Styles.Button.ToolBar}">
 
-                        <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
 
-                            <mah:Badged BadgeBackground="Red"
+                        <mah:Badged BadgeBackground="Red"
                                         BadgePlacementMode="TopRight"
                                         Badge="{Binding NotificationBadge}">
 
@@ -135,21 +134,13 @@
                             <iconPacks:PackIconBootstrapIcons Kind="Bell" />
                         </mah:Badged>
                     </StackPanel>
-                        
-                        
-                        
-                    </Button>
-                
+
+
+
+                </Button>
+
             </StatusBarItem>
-
-            <Border Grid.Column="8" Margin="5 0 0 0"/>
-
-            <!--<Separator Grid.Column="8" Margin="5 0 0 0"
-                       Style="{DynamicResource Adam.Separataror}"/>-->
-
         </StatusBar>
-
-        <!--#endregion-->
-
     </Grid>
+
 </UserControl>

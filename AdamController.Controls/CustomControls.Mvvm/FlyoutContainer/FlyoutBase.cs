@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using Prism.Mvvm;
 using System.Drawing;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer

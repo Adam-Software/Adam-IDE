@@ -21,29 +21,27 @@
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
 
-
-    <Border BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}" BorderThickness="1">
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <vlc:VideoView Grid.Row="0"
-                           Margin="-1 0 0 -1"
-                           Foreground="Transparent"
+                           Margin="0"
                            x:Name="VideoView">
 
                 <!--#region Buttons -->
 
                 <Expander Width="415" 
                           Height="210"
+                          Margin="0"
+                          BorderThickness="1 1 1 0.51"
                           HorizontalContentAlignment="Center"
                           VerticalContentAlignment="Center"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Bottom"
                           ExpandDirection="Right"
-                          BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                          BorderBrush="{DynamicResource MahApps.Brushes.Text}"
                           mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}">
 
                     <Expander.Header>
@@ -413,7 +411,7 @@
                 </Expander>
             </vlc:VideoView>
         </Grid>
-    </Border>
+
 
 
     <!--#endregion-->

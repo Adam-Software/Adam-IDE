@@ -41,9 +41,6 @@ namespace AdamController.Services
 
         public Theme ChangeAppTheme(Theme theme)
         {
-            //var resource = theme.Resources;
-
-            //mCurrentThemeManager.ApplyThemeResourcesFromTheme(resource, theme);
             return mCurrentThemeManager.ChangeTheme(mCurrentApplication, theme.Name, false);
         }
 

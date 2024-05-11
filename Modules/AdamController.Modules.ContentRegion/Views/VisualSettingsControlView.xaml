@@ -19,7 +19,7 @@
             <Style TargetType="GroupBox" BasedOn="{StaticResource MahApps.Styles.GroupBox}">
                 <Setter Property="mah:ControlsHelper.ContentCharacterCasing"  Value="Normal"/>
                 <Setter Property="mah:HeaderedControlHelper.HeaderHorizontalContentAlignment" Value="Center"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Control.Border}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Text}"/>
                 <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource MahApps.Brushes.Control.Background}"/>
                 <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="14"/>
                 <Setter Property="mah:HeaderedControlHelper.HeaderFontWeight" Value="Normal"/>

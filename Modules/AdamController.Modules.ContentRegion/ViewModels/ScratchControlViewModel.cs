@@ -435,10 +435,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private async void RunPythonCode()
         {
+
             string source = SourceTextEditor;
             
             try
             {
+                ClearResultText();
+
                 var command = new WebApi.Client.v1.RequestModel.PythonCommandModel
                 {
                     Command = source
