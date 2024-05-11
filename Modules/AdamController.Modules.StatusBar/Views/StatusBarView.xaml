@@ -53,19 +53,9 @@
 
             <!--#region Compile status bar -->
 
-            <StatusBarItem Grid.Column="1" Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
-
-                <StackPanel Orientation="Horizontal">
-
-
-                    <TextBlock Margin="5 0 0 0"
-                               
-                               Text="{Binding CompileLogStatusBar }" 
-                               VerticalAlignment="Center"  
-                               HorizontalAlignment="Left"/>
-
-                </StackPanel>
-            </StatusBarItem>
+            <StatusBarItem Grid.Column="1" 
+                           Content="{Binding CompileLogStatusBar }"
+                           Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
 
             <!--#endregion-->
 

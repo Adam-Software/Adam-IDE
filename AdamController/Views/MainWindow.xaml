@@ -177,8 +177,8 @@
                         <iconPacks:PackIconUnicons  HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     Margin="0 -25 0 0"
-                                                    Kind="Robot" 
-                                                    Foreground="{DynamicResource MahApps.Brushes.Text}"/>
+                                                    Kind="Robot" />
+                        
                         <Border  BorderThickness="0 1 0 0"/>
                         
                     </StackPanel>
