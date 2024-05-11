@@ -166,15 +166,17 @@
 
                     <Button HorizontalAlignment="Left" 
                             Padding="2"
+                            Foreground="SpringGreen"
                             Command="{Binding RunPythonCodeDelegateCommand}">
-                        <iconPacks:PackIconCodicons Padding="2" Kind="DebugStart" />
+                        <iconPacks:PackIconMicrons  Padding="2" Kind="Play"/>
                     </Button>
 
                     <Button HorizontalAlignment="Left" 
                             Margin="3 0 7 0"
+                            Foreground="Red"
                             Padding="2"
                             Command="{Binding StopPythonCodeExecuteDelegateCommand}">
-                        <iconPacks:PackIconCodicons Padding="2" Kind="DebugStop" />
+                    <iconPacks:PackIconModern Padding="2" Kind="DebugStop" />
                     </Button>
 
                     <Button HorizontalAlignment="Left"
