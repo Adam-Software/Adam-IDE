@@ -29,7 +29,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         #endregion
 
-        #region Const
+        #region Var
 
         private string mTextOnStatusConnectToolbarDisconnected;
         private string mTextOnStatusConnectToolbarConnected;
@@ -37,6 +37,7 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
         private string mCompileLogStatusBar;
         private string mAppLogStatusBar;
+        private string mChangAppLanguageLogMessage;
 
         #endregion
 
@@ -215,6 +216,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
 
             mCompileLogStatusBar = mCultureProvider.FindResource("StatusBarViewModel.CompileLogStatusBar");
             mAppLogStatusBar = mCultureProvider.FindResource("StatusBarViewModel.AppLogStatusBar");
+
+            mChangAppLanguageLogMessage = mCultureProvider.FindResource("StatusBarViewModel.ChangAppLanguage.LogMessage");
         }
 
         private void UpdateStatusConnectToolbar()
@@ -230,6 +233,8 @@ namespace AdamController.Modules.StatusBarRegion.ViewModels
                 TextOnStatusConnectToolbar = mTextOnStatusConnectToolbarDisconnected;
                 ConnectIcon = PackIconModernKind.Connect;
             }
+
+            AppLogStatusBar = mChangAppLanguageLogMessage;
         }
 
         #endregion

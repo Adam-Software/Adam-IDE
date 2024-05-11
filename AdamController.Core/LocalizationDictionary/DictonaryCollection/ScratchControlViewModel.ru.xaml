@@ -16,7 +16,5 @@
     <system:String x:Key="ScratchControlViewModel.ScretchLoadedComplete.LogMessage">Загрузка скретч редактора завершена</system:String>
     <system:String x:Key="ScratchControlViewModel.ScretchLoadedError.LogMessage">Загрузка скретч внезапно прервана</system:String>
 
-    <system:String x:Key="ScratchControlViewModel.ChangAppLanguage.LogMessage">Язык приложения изменен</system:String>
-
 
 </ResourceDictionary>

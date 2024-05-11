@@ -80,7 +80,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private string mScretchLoadedCompleteLogMessage;
         private string mScretchLoadedErrorLogMessage;
-        private string mChangAppLanguageLogMessage;
+        
 
         #endregion
 
@@ -635,10 +635,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mFileSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileSaved.LogMessage");
             mScretchLoadedCompleteLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedComplete.LogMessage");
             mScretchLoadedErrorLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedError.LogMessage");
-
-            mChangAppLanguageLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ChangAppLanguage.LogMessage");
-
-            mStatusBarNotificationDelivery.AppLogMessage = mChangAppLanguageLogMessage;
         }
 
         #endregion

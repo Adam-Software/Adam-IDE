@@ -16,6 +16,4 @@
     <system:String x:Key="ScratchControlViewModel.ScretchLoadedComplete.LogMessage">Scretch loaded complete</system:String>
     <system:String x:Key="ScratchControlViewModel.ScretchLoadedError.LogMessage">Scretch loaded error</system:String>
 
-    <system:String x:Key="ScratchControlViewModel.ChangAppLanguage.LogMessage">The application language has been changed</system:String>
-
 </ResourceDictionary>
