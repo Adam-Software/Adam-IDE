@@ -1,4 +1,6 @@
-﻿using AdamController.Core;
+﻿using AdamController.Controls.CustomControls.Services;
+using AdamController.Controls.Enums;
+using AdamController.Core;
 using AdamController.Core.Extensions;
 using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
@@ -18,6 +20,7 @@ namespace AdamController.ViewModels
         #region DelegateCommands
 
         public DelegateCommand<string> ShowRegionCommand { get; private set; }
+        public DelegateCommand<string> MoveSplitterDelegateCommand { get; private set; }
 
         #endregion
 
@@ -32,13 +35,14 @@ namespace AdamController.ViewModels
         private readonly IAvalonEditService mAvalonEditService;
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
+        private readonly IControlHelper mControlHelper;
         #endregion
 
         #region ~
 
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
                     ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
-                    IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider) 
+                    IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, IControlHelper controlHelper) 
         {
             RegionManager = regionManager;
             mWebApiService = webApiService;
@@ -49,8 +53,11 @@ namespace AdamController.ViewModels
             mAvalonEditService = avalonEditService;
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
+            mControlHelper = controlHelper;
 
-            ShowRegionCommand = new DelegateCommand<string>(ShowRegion);            
+            ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
+            MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
+
             Subscribe();
         }
 
@@ -69,7 +76,10 @@ namespace AdamController.ViewModels
             get { return hamburgerMenuSelectedIndex; }
             set
             {
-                SetProperty(ref hamburgerMenuSelectedIndex, value);
+                bool isNewValue = SetProperty(ref hamburgerMenuSelectedIndex, value);
+                
+                if(isNewValue)
+                    MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
             } 
         }
 
@@ -86,6 +96,41 @@ namespace AdamController.ViewModels
             {
                 SetProperty(ref hamburgerMenuSelectedOptionsIndex, value);
             }
+        }
+
+        #endregion
+
+        #region DelegateCommands methods
+
+        private void MoveSplitter(string commandArg)
+        {
+            BlocklyViewMode currentViewMode = mControlHelper.CurrentBlocklyViewMode;
+
+            if (commandArg == "Left")
+            {
+                if (currentViewMode == BlocklyViewMode.FullScreen)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
+
+                if (currentViewMode == BlocklyViewMode.MiddleScreen)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.Hidden;
+            }
+
+            if (commandArg == "Right")
+            {
+                if (currentViewMode == BlocklyViewMode.Hidden)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
+
+                if (currentViewMode == BlocklyViewMode.MiddleScreen)
+                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
+            }
+        }
+
+        private bool MoveSplitterCanExecute(string arg)
+        {
+            return HamburgerMenuSelectedIndex == 0;
+            //return true;
+            //bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+            //return isPythonCodeNotExecute;
         }
 
         #endregion

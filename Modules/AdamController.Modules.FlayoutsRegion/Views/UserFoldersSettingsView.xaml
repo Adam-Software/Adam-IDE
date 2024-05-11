@@ -4,7 +4,7 @@
              xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              xmlns:prism="http://prismlibrary.com/" 
-             prism:ViewModelLocator.AutoWireViewModel="True" Width="505">
+             prism:ViewModelLocator.AutoWireViewModel="True" Width="555">
 
     <Grid Margin="10 0 0 0">
         
@@ -18,7 +18,7 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Top">
 
-                <Label Width="70"
+                <Label Width="120"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
                        Content="{DynamicResource UserFoldersSettingsView.Label.Content.Scripts}"/>
@@ -51,7 +51,7 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Top">
 
-                <Label Width="70"
+                <Label Width="120"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
                        Content="{DynamicResource UserFoldersSettingsView.Label.Content.Workspace}"/>

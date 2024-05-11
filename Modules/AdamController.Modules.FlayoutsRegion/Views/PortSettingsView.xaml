@@ -14,7 +14,7 @@
             <StackPanel DockPanel.Dock="Top" 
                         Orientation="Horizontal">
 
-                <Label Width="170"
+                <Label Width="180"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
                        Content="{DynamicResource PortSettingsView.Label.Content.VideoStreamPort}"/>
@@ -34,7 +34,7 @@
                         Margin="0 10 0 0"
                         Orientation="Horizontal">
 
-                <Label Width="170"
+                <Label Width="180"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
                        Content="{DynamicResource PortSettingsView.Label.Content.SocketServerPort}" />
@@ -53,7 +53,7 @@
                         Margin="0 10 0 0"
                         Orientation="Horizontal">
 
-                <Label Width="170"
+                <Label Width="180"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
                        Content="{DynamicResource PortSettingsView.Label.Content.DebuggerPort}"/>
@@ -73,7 +73,7 @@
                         Margin="0 10 0 0"
                         Orientation="Horizontal">
 
-                <Label Width="170"
+                <Label Width="180"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
                        Content="{DynamicResource PortSettingsView.Label.Content.LogServerPort}"/>
@@ -93,7 +93,7 @@
                         Margin="0 10 0 0"
                         Orientation="Horizontal">
 
-                <Label Width="170"
+                <Label Width="180"
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
                        Content="{DynamicResource PortSettingsView.Label.Content.ConnectStatePort}" />

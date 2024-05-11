@@ -8,7 +8,6 @@
                   xmlns:prism="http://prismlibrary.com/" 
                   xmlns:customusercontrol="clr-namespace:AdamController.Controls.CustomControls;assembly=AdamController.Controls"
                   prism:ViewModelLocator.AutoWireViewModel="True"
-                  
                   WindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
                   NonActiveWindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
                   NonActiveBorderBrush="{DynamicResource MahApps.Brushes.Text}"
@@ -34,21 +33,50 @@
     
     <mah:MetroWindow.TitleTemplate>
         <DataTemplate>
-            <StackPanel Orientation="Horizontal" 
-                        VerticalAlignment="Center"  
-                        HorizontalAlignment="Center">
 
-                <iconPacks:PackIconUnicons Kind="Robot" 
-                                           Foreground="{DynamicResource MahApps.Brushes.Text}"/>
+            <DockPanel>
 
-                <TextBlock Text="{Binding}"
-                           Margin="10 2 10 0"
-                           Foreground="{DynamicResource MahApps.Brushes.Text}"/>
-            </StackPanel>
+                <StackPanel Margin="0 0 30 0"
+                            DockPanel.Dock="Right" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+
+                    <TextBlock Text="{Binding }"
+                               FontWeight="Regular" 
+                               Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
+                               />
+
+                </StackPanel>
+
+            </DockPanel>
         </DataTemplate>
     </mah:MetroWindow.TitleTemplate>
     
     <!--#endregion-->
+
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands ShowLastSeparator="False">
+            
+            <StackPanel Orientation="Horizontal">
+
+                <Button Command="{Binding MoveSplitterDelegateCommand}"
+                        CommandParameter="Left"
+                        
+                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
+                    <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronLeft" />
+                </Button>
+
+                <Button Command="{Binding MoveSplitterDelegateCommand}"
+                        CommandParameter="Right"
+                        
+                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
+                    <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronRight" />
+                </Button>
+
+
+            </StackPanel>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
 
     <!--#region Flayouts -->
 
@@ -65,7 +93,7 @@
 
         <Grid.Resources>
             <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
-                <Grid Height="30"
+                <Grid Height="25"
                       >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30" />
@@ -125,21 +153,38 @@
              To unlock, delete the parameters: CompactPaneLength="30" and MaximumOpenPaneLength="30"
         -->
 
-        <Border BorderThickness="1" Margin="30 0 0 0"/>
+        <Border BorderThickness="1" 
+                Margin="30 0 0 0"/>
                  
         <mah:HamburgerMenu Grid.Column="0"
                            Grid.Row="0"
                            Margin="0 -25 0 0"
-                           PaneMargin="0 25 0 10"
+                           PaneMargin="0 25 0 0"
                            IsPaneOpen="True"
+                           PaneHeaderMargin="0 0 0 5"
                            HamburgerVisibility="Collapsed"
-                           MaximumOpenPaneLength="30"          
+                           MaximumOpenPaneLength="30"     
                            SelectedIndex="{Binding HamburgerMenuSelectedIndex}"
                            SelectedOptionsIndex="{Binding HamburgerMenuSelectedOptionsIndex}"
                            ItemTemplate="{ StaticResource MenuItemTemplate}"
                            OptionsItemTemplate="{ StaticResource OptionsMenuItemTemplate}"
                            DisplayMode="CompactInline">
 
+            <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        
+                        <iconPacks:PackIconUnicons  HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0 -25 0 0"
+                                                    Kind="Robot" 
+                                                    Foreground="{DynamicResource MahApps.Brushes.Text}"/>
+                        <Border  BorderThickness="0 1 0 0"/>
+                        
+                    </StackPanel>
+                </DataTemplate>
+                
+            </mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
             
             <!--  Items  -->
             <mah:HamburgerMenu.ItemsSource>

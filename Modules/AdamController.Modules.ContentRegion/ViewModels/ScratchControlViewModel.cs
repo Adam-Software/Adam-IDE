@@ -26,7 +26,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         #region DelegateCommands
         public DelegateCommand CopyToClipboardDelegateCommand { get; }
-        public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
+        
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
         public DelegateCommand ShowOpenFileDialogDelegateCommand { get; }
@@ -47,7 +47,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IDialogManagerService mDialogManager;
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
-        private readonly IControlHelper mControlHelper;
+        
         private readonly ICultureProvider mCultureProvider;
 
         #endregion
@@ -98,11 +98,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mDialogManager = dialogManager;
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
-            mControlHelper = controlHelper;
+            //mControlHelper = controlHelper;
             mCultureProvider = cultureProvider;
 
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
-            MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
+            //MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
             ShowOpenFileDialogDelegateCommand = new DelegateCommand(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
@@ -299,34 +299,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
-        private void MoveSplitter(string commandArg)
-        {
-            BlocklyViewMode currentViewMode = mControlHelper.CurrentBlocklyViewMode;
-
-            if (commandArg == "Left")
-            {
-                if (currentViewMode == BlocklyViewMode.FullScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
-
-                if (currentViewMode == BlocklyViewMode.MiddleScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.Hidden;
-            }
-
-            if(commandArg == "Right")
-            {
-                if (currentViewMode == BlocklyViewMode.Hidden)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
-                
-                if (currentViewMode == BlocklyViewMode.MiddleScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
-            }
-        }
-
-        private bool MoveSplitterCanExecute(string arg)
-        {
-            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
-            return isPythonCodeNotExecute;
-        }
+      
+        
         private void ReloadWebView()
         {
             mWebViewProvider.ReloadWebView();
@@ -629,7 +603,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void RaiseDelegateCommandsCanExecuteChanged()
         {
-            MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
+            //MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
             CopyToClipboardDelegateCommand.RaiseCanExecuteChanged();
             ReloadWebViewDelegateCommand.RaiseCanExecuteChanged();
             ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();

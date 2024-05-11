@@ -76,21 +76,10 @@
                     <Button Padding="2" Margin="3 0 7 0" Command="{Binding ShowSaveFileDialogDelegateCommand}">
                         <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
                     </Button>
-                    <Button Padding="2"  Command="{Binding ReloadWebViewDelegateCommand}">
-                        <iconPacks:PackIconMaterial  Padding="2"  Kind="Reload" />
-                    </Button>
-
-                    <Button HorizontalAlignment="Right" 
-                            Padding="0"
-                            mah:ControlsHelper.CornerRadius="0"
-                            Command="{Binding MoveSplitterDelegateCommand}"
-                            CommandParameter="Left">
-                        
-                        <iconPacks:PackIconModern Margin="3 0 10 0"  Kind="ChevronLeft" />
-                        
-                    </Button>
-
-                </DockPanel>
+                <Button Padding="2" HorizontalAlignment="Left" Command="{Binding ReloadWebViewDelegateCommand}" >
+                    <iconPacks:PackIconMaterial  Padding="2"  Kind="Reload" />
+                </Button>
+            </DockPanel>
 
                 <webControl:WebView2  DockPanel.Dock="Top"
                                       Name="WebView"
@@ -118,18 +107,8 @@
                        Margin="0 7 5 5"
                        LastChildFill="True">
 
-                <DockPanel Margin="0 0 0 10" DockPanel.Dock="Top">
+                <DockPanel Margin="5 0 0 10" DockPanel.Dock="Top">
 
-                    <Button HorizontalAlignment="Left" 
-                            Margin="0 0 7 0"
-                            Padding="0"
-                            mah:ControlsHelper.CornerRadius="0"
-                            Command="{Binding MoveSplitterDelegateCommand}"
-                            CommandParameter="Right">
-                        <iconPacks:PackIconModern Margin="10 0 3 0"  Kind="ChevronRight" />
-                    </Button>
-            
-                    
                     <ToggleButton x:Name="ShowLineNumberButton" 
                                   HorizontalAlignment="Left"     
                                   Padding="2"
