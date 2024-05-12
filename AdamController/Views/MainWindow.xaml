@@ -43,6 +43,7 @@
 
                     <TextBlock Text="{Binding }"
                                FontWeight="Regular" 
+                               Foreground="{DynamicResource MahApps.Brushes.Text}"
                                Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
                                />
 
@@ -177,6 +178,7 @@
                         <iconPacks:PackIconUnicons  HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     Margin="0 -25 0 0"
+                                                    Foreground="{DynamicResource MahApps.Brushes.Badged.Foreground}"
                                                     Kind="Robot" />
                         
                         <Border  BorderThickness="0 1 0 0"/>
