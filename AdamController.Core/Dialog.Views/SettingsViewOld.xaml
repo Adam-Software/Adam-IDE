@@ -1,0 +1,856 @@
+﻿<!-- The reconnect and timeouts settings have not been changed, I do not know if they are needed -->
+<UserControl x:Class="AdamController.Core.Dialog.Views.SettingsViewOld"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:properties="clr-namespace:AdamController.Core.Properties"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
+                 xmlns:prism="http://prismlibrary.com/" 
+                 prism:ViewModelLocator.AutoWireViewModel="True"
+                 Width="800" Height="600">
+
+
+    
+    <!--#region Resources -->
+    
+    <!--<UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>-->
+    
+    <!--#endregion-->
+
+    <!--#region WindowStyle -->
+    
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="NoResize"/>
+            <Setter Property="ShowInTaskbar" Value="True"/>
+            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+            <Setter Property="Topmost" Value="True" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+    
+    <!--#endregion-->
+
+    <!--<i:Interaction.Behaviors>
+        <behaviors:ActivateBehavior Activated="{Binding SettingWindowActivated, Mode=TwoWay}"/>
+    </i:Interaction.Behaviors>-->
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions >
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0" Grid.Column="0"
+                    TabStripPlacement="Left"
+                    mah:HeaderedControlHelper.HeaderFontSize="14"
+                    mah:HeaderedControlHelper.HeaderFontWeight="Medium"
+                    Style="{DynamicResource MahApps.Styles.TabControl.VisualStudio}">
+
+
+            <TabItem Header="Настройка API"
+                     Style="{DynamicResource MahApps.Styles.TabItem}">
+
+                <!--#region сlient settings -->
+
+                <Grid Margin="5 5 10 5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--#region API Login 
+
+                    <Label Grid.Column="0" 
+                           Grid.Row="0" 
+                           Margin="0 5 0 0" 
+                           Content="Логин для подключения к API" 
+                           FontWeight="DemiBold" />
+
+                    <TextBox Grid.Column="1" 
+                             Grid.Row="0" 
+                             FontWeight="Medium"
+                             Text="{Binding ApiLogin, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"
+                             Width="140" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox}"
+                                 
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="adam"/>
+
+                    endregion-->
+
+                    <!--#region API Password
+
+                    <Label Grid.Column="0" 
+                           Grid.Row="1" 
+                           Margin="0 5 0 0" 
+                           Content="Пароль для подлючения к API" 
+                           FontWeight="DemiBold"/>
+
+                    <TextBox Grid.Column="1" 
+                             Grid.Row="1"
+                             FontWeight="Medium"
+                             Text="{Binding ApiPassword, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"
+                             Width="140"
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="password"/>
+
+                    endregion-->
+
+                    <!--#region Server API IP  
+
+                    <Label Grid.Column="0" 
+                               Grid.Row="2" 
+                               Margin="0 5 0 0" 
+                               Content="IP-адрес API робота" 
+                               FontWeight="DemiBold" />
+
+                    <TextBox Grid.Column="1" 
+                             Grid.Row="2" 
+                             FontWeight="Medium"
+                             Text="{Binding ServerIP, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"
+                             Width="140" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox}"
+                                   
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="192.168.50.10"/>
+
+                    #endregion-->
+
+                    <!--#region API port 
+
+                    <Label Grid.Column="0" 
+                           Grid.Row="3" 
+                           Margin="0 5 0 0" 
+                           Content="Порт API сервера" 
+                           FontWeight="DemiBold"/>
+
+                    <TextBox Grid.Column="1" 
+                             Grid.Row="3"
+                             FontWeight="Medium"
+                             Text="{Binding ApiPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"
+                             Width="80"
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="5147"/>
+
+                    endregion-->
+
+
+                    <Grid Grid.Row="4"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--#region Automatic main connect -->
+
+                        <!--<mah:ToggleSwitch Grid.Column="0"
+                                          IsEnabled="False"
+                                          Margin="5 5 0 0" 
+                                          Header="Проверять версию сервера"
+                                          FontSize="12"
+                                          FontWeight="Medium" 
+                                          OnContent="При запуске приложения"
+                                          OffContent="Не проверять"
+                                          mah:HeaderedControlHelper.HeaderFontSize="12"
+                                          mah:HeaderedControlHelper.HeaderFontWeight="DemiBold"
+                                          IsOn="{Binding CheckServerVersion, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"/>-->
+
+                        <!--#endregion-->
+
+                    </Grid>
+                </Grid>
+
+                <!--#endregion-->
+
+            </TabItem>
+            
+            <TabItem Header="Настройки клиентов"
+                     Style="{DynamicResource MahApps.Styles.TabItem}">
+
+                <!--#region сlient settings -->
+
+                <Grid Margin="5 5 10 5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--#region  VideoDataExchangePort 
+
+                    <Label Grid.Column="0" 
+                           Grid.Row="0" 
+                           Margin="0 5 0 0" 
+                           Content="Порт для видео " 
+                           FontWeight="DemiBold"/>
+
+                    <TextBox Grid.Column="1" 
+                             Grid.Row="0"
+                             FontWeight="Medium"
+                             Text="{Binding VideoDataExchangePort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Right" 
+                             Width="80" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox}"
+                         
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="4998"/>
+
+                    #endregion-->
+
+                    <!--#region SocketServerPort 
+
+                    <Label Grid.Column="0" Grid.Row="1" Margin="0 5 0 0" Content="Порт сокет-сервера" FontWeight="DemiBold" />
+
+                    <TextBox Grid.Column="1" Grid.Row="1" 
+                             FontWeight="Medium"
+                             Text="{Binding SoketServerPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Right"
+                                 Width="80" 
+                                 TextAlignment="Left"
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                                 
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="8000"/>
+
+                    #endregion-->
+
+                    <!--#region MessageDataExchangePort 
+
+                    <Label Grid.Column="0" Grid.Row="2" Margin="0 5 0 0" Content="Порт сервера приема сообщений" FontWeight="DemiBold"/>
+
+                    <TextBox Grid.Column="1" Grid.Row="2"
+                                 FontWeight="Medium"
+                                 Text="{Binding MessageDataExchangePort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"
+                                 TextAlignment="Left"
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="15005"/>
+
+                    #endregion-->
+
+                    <!--#region LogServerPort
+
+                    <Label Grid.Column="0" Grid.Row="4" Margin="0 5 0 0" Content="Порт сервера логов" FontWeight="DemiBold"/>
+
+                    <TextBox Grid.Column="1" Grid.Row="4"
+                                 FontWeight="Medium"
+                                 Text="{Binding LogServerPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"
+                                 TextAlignment="Left"
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="7071"/>
+
+                    endregion-->
+
+                    <!--#region TcpConnectStatePort 
+
+                    <Label Grid.Column="0" Grid.Row="5" Margin="0 5 0 0" Content="Порт контроля состояния соединения" FontWeight="DemiBold"/>
+
+                    <TextBox Grid.Column="1" Grid.Row="5"
+                                 FontWeight="Medium"
+                                 Text="{Binding TcpConnectStatePort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"
+                                 TextAlignment="Left"
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="15000"/>
+
+                    #endregion-->
+
+                    <!--#region ServerIP 
+
+                    <Label Grid.Column="0" 
+                           Grid.Row="6" 
+                           Margin="0 5 0 0" 
+                           Content="IP-адрес сервера (робота)" 
+                           FontWeight="DemiBold" />
+
+                    <TextBox Grid.Column="1" 
+                             Grid.Row="6" 
+                             FontWeight="Medium"
+                             Text="{Binding ServerIP, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"
+                             Width="120" 
+                             TextAlignment="Left"
+                             Style="{DynamicResource MahApps.Styles.TextBox}"
+                                   
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="192.168.50.10"/>
+
+                    endregion-->
+
+                    <Grid Grid.Row="7"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--#region Automatic main connect 
+                        
+                        <mah:ToggleSwitch Grid.Column="0"
+                                          Margin="5 5 0 0" 
+                                          Header="Подключение к роботу"
+                                          FontSize="12"
+                                          FontWeight="Medium" 
+                                          OnContent="При запуске приложения"
+                                          OffContent="Вручную"
+                                          mah:HeaderedControlHelper.HeaderFontSize="12"
+                                          mah:HeaderedControlHelper.HeaderFontWeight="DemiBold"
+                                          IsOn="{Binding AutoStartTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                          />
+
+                        endregion-->
+
+                        <!--#region Automatic test connect 
+
+                        <mah:ToggleSwitch Grid.Column="1"
+                                          Margin="5 5 0 0" 
+                                          Header="Подключение к тестовому серверу"
+                                          FontSize="12"
+                                          FontWeight="Medium" 
+                                          OnContent="При запуске теста сети"
+                                          OffContent="Вручную"
+                                          mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                                          mah:HeaderedControlHelper.HeaderFontSize="12"
+                                          mah:HeaderedControlHelper.HeaderFontWeight="DemiBold"
+                                          IsOn="{Binding AutoStartTestTcpConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                          />
+                        endregion-->
+
+                    </Grid>
+                    
+                    
+                    
+
+
+                    <!--#region Developers settings -->
+
+                    <!--#region TestTcpPort 
+
+                    <Label Grid.Column="0" 
+                               Grid.Row="8" 
+                               Margin="0 5 0 0" 
+                               FontWeight="DemiBold"
+                               mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                               Content="Порт теста измеряющего круговую задержку [TCP]" />
+
+                    <TextBox Grid.Column="1" 
+                                 Grid.Row="8"
+                                 FontWeight="Medium"
+                                 Text="{Binding BenchmarkTcpTestPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"
+                                 TextAlignment="Left"
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                                 mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="15000"/>
+
+                    #endregion-->
+
+                    <!--#region TestUdpPort 
+
+                    <Label Grid.Column="0" 
+                               Grid.Row="9" 
+                               Margin="0 5 0 0" 
+                               FontWeight="DemiBold"
+                               mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                               Content="Порт теста измеряющего круговую задержку [UDP]" />
+
+                    <TextBox Grid.Column="1" 
+                                 Grid.Row="9"
+                                 FontWeight="Medium"
+                                 Text="{Binding BenchmarkUdpTestPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"
+                                 TextAlignment="Left"
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                                 mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="15000"/>
+
+                    endregion-->
+
+                    <!--#region TestTcpConnectStatePort 
+
+                    <Label Grid.Column="0" 
+                               Grid.Row="10" 
+                               Margin="0 5 0 0" 
+                               FontWeight="DemiBold"
+                               mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                               Content="Порт контроля состояния соединения тестового сервера [TCP]" />
+
+                    <TextBox Grid.Column="1" 
+                                 Grid.Row="10"
+                                 FontWeight="Medium"
+                                 Text="{Binding BenchmarkTcpConnectStatePort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" 
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"
+                                 TextAlignment="Left"
+                                 Style="{DynamicResource MahApps.Styles.TextBox}"
+                            
+                                 mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                                 mah:TextBoxHelper.ClearTextButton="True"
+                                 mah:TextBoxHelper.Watermark="15000"/>
+
+                    endregion-->
+
+                    <!--#region Test ServerIP 
+
+                    <Label Grid.Column="0" 
+                               Grid.Row="11" 
+                               Margin="0 5 0 0" 
+                               Content="IP-адрес тестового сервера" 
+                               FontWeight="DemiBold"
+                               mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"/>
+
+                    <TextBox Grid.Column="1" 
+                             Grid.Row="11" 
+                             FontWeight="Medium"
+                             Text="{Binding BenchmarkTestServerIp, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"
+                             Width="120" 
+                             TextAlignment="Left"
+                                   
+                             mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="127.0.0.1"/>
+
+                    endregion-->
+
+                    <!--#endregion-->
+
+                </Grid>
+
+                <!--#endregion-->
+
+            </TabItem>
+
+            <TabItem Header="Настройки окружения"
+                     Style="{DynamicResource MahApps.Styles.TabItem}">
+
+                <!--#region folder layout settings -->
+
+                <GroupBox Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}">
+
+                    <Grid Margin="5 5 0 5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--#region Workspace
+                        
+                        <Label Grid.Column="0" Grid.Row="0"
+                               Margin="10 0 0 0"
+                               Content="Расположение папки сохраненых рабочих областей" FontWeight="DemiBold"/>
+                        <StackPanel Grid.Row="1">
+                            
+                            <DockPanel Margin="10 0 10 0" LastChildFill="True">
+                                
+                                <Button Margin="2 0 0 0" 
+                                        Command="{Binding ShowOpenFolderDialogCommand}"
+                                        CommandParameter="workspace"
+                                        Style="{DynamicResource MahApps.Styles.Button}" 
+                                        DockPanel.Dock="Right">
+                                    <iconPacks:PackIconMaterial Kind="Folder"/>
+                                </Button>
+                                
+                                <TextBox Text="{Binding SavedUserWorkspaceFolderPath, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                         FontWeight="Medium"
+                                         IsReadOnly="True" 
+                                         IsEnabled="False" 
+                                         Style="{DynamicResource MahApps.Styles.TextBox}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        
+                        endregion-->
+
+                        <!--#region Toolbox 
+                        
+                        <Label Grid.Row="2" Grid.Column="0"
+                               Margin="10 10 0 0"
+                               Content="Расположение папки настраиваемых панелей инструментов пользователя" FontWeight="DemiBold"/>
+                        <StackPanel Grid.Row="3">
+                            
+                            <DockPanel Margin="10 0 10 0" LastChildFill="True">
+                                <Button Margin="2 0 0 0" Style="{DynamicResource MahApps.Styles.Button}" 
+                                        Command="{Binding ShowOpenFolderDialogCommand}"
+                                        CommandParameter="toolbox"
+                                        DockPanel.Dock="Right">
+                                    <iconPacks:PackIconMaterial Kind="Folder"/>
+                                </Button>
+                                <TextBox Text="{Binding SavedUserToolboxFolderPath, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                                         FontWeight="Medium"
+                                         IsReadOnly="True" 
+                                         IsEnabled="False" 
+                                         Style="{DynamicResource MahApps.Styles.TextBox}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        
+                        endregion-->
+
+                        <!--#region Blocks 
+                        
+                        <Label Grid.Row="4" Grid.Column="0"
+                               Margin="10 10 0 0"
+                               Content="Расположение папки настраиваемых блоков пользователя" FontWeight="DemiBold"/>
+                        
+                        <StackPanel Grid.Row="5">
+                            <DockPanel Margin="10 0 10 0" LastChildFill="True">
+                                <Button Margin="2 0 0 0"
+                                        Command="{Binding ShowOpenFolderDialogCommand}"
+                                        CommandParameter="blocks"
+                                        Style="{DynamicResource MahApps.Styles.Button}" 
+                                        DockPanel.Dock="Right">
+                                    <iconPacks:PackIconMaterial Kind="Folder"/>
+                                </Button>
+                                <TextBox Text="{Binding SavedUserCustomBlocksFolderPath, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                                         FontWeight="Medium"
+                                         IsReadOnly="True" 
+                                         IsEnabled="False" 
+                                         Style="{DynamicResource MahApps.Styles.TextBox}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        
+                        endregion-->
+                        
+                        <!--#region Scripts -->
+                        
+                        <Label Grid.Row="6" Grid.Column="0"
+                               Margin="10 10 0 0"
+                               Content="Расположение папки для скриптов пользователя" FontWeight="DemiBold"/>
+                        
+                        <StackPanel Grid.Row="7">
+                            <DockPanel Margin="10 0 10 0" LastChildFill="True">
+                                <Button Margin="2 0 0 0" 
+                                        Command="{Binding ShowOpenFolderDialogCommand}"
+                                        CommandParameter="script"
+                                        Style="{DynamicResource MahApps.Styles.Button}" 
+                                        DockPanel.Dock="Right">
+                                    <iconPacks:PackIconMaterial Kind="Folder"/>
+                                </Button>
+                                <TextBox Text="{Binding SavedUserScriptsFolderPath, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                                         FontWeight="Medium"
+                                         IsReadOnly="True" 
+                                         IsEnabled="False"
+                                         Style="{DynamicResource MahApps.Styles.TextBox}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        
+                        <!--#endregion-->
+                        
+                        <!--#region Developers settings -->
+
+                        <!--#region SavedResultsNetworkTestsFolderPath 
+
+                        <Label Grid.Row="8" Grid.Column="0"
+                               Margin="10 10 0 0"
+                               FontWeight="DemiBold"
+                               Content="Расположение папки для сохранения результатов тестов сети" 
+                               
+                               mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}"/>
+
+                        <StackPanel Grid.Row="9" 
+                                    mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}">
+
+                            <DockPanel Margin="10 0 10 0" LastChildFill="True">
+                                <Button Margin="2 0 0 0" 
+                                        Command="{Binding ShowOpenFolderDialogCommand}"
+                                        CommandParameter="testResult"
+                                        Style="{DynamicResource MahApps.Styles.Button}" 
+                                        DockPanel.Dock="Right">
+                                    <iconPacks:PackIconMaterial Kind="Folder"/>
+                                </Button>
+                                <TextBox Text="{Binding SavedResultsNetworkTestsFolderPath, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"  
+                                         FontWeight="Medium"
+                                         IsReadOnly="True" 
+                                         IsEnabled="False"
+                                         Style="{DynamicResource MahApps.Styles.TextBox}"/>
+                            </DockPanel>
+                        </StackPanel>
+
+                        endregion-->
+
+                        <!--#endregion-->
+                        
+                    </Grid>
+                </GroupBox>
+                
+                <!--#endregion-->
+                
+            </TabItem>
+
+            <TabItem Header="Настройка TCP/IP"
+                     Style="{DynamicResource MahApps.Styles.TabItem}"
+                     mah:VisibilityHelper.IsVisible="{Binding ElementName=IsDevelopmentSettingsEnabled, Path=IsChecked}">
+
+                <Grid Margin="5 5 10 5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--#region Reconnect main tcp state clients quantity-->
+
+                    <Label Grid.Row="2" 
+                           Grid.Column="0"
+                           Margin="0 5 0 0"
+                           FontWeight="DemiBold"
+                           Content="Количество реконектов основного TCP клиента контроля соединения"/>
+
+                    <mah:NumericUpDown Grid.Row="2"
+                                       Grid.Column="1"
+                                       Padding="10 0 10 0"
+                                       Margin="5 0 5 0"
+                                       Value="{Binding ReconnectQtyComunicateTcpClient, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                       Minimum="0"
+                                       Maximum="20"
+                                       Interval="1"
+                                       FontWeight="Medium"
+                                       ButtonsAlignment="Opposite"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Right"
+                                       Width="100"/>
+
+                    <!--#endregion-->
+                    
+                    <!--#region Reconnect benchmark tcp state clients quantity
+
+                    <Label Grid.Row="3" 
+                           Grid.Column="0"
+                           Margin="0 5 0 0"
+                           FontWeight="DemiBold"
+                           Content="Количество реконектов тестового TCP клиента контроля соединения"/>
+
+                    <mah:NumericUpDown Grid.Row="3"
+                                       Grid.Column="1"
+                                       Padding="10 0 10 0"
+                                       Margin="5 0 5 0"
+                                       Value="{Binding ReconnectQtyBenchmarkComunicateTcpClient, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                       Minimum="1"
+                                       Maximum="20"
+                                       Interval="1"
+                                       FontWeight="Medium"
+                                       ButtonsAlignment="Opposite"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Right"
+                                       Width="100"/>
+
+                    #endregion-->
+
+                    <!--#region Reconnect main tcp state clients quantity-->
+
+                    <Label Grid.Row="4" 
+                           Grid.Column="0"
+                           Margin="0 5 0 0"
+                           FontWeight="DemiBold"
+                           Content="Таймаут реконекта основного TCP клиента контроля соединения"/>
+
+                    <mah:NumericUpDown Grid.Row="4"
+                                       Grid.Column="1"
+                                       Padding="10 0 10 0"
+                                       Margin="5 0 5 0"
+                                       Value="{Binding ReconnectTimeoutComunicateTcpClient, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                       Minimum="0"
+                                       Maximum="20"
+                                       Interval="1"
+                                       FontWeight="Medium"
+                                       ButtonsAlignment="Opposite"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Right"
+                                       Width="100"/>
+
+                    <!--#endregion-->
+
+                    <!--#region Reconnect benchmark tcp state clients quantity
+
+                    <Label Grid.Row="5" 
+                           Grid.Column="0"
+                           Margin="0 5 0 0"
+                           FontWeight="DemiBold"
+                           Content="Таймаут реконекта тестового TCP клиента контроля соединения"/>
+
+                    <mah:NumericUpDown Grid.Row="5"
+                                       Grid.Column="1"
+                                       Padding="10 0 10 0"
+                                       Margin="5 0 5 0"
+                                       Value="{Binding ReconnectTimeoutBenchmarkComunicateTcpClient, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+                                       Minimum="0"
+                                       Maximum="100"
+                                       Interval="1"
+                                       FontWeight="Medium"
+                                       ButtonsAlignment="Opposite"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Right"
+                                       Width="100"/>
+
+                    #endregion-->
+
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+        
+        <!--#region buttons -->
+        
+        <Grid Margin="0 10 5 5" Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                
+            </Grid.ColumnDefinitions>
+
+
+            <ToggleButton  x:Name="IsDevelopmentSettingsEnabled"
+                           Grid.Column="0"
+                           IsEnabled="True"
+                           Content="Для разработчиков" 
+                           Width="125"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           HorizontalContentAlignment="Center"
+                           Style="{DynamicResource MahApps.Styles.ToggleButton}"
+                           
+                           mah:ControlsHelper.ContentCharacterCasing="Upper"/>
+
+            <Button Grid.Column="1"
+                    IsEnabled="False"
+                    Content="По умолчанию"
+                    Width="125"
+                    VerticalAlignment="Center"  
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Center"
+                    Style="{DynamicResource MahApps.Styles.Button}"/>
+
+            
+            <Button Grid.Column="5"
+                    Content="Ok" 
+                    Width="80"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Command="{Binding  CloseDialogCommand}"
+                    CommandParameter="true"
+                    Style="{DynamicResource MahApps.Styles.Button}"
+                    HorizontalContentAlignment="Center"/>
+
+        </Grid>
+
+        <!--#endregion-->
+        
+    </Grid>
+    
+</UserControl>

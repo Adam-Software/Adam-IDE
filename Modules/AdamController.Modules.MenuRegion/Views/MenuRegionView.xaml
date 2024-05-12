@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="AdamController.Modules.MenuRegion.Views.MenuRegionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Height="25">
+
+    <Menu FontWeight="Normal" FontSize="12">
+
+        <MenuItem   Header="{DynamicResource MainMenu.File.MainHeader}">
+
+            <MenuItem Header="{DynamicResource MainMenu.File.CloseAppHeader}"
+                      Command="{Binding CloseAppCommand}"
+                      Style="{DynamicResource MahApps.Styles.MenuItem}"/>
+            
+        </MenuItem>
+
+        <MenuItem Header="{DynamicResource MainMenu.View.MainHeader}"
+                  Style="{DynamicResource MahApps.Styles.MenuItem}">
+
+            <MenuItem Header="{DynamicResource MainMenu.View.ScratchEditorHeader}" 
+                          Command="{Binding ShowRegionCommand}"
+                          CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"
+                          IsChecked="{Binding IsCheckedScratchMenuItem}" />
+
+            <MenuItem Header="{DynamicResource MainMenu.View.ComputerVisionHeader }" 
+                          Command="{Binding ShowRegionCommand}"
+                          CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"
+                          IsChecked="{Binding IsCheckedComputerVisionMenuItem}"/>
+
+            <MenuItem Header="{DynamicResource MainMenu.View.VisualSettingsHeader}" 
+                          Command="{Binding ShowRegionCommand}"
+                          CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}" 
+                          IsChecked="{Binding IsCheckedVisualSettingsMenuItem}"/>
+
+        </MenuItem>
+
+    </Menu>
+
+
+</UserControl>

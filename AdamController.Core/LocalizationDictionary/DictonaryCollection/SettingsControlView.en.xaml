@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- GroupBox Headers -->
+    <system:String x:Key="SettingsControlView.GroupBox.Header.LanguageAndTheme">Language and theme</system:String>
+    <system:String x:Key="SettingsControlView.GroupBox.Header.ScratchEditorSettings">Scratch editor settings</system:String>
+    <system:String x:Key="SettingsControlView.GroupBox.Header.ConnectionAndNotificationSettings">Connection and notification settings</system:String>
+    <system:String x:Key="SettingsControlView.GroupBox.Header.EnvironmentsSetting">Environment settings</system:String>
+
+    <!--Labels content -->
+    <system:String x:Key="SettingsControlView.Label.Content.Theme">App theme</system:String>
+    <system:String x:Key="SettingsControlView.Label.Content.Language">App language</system:String>
+    <system:String x:Key="SettingsControlView.Label.Content.DisplayedSetsBlocks">Displayed sets of blocks</system:String>
+
+    <!--ToggleSwitch content -->
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Logic">Logical</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Colors">Colors</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Lists">Lists</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Loops">Loops</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Math">Mathematical</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Procedures">Procedures</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Texts">Text</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Variables">Variables</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Adam.2.6">Blocks Adam v.2.6</system:String>
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Content.BlockNames.Adam.2.7">Blocks Adam v.2.7</system:String>
+
+    <!--ToggleButton.Content-->
+    <system:String x:Key="SettingsControlView.ToggleButton.Content.ConnectOnStart">Connect at startup</system:String>
+    <system:String x:Key="SettingsControlView.ToggleButton.Content.NotifyOnDisconnection">Notify robot disconnection</system:String>
+    <system:String x:Key="SettingsControlView.ToggleButton.Content.CreateUserFolder">Create user folders</system:String>
+
+    <!--ToggleSwitch Headers -->
+    <system:String x:Key="SettingsControlView.ToggleSwitch.Header.ChangeSpacingSwitch">The size of the grid cell</system:String>
+
+    <!--ToggleSwitch OnContent -->
+    <system:String x:Key="SettingsControlView.ToggleSwitch.OnContent.ChangeSpacingSwitch">Custom</system:String>
+
+    <!--ToggleSwitch OffContent -->
+    <system:String x:Key="SettingsControlView.ToggleSwitch.OffContent.ChangeSpacingSwitch">By default</system:String>
+
+    <!-- TextBox.Text in ToggleButton -->
+    <system:String x:Key="SettingsControlView.ToggleButton.TextBox.ShowGridText">Show grid</system:String>
+    <system:String x:Key="SettingsControlView.ToggleButton.TextBox.ShowTrashCan">Show the trash can</system:String>
+    <system:String x:Key="SettingsControlView.ToggleButton.TextBox.AlignBlocks">Align blocks</system:String>
+    <system:String x:Key="SettingsControlView.ToggleButton.TextBox.ShowLast">Load latest</system:String>
+    <system:String x:Key="SettingsControlView.ToggleButton.TextBox.BrowserMenuNotShow">Do not show the browser menu</system:String>
+    <system:String x:Key="SettingsControlView.ToggleButton.TextBox.ShadowOnDebug">Shadow on debug</system:String>
+
+    <!-- TextBox.Text in StackPanel -->
+    <system:String x:Key="SettingsControlView.StackPanel.TextBox.RobotIp">Robot IP</system:String>
+
+    <!-- Button content -->
+    <system:String x:Key="SettingsControlView.Button.Content.WebApiSettings">WebApi settings</system:String>
+    <system:String x:Key="SettingsControlView.Button.Content.PortSettings">Port settings</system:String>
+    <system:String x:Key="SettingsControlView.Button.Content.SettingsUserFolder">Configuring user folders</system:String>
+
+</ResourceDictionary>

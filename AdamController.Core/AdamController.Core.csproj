@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <PackageLicenseExpression>MIT-Modern-Variant</PackageLicenseExpression>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Helpers\**" />
+    <EmbeddedResource Remove="Helpers\**" />
+    <None Remove="Helpers\**" />
+    <Page Remove="Helpers\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Properties\AdamPython.xshd" />
+    <None Remove="Properties\Icons\main_app_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AdamPython.xshd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdamController.Controls\AdamController.Controls.csproj" />
+    <ProjectReference Include="..\AdamController.Services\AdamController.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Properties\Icons\main_app_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="LocalizationDictionary\DictonaryCollection\DebuggerMessages.en.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="LocalizationDictionary\DictonaryCollection\DebuggerMessages.ru.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="LocalizationDictionary\DictonaryCollection\ScratchControlView.en.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="LocalizationDictionary\en.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="LocalizationDictionary\ru.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+</Project>

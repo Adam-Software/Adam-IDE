@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="AdamController.Modules.FlayoutsRegion.Views.PortSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Width="350">
+    
+    <Grid Margin="10 0 0 0">
+
+        <DockPanel HorizontalAlignment="Left">
+
+            <StackPanel DockPanel.Dock="Top" 
+                        Orientation="Horizontal">
+
+                <Label Width="180"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       Content="{DynamicResource PortSettingsView.Label.Content.VideoStreamPort}"/>
+
+                <TextBox Width="150" 
+                         FontWeight="Medium"
+                         VerticalAlignment="Top" 
+                         HorizontalAlignment="Center"
+                         TextAlignment="Right"
+                         mah:TextBoxHelper.ClearTextButton="True"
+                         mah:TextBoxHelper.Watermark="18000"
+                         Text="{Binding VideoDataExchangePort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
+
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Top"
+                        Margin="0 10 0 0"
+                        Orientation="Horizontal">
+
+                <Label Width="180"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       Content="{DynamicResource PortSettingsView.Label.Content.SocketServerPort}" />
+
+                <TextBox Width="150" 
+                         FontWeight="Medium"
+                         VerticalAlignment="Top" 
+                         HorizontalAlignment="Center"
+                         TextAlignment="Right"
+                         mah:TextBoxHelper.ClearTextButton="True"
+                         mah:TextBoxHelper.Watermark="8000"
+                         Text="{Binding SoketServerPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Top"
+                        Margin="0 10 0 0"
+                        Orientation="Horizontal">
+
+                <Label Width="180"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       Content="{DynamicResource PortSettingsView.Label.Content.DebuggerPort}"/>
+
+                <TextBox Width="150" 
+                         FontWeight="Medium"
+                         VerticalAlignment="Top" 
+                         HorizontalAlignment="Center"
+                         TextAlignment="Right"
+                         mah:TextBoxHelper.ClearTextButton="True"
+                         mah:TextBoxHelper.Watermark="15005"
+                         Text="{Binding MessageDataExchangePort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
+                
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Top"
+                        Margin="0 10 0 0"
+                        Orientation="Horizontal">
+
+                <Label Width="180"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       Content="{DynamicResource PortSettingsView.Label.Content.LogServerPort}"/>
+
+                <TextBox Width="150" 
+                         FontWeight="Medium"
+                         VerticalAlignment="Top" 
+                         HorizontalAlignment="Center"
+                         TextAlignment="Right"
+                         mah:TextBoxHelper.ClearTextButton="True"
+                         mah:TextBoxHelper.Watermark="7071"
+                         Text="{Binding LogServerPort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
+
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Top" 
+                        Margin="0 10 0 0"
+                        Orientation="Horizontal">
+
+                <Label Width="180"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       Content="{DynamicResource PortSettingsView.Label.Content.ConnectStatePort}" />
+
+                <TextBox Width="150" 
+                         FontWeight="Medium"
+                         VerticalAlignment="Top" 
+                         HorizontalAlignment="Center"
+                         TextAlignment="Right"
+                         mah:TextBoxHelper.ClearTextButton="True"
+                         mah:TextBoxHelper.Watermark="15000"
+                         Text="{Binding TcpConnectStatePort, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
+
+            </StackPanel>
+
+
+        </DockPanel>
+
+    </Grid>
+</UserControl>

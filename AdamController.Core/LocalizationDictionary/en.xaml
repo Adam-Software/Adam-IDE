@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/MainMenu.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/HamburgerMenu.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/DebuggerMessages.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/SettingsControlView.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ScratchControlView.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ComputerVisionControlView.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/StatusBarViewModel.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/ScratchControlViewModel.en.xaml"/>
+
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/NotificationView.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/PortSettingsView.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/UserFoldersSettingsView.en.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdamController.Core;component/LocalizationDictionary/DictonaryCollection/Flyout/WebApiSettingsView.en.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>
