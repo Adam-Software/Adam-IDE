@@ -107,14 +107,14 @@ namespace AdamController.Modules.ContentRegion.Views
         private async void InitializeWebViewCore()
         {
             CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(userDataFolder: mPath);
-            await WebView.EnsureCoreWebView2Async(env);
+            await WebView?.EnsureCoreWebView2Async(env);
         }
 
         private void WebViewCoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Settings.Default.DontShowBrowserMenuInBlockly;
-            WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
-            WebView.CoreWebView2.Navigate("https://localhost/index.html");
+            WebView?.CoreWebView2?.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
+            WebView?.CoreWebView2?.Navigate("https://localhost/index.html");
         }
         
         private void WebViewWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)

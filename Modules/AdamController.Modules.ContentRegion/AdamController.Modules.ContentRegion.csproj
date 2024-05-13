@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net7.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
