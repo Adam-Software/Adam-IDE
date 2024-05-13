@@ -27,7 +27,6 @@ namespace AdamController.Modules.ContentRegion.Views
         #region Var
 
         private readonly string mPathToSource;
-        private readonly string mPath;
 
         #endregion
 
@@ -41,7 +40,6 @@ namespace AdamController.Modules.ContentRegion.Views
             mControlHelper = controlHelper;
 
             mPathToSource = Path.Combine(folderManagment.CommonDirAppData, "BlocklySource");
-            mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
             WebView.NavigationCompleted += WebViewNavigationCompleted;
@@ -106,7 +104,8 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private async void InitializeWebViewCore()
         {
-            CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(userDataFolder: mPath);
+            var tempPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
+            CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(userDataFolder: tempPath);
             await WebView?.EnsureCoreWebView2Async(env);
         }
 
