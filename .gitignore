@@ -263,16 +263,9 @@ paket-files/
 __pycache__/
 *.pyc
 /AdamInstallBundle/Output/*
-/AdamInstallBundle/Components/MicrosoftEdgeWebView2RuntimeInstallerX64.96.exe
 /AdamInstallBundle/Components/VC_redist.x64.exe
 /AdamInstallBundle/Source/BlocklySource.zip
-/AdamInstallBundle/Components/windowsdesktop-runtime-6.0.3-win-x64.exe
 /Output
-/AdamInstallBundle/Components/aspnetcore-runtime-6.0.3-win-x64.exe
-/AdamInstallBundle/Components/aspnetcore-runtime-6.0.3-win-x86.exe
-/AdamInstallBundle/Components/windowsdesktop-runtime-6.0.3-win-x86.exe
-/AdamInstallBundle/Components/MicrosoftEdgeWebView2RuntimeInstallerX64.v.100.0.1185.29.exe
-/AdamInstallBundle/Source/PythonEmbed.zip
 /AdamInstallBundle/Utils/7za.exe
 /AdamInstallBundle/Components/aspnetcore-runtime-7.0.5-win-x64.exe
 /AdamInstallBundle/Components/MicrosoftEdgeWebView2RuntimeInstaller.113.0.1774.50.X64.exe
