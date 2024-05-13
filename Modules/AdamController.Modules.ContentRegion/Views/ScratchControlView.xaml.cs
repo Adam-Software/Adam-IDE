@@ -27,7 +27,6 @@ namespace AdamController.Modules.ContentRegion.Views
         #region Var
 
         private readonly string mPathToSource;
-        private readonly string mPath;
 
         #endregion
 
@@ -41,7 +40,6 @@ namespace AdamController.Modules.ContentRegion.Views
             mControlHelper = controlHelper;
 
             mPathToSource = Path.Combine(folderManagment.CommonDirAppData, "BlocklySource");
-            mPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
 
             WebView.CoreWebView2InitializationCompleted += WebViewCoreWebView2InitializationCompleted;
             WebView.NavigationCompleted += WebViewNavigationCompleted;
@@ -106,15 +104,16 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private async void InitializeWebViewCore()
         {
-            CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(userDataFolder: mPath);
-            await WebView.EnsureCoreWebView2Async(env);
+            var tempPath = Path.Combine(Path.GetTempPath(), "AdamBrowser");
+            CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(userDataFolder: tempPath);
+            await WebView?.EnsureCoreWebView2Async(env);
         }
 
         private void WebViewCoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = !Settings.Default.DontShowBrowserMenuInBlockly;
-            WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
-            WebView.CoreWebView2.Navigate("https://localhost/index.html");
+            WebView?.CoreWebView2?.SetVirtualHostNameToFolderMapping("localhost", mPathToSource, CoreWebView2HostResourceAccessKind.Allow);
+            WebView?.CoreWebView2?.Navigate("https://localhost/index.html");
         }
         
         private void WebViewWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)

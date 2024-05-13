@@ -2,11 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "AdamStudio"
-#define MyAppPublisher "AdamStudioProduction"
+#define MyAppPublisher "AdamSoftware"
 #define MyAppURL "https://robotco.ru/"
-#define MySupportURL = "https://github.com/vertigra/Adam-IDE"
+#define MySupportURL = "https://github.com/Adam-Software/Adam-IDE"
 #define MyAppExeName "AdamController.exe"
-#define InstallerIconPath "AdamController\Images\Icons\AdamIconAndRGBPageIcon.ico"
+#define InstallerIconPath "AdamController.Core\Properties\Icons\main_app_icon.ico"
 #define AppReleaseFolderPath "AdamController\bin\Debug\net7.0-windows\"
 #define MyAppVersion GetVersionNumbersString(AppReleaseFolderPath + MyAppExeName)
 
