@@ -43,6 +43,8 @@ using System.Threading.Tasks;
 using System.Net;
 using AdamController.Services.TcpClientDependency;
 using System.ComponentModel;
+using AdamController.Core.Dialog.ViewModels;
+using AdamController.Core.Dialog.Views;
 
 #endregion
 
@@ -218,6 +220,7 @@ namespace AdamController
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
         {
             //Dialog boxes are not used, but implemented
+            containerRegistry.RegisterDialog<OpenFileDialogView, OpenFileDialogViewModel>();
             //containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
 
             //The old dialog call type integrated into the service

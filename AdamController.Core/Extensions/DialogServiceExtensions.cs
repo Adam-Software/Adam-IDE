@@ -1,10 +1,13 @@
-﻿namespace AdamController.Core.Extensions
+﻿using AdamController.Core.Dialog.Views;
+using Prism.Services.Dialogs;
+
+namespace AdamController.Core.Extensions
 {
-    /*public static class DialogServiceExtensions
+    public static class DialogServiceExtensions
     {
-        public static void ShowSettingsDialog(this IDialogService dialogService)
+        public static void ShowOpenFileDialog(this IDialogService dialogService)
         {
-            dialogService.ShowDialog(nameof(SettingsView));
+            dialogService.ShowDialog(nameof(OpenFileDialogView));
         }
-    }*/
+    }
 }

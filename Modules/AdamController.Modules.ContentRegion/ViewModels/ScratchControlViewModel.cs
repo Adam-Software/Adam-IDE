@@ -3,7 +3,6 @@ using AdamBlocklyLibrary.Enum;
 using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
-using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
@@ -14,6 +13,7 @@ using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
 using Prism.Commands;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,7 +25,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     {
         #region DelegateCommands
         public DelegateCommand CopyToClipboardDelegateCommand { get; }
-        
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
         public DelegateCommand ShowOpenFileDialogDelegateCommand { get; }
@@ -46,9 +45,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IDialogManagerService mDialogManager;
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
-        
         private readonly ICultureProvider mCultureProvider;
-
+        private readonly IDialogService mDialogService;
         #endregion
 
         #region Const
@@ -87,7 +85,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
-                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IControlHelper controlHelper, ICultureProvider cultureProvider) : base(regionManager)
+                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
+                        IDialogService dialogService, ICultureProvider cultureProvider) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -97,11 +96,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mDialogManager = dialogManager;
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
-            //mControlHelper = controlHelper;
             mCultureProvider = cultureProvider;
+            mDialogService = dialogService;
 
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
-            //MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
             ShowOpenFileDialogDelegateCommand = new DelegateCommand(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
@@ -297,8 +295,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             return isPythonCodeNotExecute && isSourceNotEmpty;
         }
-
-      
         
         private void ReloadWebView()
         {
@@ -339,11 +335,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
-        private async void ShowOpenFileDialog()
+        private void ShowOpenFileDialog()
         {
             string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
 
-            if (mDialogManager.ShowFileBrowser(mOpenFileDialogDialogTitle, initialPath, cFilter))
+            mDialogService.ShowOpenFileDialog();
+
+            /*if (mDialogManager.ShowFileBrowser(mOpenFileDialogDialogTitle, initialPath, cFilter))
             {
                 string path = mDialogManager.FilePath;
                 if (path == "") return;
@@ -357,7 +355,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             else
             {
                 mStatusBarNotificationDelivery.AppLogMessage = mFileNotSelectedLogMessage;
-            }
+            }*/
         }
 
         private bool ShowOpenFileDialogCanExecute()
