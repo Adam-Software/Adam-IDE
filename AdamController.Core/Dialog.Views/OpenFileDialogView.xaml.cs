@@ -3,11 +3,11 @@
 namespace AdamController.Core.Dialog.Views
 {
     /// <summary>
-    /// Логика взаимодействия для SettingsView.xaml
+    /// Логика взаимодействия для OpenFileDialogView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class OpenFileDialogView : UserControl
     {
-        public SettingsView()
+        public OpenFileDialogView()
         {
             InitializeComponent();
         }

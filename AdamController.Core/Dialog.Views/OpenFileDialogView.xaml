@@ -7,34 +7,17 @@
              xmlns:properties="clr-namespace:AdamController.Core.Properties"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              xmlns:prism="http://prismlibrary.com/" 
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             MinWidth="800" MinHeight="600">
+             prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner"/>
-            <Setter Property="Width" Value="800"/>
-            <Setter Property="Height" Value="600"/>
+            <Setter Property="Width" Value="600"/>
+            <Setter Property="Height" Value="500"/>
             <Setter Property="ShowInTaskbar" Value="True"/>
-            <Setter Property="Topmost" Value="True" />
-
+            <Setter Property="Topmost" Value="False" />
         </Style>
     </prism:Dialog.WindowStyle>
 
-    <Grid Width="800" Height="600">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Row="0" Grid.Column="0"
-                    Orientation="Horizontal">
-            
-            <TextBlock Text="Test"/>
-
-        </StackPanel>
-    </Grid>
 </UserControl>
