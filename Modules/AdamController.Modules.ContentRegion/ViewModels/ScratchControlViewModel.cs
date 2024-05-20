@@ -28,7 +28,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public DelegateCommand CopyToClipboardDelegateCommand { get; }
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
-        public DelegateCommand ShowOpenFileDialogDelegateCommand { get; }
+        public DelegateCommand<string> ShowOpenFileDialogDelegateCommand { get; }
         public DelegateCommand ShowSaveFileSourceTextDialogDelegateCommand { get; }
         public DelegateCommand CleanExecuteEditorDelegateCommand { get; }
         public DelegateCommand RunPythonCodeDelegateCommand { get; }
@@ -47,7 +47,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
         private readonly ICultureProvider mCultureProvider;
-        private readonly ISystemDialogService mSystemDialogService;
+        private readonly ISystemDialogService mSystemDialog;
+        private readonly IFolderManagmentService mFolderManagment;
         #endregion
 
         #region Const
@@ -87,7 +88,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
                         IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
-                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService) : base(regionManager)
+                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService, IFolderManagmentService folderManagment) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -98,12 +99,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
             mCultureProvider = cultureProvider;
-            mSystemDialogService = systemDialogService;
+            mSystemDialog = systemDialogService;
+            mFolderManagment = folderManagment;
 
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
-            ShowOpenFileDialogDelegateCommand = new DelegateCommand(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
+            ShowOpenFileDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
             ShowSaveFileSourceTextDialogDelegateCommand = new DelegateCommand(ShowSaveFileSourceTextDialog, ShowSaveFileSourceTextDialogCanExecute);
             CleanExecuteEditorDelegateCommand = new DelegateCommand(CleanExecuteEditor, CleanExecuteEditorCanExecute);
             RunPythonCodeDelegateCommand = new DelegateCommand(RunPythonCode, RunPythonCodeCanExecute);
@@ -336,9 +338,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
-        private void ShowOpenFileDialog()
+        private void ShowOpenFileDialog(string param)
         {
-            string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+            string initialPath = string.Empty;
+
+            if (string.IsNullOrEmpty(param))
+                initialPath = mFolderManagment.MyDocumentsUserDir;
+
+            if (param.Equals("Workspace"))
+                initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+
+            if (param.Equals("Script"))
+                initialPath = Settings.Default.SavedUserScriptsFolderPath;
+
             string title = "Открыть скрипт или рабочую область";
 
             var dialogParametrs = new DialogParameters
@@ -347,7 +359,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 { DialogParametrsKeysName.InitialDirectoryParametr, initialPath}
             };
 
-            OpenFileDialogResult result = mSystemDialogService.ShowOpenFileDialog(dialogParametrs);
+            OpenFileDialogResult result = mSystemDialog.ShowOpenFileDialog(dialogParametrs);
 
             if (result.IsOpenFileCanceled)
             {
@@ -379,7 +391,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             }
         }
-        private bool ShowOpenFileDialogCanExecute()
+        private bool ShowOpenFileDialogCanExecute(string param)
         {
             bool isPythonCodeNotExecute = !IsPythonCodeExecute;
             return isPythonCodeNotExecute;
