@@ -45,6 +45,7 @@ using AdamController.Services.TcpClientDependency;
 using System.ComponentModel;
 using AdamController.Core.Dialog.ViewModels;
 using AdamController.Core.Dialog.Views;
+using Microsoft.Win32;
 
 #endregion
 
@@ -219,8 +220,10 @@ namespace AdamController
 
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
         {
+            // used for call system dialog open file/open folder (finforms dialogs)
+            containerRegistry.RegisterSingleton<ISystemDialogService, SystemDialogService>();
+
             //Dialog boxes are not used, but implemented
-            containerRegistry.RegisterDialog<OpenFileDialogView, OpenFileDialogViewModel>();
             //containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
 
             //The old dialog call type integrated into the service

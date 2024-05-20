@@ -8,6 +8,7 @@ using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
+using AdamController.Services.SystemDialogServiceDependency;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -46,7 +47,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
         private readonly ICultureProvider mCultureProvider;
-        private readonly IDialogService mDialogService;
+        private readonly ISystemDialogService mSystemDialogService;
         #endregion
 
         #region Const
@@ -86,7 +87,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
                         IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
-                        IDialogService dialogService, ICultureProvider cultureProvider) : base(regionManager)
+                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -97,7 +98,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
             mCultureProvider = cultureProvider;
-            mDialogService = dialogService;
+            mSystemDialogService = systemDialogService;
 
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
@@ -338,26 +339,46 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private void ShowOpenFileDialog()
         {
             string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+            string title = "Открыть скрипт или рабочую область";
 
-            mDialogService.ShowOpenFileDialog();
-
-            /*if (mDialogManager.ShowFileBrowser(mOpenFileDialogDialogTitle, initialPath, cFilter))
+            var dialogParametrs = new DialogParameters
             {
-                string path = mDialogManager.FilePath;
-                if (path == "") return;
+                { DialogParametrsKeysName.TitleParametr, title },
+                { DialogParametrsKeysName.InitialDirectoryParametr, initialPath}
+            };
 
-                string xml = await mFileManagment.ReadTextAsStringAsync(path);
-                _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
+            OpenFileDialogResult result = mSystemDialogService.ShowOpenFileDialog(dialogParametrs);
 
-
-                mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
-            }
-            else
+            if (result.IsOpenFileCanceled)
             {
                 mStatusBarNotificationDelivery.AppLogMessage = mFileNotSelectedLogMessage;
-            }*/
+                return;
+            }
+
+            OpenSupportedFile(result);
         }
 
+        private async void OpenSupportedFile(OpenFileDialogResult result)
+        {
+            string path = result.OpenFilePath;
+
+            switch (result.OpenFileType)
+            {
+                case OpenFileType.Undefined:
+                    mStatusBarNotificationDelivery.AppLogMessage = $"File unsupported {path}";
+                    break;
+                case OpenFileType.Script:
+                    SourceTextEditor = await mFileManagment.ReadTextAsStringAsync(path);
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
+                    break;
+                case OpenFileType.Workspace:
+                    string xml = await mFileManagment.ReadTextAsStringAsync(path);
+                    _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
+                    break;
+
+            }
+        }
         private bool ShowOpenFileDialogCanExecute()
         {
             bool isPythonCodeNotExecute = !IsPythonCodeExecute;
