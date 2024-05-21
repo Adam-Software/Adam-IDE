@@ -12,7 +12,7 @@
     <PackageReference Include="MessageDialogManagerLib" Version="1.0.3" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2478.35" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
-    <PackageReference Include="NetCoreServer" Version="7.0.0" />
+    <PackageReference Include="NetCoreServer" Version="8.0.7" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
