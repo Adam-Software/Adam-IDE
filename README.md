@@ -12,6 +12,13 @@ For a successful launch, the following components must be installed in the syste
 * [VC_redist.14.29.30135.0.x64](https://disk.yandex.ru/d/0hzuZSiQIxZxLQ)
 * [windowsdesktop-runtime-7.0.5-win-x64](https://disk.yandex.ru/d/TQ2qIRYBnq2Ecw)
 
+From release 2.0.0.4.beta, you should install
+
+* [aspnetcore-runtime-8.0.5-win-x64](https://disk.yandex.ru/d/Pybg1kxu69LR9w)
+* [MicrosoftEdgeWebView2RuntimeInstaller.125.0.2535.51.X64](https://disk.yandex.ru/d/HTtgD4SuUDa_RA)
+* [VC_redist.14.29.30135.0.x64](https://disk.yandex.ru/d/0hzuZSiQIxZxLQ)
+* [windowsdesktop-runtime-8.0.5-win-x64](https://disk.yandex.ru/d/B6W-KHa8C8lzrw) 
+
 # Thanks
 
 The Flyout solution is copied from [here](https://github.com/alsiola/FlyoutManager).
