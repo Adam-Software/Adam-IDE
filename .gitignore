@@ -271,3 +271,6 @@ __pycache__/
 /AdamInstallBundle/Components/MicrosoftEdgeWebView2RuntimeInstaller.113.0.1774.50.X64.exe
 /AdamInstallBundle/Components/VC_redist.14.29.30135.0.x64.exe
 /AdamInstallBundle/Components/windowsdesktop-runtime-7.0.5-win-x64.exe
+/AdamInstallBundle/Components/windowsdesktop-runtime-8.0.5-win-x64.exe
+/AdamInstallBundle/Components/MicrosoftEdgeWebView2RuntimeInstaller.125.0.2535.51.X64.exe
+/AdamInstallBundle/Components/aspnetcore-runtime-8.0.5-win-x64.exe
