@@ -16,6 +16,7 @@ using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -25,6 +26,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     public class ScratchControlViewModel : RegionViewModelBase 
     {
         #region DelegateCommands
+
         public DelegateCommand CopyToClipboardDelegateCommand { get; }
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
@@ -48,7 +50,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IWebApiService mWebApiService;
         private readonly ICultureProvider mCultureProvider;
         private readonly ISystemDialogService mSystemDialog;
-        private readonly IFolderManagmentService mFolderManagment;
+
         #endregion
 
         #region Const
@@ -79,7 +81,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private string mScretchLoadedCompleteLogMessage;
         private string mScretchLoadedErrorLogMessage;
-        
+
+        private string mExtNotSupport1;
+        private string mExtNotSupport2;
+
+        private string mOpenFile;
+
 
         #endregion
 
@@ -88,7 +95,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
                         IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
-                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService, IFolderManagmentService folderManagment) : base(regionManager)
+                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -100,7 +107,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebApiService = webApiService;
             mCultureProvider = cultureProvider;
             mSystemDialog = systemDialogService;
-            mFolderManagment = folderManagment;
 
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
@@ -113,8 +119,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
 
             HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
-
-            LoadResources();
         }
 
         #endregion
@@ -129,7 +133,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             Subscribe();
-            
+            LoadResources();
+
             //#29
             mWebViewProvider.ReloadWebView();
 
@@ -263,8 +268,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent += RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
-
-            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent += RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         private void Unsubscribe()
@@ -278,8 +281,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent -= RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
-
-            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent -= RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         #endregion
@@ -342,16 +343,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             string initialPath = string.Empty;
 
-            if (string.IsNullOrEmpty(param))
-                initialPath = mFolderManagment.MyDocumentsUserDir;
-
             if (param.Equals("Workspace"))
                 initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
 
             if (param.Equals("Script"))
                 initialPath = Settings.Default.SavedUserScriptsFolderPath;
 
-            string title = "Открыть скрипт или рабочую область";
+            string title = mOpenFileDialogDialogTitle;
 
             var dialogParametrs = new DialogParameters
             {
@@ -377,20 +375,20 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             switch (result.OpenFileType)
             {
                 case OpenFileType.Undefined:
-                    mStatusBarNotificationDelivery.AppLogMessage = $"File unsupported {path}";
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mExtNotSupport1} {Path.GetExtension(path)} {mExtNotSupport2}";
                     break;
                 case OpenFileType.Script:
                     SourceTextEditor = await mFileManagment.ReadTextAsStringAsync(path);
-                    mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
                     break;
                 case OpenFileType.Workspace:
                     string xml = await mFileManagment.ReadTextAsStringAsync(path);
                     _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
-                    mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
                     break;
-
             }
         }
+
         private bool ShowOpenFileDialogCanExecute(string param)
         {
             bool isPythonCodeNotExecute = !IsPythonCodeExecute;
@@ -633,7 +631,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void RaiseDelegateCommandsCanExecuteChanged()
         {
-            //MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
             CopyToClipboardDelegateCommand.RaiseCanExecuteChanged();
             ReloadWebViewDelegateCommand.RaiseCanExecuteChanged();
             ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();
@@ -656,7 +653,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWarningStackOwerflow3 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow3");
 
             mSaveFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.DialogTitle");
-            mOpenFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.DialogTitle");
+            mOpenFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.Title");
             mFileNotSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSaved.LogMessage");
             mFileNotSelectedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSelected.LogMessage");
             mSaveFileDialogFilter = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.Filter");
@@ -665,6 +662,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mFileSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileSaved.LogMessage");
             mScretchLoadedCompleteLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedComplete.LogMessage");
             mScretchLoadedErrorLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedError.LogMessage");
+
+            mExtNotSupport1 = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.ExtensionNotSupported1");
+            mExtNotSupport2 = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.ExtensionNotSupported2");
+            mOpenFile = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.FileOpened.LogMessage");
         }
 
         #endregion
@@ -725,15 +726,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             UpdateResultExecutionTimeText(remoteCommandExecuteResult);
         }
 
-        private void RaiseCurrentAppCultureLoadOrChangeEvent(object sender)
-        {
-            LoadResources();
-        }
-
         #endregion
 
         #region Initialize Blockly
-
 
         private async void InitBlockly()
         {

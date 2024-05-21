@@ -6,14 +6,17 @@
     <system:String x:Key="ScratchControlViewModel.SaveFileDialog.DialogTitle2">Save the program file</system:String>
     <system:String x:Key="ScratchControlViewModel.SaveFileDialog.Filter">PythonScript file (.py)|*.py|All files|*.*</system:String>
 
-
-    <system:String x:Key="ScratchControlViewModel.OpenFileDialog.DialogTitle">Select a saved workspace</system:String>
-
     <system:String x:Key="ScratchControlViewModel.Dialogs.FileSaved.LogMessage">The file is saved. Path</system:String>
     <system:String x:Key="ScratchControlViewModel.Dialogs.FileNotSaved.LogMessage">The file has not been saved</system:String>
     <system:String x:Key="ScratchControlViewModel.Dialogs.FileNotSelected.LogMessage">The workspace file is not selected</system:String>
 
     <system:String x:Key="ScratchControlViewModel.ScretchLoadedComplete.LogMessage">Scretch loaded complete</system:String>
     <system:String x:Key="ScratchControlViewModel.ScretchLoadedError.LogMessage">Scretch loaded error</system:String>
+
+    <system:String x:Key="ScratchControlViewModel.OpenFileDialog.Title">Open script or workspace</system:String>
+
+    <system:String x:Key="ScratchControlViewModel.OpenFileDialog.ExtensionNotSupported1">The extension</system:String>
+    <system:String x:Key="ScratchControlViewModel.OpenFileDialog.ExtensionNotSupported2">is not supported</system:String>
+    <system:String x:Key="ScratchControlViewModel.OpenFileDialog.FileOpened.LogMessage">Open file</system:String>
 
 </ResourceDictionary>

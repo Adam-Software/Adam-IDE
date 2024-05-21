@@ -7,7 +7,7 @@
     <system:String x:Key="MainMenu.View.MainHeader">View</system:String>
 
     <!--File MenuItem Header-->
-    <system:String x:Key="MainMenu.File.CloseAppHeader">Close</system:String>
+    <system:String x:Key="MainMenu.File.CloseAppHeader">Close application</system:String>
 
     <!--View MenuItem Header-->
     <system:String x:Key="MainMenu.View.ScratchEditorHeader">Scratch editor</system:String>
