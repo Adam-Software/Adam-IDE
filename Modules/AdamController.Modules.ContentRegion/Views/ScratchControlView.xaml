@@ -68,7 +68,8 @@
 
                 <DockPanel Margin="5 0 0 5" DockPanel.Dock="Top">
 
-                    <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}">
+                    <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}" 
+                            CommandParameter="Workspace">
                         <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
                     </Button>
                     <Button Padding="2" Margin="3 0 7 0" Command="{Binding ShowSaveFileDialogDelegateCommand}">
@@ -109,7 +110,12 @@
                        LastChildFill="True">
 
                 <DockPanel Margin="5 0 0 5" DockPanel.Dock="Top">
-
+                    <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}" 
+                            CommandParameter="Script">
+                    
+                        <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
+                    </Button>
+                    
                     <ToggleButton x:Name="ShowLineNumberButton" 
                                   HorizontalAlignment="Left"     
                                   Padding="2"

@@ -7,7 +7,7 @@ namespace AdamController.Core.Mvvm
 {
     public class DialogViewModelBase : BindableBase, IDialogAware
     {
-        public string Title { get; protected set; } = "Title";
+        public string Title { get; protected set; } = "DefaultTitle";
 
         #region Command
 
@@ -19,7 +19,8 @@ namespace AdamController.Core.Mvvm
         #region Navigation
 
 
-        public event Action<IDialogResult> RequestClose;
+        public event Action<IDialogResult> RequestClose; 
+        //public DialogCloseListener RequestClose { get; }
 
         public virtual void RaiseRequestClose(IDialogResult dialogResult)
         {
@@ -38,7 +39,7 @@ namespace AdamController.Core.Mvvm
 
         public virtual void OnDialogOpened(IDialogParameters parameters)
         {
-
+            Title = parameters.GetValue<string>(DialogParametrsKeysName.TitleParametr);
         }
 
         public virtual void CloseDialog(string parameter)

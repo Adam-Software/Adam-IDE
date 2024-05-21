@@ -2,6 +2,6 @@
 {
     public class DialogNames
     {
-        //Dialog boxes are not used, but implemented
+        //public const string OpenFileDialog = $"{nameof(OpenFileDialogView)}";
     }
 }

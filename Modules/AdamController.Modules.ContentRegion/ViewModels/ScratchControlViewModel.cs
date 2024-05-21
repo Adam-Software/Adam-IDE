@@ -3,18 +3,20 @@ using AdamBlocklyLibrary.Enum;
 using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
-using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
+using AdamController.Services.SystemDialogServiceDependency;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using ICSharpCode.AvalonEdit.Highlighting;
 using Prism.Commands;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -24,11 +26,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
     public class ScratchControlViewModel : RegionViewModelBase 
     {
         #region DelegateCommands
+
         public DelegateCommand CopyToClipboardDelegateCommand { get; }
-        
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
-        public DelegateCommand ShowOpenFileDialogDelegateCommand { get; }
+        public DelegateCommand<string> ShowOpenFileDialogDelegateCommand { get; }
         public DelegateCommand ShowSaveFileSourceTextDialogDelegateCommand { get; }
         public DelegateCommand CleanExecuteEditorDelegateCommand { get; }
         public DelegateCommand RunPythonCodeDelegateCommand { get; }
@@ -46,8 +48,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IDialogManagerService mDialogManager;
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
-        
         private readonly ICultureProvider mCultureProvider;
+        private readonly ISystemDialogService mSystemDialog;
 
         #endregion
 
@@ -79,7 +81,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private string mScretchLoadedCompleteLogMessage;
         private string mScretchLoadedErrorLogMessage;
-        
+
+        private string mExtNotSupport1;
+        private string mExtNotSupport2;
+
+        private string mOpenFile;
+
 
         #endregion
 
@@ -87,7 +94,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
-                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService, IControlHelper controlHelper, ICultureProvider cultureProvider) : base(regionManager)
+                        IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
+                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -97,14 +105,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mDialogManager = dialogManager;
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
-            //mControlHelper = controlHelper;
             mCultureProvider = cultureProvider;
+            mSystemDialog = systemDialogService;
 
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
-            //MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
             ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
-            ShowOpenFileDialogDelegateCommand = new DelegateCommand(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
+            ShowOpenFileDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
             ShowSaveFileSourceTextDialogDelegateCommand = new DelegateCommand(ShowSaveFileSourceTextDialog, ShowSaveFileSourceTextDialogCanExecute);
             CleanExecuteEditorDelegateCommand = new DelegateCommand(CleanExecuteEditor, CleanExecuteEditorCanExecute);
             RunPythonCodeDelegateCommand = new DelegateCommand(RunPythonCode, RunPythonCodeCanExecute);
@@ -112,8 +119,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
 
             HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
-
-            LoadResources();
         }
 
         #endregion
@@ -128,7 +133,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             Subscribe();
-            
+            LoadResources();
+
             //#29
             mWebViewProvider.ReloadWebView();
 
@@ -262,8 +268,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent += RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
-
-            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent += RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         private void Unsubscribe()
@@ -277,8 +281,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent -= RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
-
-            mCultureProvider.RaiseCurrentAppCultureLoadOrChangeEvent -= RaiseCurrentAppCultureLoadOrChangeEvent;
         }
 
         #endregion
@@ -297,8 +299,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             return isPythonCodeNotExecute && isSourceNotEmpty;
         }
-
-      
         
         private void ReloadWebView()
         {
@@ -339,28 +339,57 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
-        private async void ShowOpenFileDialog()
+        private void ShowOpenFileDialog(string param)
         {
-            string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+            string initialPath = string.Empty;
 
-            if (mDialogManager.ShowFileBrowser(mOpenFileDialogDialogTitle, initialPath, cFilter))
+            if (param.Equals("Workspace"))
+                initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+
+            if (param.Equals("Script"))
+                initialPath = Settings.Default.SavedUserScriptsFolderPath;
+
+            string title = mOpenFileDialogDialogTitle;
+
+            var dialogParametrs = new DialogParameters
             {
-                string path = mDialogManager.FilePath;
-                if (path == "") return;
+                { DialogParametrsKeysName.TitleParametr, title },
+                { DialogParametrsKeysName.InitialDirectoryParametr, initialPath}
+            };
 
-                string xml = await mFileManagment.ReadTextAsStringAsync(path);
-                _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
+            OpenFileDialogResult result = mSystemDialog.ShowOpenFileDialog(dialogParametrs);
 
-
-                mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
-            }
-            else
+            if (result.IsOpenFileCanceled)
             {
                 mStatusBarNotificationDelivery.AppLogMessage = mFileNotSelectedLogMessage;
+                return;
+            }
+
+            OpenSupportedFile(result);
+        }
+
+        private async void OpenSupportedFile(OpenFileDialogResult result)
+        {
+            string path = result.OpenFilePath;
+
+            switch (result.OpenFileType)
+            {
+                case OpenFileType.Undefined:
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mExtNotSupport1} {Path.GetExtension(path)} {mExtNotSupport2}";
+                    break;
+                case OpenFileType.Script:
+                    SourceTextEditor = await mFileManagment.ReadTextAsStringAsync(path);
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
+                    break;
+                case OpenFileType.Workspace:
+                    string xml = await mFileManagment.ReadTextAsStringAsync(path);
+                    _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
+                    break;
             }
         }
 
-        private bool ShowOpenFileDialogCanExecute()
+        private bool ShowOpenFileDialogCanExecute(string param)
         {
             bool isPythonCodeNotExecute = !IsPythonCodeExecute;
             return isPythonCodeNotExecute;
@@ -602,7 +631,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private void RaiseDelegateCommandsCanExecuteChanged()
         {
-            //MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
             CopyToClipboardDelegateCommand.RaiseCanExecuteChanged();
             ReloadWebViewDelegateCommand.RaiseCanExecuteChanged();
             ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();
@@ -625,7 +653,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWarningStackOwerflow3 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow3");
 
             mSaveFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.DialogTitle");
-            mOpenFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.DialogTitle");
+            mOpenFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.Title");
             mFileNotSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSaved.LogMessage");
             mFileNotSelectedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSelected.LogMessage");
             mSaveFileDialogFilter = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.Filter");
@@ -634,6 +662,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mFileSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileSaved.LogMessage");
             mScretchLoadedCompleteLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedComplete.LogMessage");
             mScretchLoadedErrorLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedError.LogMessage");
+
+            mExtNotSupport1 = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.ExtensionNotSupported1");
+            mExtNotSupport2 = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.ExtensionNotSupported2");
+            mOpenFile = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.FileOpened.LogMessage");
         }
 
         #endregion
@@ -694,15 +726,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             UpdateResultExecutionTimeText(remoteCommandExecuteResult);
         }
 
-        private void RaiseCurrentAppCultureLoadOrChangeEvent(object sender)
-        {
-            LoadResources();
-        }
-
         #endregion
 
         #region Initialize Blockly
-
 
         private async void InitBlockly()
         {

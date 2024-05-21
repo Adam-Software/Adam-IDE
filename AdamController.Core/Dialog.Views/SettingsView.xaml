@@ -6,6 +6,9 @@
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              Width="800" Height="600">
+
+
+
     <Grid>
         <!-- The template for calling a dialog box through a service -->
     </Grid>
