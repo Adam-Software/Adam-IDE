@@ -1,9 +1,9 @@
 ﻿using AdamController.Services.Interfaces;
 using System.IO;
 using Prism.Services.Dialogs;
-using System.Windows.Forms;
+using Microsoft.Win32;
 using AdamController.Services.SystemDialogServiceDependency;
-using DialogResult = System.Windows.Forms.DialogResult;
+
 
 namespace AdamController.Services
 {
@@ -15,20 +15,15 @@ namespace AdamController.Services
         {
             
             mOpenFileDialog.Multiselect = false;
-            mOpenFileDialog.SupportMultiDottedExtensions = false;
             mOpenFileDialog.AddToRecent = true;
-            mOpenFileDialog.ShowPinnedPlaces = true;
             mOpenFileDialog.Filter = "SupportedFiles (*.xml,*.py)|*.xml;*.py|All files (*.*)|*.*";
-
             mOpenFileDialog.Title = parameters.GetValue<string>("Title");
             mOpenFileDialog.InitialDirectory = parameters.GetValue<string>("InitialDirectory");
-            mOpenFileDialog.ShowPreview = false;
             
-
-            DialogResult isOpen = mOpenFileDialog.ShowDialog();
+            bool? isOpen = mOpenFileDialog.ShowDialog();
             OpenFileDialogResult result = new();
             
-            if (isOpen == DialogResult.OK)
+            if (isOpen == true)
             {
                 string filePathName = mOpenFileDialog.FileName;
                 OpenFileType fileType = DetermineOpenFileType(filePathName);
@@ -58,7 +53,7 @@ namespace AdamController.Services
 
         public void Dispose()
         {
-            mOpenFileDialog.Dispose();
+            //mOpenFileDialog.Dispose();
         }
     }
 }
