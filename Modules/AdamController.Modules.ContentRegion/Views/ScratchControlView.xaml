@@ -72,7 +72,9 @@
                             CommandParameter="Workspace">
                         <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
                     </Button>
-                    <Button Padding="2" Margin="3 0 7 0" Command="{Binding ShowSaveFileDialogDelegateCommand}">
+                    <Button Padding="2" Margin="3 0 7 0" 
+                            Command="{Binding ShowSaveFileDialogDelegateCommand}"
+                            CommandParameter="Workspace">
                         <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
                     </Button>
                 <Button Padding="2" HorizontalAlignment="Left" Command="{Binding ReloadWebViewDelegateCommand}" >
@@ -115,8 +117,16 @@
                     
                         <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
                     </Button>
-                    
-                    <ToggleButton x:Name="ShowLineNumberButton" 
+
+                <Button HorizontalAlignment="Left" 
+                        Margin="3 0 7 0"
+                        Padding="2"
+                        Command="{Binding ShowSaveFileDialogDelegateCommand}"
+                        CommandParameter="Script">
+                    <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
+                </Button>
+
+                <ToggleButton x:Name="ShowLineNumberButton" 
                                   HorizontalAlignment="Left"     
                                   Padding="2"
                                   IsChecked="{Binding ShowLineNumber, Mode=TwoWay, Source={x:Static properties:Settings.Default }}"
@@ -164,12 +174,7 @@
 
                     </Button>
 
-                    <Button HorizontalAlignment="Left" 
-                            Margin="3 0 7 0"
-                            Padding="2"
-                            Command="{Binding ShowSaveFileSourceTextDialogDelegateCommand}">
-                        <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
-                    </Button>
+                
 
                     <Button HorizontalAlignment="Left" 
                             Padding="2"

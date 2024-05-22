@@ -2,9 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="ScratchControlViewModel.SaveFileDialog.DialogTitle">Save workspace</system:String>
-    <system:String x:Key="ScratchControlViewModel.SaveFileDialog.DialogTitle2">Save the program file</system:String>
-    <system:String x:Key="ScratchControlViewModel.SaveFileDialog.Filter">PythonScript file (.py)|*.py|All files|*.*</system:String>
+    <system:String x:Key="ScratchControlViewModel.SaveWorkspaceFileDialog.DialogTitle">Save workspace</system:String>
+    <system:String x:Key="ScratchControlViewModel.SaveScriptFileDialog.DialogTitle">Save the program file</system:String>
 
     <system:String x:Key="ScratchControlViewModel.Dialogs.FileSaved.LogMessage">The file is saved. Path</system:String>
     <system:String x:Key="ScratchControlViewModel.Dialogs.FileNotSaved.LogMessage">The file has not been saved</system:String>

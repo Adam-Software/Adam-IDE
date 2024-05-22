@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using damController.Services.SystemDialogServiceDependency;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
@@ -39,7 +40,7 @@ namespace AdamController.Core.Mvvm
 
         public virtual void OnDialogOpened(IDialogParameters parameters)
         {
-            Title = parameters.GetValue<string>(DialogParametrsKeysName.TitleParametr);
+            Title = parameters.GetValue<string>("Title");
         }
 
         public virtual void CloseDialog(string parameter)
