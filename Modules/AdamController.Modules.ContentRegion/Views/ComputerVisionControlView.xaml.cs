@@ -69,6 +69,9 @@ namespace AdamController.Modules.ContentRegion.Views
             string ip = Core.Properties.Settings.Default.ServerIP;
             string port = Core.Properties.Settings.Default.VideoDataExchangePort;
 
+            if (VideoView == null)
+                return;
+
             if (!VideoView.MediaPlayer.IsPlaying)
             {
                 using var media = new Media(mLibVLC, new Uri($"http://{ip}:{port}/stream/0"));

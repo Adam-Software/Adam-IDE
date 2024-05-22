@@ -157,7 +157,7 @@ namespace AdamController
 
                 if (!string.IsNullOrEmpty(ip))
                 {
-                    uri = new($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement");
+                    uri = new($"ws://{ip}:{port}/adam-2.7/movement");
                 }
                 else
                 {
