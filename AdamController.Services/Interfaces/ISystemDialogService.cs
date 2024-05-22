@@ -8,5 +8,6 @@ namespace AdamController.Services.Interfaces
     {
         public OpenFileDialogResult ShowOpenFileDialog(IDialogParameters parameters);
         public SaveFileDialogResult ShowSaveFileDialog(IDialogParameters parameters);
+        public OpenFolderDialogResult ShowOpenFolderDialog(IDialogParameters parameters);
     }
 }

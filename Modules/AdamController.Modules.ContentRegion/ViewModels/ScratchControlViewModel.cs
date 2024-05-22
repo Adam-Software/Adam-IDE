@@ -32,7 +32,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
         public DelegateCommand<string> ShowSaveFileDialogDelegateCommand { get; }
         public DelegateCommand<string> ShowOpenFileDialogDelegateCommand { get; }
-        //public DelegateCommand ShowSaveFileSourceTextDialogDelegateCommand { get; }
         public DelegateCommand CleanExecuteEditorDelegateCommand { get; }
         public DelegateCommand RunPythonCodeDelegateCommand { get; }
         public DelegateCommand StopPythonCodeExecuteDelegateCommand { get; }

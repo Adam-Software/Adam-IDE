@@ -4,7 +4,6 @@ using Prism.Services.Dialogs;
 using Microsoft.Win32;
 using AdamController.Services.SystemDialogServiceDependency;
 using damController.Services.SystemDialogServiceDependency;
-using LibVLCSharp.Shared;
 
 
 namespace AdamController.Services
@@ -41,7 +40,6 @@ namespace AdamController.Services
 
         public SaveFileDialogResult ShowSaveFileDialog(IDialogParameters parameters)
         {
-
             SupportFileType savedFileType = parameters.GetValue<SupportFileType>(DialogParametrsKeysName.SavedFileTypeParametr);
             string title = parameters.GetValue<string>(DialogParametrsKeysName.TitleParametr);
             string initialDirectory = parameters.GetValue<string>(DialogParametrsKeysName.InitialDirectoryParametr);
@@ -70,7 +68,28 @@ namespace AdamController.Services
             }
 
             return result;
+        }
 
+        public OpenFolderDialogResult ShowOpenFolderDialog(IDialogParameters parameters)
+        {
+            OpenFolderDialog openFolderDialog = new()
+            {
+                AddToRecent = false,
+                Multiselect = false,
+                Title = parameters.GetValue<string>(DialogParametrsKeysName.TitleParametr),
+                InitialDirectory = parameters.GetValue<string>(DialogParametrsKeysName.InitialDirectoryParametr)
+            };
+
+            bool? isOpen = openFolderDialog.ShowDialog();
+            OpenFolderDialogResult result = new();
+
+            if (isOpen == true)
+            {
+                result.IsSelectFolderCanceled = false;
+                result.SelectedFolderPath = openFolderDialog.FolderName;
+            }
+
+            return result;
         }
 
         private static SaveFileDialogParam DetermineSaveFileDialogParam(SupportFileType savedFileType)
@@ -110,7 +129,7 @@ namespace AdamController.Services
 
         public void Dispose()
         {
-            //mOpenFileDialog.Dispose();
+            
         }
     }
 }
