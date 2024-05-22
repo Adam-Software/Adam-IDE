@@ -1,6 +1,6 @@
 ﻿namespace AdamController.Services.SystemDialogServiceDependency
 {
-    public enum OpenFileType
+    public enum SupportFileType
     {
         Undefined = 0,
         Script = 1,

@@ -1,7 +1,10 @@
 ﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
 using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
+using AdamController.Services.SystemDialogServiceDependency;
+using damController.Services.SystemDialogServiceDependency;
 using Prism.Commands;
+using Prism.Services.Dialogs;
 using System.Windows;
 
 namespace AdamController.Modules.FlayoutsRegion.ViewModels
@@ -16,9 +19,9 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #region Services
 
-        private readonly IDialogManagerService mDialogManager;
         private readonly IFolderManagmentService mFolderManagment;
         private readonly ICultureProvider mCultureProvider;
+        private readonly ISystemDialogService mSystemDialogService;
 
         #endregion
 
@@ -36,11 +39,13 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         #endregion
 
-        public UserFoldersSettingsViewModel(IDialogManagerService dialogManager, IFolderManagmentService folderManagment, ICultureProvider cultureProvider) 
+        public UserFoldersSettingsViewModel(IFolderManagmentService folderManagment, ICultureProvider cultureProvider, ISystemDialogService systemDialogService) 
         {
-            mDialogManager = dialogManager;
+            ShowOpenFolderDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFolderDialog, ShowOpenFolderDialogCanExecute);
+
             mFolderManagment = folderManagment;
             mCultureProvider = cultureProvider;
+            mSystemDialogService = systemDialogService;
 
             BorderThickness = 1;
         }
@@ -52,30 +57,9 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
             if(isOpening)
             {
                 LoadResource();
-
-                ShowOpenFolderDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFolderDialog, ShowOpenFolderDialogCanExecute);
                 BorderBrush = Application.Current.TryFindResource("MahApps.Brushes.Text").ToString();
                 return;
             }
-
-            if (!isOpening)
-            {
-                ShowOpenFolderDialogDelegateCommand = null;
-                return;
-            }
-        }
-
-        #endregion
-
-        #region Private methods
-
-        private void LoadResource()
-        {
-            Header = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.Flyout.Header");
-            mTitleSelectWorkspaceDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectWorkspaceDialog");
-            mTitleSelectScriptDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectScriptDialog");
-
-
         }
 
         #endregion
@@ -99,8 +83,6 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
 
         private void OpenDialog(string dialogPathType)
         {
-            bool allowMultiselect = false;
-
             switch (dialogPathType)
             {
                 case cDialogParamWorkspace:
@@ -110,17 +92,26 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                         if (!string.IsNullOrEmpty(initialPath))
                             initialPath = mFolderManagment.MyDocumentsUserDir;
 
-                        mDialogManager.ShowFolderBrowser(mTitleSelectWorkspaceDialog, initialPath, allowMultiselect);
-                        string selectedPart = mDialogManager.FolderPath;
+                        var dialogParametrs = new DialogParameters
+                        {
+                            { DialogParametrsKeysName.TitleParametr, mTitleSelectWorkspaceDialog },
+                            { DialogParametrsKeysName.InitialDirectoryParametr, initialPath },
+                        };
+
+                        OpenFolderDialogResult result = mSystemDialogService.ShowOpenFolderDialog(dialogParametrs);
+
+                        if (result.IsSelectFolderCanceled)
+                            return;
+
+                        string selectedPart = result.SelectedFolderPath;
 
                         if (string.IsNullOrEmpty(selectedPart))
                             return;
-                        
-                        Settings.Default.SavedUserWorkspaceFolderPath = selectedPart;
 
+                        Settings.Default.SavedUserWorkspaceFolderPath = selectedPart;
                         break;
                     }
-                
+
                 case cDialogParamScript:
                     {
                         var initialPath = Settings.Default.SavedUserScriptsFolderPath;
@@ -128,8 +119,18 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                         if (!string.IsNullOrEmpty(initialPath))
                             initialPath = mFolderManagment.MyDocumentsUserDir;
 
-                        mDialogManager.ShowFolderBrowser(mTitleSelectScriptDialog, initialPath, allowMultiselect);
-                        string selectedPart = mDialogManager.FolderPath;
+                        var dialogParametrs = new DialogParameters
+                        {
+                            { DialogParametrsKeysName.TitleParametr, mTitleSelectScriptDialog },
+                            { DialogParametrsKeysName.InitialDirectoryParametr, initialPath },
+                        };
+
+                        var result = mSystemDialogService.ShowOpenFolderDialog(dialogParametrs);
+
+                        if (result.IsSelectFolderCanceled)
+                            return;
+
+                        string selectedPart = result.SelectedFolderPath;
 
                         if (string.IsNullOrEmpty(selectedPart)) return;
 
@@ -137,6 +138,17 @@ namespace AdamController.Modules.FlayoutsRegion.ViewModels
                         break;
                     }
             }
+        }
+
+
+        #endregion
+
+        #region Private methods
+        private void LoadResource()
+        {
+            Header = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.Flyout.Header");
+            mTitleSelectWorkspaceDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectWorkspaceDialog");
+            mTitleSelectScriptDialog = mCultureProvider.FindResource("UserFoldersSettingsView.ViewModel.TitleSelectScriptDialog");
         }
 
         #endregion

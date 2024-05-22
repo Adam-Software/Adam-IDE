@@ -7,5 +7,7 @@ namespace AdamController.Services.Interfaces
     public interface ISystemDialogService : IDisposable
     {
         public OpenFileDialogResult ShowOpenFileDialog(IDialogParameters parameters);
+        public SaveFileDialogResult ShowSaveFileDialog(IDialogParameters parameters);
+        public OpenFolderDialogResult ShowOpenFolderDialog(IDialogParameters parameters);
     }
 }

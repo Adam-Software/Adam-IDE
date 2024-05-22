@@ -5,7 +5,7 @@
         public bool IsOpenFileCanceled = true;
 
         public bool IsSupportedFileTypeOpened = false;
-        public OpenFileType OpenFileType { get; set; } = OpenFileType.Undefined;
+        public SupportFileType OpenFileType { get; set; } = SupportFileType.Undefined;
         public string OpenFilePath { get; set; } = string.Empty;
     }
 }

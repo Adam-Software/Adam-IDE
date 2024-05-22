@@ -70,7 +70,6 @@ namespace AdamController
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //#15 test
             containerRegistry.RegisterSingleton<IFlyoutStateChecker, FlyoutStateChecker>();
 
             containerRegistry.RegisterSingleton<ICultureProvider, CultureProvider>();
@@ -220,18 +219,11 @@ namespace AdamController
 
         private static void RegisterDialogs(IContainerRegistry containerRegistry)
         {
-            // used for call system dialog open file/open folder (finforms dialogs)
+            // used for call system dialog for open save/open/select file/folder (Microsoft.Win32 dialogs)
             containerRegistry.RegisterSingleton<ISystemDialogService, SystemDialogService>();
 
             //Dialog boxes are not used, but implemented
             //containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>();
-
-            //The old dialog call type integrated into the service
-            containerRegistry.RegisterSingleton<IDialogManagerService>(containerRegistry =>
-            {
-                var app = Current;
-                return new DialogManager(app);
-            });
         }
 
         protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
@@ -277,7 +269,7 @@ namespace AdamController
             Container.Resolve<ISubRegionChangeAwareService>().Dispose();
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
             Container.Resolve<IWebViewProvider>().Dispose();
-            Container.Resolve<IDialogManagerService>().Dispose();
+            Container.Resolve<ISystemDialogService>().Dispose();
 
             Container.Resolve<IPythonRemoteRunnerService>().Dispose();
             Container.Resolve<ICommunicationProviderService>().Dispose();

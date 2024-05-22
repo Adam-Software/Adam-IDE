@@ -11,6 +11,7 @@ using AdamController.Services.Interfaces;
 using AdamController.Services.SystemDialogServiceDependency;
 using AdamController.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
+using damController.Services.SystemDialogServiceDependency;
 using ICSharpCode.AvalonEdit.Highlighting;
 using Prism.Commands;
 using Prism.Regions;
@@ -29,9 +30,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         public DelegateCommand CopyToClipboardDelegateCommand { get; }
         public DelegateCommand ReloadWebViewDelegateCommand { get; }
-        public DelegateCommand ShowSaveFileDialogDelegateCommand { get; }
+        public DelegateCommand<string> ShowSaveFileDialogDelegateCommand { get; }
         public DelegateCommand<string> ShowOpenFileDialogDelegateCommand { get; }
-        public DelegateCommand ShowSaveFileSourceTextDialogDelegateCommand { get; }
         public DelegateCommand CleanExecuteEditorDelegateCommand { get; }
         public DelegateCommand RunPythonCodeDelegateCommand { get; }
         public DelegateCommand StopPythonCodeExecuteDelegateCommand { get; }
@@ -45,7 +45,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IPythonRemoteRunnerService mPythonRemoteRunner;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotificationDelivery;
         private readonly IWebViewProvider mWebViewProvider;
-        private readonly IDialogManagerService mDialogManager;
         private readonly IFileManagmentService mFileManagment;
         private readonly IWebApiService mWebApiService;
         private readonly ICultureProvider mCultureProvider;
@@ -70,13 +69,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private string mWarningStackOwerflow2;
         private string mWarningStackOwerflow3;
 
-        private string mSaveFileDialogDialogTitle;
-        private string mSaveScriptFileDialogDialogTitle;
+        private string mSaveWorkspaceDialogTitle;
+        private string mSaveScriptFileDialogTitle;
 
         private string mOpenFileDialogDialogTitle;
         private string mFileNotSavedLogMessage;
         private string mFileNotSelectedLogMessage;
-        private string mSaveFileDialogFilter;
         private string mFileSavedLogMessage;
 
         private string mScretchLoadedCompleteLogMessage;
@@ -93,7 +91,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #region ~
 
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
-                        IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider, IDialogManagerService dialogManager, 
+                        IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider,
                         IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
                         ICultureProvider cultureProvider, ISystemDialogService systemDialogService) : base(regionManager)
         {
@@ -102,17 +100,16 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mPythonRemoteRunner = pythonRemoteRunner;
             mStatusBarNotificationDelivery = statusBarNotificationDelivery;
             mWebViewProvider = webViewProvider;
-            mDialogManager = dialogManager;
             mFileManagment = fileManagment;
             mWebApiService = webApiService;
             mCultureProvider = cultureProvider;
             mSystemDialog = systemDialogService;
 
+            ShowSaveFileDialogDelegateCommand = new DelegateCommand<string>(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
+            ShowOpenFileDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
+
             CopyToClipboardDelegateCommand = new DelegateCommand(CopyToClipboard, CopyToClipboardCanExecute);
             ReloadWebViewDelegateCommand = new DelegateCommand(ReloadWebView, ReloadWebViewCanExecute);
-            ShowSaveFileDialogDelegateCommand = new DelegateCommand(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
-            ShowOpenFileDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
-            ShowSaveFileSourceTextDialogDelegateCommand = new DelegateCommand(ShowSaveFileSourceTextDialog, ShowSaveFileSourceTextDialogCanExecute);
             CleanExecuteEditorDelegateCommand = new DelegateCommand(CleanExecuteEditor, CleanExecuteEditorCanExecute);
             RunPythonCodeDelegateCommand = new DelegateCommand(RunPythonCode, RunPythonCodeCanExecute);
             StopPythonCodeExecuteDelegateCommand = new DelegateCommand(StopPythonCodeExecute, StopPythonCodeExecuteCanExecute);
@@ -311,34 +308,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isPythonCodeNotExecute;
         }
 
-        private async void ShowSaveFileDialog()
-        {
-            string workspace = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()", true);
-            string initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
-            string fileName = "workspace";
-            string defaultExt = ".xml";
-            
-            if (mDialogManager.ShowSaveFileDialog(mSaveFileDialogDialogTitle, initialPath, fileName, defaultExt, cFilter))
-            {
-                string path = mDialogManager.FilePathToSave;
-                await mFileManagment.WriteAsync(path, workspace);
-
-                mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {mDialogManager.FilePathToSave}";
-            }
-            else
-            {
-                mStatusBarNotificationDelivery.AppLogMessage = mFileNotSavedLogMessage;
-            }
-        }
-
-        private bool ShowSaveFileDialogCanExecute()
-        {
-            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
-            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
-
-            return isPythonCodeNotExecute && isSourceNotEmpty;
-        }
-
         private void ShowOpenFileDialog(string param)
         {
             string initialPath = string.Empty;
@@ -368,59 +337,56 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             OpenSupportedFile(result);
         }
 
-        private async void OpenSupportedFile(OpenFileDialogResult result)
+        private void ShowSaveFileDialog(string param)
         {
-            string path = result.OpenFilePath;
-
-            switch (result.OpenFileType)
+            string title = string.Empty;
+            string initialPath = string.Empty;
+            SupportFileType fileType = SupportFileType.Undefined;
+            
+            if (param.Equals("Workspace"))
             {
-                case OpenFileType.Undefined:
-                    mStatusBarNotificationDelivery.AppLogMessage = $"{mExtNotSupport1} {Path.GetExtension(path)} {mExtNotSupport2}";
-                    break;
-                case OpenFileType.Script:
-                    SourceTextEditor = await mFileManagment.ReadTextAsStringAsync(path);
-                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
-                    break;
-                case OpenFileType.Workspace:
-                    string xml = await mFileManagment.ReadTextAsStringAsync(path);
-                    _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
-                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
-                    break;
+                title = mSaveWorkspaceDialogTitle;
+                initialPath = Settings.Default.SavedUserWorkspaceFolderPath;
+                fileType = SupportFileType.Workspace;
             }
+
+            if (param.Equals("Script"))
+            {
+                title = mSaveScriptFileDialogTitle;
+                initialPath = Settings.Default.SavedUserScriptsFolderPath;
+                fileType = SupportFileType.Script;
+            };
+            
+            var dialogParametrs = new DialogParameters
+            {
+                { DialogParametrsKeysName.TitleParametr, title },
+                { DialogParametrsKeysName.InitialDirectoryParametr, initialPath },
+                { DialogParametrsKeysName.SavedFileTypeParametr, fileType }
+            };
+
+            SaveFileDialogResult result = mSystemDialog.ShowSaveFileDialog(dialogParametrs);
+
+            if (result.IsSaveFileCanceled)
+            {
+                mStatusBarNotificationDelivery.AppLogMessage = mFileNotSavedLogMessage;
+                return;
+            }
+
+            SaveSupportedFile(result, fileType);
+        }
+
+        private bool ShowSaveFileDialogCanExecute(string param)
+        {
+            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
+            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
+
+            return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
         private bool ShowOpenFileDialogCanExecute(string param)
         {
             bool isPythonCodeNotExecute = !IsPythonCodeExecute;
             return isPythonCodeNotExecute;
-        }
-
-        private async void ShowSaveFileSourceTextDialog()
-        {
-            string pythonProgram = SourceTextEditor;
-            string initialPath = Settings.Default.SavedUserScriptsFolderPath;
-            string fileName = "new_program";
-            string defaultExt = ".py";
-
-
-            if (mDialogManager.ShowSaveFileDialog(mSaveScriptFileDialogDialogTitle, initialPath, fileName, defaultExt, mSaveFileDialogFilter))
-            {
-                string path = mDialogManager.FilePathToSave;
-                await mFileManagment.WriteAsync(path, pythonProgram);
-
-                mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {mDialogManager.FilePathToSave}";
-            }
-            else
-            {
-                mStatusBarNotificationDelivery.AppLogMessage = mFileNotSavedLogMessage;
-            }
-        }
-
-        private bool ShowSaveFileSourceTextDialogCanExecute()
-        {
-            bool isPythonCodeNotExecute = !IsPythonCodeExecute;
-            bool isSourceNotEmpty = SourceTextEditor?.Length > 0;
-            return isPythonCodeNotExecute && isSourceNotEmpty;
         }
 
         private void CleanExecuteEditor()
@@ -629,13 +595,51 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             //PythonWorkDir = $"Рабочая дирректория {pythonWorkDir}";
         }
 
+        private async void OpenSupportedFile(OpenFileDialogResult result)
+        {
+            string path = result.OpenFilePath;
+
+            switch (result.OpenFileType)
+            {
+                case SupportFileType.Undefined:
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mExtNotSupport1} {Path.GetExtension(path)} {mExtNotSupport2}";
+                    break;
+                case SupportFileType.Script:
+                    SourceTextEditor = await mFileManagment.ReadTextAsStringAsync(path);
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
+                    break;
+                case SupportFileType.Workspace:
+                    string xml = await mFileManagment.ReadTextAsStringAsync(path);
+                    _ = await ExecuteScriptFunctionAsync("loadSavedWorkspace", new object[] { xml });
+                    mStatusBarNotificationDelivery.AppLogMessage = $"{mOpenFile} {path}";
+                    break;
+            }
+        }
+
+        private async void SaveSupportedFile(SaveFileDialogResult result, SupportFileType fileType)
+        {
+            string path = result.SavedFilePath;
+
+            if (fileType == SupportFileType.Script)
+            {
+                string file = SourceTextEditor;
+                await mFileManagment.WriteAsync(path, file);
+            }
+            if (fileType == SupportFileType.Workspace)
+            {
+                string file = await mWebViewProvider.ExecuteJavaScript("getSavedWorkspace()", true);
+                await mFileManagment.WriteAsync(path, file);
+            }
+
+            mStatusBarNotificationDelivery.AppLogMessage = $"{mFileSavedLogMessage} {path}";
+        }
+
         private void RaiseDelegateCommandsCanExecuteChanged()
         {
             CopyToClipboardDelegateCommand.RaiseCanExecuteChanged();
             ReloadWebViewDelegateCommand.RaiseCanExecuteChanged();
             ShowSaveFileDialogDelegateCommand.RaiseCanExecuteChanged();
             ShowOpenFileDialogDelegateCommand.RaiseCanExecuteChanged();
-            ShowSaveFileSourceTextDialogDelegateCommand.RaiseCanExecuteChanged();
             CleanExecuteEditorDelegateCommand.RaiseCanExecuteChanged();
             RunPythonCodeDelegateCommand.RaiseCanExecuteChanged();
             StopPythonCodeExecuteDelegateCommand.RaiseCanExecuteChanged();
@@ -652,13 +656,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWarningStackOwerflow2 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow2");
             mWarningStackOwerflow3 = mCultureProvider.FindResource("DebuggerMessages.ResultMessages.WarningStackOwerflow3");
 
-            mSaveFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.DialogTitle");
+            mSaveWorkspaceDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveWorkspaceFileDialog.DialogTitle");
+            mSaveScriptFileDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveScriptFileDialog.DialogTitle");
+
             mOpenFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.OpenFileDialog.Title");
             mFileNotSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSaved.LogMessage");
             mFileNotSelectedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileNotSelected.LogMessage");
-            mSaveFileDialogFilter = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.Filter");
-
-            mSaveScriptFileDialogDialogTitle = mCultureProvider.FindResource("ScratchControlViewModel.SaveFileDialog.DialogTitle2");
+           
             mFileSavedLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.Dialogs.FileSaved.LogMessage");
             mScretchLoadedCompleteLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedComplete.LogMessage");
             mScretchLoadedErrorLogMessage = mCultureProvider.FindResource("ScratchControlViewModel.ScretchLoadedError.LogMessage");
