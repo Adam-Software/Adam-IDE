@@ -21,6 +21,9 @@
   <PropertyGroup>
     <StartupObject>AdamController.App</StartupObject>
     <ApplicationIcon>..\AdamController.Core\Properties\Icons\main_app_icon.ico</ApplicationIcon>
+    <PackageProjectUrl>https://github.com/Adam-Software/AdamStudio</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Adam-Software/AdamStudio</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;CA1416</NoWarn>

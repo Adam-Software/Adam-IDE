@@ -4,7 +4,7 @@
 #define MyAppName "AdamStudio"
 #define MyAppPublisher "AdamSoftware"
 #define MyAppURL "https://robotco.ru/"
-#define MySupportURL = "https://github.com/Adam-Software/Adam-IDE"
+#define MySupportURL = "https://github.com/Adam-Software/AdamStudio"
 #define MyAppExeName "AdamController.exe"
 #define InstallerIconPath "AdamController.Core\Properties\Icons\main_app_icon.ico"
 #define AppReleaseFolderPath "AdamController\bin\Release\net8.0-windows7.0\"
