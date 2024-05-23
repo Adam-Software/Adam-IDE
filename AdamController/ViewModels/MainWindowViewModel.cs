@@ -65,7 +65,7 @@ namespace AdamController.ViewModels
 
         #region Public fields
 
-        public string WindowTitle => $"Adam IDE {Assembly.GetExecutingAssembly().GetName().Version}";
+        public string WindowTitle => $"AdamStudio {Assembly.GetExecutingAssembly().GetName().Version}";
 
         /// <summary>
         /// -1 is not selected

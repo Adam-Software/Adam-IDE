@@ -28,6 +28,9 @@ SolidCompression=yes
 WizardStyle=modern
 SetupIconFile={#InstallerIconPath}
 UninstallDisplayIcon={#InstallerIconPath}
+PrivilegesRequired=admin
+ArchitecturesInstallIn64BitMode=x64
+RestartIfNeededByRun=no
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
