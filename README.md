@@ -1,4 +1,8 @@
 # AdamStudio
+![GitHub Release](https://img.shields.io/github/v/release/Adam-Software/AdamStudio?include_prereleases&display_name=release)
+![GitHub repo size](https://img.shields.io/github/repo-size/Adam-Software/AdamStudio)
+
+
 Integrated development environment for robot Adam
 
 # Development environment
