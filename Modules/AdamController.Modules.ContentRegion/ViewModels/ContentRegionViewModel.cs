@@ -64,7 +64,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                     break;
 
                 case SubRegionNames.SubRegionVisualSettings:
-                    RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(VisualSettingsControlView), parameters);
+                    RegionManager.RequestNavigate(SubRegionNames.InsideConentRegion, nameof(SettingsControlView), parameters);
                     break;
 
             }

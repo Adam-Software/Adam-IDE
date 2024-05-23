@@ -2,9 +2,9 @@
 
 namespace AdamController.Modules.ContentRegion.Views
 {
-    public partial class VisualSettingsControlView : UserControl
+    public partial class SettingsControlView : UserControl
     {
-        public VisualSettingsControlView()
+        public SettingsControlView()
         {
             InitializeComponent();
         }

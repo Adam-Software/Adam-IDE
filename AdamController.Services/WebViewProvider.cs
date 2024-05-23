@@ -24,6 +24,12 @@ namespace AdamController.Services
 
         #endregion
 
+        #region Public fields
+
+        public bool NeedReloadOnLoad { get; set; } = false;
+
+        #endregion
+
         #region Public methods
 
         public void WebViewMessageReceived(WebMessageJsonReceived receivedResult)
