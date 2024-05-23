@@ -1,6 +1,8 @@
 # AdamStudio
 ![GitHub Release](https://img.shields.io/github/v/release/Adam-Software/AdamStudio?include_prereleases&display_name=release)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Adam-Software/AdamStudio)
+![Prism](https://img.shields.io/badge/Prism-Dry.IoC-red?logo=dotenv)
+
 
 
 Integrated development environment for robot Adam
