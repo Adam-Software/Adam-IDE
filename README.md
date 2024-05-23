@@ -1,5 +1,5 @@
-# Adam-IDE
-IDE for robot Adam
+# AdamStudio
+Integrated development environment for robot Adam
 
 # Development environment
 
