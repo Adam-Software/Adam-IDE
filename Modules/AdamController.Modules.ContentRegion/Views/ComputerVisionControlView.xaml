@@ -24,15 +24,23 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+            
 
-            <vlc:VideoView Grid.Row="0"
-                           Margin="0"
-                           x:Name="VideoView">
+        <MediaElement Grid.Row="0"
+                      Grid.Column="0"
+                      x:Name="VideoView"
+                      LoadedBehavior="Manual"
+                      />
 
-                <!--#region Buttons -->
+        <!--#region Buttons -->
 
-                <Expander Width="415" 
+        <Expander Width="415"
+                  Grid.Row="1"
                           Height="210"
                           Margin="0"
                           BorderThickness="1 1 1 0.51"
@@ -44,50 +52,50 @@
                           BorderBrush="{DynamicResource MahApps.Brushes.Text}"
                           mah:HeaderedControlHelper.HeaderBackground="{DynamicResource MahApps.Brushes.Control.Background}">
 
-                    <Expander.Header>
-                        <StackPanel Orientation="Vertical" 
+            <Expander.Header>
+                <StackPanel Orientation="Vertical" 
                                     VerticalAlignment="Center">
 
-                            <TextBlock Text="{DynamicResource ComputerVisionControlView.Expander.Header.TextBlock.Management}" >
-                                <TextBlock.LayoutTransform>
-                                    <RotateTransform Angle="90"/>
-                                </TextBlock.LayoutTransform>
-                            </TextBlock>
-                        </StackPanel>
+                    <TextBlock Text="{DynamicResource ComputerVisionControlView.Expander.Header.TextBlock.Management}" >
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </StackPanel>
 
-                    </Expander.Header>
+            </Expander.Header>
 
-                    <Grid Width="450"
+            <Grid Width="450"
                           Height="200">
 
-                        <Grid.RowDefinitions>
-                            <!--0-->
-                            <RowDefinition Height="*" />
-                            <!--1-->
-                            <RowDefinition Height="*" />
-                            <!--2-->
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <!--0-->
+                    <RowDefinition Height="*" />
+                    <!--1-->
+                    <RowDefinition Height="*" />
+                    <!--2-->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <!--0-->
-                            <ColumnDefinition Width="*"/>
-                            <!--1-->
-                            <ColumnDefinition Width="*"/>
-                            <!--2-->
-                            <ColumnDefinition Width="*"/>
-                            <!--3-->
-                            <ColumnDefinition Width="*"/>
-                            <!--4-->
-                            <ColumnDefinition Width="*"/>
-                            <!--5-->
-                            <ColumnDefinition Width="*"/>
+                <Grid.ColumnDefinitions>
+                    <!--0-->
+                    <ColumnDefinition Width="*"/>
+                    <!--1-->
+                    <ColumnDefinition Width="*"/>
+                    <!--2-->
+                    <ColumnDefinition Width="*"/>
+                    <!--3-->
+                    <ColumnDefinition Width="*"/>
+                    <!--4-->
+                    <ColumnDefinition Width="*"/>
+                    <!--5-->
+                    <ColumnDefinition Width="*"/>
 
-                        </Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>
 
-                        <!--#region row 0 -->
+                <!--#region row 0 -->
 
-                        <Slider Grid.Column="4"
+                <Slider Grid.Column="4"
                                 Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Margin="0 10 0 10"
@@ -98,319 +106,319 @@
                                 Value="{Binding SliderValue}"
                                 Style="{DynamicResource  MahApps.Styles.Slider.Flat}"/>
 
-                        <!--#endregion-->
+                <!--#endregion-->
 
-                        <!--#region row 1 -->
+                <!--#region row 1 -->
 
-                        <Button Grid.Column="0"
+                <Button Grid.Column="0"
                                 Grid.Row="0"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5"
                                 Command="{Binding ToZeroPositionCommand}">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                         Height="Auto"
                                                         Kind="HomeFloor0"
                                                         Margin="5"/>
-                        </Button>
+                </Button>
 
-                        <Button Grid.Column="1"
+                <Button Grid.Column="1"
                                 Grid.Row="0"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
                                                 Kind="ArrowTopLeft"
                                                 Margin="5"/>
-                            
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction
                                             Command="{Binding DirectionButtonCommandDown}"
                                             CommandParameter="{Binding ForwardLeftDirection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction
                                             Command="{Binding DirectionButtonCommandUp}"
                                             CommandParameter="{Binding StopDirrection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                            </i:Interaction.Triggers>
-                        </Button>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                        <Button Grid.Column="2"
+                <Button Grid.Column="2"
                                 Grid.Row="0"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5"
                                 Style="{DynamicResource MahApps.Styles.Button}">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                         Height="Auto"
                                                         Kind="ArrowUp"
                                                         Margin="5"/>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding ForwardDirection}"/>
 
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
 
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                            </i:Interaction.Triggers>
-                        </Button>
+                    </i:Interaction.Triggers>
+                </Button>
 
 
-                        <Button Grid.Column="3"
+                <Button Grid.Column="3"
                                 Grid.Row="0"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
                                                 Kind="ArrowTopRight"
                                                 Margin="5"/>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction
                                 Command="{Binding DirectionButtonCommandDown}"
                                 CommandParameter="{Binding ForwardRightDirection}" />
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction
                                 Command="{Binding DirectionButtonCommandUp}"
                                 CommandParameter="{Binding StopDirrection}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                        <!--#endregion-->
+                <!--#endregion-->
 
-                        <!--#region row 2 -->
+                <!--#region row 2 -->
 
-                        <Button Grid.Column="1"
+                <Button Grid.Column="1"
                                 Grid.Row="1"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                         Height="Auto"
                                                         Kind="ArrowLeft"
                                                         Margin="5"/>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding LeftDirection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
 
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                        <Button Grid.Column="2"
+                <Button Grid.Column="2"
                                 Grid.Row="1"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5"
                                 Click="Button_Click">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                         Height="Auto"
                                                         Kind="Play"
                                                         Margin="5"/>
 
-                        </Button>
+                </Button>
 
-                        <Button Grid.Column="3"
+                <Button Grid.Column="3"
                                 Grid.Row="1"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
                                                 Kind="ArrowRight"
                                                 Margin="5"/>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding RightDirection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
 
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                        <!--#endregion-->
+                <!--#endregion-->
 
-                        <!--#region row 3 -->
+                <!--#region row 3 -->
 
-                        <Button Grid.Column="0"
+                <Button Grid.Column="0"
                                 Grid.Row="2"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                         Height="Auto"
                                                         Kind="RotateLeft"
                                                         Margin="5"/>
 
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding RotateLeftDirrection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                            </i:Interaction.Triggers>
-                        </Button>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                        <Button Grid.Column="1"
+                <Button Grid.Column="1"
                                 Grid.Row="2"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
                                                 Kind="ArrowBottomLeft"
                                                 Margin="5"/>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding BackLeftDirection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                            </i:Interaction.Triggers>
-                        </Button>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                        <Button Grid.Column="2"
+                <Button Grid.Column="2"
                                 Grid.Row="2"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5"
                                 Style="{DynamicResource MahApps.Styles.Button}">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
                                                 Kind="ArrowDown"
                                                 Margin="5"/>
 
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding BackDirection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
 
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
 
-                        <Button Grid.Column="3"
+                <Button Grid.Column="3"
                                 Grid.Row="2"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                         Height="Auto"
                                                         Kind="ArrowBottomRight"
                                                         Margin="5"/>
-                            <i:Interaction.Triggers>
+                    <i:Interaction.Triggers>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding BackRightDirection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
 
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                        <Button Grid.Column="4"
+                <Button Grid.Column="4"
                                 Grid.Row="2"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="5">
 
-                            <iconPacks:PackIconMaterial Width="Auto"
+                    <iconPacks:PackIconMaterial Width="Auto"
                                                 Height="Auto"
                                                 Kind="RotateRight"
                                                 Margin="5"/>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
                                                            CommandParameter="{Binding RotateRightDirrection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                                    <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
                                                            CommandParameter="{Binding StopDirrection}" />
-                                </i:EventTrigger>
+                        </i:EventTrigger>
 
-                            </i:Interaction.Triggers>
-                        </Button>
-                    </Grid>
-                </Expander>
-            </vlc:VideoView>
-        </Grid>
+                    </i:Interaction.Triggers>
+                </Button>
+            </Grid>
+        </Expander>
+
+    </Grid>
 
 
 

@@ -2,6 +2,7 @@
 using LibVLCSharp.Shared;
 using LibVLCSharp.WPF;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,8 +17,8 @@ namespace AdamController.Modules.ContentRegion.Views
 
         #endregion
 
-        private LibVLC mLibVLC;
-        private MediaPlayer mMediaPlayer;
+        //private LibVLC mLibVLC;
+        //private MediaPlayer mMediaPlayer;
 
         public ComputerVisionControlView(IWebSocketClientService webSocketClient)
         {
@@ -26,21 +27,21 @@ namespace AdamController.Modules.ContentRegion.Views
             mWebSocketClient = webSocketClient;
 
             VideoView.Loaded += VideoView_Loaded;
-            Unloaded += UserControlUnloaded;
+            //Unloaded += UserControlUnloaded;
         }
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                mLibVLC = new LibVLC(enableDebugLogs: false);
-                mMediaPlayer = new MediaPlayer(mLibVLC);
+                //mLibVLC = new LibVLC(enableDebugLogs: false);
+                //mMediaPlayer = new MediaPlayer(mLibVLC);
 
-                VideoView.MediaPlayer = mMediaPlayer;
+                //VideoView.MediaPlayer = mMediaPlayer;
 
-                mMediaPlayer.EnableHardwareDecoding = true;
-                mMediaPlayer.NetworkCaching = 1000;
-                mMediaPlayer.Scale = 0.72f;
+                //mMediaPlayer.EnableHardwareDecoding = true;
+                //mMediaPlayer.NetworkCaching = 1000;
+                //mMediaPlayer.Scale = 0.72f;
             }
             catch 
             {
@@ -59,8 +60,8 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             if (disposing)
             {
-                mMediaPlayer?.Dispose();
-                mLibVLC?.Dispose();
+                //mMediaPlayer?.Dispose();
+                //mLibVLC?.Dispose();
             }
         }
 
@@ -68,15 +69,22 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             string ip = Core.Properties.Settings.Default.ServerIP;
             string port = Core.Properties.Settings.Default.VideoDataExchangePort;
+            //var uri = new Uri($"http://{ip}:{port}/stream/0");
+            var userDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var uri = new Uri($"{userDir}{Path.DirectorySeparatorChar}test.avi");
 
             if (VideoView == null)
                 return;
+            
+            VideoView.Source = uri;
+            //var test = VideoView.HasVideo;
 
-            if (!VideoView.MediaPlayer.IsPlaying)
+            VideoView.Play();
+            /*if (!VideoView.MediaPlayer.IsPlaying)
             {
                 using var media = new Media(mLibVLC, new Uri($"http://{ip}:{port}/stream/0"));
                 VideoView.MediaPlayer.Play(media);
-            }
+            }*/
         }
 
         public void Dispose()
