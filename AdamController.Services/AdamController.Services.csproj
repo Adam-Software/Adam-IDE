@@ -19,6 +19,7 @@
     <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
     <PackageReference Include="Websocket.Client" Version="5.1.1" />
+    <PackageReference Include="zgabi.FFME.Windows" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>

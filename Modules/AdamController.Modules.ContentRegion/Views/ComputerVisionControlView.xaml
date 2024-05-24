@@ -8,9 +8,10 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
+             xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
-
+    <!--xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"-->
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Loaded">
             <behaviors:InvokeCommandAction Command="{Binding WindowLoaded}"/>
@@ -29,15 +30,15 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-            
 
-        <MediaElement Grid.Row="0"
+
+        <ffme:MediaElement Grid.Row="0"
                       Grid.Column="0"
                       Grid.RowSpan="2"
                       x:Name="VideoView"
                       Stretch="Fill"
-                      LoadedBehavior="Play"
-                      
+                      LoadedBehavior="Manual"
+                      Background="Gray"
                       
                       />
 

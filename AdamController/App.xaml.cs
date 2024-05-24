@@ -46,6 +46,7 @@ using System.ComponentModel;
 using AdamController.Core.Dialog.ViewModels;
 using AdamController.Core.Dialog.Views;
 using Microsoft.Win32;
+using System.IO;
 
 #endregion
 
@@ -64,6 +65,7 @@ namespace AdamController
 
         protected override Window CreateShell()
         {
+            LoadSharedFFmpegLibrary();
             MainWindow window = Container.Resolve<MainWindow>();
             return window;
         }
@@ -349,6 +351,19 @@ namespace AdamController
             {
                 OnAppCrashOrExit();
             }
+        }
+
+
+
+        #endregion
+
+        #region PrivateMethods
+
+        private void LoadSharedFFmpegLibrary()
+        {
+            //var exePath = AppDomain.CurrentDomain.BaseDirectory + "ffmpeg";
+            string exePath = "C:\\Users\\Professional\\Documents\\development\\VCS\\project\\Adam-IDE\\AdamController\\bin\\Debug\\net8.0-windows7.0\\ffmpeg\\";
+            Unosquare.FFME.Library.FFmpegDirectory = exePath;
         }
 
         #endregion

@@ -4,8 +4,10 @@ using LibVLCSharp.WPF;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
+using Unosquare.FFME.Playlists;
 
 namespace AdamController.Modules.ContentRegion.Views
 {
@@ -23,10 +25,10 @@ namespace AdamController.Modules.ContentRegion.Views
 
         public ComputerVisionControlView(IWebSocketClientService webSocketClient)
         {
+            
             InitializeComponent();
 
             mWebSocketClient = webSocketClient;
-
             VideoView.Loaded += VideoView_Loaded;
             //Unloaded += UserControlUnloaded;
         }
@@ -35,6 +37,9 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             try
             {
+                var userDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var uri = new Uri($"{userDir}{Path.DirectorySeparatorChar}test.avi");
+                VideoView.Open(uri);
                 //mLibVLC = new LibVLC(enableDebugLogs: false);
                 //mMediaPlayer = new MediaPlayer(mLibVLC);
 
@@ -66,30 +71,47 @@ namespace AdamController.Modules.ContentRegion.Views
             }
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             string ip = Core.Properties.Settings.Default.ServerIP;
             string port = Core.Properties.Settings.Default.VideoDataExchangePort;
-            //var uri = new Uri($"http://{ip}:{port}/stream/0");
+            //var uri = new Uri($"http://{ip}:{port}/stream/0.mjpeg");
+
             var userDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var uri = new Uri($"{userDir}{Path.DirectorySeparatorChar}test.avi");
-            //HttpClient client = new HttpClient();
-            //HttpRandomAccessStream stream = await HttpRandomAccessStream.CreateAsync(client, uri);
-           
-
+            /*HttpClient client = new HttpClient();
+            HttpResponseMessage test = await client.GetAsync(uri);
+            var con = test.Content;
+            Stream str = con.ReadAsStream();*/
 
             if (VideoView == null)
                 return;
-            
-            VideoView.Source = uri;
+
+            Play(uri);
+            //VideoView.Source = uri;
             //var test = VideoView.HasVideo;
 
-            VideoView.Play();
+            //await VideoView.Play();
+            
             /*if (!VideoView.MediaPlayer.IsPlaying)
             {
                 using var media = new Media(mLibVLC, new Uri($"http://{ip}:{port}/stream/0"));
                 VideoView.MediaPlayer.Play(media);
             }*/
+        }
+
+        private void Play(Uri uri)
+        {
+            try
+            {
+                VideoView.Play();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
+
         }
 
         public void Dispose()
