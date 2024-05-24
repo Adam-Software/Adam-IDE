@@ -33,8 +33,12 @@
 
         <MediaElement Grid.Row="0"
                       Grid.Column="0"
+                      Grid.RowSpan="2"
                       x:Name="VideoView"
-                      LoadedBehavior="Manual"
+                      Stretch="Fill"
+                      LoadedBehavior="Play"
+                      
+                      
                       />
 
         <!--#region Buttons -->

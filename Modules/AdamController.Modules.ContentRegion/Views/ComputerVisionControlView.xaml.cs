@@ -3,6 +3,7 @@ using LibVLCSharp.Shared;
 using LibVLCSharp.WPF;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -65,13 +66,17 @@ namespace AdamController.Modules.ContentRegion.Views
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             string ip = Core.Properties.Settings.Default.ServerIP;
             string port = Core.Properties.Settings.Default.VideoDataExchangePort;
             //var uri = new Uri($"http://{ip}:{port}/stream/0");
             var userDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var uri = new Uri($"{userDir}{Path.DirectorySeparatorChar}test.avi");
+            //HttpClient client = new HttpClient();
+            //HttpRandomAccessStream stream = await HttpRandomAccessStream.CreateAsync(client, uri);
+           
+
 
             if (VideoView == null)
                 return;
