@@ -3,8 +3,8 @@
     <WebView2LoaderPreference>Dynamic</WebView2LoaderPreference>
     <WebView2UseWinRT>False</WebView2UseWinRT>
     <PackageLicenseExpression>MIT-Modern-Variant</PackageLicenseExpression>
-    <AssemblyVersion>2.0.0.5</AssemblyVersion>
-    <FileVersion>2.0.0.5</FileVersion>
+    <AssemblyVersion>2.0.0.6</AssemblyVersion>
+    <FileVersion>2.0.0.6</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>net8.0-windows7.0</TargetFramework>
@@ -21,6 +21,9 @@
   <PropertyGroup>
     <StartupObject>AdamController.App</StartupObject>
     <ApplicationIcon>..\AdamController.Core\Properties\Icons\main_app_icon.ico</ApplicationIcon>
+    <PackageProjectUrl>https://github.com/Adam-Software/AdamStudio</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Adam-Software/AdamStudio</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;CA1416</NoWarn>

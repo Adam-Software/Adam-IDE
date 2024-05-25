@@ -15,7 +15,7 @@ using System.Windows.Media;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
-    public class VisualSettingsControlViewModel : RegionViewModelBase 
+    public class SettingsControlViewModel : RegionViewModelBase 
     {
         #region DelegateCommands
 
@@ -31,6 +31,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IFlyoutManager mFlyoutManager;
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
+        private readonly IWebViewProvider mWebViewProvider;
 
         #endregion
 
@@ -43,11 +44,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public VisualSettingsControlViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, IThemeManagerService themeManager, ICultureProvider cultureProvider) : base(regionManager)
+        public SettingsControlViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, 
+            IThemeManagerService themeManager, ICultureProvider cultureProvider, IWebViewProvider webViewProvider) : base(regionManager)
         {
             mFlyoutManager = flyoutManager;
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
+            mWebViewProvider = webViewProvider;
 
             ChangeSpacingToggleSwitchDelegateCommand = new DelegateCommand(ChangeSpacingToggleSwitch, ChangeSpacingToggleSwitchCanExecute);
             OpenPortSettingsDelegateCommand = new DelegateCommand(OpenPortSettings, OpenPortSettingsCanExecute);
@@ -99,7 +102,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return true;
         }
 
-
         #endregion
 
         #region Navigation
@@ -125,7 +127,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             base.OnNavigatedFrom(navigationContext);
         }
 
-
         #endregion
 
         #region Public fields
@@ -145,8 +146,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 bool isNewValue = SetProperty(ref selectedLanguageApp, value);
 
-                if(isNewValue)
+                if (isNewValue)
+                {
+                    mWebViewProvider.NeedReloadOnLoad = true;
                     ChangeAppLanguage(SelectedLanguageApp);
+                }
             }
         }
 
@@ -166,7 +170,10 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 bool isNewValue = SetProperty(ref selectedTheme, value);
 
                 if (isNewValue)
+                {
+                    mWebViewProvider.NeedReloadOnLoad = true;
                     ChangeTheme(SelectedTheme);
+                }
             } 
         }
 

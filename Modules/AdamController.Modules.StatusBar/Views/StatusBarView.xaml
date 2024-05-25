@@ -54,7 +54,7 @@
             <!--#region Compile status bar -->
 
             <StatusBarItem Grid.Column="1" 
-                           Content="{Binding CompileLogStatusBar }"
+                           Content="{Binding CompileLogStatusBar, TargetNullValue=Compiler log }"
                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
 
             <!--#endregion-->

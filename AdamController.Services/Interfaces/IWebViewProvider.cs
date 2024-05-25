@@ -26,6 +26,10 @@ namespace AdamController.Services.Interfaces
         public event ExecuteJavaScriptEventHandler RaiseExecuteJavaScriptEvent;
         public event ExecuteReloadWebViewEventHandler RaiseExecuteReloadWebViewEvent;
 
+        /// <summary>
+        /// Default false. Set to true for WebView reload 
+        /// </summary>
+        public bool NeedReloadOnLoad { get; set; }
 
         /// <summary>
         /// Execute JS script

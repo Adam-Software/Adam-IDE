@@ -76,7 +76,11 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void RaiseExecuteReloadWebViewEvent(object sender)
         {
-            WebView?.CoreWebView2?.Reload();
+            if (mWebViewProvider.NeedReloadOnLoad)
+            {
+                WebView?.CoreWebView2?.Reload();
+                mWebViewProvider.NeedReloadOnLoad = false;
+            } 
         }
 
         private async Task<string> RaiseExecuteJavaScriptEvent(object sender, string script, bool deserializeResultToString = false)

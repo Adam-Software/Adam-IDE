@@ -46,6 +46,7 @@ using System.ComponentModel;
 using AdamController.Core.Dialog.ViewModels;
 using AdamController.Core.Dialog.Views;
 using Microsoft.Win32;
+using System.IO;
 
 #endregion
 
@@ -58,6 +59,7 @@ namespace AdamController
         public App()
         {
             Subscribe();
+            LoadSharedFFmpegLibrary();
         }
 
         #endregion
@@ -157,7 +159,7 @@ namespace AdamController
 
                 if (!string.IsNullOrEmpty(ip))
                 {
-                    uri = new($"ws://{Settings.Default.ServerIP}:9001/adam-2.7/movement");
+                    uri = new($"ws://{ip}:{port}/adam-2.7/movement");
                 }
                 else
                 {
@@ -349,6 +351,18 @@ namespace AdamController
             {
                 OnAppCrashOrExit();
             }
+        }
+
+
+
+        #endregion
+
+        #region PrivateMethods
+
+        private static void LoadSharedFFmpegLibrary()
+        {
+            var ffmpegPath = AppDomain.CurrentDomain.BaseDirectory;
+            Unosquare.FFME.Library.FFmpegDirectory = ffmpegPath;
         }
 
         #endregion

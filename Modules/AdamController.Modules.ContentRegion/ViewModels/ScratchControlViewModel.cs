@@ -299,6 +299,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         
         private void ReloadWebView()
         {
+            mWebViewProvider.NeedReloadOnLoad = true;
             mWebViewProvider.ReloadWebView();
         }
 
