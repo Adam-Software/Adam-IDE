@@ -59,13 +59,13 @@ namespace AdamController
         public App()
         {
             Subscribe();
+            LoadSharedFFmpegLibrary();
         }
 
         #endregion
 
         protected override Window CreateShell()
         {
-            LoadSharedFFmpegLibrary();
             MainWindow window = Container.Resolve<MainWindow>();
             return window;
         }
@@ -359,11 +359,10 @@ namespace AdamController
 
         #region PrivateMethods
 
-        private void LoadSharedFFmpegLibrary()
+        private static void LoadSharedFFmpegLibrary()
         {
-            //var exePath = AppDomain.CurrentDomain.BaseDirectory + "ffmpeg";
-            string exePath = "C:\\Users\\Professional\\Documents\\development\\VCS\\project\\Adam-IDE\\AdamController\\bin\\Debug\\net8.0-windows7.0\\ffmpeg\\";
-            Unosquare.FFME.Library.FFmpegDirectory = exePath;
+            var ffmpegPath = AppDomain.CurrentDomain.BaseDirectory;
+            Unosquare.FFME.Library.FFmpegDirectory = ffmpegPath;
         }
 
         #endregion
