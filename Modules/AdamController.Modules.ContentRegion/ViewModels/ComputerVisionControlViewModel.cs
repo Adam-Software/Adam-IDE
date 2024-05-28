@@ -4,7 +4,6 @@ using AdamController.Services.Interfaces;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
@@ -15,6 +14,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private readonly ICommunicationProviderService mCommunicationProvider;
         private readonly IWebApiService mWebApiService;
+        private readonly IVideoViewProvider mVideoViewProvider;
 
         #endregion
 
@@ -27,10 +27,12 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         #region ~
 
-        public ComputerVisionControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IWebApiService webApiService) : base(regionManager)
+        public ComputerVisionControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, 
+                                                IWebApiService webApiService, IVideoViewProvider videoViewProvider) : base(regionManager)
         {
             mCommunicationProvider = communicationProvider;
             mWebApiService = webApiService;
+            mVideoViewProvider = videoViewProvider;
         }
 
         #endregion
