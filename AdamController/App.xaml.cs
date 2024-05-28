@@ -215,6 +215,7 @@ namespace AdamController
 
             containerRegistry.RegisterSingleton<IThemeManagerService, ThemeManagerService>();
             containerRegistry.RegisterSingleton<IControlHelper, ControlHelper>();
+            containerRegistry.RegisterSingleton<IVideoViewProvider, VideoViewProvider>();
 
             RegisterDialogs(containerRegistry);
         }

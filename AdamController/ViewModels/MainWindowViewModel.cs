@@ -36,13 +36,15 @@ namespace AdamController.ViewModels
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
         private readonly IControlHelper mControlHelper;
+        private readonly IVideoViewProvider mVideoViewProvider;
         #endregion
 
         #region ~
 
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
                     ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
-                    IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, IControlHelper controlHelper) 
+                    IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, 
+                    IControlHelper controlHelper, IVideoViewProvider videoViewProvider) 
         {
             RegionManager = regionManager;
             mWebApiService = webApiService;
@@ -54,6 +56,7 @@ namespace AdamController.ViewModels
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
             mControlHelper = controlHelper;
+            mVideoViewProvider = videoViewProvider;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
@@ -98,6 +101,13 @@ namespace AdamController.ViewModels
             }
         }
 
+        private string videoFrameRate;
+        public string VideoFrameRate
+        {
+            get { return videoFrameRate; }
+            set {  SetProperty(ref videoFrameRate, value); }
+        }
+
         #endregion
 
         #region DelegateCommands methods
@@ -128,9 +138,6 @@ namespace AdamController.ViewModels
         private bool MoveSplitterCanExecute(string arg)
         {
             return HamburgerMenuSelectedIndex == 0;
-            //return true;
-            //bool isPythonCodeNotExecute = !IsPythonCodeExecute;
-            //return isPythonCodeNotExecute;
         }
 
         #endregion
@@ -232,6 +239,8 @@ namespace AdamController.ViewModels
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
+            mVideoViewProvider.RaiseFrameRateUpdateEvent += RaiseFrameRateUpdateEvent;
+
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
         }
 
@@ -243,6 +252,7 @@ namespace AdamController.ViewModels
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent -= RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
+            mVideoViewProvider.RaiseFrameRateUpdateEvent -= RaiseFrameRateUpdateEvent;
             Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }
 
@@ -296,6 +306,19 @@ namespace AdamController.ViewModels
         private void RaiseUdpServiceServerReceivedEvent(object sender, string message)
         {
             ParseSyslogMessage(message);
+        }
+
+        private void RaiseFrameRateUpdateEvent(object sender)
+        {
+            double rate = double.Round(mVideoViewProvider.FrameRate, 2);
+
+            if (double.IsNaN(rate))
+            {
+                VideoFrameRate = string.Empty;
+                return;
+            }
+                
+            VideoFrameRate = $"{rate} FPS";
         }
 
         #endregion

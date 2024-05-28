@@ -20,9 +20,11 @@
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands ShowLastSeparator="False">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" >
+                
                 <Border Margin="29 0 0 0" BorderThickness="0.5" />
                 <ContentControl Margin="5 0 10 0" prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
+
             </StackPanel> 
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
@@ -38,6 +40,7 @@
 
                 <StackPanel Margin="0 0 30 0"
                             DockPanel.Dock="Right" 
+                            Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center">
 
@@ -62,17 +65,23 @@
 
                 <Button Command="{Binding MoveSplitterDelegateCommand}"
                         CommandParameter="Left"
-                        
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
                     <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronLeft" />
                 </Button>
 
                 <Button Command="{Binding MoveSplitterDelegateCommand}"
                         CommandParameter="Right"
-                        
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
                     <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronRight" />
                 </Button>
+
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="10 0 10 0"
+                            Text="{Binding VideoFrameRate}"
+                           
+                           Foreground="{DynamicResource MahApps.Brushes.Text}"
+                           Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"/>
 
 
             </StackPanel>

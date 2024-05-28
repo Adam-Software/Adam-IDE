@@ -12,7 +12,6 @@ namespace AdamController.Services
         #endregion
 
         #region ~
-
         public SubRegionChangeAwareService() { }
 
         #endregion
