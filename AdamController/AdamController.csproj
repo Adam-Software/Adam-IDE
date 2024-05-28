@@ -3,8 +3,8 @@
     <WebView2LoaderPreference>Dynamic</WebView2LoaderPreference>
     <WebView2UseWinRT>False</WebView2UseWinRT>
     <PackageLicenseExpression>MIT-Modern-Variant</PackageLicenseExpression>
-    <AssemblyVersion>2.0.0.6</AssemblyVersion>
-    <FileVersion>2.0.0.6</FileVersion>
+    <AssemblyVersion>2.0.0.7</AssemblyVersion>
+    <FileVersion>2.0.0.7</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>net8.0-windows7.0</TargetFramework>
