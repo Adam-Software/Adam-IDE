@@ -10,11 +10,14 @@
              xmlns:behaviors="clr-namespace:AdamController.Core.Behaviors;assembly=AdamController.Core"
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:prism="http://prismlibrary.com/" 
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win">
 
     <UserControl.Resources>
         <converters:GridLengthConverter x:Key="GridLengthConverter" />
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToVisibilityReConverter x:Key="BoolToVisibilityReConverter"/>
     </UserControl.Resources>
 
     <Grid x:Name="MainGrid">
@@ -49,32 +52,44 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="BlocklyColumn" Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, 
-                    Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
+                <ColumnDefinition x:Name="BlocklyColumn" 
+                                  Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, 
+                                                  Converter={StaticResource GridLengthConverter}, 
+                                                  Source={x:Static properties:Settings.Default }}"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!--#endregion-->
 
-            <!--#region  web view -->
+        <!--#region  web view -->
 
-            <DockPanel Grid.Column="0"
-                       Grid.Row="1"
-                       Margin="2 7 0 0"
-                       LastChildFill="True">
+            
+        <DockPanel Grid.Column="0"
+                   Grid.Row="1"
+                   Margin="2 7 0 0"
+                   LastChildFill="True"
+                   Visibility="{Binding IsShowVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-                <DockPanel Margin="5 0 0 5" DockPanel.Dock="Top">
+            <DockPanel Margin="5 0 0 5" DockPanel.Dock="Top">
 
-                    <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}" 
-                            CommandParameter="Workspace">
-                        <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
-                    </Button>
-                    <Button Padding="2" Margin="3 0 7 0" 
-                            Command="{Binding ShowSaveFileDialogDelegateCommand}"
-                            CommandParameter="Workspace">
-                        <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
-                    </Button>
+                    
+                <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}" 
+                        CommandParameter="Workspace">
+                        
+                    <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
+                    
+                </Button>
+                
+                
+                <Button Padding="2" Margin="3 0 7 0" 
+                        Command="{Binding ShowSaveFileDialogDelegateCommand}"        
+                        CommandParameter="Workspace">
+                        
+                    <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
+                    
+                </Button>
+            
                 <Button Padding="2" HorizontalAlignment="Left" Command="{Binding ReloadWebViewDelegateCommand}" >
                     <iconPacks:PackIconMaterial  Padding="2"  Kind="Reload" />
                 </Button>
@@ -83,15 +98,35 @@
 
             <Border DockPanel.Dock="Top"  Margin="-1 0 0 0" BorderThickness="0 1 0 0"/>
 
-            <webControl:WebView2  DockPanel.Dock="Top"
+                <webControl:WebView2  DockPanel.Dock="Top"
                                       Name="WebView"
                                       DefaultBackgroundColor="Transparent"
-                                       
                                       ZoomFactor="{Binding WebViewZoomFactor, Mode=TwoWay, Source={x:Static properties:Settings.Default }}"
                                       Margin="0"/>
-            </DockPanel>
+            
+        </DockPanel>
 
-            <!--#endregion-->
+        <DockPanel Grid.Column="0"
+                   Grid.Row="1"
+                   Margin="2 7 0 0"
+                   LastChildFill="True"
+                   Visibility="{Binding IsShowVideo, Converter={StaticResource BoolToVisibilityReConverter}}">
+
+            <ffme:MediaElement Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.RowSpan="2"
+                   x:Name="VideoView"
+                   HorizontalContentAlignment="Stretch"
+                   VerticalContentAlignment="Stretch"
+                   Stretch="Uniform"
+                   LoadedBehavior="Play"
+                   UnloadedBehavior="Manual"
+                   Background="{DynamicResource MahApps.Brushes.Control.Background}"/>
+
+        </DockPanel>
+
+
+        <!--#endregion-->
 
             <!--#region vertical splitter -->
 

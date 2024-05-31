@@ -3,6 +3,7 @@ using AdamBlocklyLibrary.Enum;
 using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
+using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
@@ -49,6 +50,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly IWebApiService mWebApiService;
         private readonly ICultureProvider mCultureProvider;
         private readonly ISystemDialogService mSystemDialog;
+        private readonly IControlHelper mControlHelper;
 
         #endregion
 
@@ -93,7 +95,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider,
                         IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
-                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService) : base(regionManager)
+                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService, IControlHelper controlHelper) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -104,6 +106,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebApiService = webApiService;
             mCultureProvider = cultureProvider;
             mSystemDialog = systemDialogService;
+            mControlHelper = controlHelper;
 
             ShowSaveFileDialogDelegateCommand = new DelegateCommand<string>(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
             ShowOpenFileDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
@@ -148,6 +151,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #endregion
 
         #region Public fields
+
+        private bool isShowVideo;
+        public bool IsShowVideo
+        {
+            get => isShowVideo;
+            set => SetProperty(ref isShowVideo, value);
+        }
 
         private bool isTcpClientConnected;
         public bool IsTcpClientConnected
@@ -265,6 +275,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent += RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
+
+            mControlHelper.IsVideoShowChangeEvent += IsVideoShowChangeEvent;
         }
 
         private void Unsubscribe()
@@ -278,6 +290,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
             mWebViewProvider.RaiseWebViewMessageReceivedEvent -= RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
+
+            mControlHelper.IsVideoShowChangeEvent -= IsVideoShowChangeEvent;
         }
 
         #endregion
@@ -729,6 +743,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
    
             UpdateResultText("", true);
             UpdateResultExecutionTimeText(remoteCommandExecuteResult);
+        }
+
+        private void IsVideoShowChangeEvent(object sender)
+        {
+            IsShowVideo = mControlHelper.IsShowVideo;
         }
 
         #endregion

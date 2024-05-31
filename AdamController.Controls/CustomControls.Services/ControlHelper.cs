@@ -6,6 +6,7 @@ namespace AdamController.Controls.CustomControls.Services
     public class ControlHelper : BindableBase, IControlHelper
     {
         public event BlocklyColumnWidthChangeEventHandler RaiseBlocklyColumnWidthChangeEvent;
+        public event IsVideoShowChangeEventHandler IsVideoShowChangeEvent;
 
         public ControlHelper() {}
 
@@ -60,6 +61,19 @@ namespace AdamController.Controls.CustomControls.Services
             }
         }
 
+        private bool isShowVideo;
+        public bool IsShowVideo 
+        { 
+            get =>  isShowVideo;  
+            set 
+            {
+                bool isNewValue = SetProperty(ref isShowVideo, value);
+
+                if (!isNewValue)
+                    OnIsVideoShowChangeEvent();
+            } 
+        }
+
         private void UpdateBlocklyColumnWidth()
         {
             var dividedScreen = MainGridActualWidth/2;
@@ -103,6 +117,13 @@ namespace AdamController.Controls.CustomControls.Services
         {
             BlocklyColumnWidthChangeEventHandler raiseEvent = RaiseBlocklyColumnWidthChangeEvent;
             raiseEvent?.Invoke(this);
+        }
+
+        protected virtual void OnIsVideoShowChangeEvent()
+        {
+            IsVideoShowChangeEventHandler raiseEvent = IsVideoShowChangeEvent;
+            raiseEvent?.Invoke(this);
+
         }
     }
 }

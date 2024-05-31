@@ -75,11 +75,17 @@
                     <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronRight" />
                 </Button>
 
+                <Button Command="{Binding SwitchToVideoDelegateCommand}"
+                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
+                    
+                    <iconPacks:PackIconModern Padding="0 3 0 3" Kind="Camera" />
+                    
+                </Button>
+
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Margin="10 0 10 0"
-                            Text="{Binding VideoFrameRate}"
-                           
+                           Text="{Binding VideoFrameRate}"
                            Foreground="{DynamicResource MahApps.Brushes.Text}"
                            Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"/>
 
