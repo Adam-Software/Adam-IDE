@@ -69,8 +69,8 @@ namespace AdamController.Controls.CustomControls.Services
             {
                 bool isNewValue = SetProperty(ref isShowVideo, value);
 
-                if (!isNewValue)
-                    OnIsVideoShowChangeEvent();
+                if (isNewValue)
+                    OnRaiseIsVideoShowChangeEvent();
             } 
         }
 
@@ -119,7 +119,7 @@ namespace AdamController.Controls.CustomControls.Services
             raiseEvent?.Invoke(this);
         }
 
-        protected virtual void OnIsVideoShowChangeEvent()
+        protected virtual void OnRaiseIsVideoShowChangeEvent()
         {
             IsVideoShowChangeEventHandler raiseEvent = IsVideoShowChangeEvent;
             raiseEvent?.Invoke(this);

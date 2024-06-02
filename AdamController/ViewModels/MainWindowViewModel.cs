@@ -18,7 +18,7 @@ namespace AdamController.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         #region DelegateCommands
-
+        public DelegateCommand SwitchToVideoDelegateCommand { get; }
         public DelegateCommand<string> ShowRegionCommand { get; private set; }
         public DelegateCommand<string> MoveSplitterDelegateCommand { get; private set; }
 
@@ -26,7 +26,7 @@ namespace AdamController.ViewModels
 
         #region Services
 
-        public IRegionManager RegionManager { get; }
+        private readonly IRegionManager mRegionManager;
         private readonly ISubRegionChangeAwareService mSubRegionChangeAwareService;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
         private readonly ICommunicationProviderService mCommunicationProviderService;
@@ -46,7 +46,7 @@ namespace AdamController.ViewModels
                     IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, 
                     IControlHelper controlHelper, IVideoViewProvider videoViewProvider) 
         {
-            RegionManager = regionManager;
+            mRegionManager = regionManager;
             mWebApiService = webApiService;
             mSubRegionChangeAwareService = subRegionChangeAwareService;
             mStatusBarNotification = statusBarNotification;
@@ -60,6 +60,7 @@ namespace AdamController.ViewModels
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
+            SwitchToVideoDelegateCommand = new DelegateCommand(SwitchToVideo, SwitchToVideoCanExecute);
 
             Subscribe();
         }
@@ -140,6 +141,22 @@ namespace AdamController.ViewModels
             return HamburgerMenuSelectedIndex == 0;
         }
 
+        private void SwitchToVideo()
+        {
+            if (mControlHelper.IsShowVideo)
+            {
+                mControlHelper.IsShowVideo = false;
+                return;
+            }
+                
+            mControlHelper.IsShowVideo= true;
+        }
+
+        private bool SwitchToVideoCanExecute()
+        {
+            return true;
+        }
+
         #endregion
 
         #region Private methods
@@ -165,13 +182,13 @@ namespace AdamController.ViewModels
             switch (subRegionName)
             {
                 case SubRegionNames.SubRegionScratch:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
                     break;
                 case SubRegionNames.SubRegionComputerVisionControl:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
                     break;
                 case SubRegionNames.SubRegionVisualSettings:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
                     break;
             }
         }

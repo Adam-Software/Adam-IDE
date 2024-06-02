@@ -22,7 +22,6 @@
         <mah:WindowCommands ShowLastSeparator="False">
             <StackPanel Orientation="Horizontal" >
                 
-                <Border Margin="29 0 0 0" BorderThickness="0.5" />
                 <ContentControl Margin="5 0 10 0" prism:RegionManager.RegionName="{x:Static core:RegionNames.MenuRegion}" />
 
             </StackPanel> 
@@ -63,6 +62,13 @@
             
             <StackPanel Orientation="Horizontal">
 
+                <Button Command="{Binding SwitchToVideoDelegateCommand}"
+                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
+
+                    <iconPacks:PackIconModern Padding="0 3 0 3" Kind="Camera" />
+
+                </Button>
+
                 <Button Command="{Binding MoveSplitterDelegateCommand}"
                         CommandParameter="Left"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
@@ -73,13 +79,6 @@
                         CommandParameter="Right"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
                     <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronRight" />
-                </Button>
-
-                <Button Command="{Binding SwitchToVideoDelegateCommand}"
-                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
-                    
-                    <iconPacks:PackIconModern Padding="0 3 0 3" Kind="Camera" />
-                    
                 </Button>
 
                 <TextBlock HorizontalAlignment="Center"
@@ -105,56 +104,6 @@
     
     <Grid>
 
-        <!--#region GridResources -->
-
-        <Grid.Resources>
-            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
-                <Grid Height="25"
-                      >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0"
-                               FontSize="14"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontFamily="Segoe MDL2 Assets"
-                               Text="{Binding Glyph}" />
-
-                    <TextBlock Grid.Column="1"
-                               VerticalAlignment="Center"
-                               FontSize="14"
-                               Text="{Binding Label}" />
-                </Grid>
-            </DataTemplate>
-
-            <DataTemplate x:Key="OptionsMenuItemTemplate" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
-                <Grid Height="30">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="30" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0"
-                               FontSize="14"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontFamily="Segoe MDL2 Assets"
-                               Text="{Binding Glyph}" />
-                    <TextBlock Grid.Column="1"
-                               VerticalAlignment="Center"
-                               FontSize="14"
-                               Text="{Binding Label}" />
-                </Grid>
-            </DataTemplate>
-
-
-        </Grid.Resources>
-
-        <!--#endregion-->
-
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -169,88 +118,11 @@
              To unlock, delete the parameters: CompactPaneLength="30" and MaximumOpenPaneLength="30"
         -->
 
-        <Border BorderThickness="1" 
-                Margin="30 0 0 0"/>
-                 
-        <mah:HamburgerMenu Grid.Column="0"
-                           Grid.Row="0"
-                           Margin="0 -25 0 0"
-                           PaneMargin="0 25 0 0"
-                           IsPaneOpen="True"
-                           PaneHeaderMargin="0 0 0 5"
-                           HamburgerVisibility="Collapsed"
-                           MaximumOpenPaneLength="30"     
-                           SelectedIndex="{Binding HamburgerMenuSelectedIndex}"
-                           SelectedOptionsIndex="{Binding HamburgerMenuSelectedOptionsIndex}"
-                           ItemTemplate="{ StaticResource MenuItemTemplate}"
-                           OptionsItemTemplate="{ StaticResource OptionsMenuItemTemplate}"
-                           DisplayMode="CompactInline">
-
-            <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        
-                        <iconPacks:PackIconUnicons  HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Margin="0 -25 0 0"
-                                                    Foreground="{DynamicResource MahApps.Brushes.Badged.Foreground}"
-                                                    Kind="Robot" />
-                        
-                        <Border  BorderThickness="0 1 0 0"/>
-                        
-                    </StackPanel>
-                </DataTemplate>
-                
-            </mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
-            
-            <!--  Items  -->
-            <mah:HamburgerMenu.ItemsSource>
-
-                <mah:HamburgerMenuItemCollection>
-
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xE76E;" 
-                                                Label="{DynamicResource HamburgerMenu.ScratchEditorHeader}" 
-                                                Command="{Binding ShowRegionCommand}" 
-                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionScratch}"/>
-                   
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xEA0C;" 
-                                                Label="{DynamicResource HamburgerMenu.ComputerVisionHeader}" 
-                                                Command="{Binding ShowRegionCommand}" 
-                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionComputerVisionControl}"/>
-
-                </mah:HamburgerMenuItemCollection>
-            </mah:HamburgerMenu.ItemsSource>
-
-            <!--Options-->
-            <mah:HamburgerMenu.OptionsItemsSource>
-
-                <mah:HamburgerMenuItemCollection>
-
-                    <mah:HamburgerMenuGlyphItem Glyph="&#xE713;" 
-                                                Label="{DynamicResource HamburgerMenu.VisualSettingsHeader}" 
-                                                Command="{Binding ShowRegionCommand}" 
-                                                CommandParameter="{x:Static core:SubRegionNames.SubRegionVisualSettings}"/>
-
-                </mah:HamburgerMenuItemCollection>
-
-            </mah:HamburgerMenu.OptionsItemsSource>
-
-            <!--  Content -->
-
-
-            <mah:HamburgerMenu.Content> 
-
-
-                <ContentControl Margin="0 25 0 0"
-                                prism:RegionManager.RegionManager="{Binding RegionManager}"
-                                prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
-
-
-            </mah:HamburgerMenu.Content>
-
-        </mah:HamburgerMenu>
-
+        <Border BorderThickness="1" />
         
+        <ContentControl Grid.Column="0"
+                        Grid.Row="0"         
+                        prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
 
         <ContentControl  Grid.ColumnSpan="5" Grid.Row="1" 
                          Height="25"
