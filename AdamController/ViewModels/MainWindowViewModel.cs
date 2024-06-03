@@ -18,9 +18,11 @@ namespace AdamController.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         #region DelegateCommands
+        
+        public DelegateCommand<string> ShowRegionCommand { get; }
+        public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
         public DelegateCommand SwitchToVideoDelegateCommand { get; }
-        public DelegateCommand<string> ShowRegionCommand { get; private set; }
-        public DelegateCommand<string> MoveSplitterDelegateCommand { get; private set; }
+        public DelegateCommand<string> SwitchToSettingsViewDelegateCommand { get; }
 
         #endregion
 
@@ -36,7 +38,6 @@ namespace AdamController.ViewModels
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
         private readonly IControlHelper mControlHelper;
-        private readonly IVideoViewProvider mVideoViewProvider;
         #endregion
 
         #region ~
@@ -44,7 +45,7 @@ namespace AdamController.ViewModels
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
                     ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
                     IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, 
-                    IControlHelper controlHelper, IVideoViewProvider videoViewProvider) 
+                    IControlHelper controlHelper) 
         {
             mRegionManager = regionManager;
             mWebApiService = webApiService;
@@ -56,11 +57,12 @@ namespace AdamController.ViewModels
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
             mControlHelper = controlHelper;
-            mVideoViewProvider = videoViewProvider;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
+
             SwitchToVideoDelegateCommand = new DelegateCommand(SwitchToVideo, SwitchToVideoCanExecute);
+            SwitchToSettingsViewDelegateCommand = new DelegateCommand<string>(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
 
             Subscribe();
         }
@@ -70,38 +72,6 @@ namespace AdamController.ViewModels
         #region Public fields
 
         public string WindowTitle => $"AdamStudio {Assembly.GetExecutingAssembly().GetName().Version}";
-
-        /// <summary>
-        /// -1 is not selected
-        /// </summary>
-        private int hamburgerMenuSelectedIndex = -1;
-        public int HamburgerMenuSelectedIndex 
-        { 
-            get { return hamburgerMenuSelectedIndex; }
-            set
-            {
-                bool isNewValue = SetProperty(ref hamburgerMenuSelectedIndex, value);
-                
-                if(isNewValue)
-                    MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
-            } 
-        }
-
-        /// <summary>
-        /// -1 is not selected
-        /// </summary>
-        private int hamburgerMenuSelectedOptionsIndex = -1;
-
-        public int HamburgerMenuSelectedOptionsIndex
-        {
-            get { return hamburgerMenuSelectedOptionsIndex; }
-
-            set
-            {
-                SetProperty(ref hamburgerMenuSelectedOptionsIndex, value);
-            }
-        }
-
 
 
         #endregion
@@ -133,7 +103,8 @@ namespace AdamController.ViewModels
 
         private bool MoveSplitterCanExecute(string arg)
         {
-            return HamburgerMenuSelectedIndex == 0;
+            var regionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            return regionName == SubRegionNames.SubRegionScratch;
         }
 
         private void SwitchToVideo()
@@ -144,10 +115,34 @@ namespace AdamController.ViewModels
                 return;
             }
                 
-            mControlHelper.IsShowVideo= true;
+            mControlHelper.IsShowVideo = true;
         }
 
         private bool SwitchToVideoCanExecute()
+        {
+            var regionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            return regionName == SubRegionNames.SubRegionScratch;
+        }
+
+        private void SwitchToSettingsView(string commandArg)
+        {
+            
+            var regionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            
+            if (regionName == SubRegionNames.SubRegionScratch)
+            {
+                ShowRegion(SubRegionNames.SubRegionVisualSettings);
+                return;
+            }
+            
+            if(regionName == SubRegionNames.SubRegionVisualSettings)
+            {
+                ShowRegion(SubRegionNames.SubRegionScratch);
+                return;
+            }    
+        }
+
+        private bool SwitchToSettingsViewCanExecute(string commandArg)
         {
             return true;
         }
@@ -155,22 +150,6 @@ namespace AdamController.ViewModels
         #endregion
 
         #region Private methods
-
-        private void ChangeSelectedIndexByRegionName(string subRegionName)
-        {
-            switch (subRegionName)
-            {
-                case SubRegionNames.SubRegionScratch:
-                    HamburgerMenuSelectedIndex = 0;
-                    break;
-                case SubRegionNames.SubRegionComputerVisionControl:
-                    HamburgerMenuSelectedIndex = 1;
-                    break;
-                case SubRegionNames.SubRegionVisualSettings:
-                    HamburgerMenuSelectedOptionsIndex = 0;
-                    break;
-            }
-        }
 
         private void ShowRegion(string subRegionName)
         {
@@ -186,6 +165,9 @@ namespace AdamController.ViewModels
                     mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
                     break;
             }
+
+            MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
+            SwitchToVideoDelegateCommand.RaiseCanExecuteChanged(); 
         }
 
         /// <summary>
@@ -248,10 +230,8 @@ namespace AdamController.ViewModels
         /// </summary>
         private void Subscribe()
         {
-            mSubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
-            mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
-           
+            mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;  
 
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
         }
@@ -261,7 +241,6 @@ namespace AdamController.ViewModels
         /// </summary>
         private void Unsubscribe()
         {
-            mSubRegionChangeAwareService.RaiseSubRegionChangeEvent -= RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
             
@@ -294,15 +273,6 @@ namespace AdamController.ViewModels
 
             if (Settings.Default.AutoStartTcpConnect)
                 mCommunicationProviderService.ConnectAllAsync();
-        }
-
-        /// <summary>
-        /// Changes the selected section in the hamburger menu
-        /// </summary>
-        private void RaiseSubRegionChangeEvent(object sender)
-        {
-            var changeRegionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
-            ChangeSelectedIndexByRegionName(changeRegionName);
         }
 
         /// <summary>

@@ -59,15 +59,8 @@
 
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands ShowLastSeparator="False">
-            
+
             <StackPanel Orientation="Horizontal">
-
-                <Button Command="{Binding SwitchToVideoDelegateCommand}"
-                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
-
-                    <iconPacks:PackIconModern Padding="0 3 0 3" Kind="Camera" />
-
-                </Button>
 
                 <Button Command="{Binding MoveSplitterDelegateCommand}"
                         CommandParameter="Left"
@@ -79,6 +72,23 @@
                         CommandParameter="Right"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
                     <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronRight" />
+                </Button>
+
+                <Button Margin="20 0 5 0"
+                        Command="{Binding SwitchToVideoDelegateCommand}"
+                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
+
+                    <iconPacks:PackIconModern Kind="Camera" />
+
+                </Button>
+
+                <Button Margin="5 0 5 0"
+                        Command="{Binding SwitchToSettingsViewDelegateCommand}"
+                        CommandParameter="Remove"
+                        Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
+
+                    <iconPacks:PackIconModern Kind="Settings" />
+
                 </Button>
 
             </StackPanel>
