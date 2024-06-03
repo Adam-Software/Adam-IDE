@@ -102,12 +102,7 @@ namespace AdamController.ViewModels
             }
         }
 
-        private string videoFrameRate;
-        public string VideoFrameRate
-        {
-            get { return videoFrameRate; }
-            set {  SetProperty(ref videoFrameRate, value); }
-        }
+
 
         #endregion
 
@@ -256,7 +251,7 @@ namespace AdamController.ViewModels
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
-            mVideoViewProvider.RaiseFrameRateUpdateEvent += RaiseFrameRateUpdateEvent;
+           
 
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
         }
@@ -269,7 +264,7 @@ namespace AdamController.ViewModels
             mSubRegionChangeAwareService.RaiseSubRegionChangeEvent -= RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
-            mVideoViewProvider.RaiseFrameRateUpdateEvent -= RaiseFrameRateUpdateEvent;
+            
             Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }
 
@@ -323,19 +318,6 @@ namespace AdamController.ViewModels
         private void RaiseUdpServiceServerReceivedEvent(object sender, string message)
         {
             ParseSyslogMessage(message);
-        }
-
-        private void RaiseFrameRateUpdateEvent(object sender)
-        {
-            double rate = double.Round(mVideoViewProvider.FrameRate, 2);
-
-            if (double.IsNaN(rate))
-            {
-                VideoFrameRate = string.Empty;
-                return;
-            }
-                
-            VideoFrameRate = $"{rate} FPS";
         }
 
         #endregion

@@ -112,9 +112,16 @@
                    LastChildFill="True"
                    Visibility="{Binding IsShowVideo, Converter={StaticResource BoolToVisibilityReConverter}}">
 
-            <ffme:MediaElement Grid.Row="0"
-                   Grid.Column="0"
-                   Grid.RowSpan="2"
+            <TextBlock DockPanel.Dock="Top"
+                       Panel.ZIndex="10"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Margin="10 0 10 0"
+                       Text="{Binding VideoFrameRate}"
+                       Foreground="{DynamicResource MahApps.Brushes.Text}"
+                       />
+
+            <ffme:MediaElement DockPanel.Dock="Top"
                    x:Name="VideoView"
                    HorizontalContentAlignment="Stretch"
                    VerticalContentAlignment="Stretch"
@@ -122,6 +129,9 @@
                    LoadedBehavior="Play"
                    UnloadedBehavior="Manual"
                    Background="{DynamicResource MahApps.Brushes.Control.Background}"/>
+
+
+
 
         </DockPanel>
 

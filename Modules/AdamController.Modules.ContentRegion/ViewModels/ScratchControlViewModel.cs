@@ -8,6 +8,7 @@ using AdamController.Core;
 using AdamController.Core.Extensions;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
+using AdamController.Services;
 using AdamController.Services.Interfaces;
 using AdamController.Services.SystemDialogServiceDependency;
 using AdamController.Services.WebViewProviderDependency;
@@ -51,6 +52,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private readonly ICultureProvider mCultureProvider;
         private readonly ISystemDialogService mSystemDialog;
         private readonly IControlHelper mControlHelper;
+        private readonly IVideoViewProvider mVideoViewProvider;
 
         #endregion
 
@@ -95,7 +97,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public ScratchControlViewModel(IRegionManager regionManager, ICommunicationProviderService communicationProvider, IPythonRemoteRunnerService pythonRemoteRunner, 
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider,
                         IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
-                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService, IControlHelper controlHelper) : base(regionManager)
+                        ICultureProvider cultureProvider, ISystemDialogService systemDialogService, IControlHelper controlHelper,
+                        IVideoViewProvider videoViewProvider) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -107,6 +110,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mCultureProvider = cultureProvider;
             mSystemDialog = systemDialogService;
             mControlHelper = controlHelper;
+            mVideoViewProvider = videoViewProvider;
 
             ShowSaveFileDialogDelegateCommand = new DelegateCommand<string>(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
             ShowOpenFileDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
@@ -151,6 +155,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #endregion
 
         #region Public fields
+
+        private string videoFrameRate;
+        public string VideoFrameRate
+        {
+            get { return videoFrameRate; }
+            set { SetProperty(ref videoFrameRate, value); }
+        }
 
         private bool isShowVideo;
         public bool IsShowVideo
@@ -277,6 +288,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
 
             mControlHelper.IsVideoShowChangeEvent += IsVideoShowChangeEvent;
+
+            mVideoViewProvider.RaiseFrameRateUpdateEvent += RaiseFrameRateUpdateEvent;
         }
 
         private void Unsubscribe()
@@ -292,6 +305,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
 
             mControlHelper.IsVideoShowChangeEvent -= IsVideoShowChangeEvent;
+
+            mVideoViewProvider.RaiseFrameRateUpdateEvent -= RaiseFrameRateUpdateEvent;
         }
 
         #endregion
@@ -748,6 +763,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         private void IsVideoShowChangeEvent(object sender)
         {
             IsShowVideo = mControlHelper.IsShowVideo;
+        }
+
+        private void RaiseFrameRateUpdateEvent(object sender)
+        {
+            double rate = double.Round(mVideoViewProvider.FrameRate, 2);
+
+            if (double.IsNaN(rate))
+            {
+                VideoFrameRate = string.Empty;
+                return;
+            }
+
+            VideoFrameRate = $"{rate} FPS";
         }
 
         #endregion

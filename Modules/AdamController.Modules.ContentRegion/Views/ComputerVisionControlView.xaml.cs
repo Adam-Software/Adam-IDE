@@ -32,24 +32,15 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void VideoViewVideoFrameDecoded(object sender, FrameDecodedEventArgs e)
         {
-            //double rate = VideoView.VideoFrameRate;
             mVideoViewProvider.FrameRate = VideoView.VideoFrameRate;
         }
 
         private void VideoViewMediaOpening(object sender, MediaOpeningEventArgs e)
         {
-            //var isStream = VideoView.IsNetworkStream;
-            
-
             e.Options.IsTimeSyncDisabled = true;
             e.Options.IsAudioDisabled = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
-
             e.Options.DecoderParams.EnableFastDecoding = true;
-
-            
-            //e.Options.DecoderParams.EnableLowDelayDecoding = true;
-            //e.Options.VideoForcedFps = 30;
         }
 
         private async void VideoViewLoaded(object sender, RoutedEventArgs e)
@@ -63,10 +54,6 @@ namespace AdamController.Modules.ContentRegion.Views
             //var uri = new Uri($"{docPath}");
 
             await VideoView.Open(uri);
-
-            //mMediaPlayer.EnableHardwareDecoding = true;
-            //mMediaPlayer.NetworkCaching = 1000;
-            //mMediaPlayer.Scale = 0.72f;
         }
 
         private async void UserControlUnloaded(object sender, RoutedEventArgs e)
