@@ -29,8 +29,12 @@ namespace AdamController.ViewModels
 
         #region Services
 
+
+        public ISubRegionChangeAwareService SubRegionChangeAwareService { get; }
+        public IControlHelper ControlHelper { get; }
+
+
         private readonly IRegionManager mRegionManager;
-        private readonly ISubRegionChangeAwareService mSubRegionChangeAwareService;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
         private readonly ICommunicationProviderService mCommunicationProviderService;
         private readonly IFolderManagmentService mFolderManagment;
@@ -38,7 +42,6 @@ namespace AdamController.ViewModels
         private readonly IAvalonEditService mAvalonEditService;
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
-        private readonly IControlHelper mControlHelper;
 
         #endregion
 
@@ -51,14 +54,14 @@ namespace AdamController.ViewModels
         {
             mRegionManager = regionManager;
             mWebApiService = webApiService;
-            mSubRegionChangeAwareService = subRegionChangeAwareService;
+            SubRegionChangeAwareService = subRegionChangeAwareService;
             mStatusBarNotification = statusBarNotification;
             mCommunicationProviderService = communicationProviderService;
             mFolderManagment = folderManagment;
             mAvalonEditService = avalonEditService;
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
-            mControlHelper = controlHelper;
+            ControlHelper = controlHelper;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
@@ -84,55 +87,55 @@ namespace AdamController.ViewModels
 
         private void MoveSplitter(string commandArg)
         {
-            BlocklyViewMode currentViewMode = mControlHelper.CurrentBlocklyViewMode;
+            BlocklyViewMode currentViewMode = ControlHelper.CurrentBlocklyViewMode;
 
             if (commandArg == "Left")
             {
                 if (currentViewMode == BlocklyViewMode.FullScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
 
                 if (currentViewMode == BlocklyViewMode.MiddleScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.Hidden;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.Hidden;
             }
 
             if (commandArg == "Right")
             {
                 if (currentViewMode == BlocklyViewMode.Hidden)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
 
                 if (currentViewMode == BlocklyViewMode.MiddleScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
             }
         }
 
         private bool MoveSplitterCanExecute(string arg)
         {
-            var regionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
             return regionName == SubRegionNames.SubRegionScratch;
         }
 
         private void SwitchToVideo()
         {
-            if (mControlHelper.IsShowVideo)
+            if (ControlHelper.IsShowVideo)
             {
-                mControlHelper.IsShowVideo = false;
+                ControlHelper.IsShowVideo = false;
                 return;
             }
                 
-            mControlHelper.IsShowVideo = true;
+            ControlHelper.IsShowVideo = true;
             return;
         }
 
         private bool SwitchToVideoCanExecute()
         {
-            var regionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
             return regionName == SubRegionNames.SubRegionScratch;
         }
 
         private void SwitchToSettingsView()
         {
             
-            var regionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
             
             if (regionName == SubRegionNames.SubRegionScratch)
             {

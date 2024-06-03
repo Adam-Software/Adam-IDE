@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace AdamController.Core.Converters
 {
-    public class SelectedItemToContentConverter : IMultiValueConverter
+    /*public class SelectedItemToContentConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -17,5 +17,5 @@ namespace AdamController.Core.Converters
         {
             return targetTypes.Select(t => Binding.DoNothing).ToArray();
         }
-    }
+    }*/
 }

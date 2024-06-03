@@ -8,6 +8,7 @@
                   xmlns:prism="http://prismlibrary.com/" 
                   xmlns:customusercontrol="clr-namespace:AdamController.Controls.CustomControls;assembly=AdamController.Controls"
                   prism:ViewModelLocator.AutoWireViewModel="True"
+                  xmlns:converters="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core"
                   WindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
                   NonActiveWindowTitleBrush="{DynamicResource MahApps.Brushes.Control.Background}"
                   NonActiveBorderBrush="{DynamicResource MahApps.Brushes.Text}"
@@ -15,6 +16,15 @@
                   Title="{Binding WindowTitle}"
                   SaveWindowPosition="True"
                   TitleBarHeight="25">
+    
+    <!--#region Resources -->
+
+    <mah:MetroWindow.Resources>
+        <converters:BoolToViewModeIconsConverter x:Key="BoolToViewModeIconsConverter"/>
+        <converters:StringToViewRegionIconsConverter x:Key="StringToViewRegionIconsConverter"/>
+    </mah:MetroWindow.Resources>
+    
+    <!--#endregion-->
 
     <!--#region LeftWindowCommands -->
 
@@ -78,7 +88,8 @@
                         Command="{Binding SwitchToVideoDelegateCommand}"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
 
-                    <iconPacks:PackIconModern Kind="Camera" />
+                    <iconPacks:PackIconControl Kind="{Binding ControlHelper.IsShowVideo, 
+                                               Converter={StaticResource BoolToViewModeIconsConverter}}"/>
 
                 </Button>
 
@@ -86,7 +97,8 @@
                         Command="{Binding SwitchToSettingsViewDelegateCommand}"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
 
-                    <iconPacks:PackIconModern Kind="Settings" />
+                    <iconPacks:PackIconControl Kind="{Binding SubRegionChangeAwareService.InsideRegionNavigationRequestName, 
+                                               Converter={StaticResource StringToViewRegionIconsConverter}}"/>
 
                 </Button>
 
