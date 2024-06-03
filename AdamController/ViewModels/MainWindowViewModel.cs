@@ -243,8 +243,6 @@ namespace AdamController.ViewModels
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
 
-            //mControlHelper.IsVideoShowChangeEvent += IsVideoShowChangeEvent;
-
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
         }
 
@@ -260,8 +258,6 @@ namespace AdamController.ViewModels
         {
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
-
-            //mControlHelper.IsVideoShowChangeEvent -= IsVideoShowChangeEvent;
 
             Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }

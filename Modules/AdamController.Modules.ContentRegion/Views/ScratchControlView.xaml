@@ -130,9 +130,6 @@
                    UnloadedBehavior="Manual"
                    Background="{DynamicResource MahApps.Brushes.Control.Background}"/>
 
-
-
-
         </DockPanel>
 
 
