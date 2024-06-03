@@ -138,8 +138,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             Subscribe();
             LoadResources();
+            UpdateIsShowVideo(Settings.Default.ShowVideo);
 
-            //#29
             mWebViewProvider.ReloadWebView();
 
             base.OnNavigatedTo(navigationContext);
@@ -163,11 +163,19 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set { SetProperty(ref videoFrameRate, value); }
         }
 
-        private bool isShowVideo;
+        private bool isShowVideo; //= Settings.Default.ShowVideo;
         public bool IsShowVideo
         {
             get => isShowVideo;
-            set => SetProperty(ref isShowVideo, value);
+            set
+            {
+                bool isNewValue = SetProperty(ref isShowVideo, value);
+                
+                if (isNewValue)
+                {
+                    Settings.Default.ShowVideo = IsShowVideo;
+                }
+            }
         }
 
         private bool isTcpClientConnected;
@@ -287,7 +295,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider.RaiseWebViewMessageReceivedEvent += RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent += RaiseWebViewNavigationCompleteEvent;
 
-            mControlHelper.IsVideoShowChangeEvent += IsVideoShowChangeEvent;
+            mControlHelper.IsVideoShowChangeEvent += OnRaiseIsVideoShowChangeEvent;
 
             mVideoViewProvider.RaiseFrameRateUpdateEvent += RaiseFrameRateUpdateEvent;
         }
@@ -304,7 +312,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             mWebViewProvider.RaiseWebViewMessageReceivedEvent -= RaiseWebViewbMessageReceivedEvent;
             mWebViewProvider.RaiseWebViewNavigationCompleteEvent -= RaiseWebViewNavigationCompleteEvent;
 
-            mControlHelper.IsVideoShowChangeEvent -= IsVideoShowChangeEvent;
+            mControlHelper.IsVideoShowChangeEvent -= OnRaiseIsVideoShowChangeEvent;
 
             mVideoViewProvider.RaiseFrameRateUpdateEvent -= RaiseFrameRateUpdateEvent;
         }
@@ -514,6 +522,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         #endregion
 
         #region Private methods
+
+        private void UpdateIsShowVideo(bool isShowVideo)
+        {
+            IsShowVideo = isShowVideo;
+        }
 
         private void UpdateResultText(string text, bool isFinishMessage = false)
         {
@@ -760,9 +773,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             UpdateResultExecutionTimeText(remoteCommandExecuteResult);
         }
 
-        private void IsVideoShowChangeEvent(object sender)
+        private void OnRaiseIsVideoShowChangeEvent(object sender)
         {
-            IsShowVideo = mControlHelper.IsShowVideo;
+            UpdateIsShowVideo(mControlHelper.IsShowVideo);
         }
 
         private void RaiseFrameRateUpdateEvent(object sender)

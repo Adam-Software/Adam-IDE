@@ -214,7 +214,12 @@ namespace AdamController
             });
 
             containerRegistry.RegisterSingleton<IThemeManagerService, ThemeManagerService>();
-            containerRegistry.RegisterSingleton<IControlHelper, ControlHelper>();
+            containerRegistry.RegisterSingleton<IControlHelper>(containerRegistry =>
+            {
+                bool isVideoShowLastValue = Settings.Default.ShowVideo;
+                return new ControlHelper(isVideoShowLastValue);
+            });
+
             containerRegistry.RegisterSingleton<IVideoViewProvider, VideoViewProvider>();
 
             RegisterDialogs(containerRegistry);

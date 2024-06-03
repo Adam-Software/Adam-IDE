@@ -8,7 +8,10 @@ namespace AdamController.Controls.CustomControls.Services
         public event BlocklyColumnWidthChangeEventHandler RaiseBlocklyColumnWidthChangeEvent;
         public event IsVideoShowChangeEventHandler IsVideoShowChangeEvent;
 
-        public ControlHelper() {}
+        public ControlHelper(bool isVideoShowLastValue) 
+        {
+            IsShowVideo = isVideoShowLastValue;
+        }
 
         private double mainGridActualWidth = double.NaN;
         public double MainGridActualWidth

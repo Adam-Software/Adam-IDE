@@ -84,7 +84,6 @@
 
                 <Button Margin="5 0 5 0"
                         Command="{Binding SwitchToSettingsViewDelegateCommand}"
-                        CommandParameter="Remove"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
 
                     <iconPacks:PackIconModern Kind="Settings" />

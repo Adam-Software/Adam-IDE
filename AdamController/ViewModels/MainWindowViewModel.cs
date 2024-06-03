@@ -8,6 +8,7 @@ using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using Prism.Commands;
 using Prism.Regions;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -22,7 +23,7 @@ namespace AdamController.ViewModels
         public DelegateCommand<string> ShowRegionCommand { get; }
         public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
         public DelegateCommand SwitchToVideoDelegateCommand { get; }
-        public DelegateCommand<string> SwitchToSettingsViewDelegateCommand { get; }
+        public DelegateCommand SwitchToSettingsViewDelegateCommand { get; }
 
         #endregion
 
@@ -38,6 +39,7 @@ namespace AdamController.ViewModels
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
         private readonly IControlHelper mControlHelper;
+
         #endregion
 
         #region ~
@@ -62,7 +64,9 @@ namespace AdamController.ViewModels
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
 
             SwitchToVideoDelegateCommand = new DelegateCommand(SwitchToVideo, SwitchToVideoCanExecute);
-            SwitchToSettingsViewDelegateCommand = new DelegateCommand<string>(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
+            SwitchToSettingsViewDelegateCommand = new DelegateCommand(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
+
+            RestroreLastSelectedView();
 
             Subscribe();
         }
@@ -116,6 +120,7 @@ namespace AdamController.ViewModels
             }
                 
             mControlHelper.IsShowVideo = true;
+            return;
         }
 
         private bool SwitchToVideoCanExecute()
@@ -124,7 +129,7 @@ namespace AdamController.ViewModels
             return regionName == SubRegionNames.SubRegionScratch;
         }
 
-        private void SwitchToSettingsView(string commandArg)
+        private void SwitchToSettingsView()
         {
             
             var regionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
@@ -142,7 +147,7 @@ namespace AdamController.ViewModels
             }    
         }
 
-        private bool SwitchToSettingsViewCanExecute(string commandArg)
+        private bool SwitchToSettingsViewCanExecute()
         {
             return true;
         }
@@ -199,6 +204,11 @@ namespace AdamController.ViewModels
             }
         }
 
+        private void RestroreLastSelectedView()
+        {
+            //mControlHelper.IsShowVideo = Settings.Default.ShowVideo;
+        }
+
         /// <summary>
         /// Register highlighting for AvalonEdit. You need to call before loading the regions
         /// </summary>
@@ -231,9 +241,16 @@ namespace AdamController.ViewModels
         private void Subscribe()
         {
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
-            mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;  
+            mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
+
+            //mControlHelper.IsVideoShowChangeEvent += IsVideoShowChangeEvent;
 
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
+        }
+
+        private void IsVideoShowChangeEvent(object sender)
+        {
+            SwitchToVideo();
         }
 
         /// <summary>
@@ -243,7 +260,9 @@ namespace AdamController.ViewModels
         {
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
-            
+
+            //mControlHelper.IsVideoShowChangeEvent -= IsVideoShowChangeEvent;
+
             Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }
 
