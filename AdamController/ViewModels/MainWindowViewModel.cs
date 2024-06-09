@@ -29,10 +29,8 @@ namespace AdamController.ViewModels
 
         #region Services
 
-
         public ISubRegionChangeAwareService SubRegionChangeAwareService { get; }
         public IControlHelper ControlHelper { get; }
-
 
         private readonly IRegionManager mRegionManager;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;

@@ -63,7 +63,6 @@
             <!--#endregion-->
 
         <!--#region  web view -->
-
             
         <DockPanel Grid.Column="0"
                    Grid.Row="1"
@@ -105,34 +104,34 @@
                                       Margin="0"/>
             
         </DockPanel>
+        
+        <!--#endregion-->
 
-        <DockPanel Grid.Column="0"
-                   Grid.Row="1"
-                   Margin="2 7 0 0"
-                   LastChildFill="True"
-                   Visibility="{Binding IsShowVideo, Converter={StaticResource BoolToVisibilityReConverter}}">
+        <!-- #region VideoView -->
+        
+        <Grid Grid.Column="0"
+              Grid.Row="1"
+              Margin="2 7 0 0"
+              Visibility="{Binding IsShowVideo, Converter={StaticResource BoolToVisibilityReConverter}}">
 
-            <TextBlock DockPanel.Dock="Top"
-                       Panel.ZIndex="10"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Center"
-                       Margin="10 0 10 0"
-                       Text="{Binding VideoFrameRate}"
-                       Foreground="{DynamicResource MahApps.Brushes.Text}"
-                       />
+            <ffme:MediaElement IsDesignPreviewEnabled="False"
+                               x:Name="VideoView"
+                               LoadedBehavior="Play"
+                               UnloadedBehavior="Manual"/>
 
-            <ffme:MediaElement DockPanel.Dock="Top"
-                   x:Name="VideoView"
-                   HorizontalContentAlignment="Stretch"
-                   VerticalContentAlignment="Stretch"
-                   Stretch="Uniform"
-                   LoadedBehavior="Play"
-                   UnloadedBehavior="Manual"
-                   Background="{DynamicResource MahApps.Brushes.Control.Background}"/>
+            <DockPanel LastChildFill="False">
 
-            <Grid DockPanel.Dock="Bottom"
-                  Width="450"
-                  Height="200">
+                <TextBlock DockPanel.Dock="Top"
+                           Margin="10 0 10 0"
+                           HorizontalAlignment="Right"
+                           Text="{Binding VideoFrameRate}"
+                           Foreground="{DynamicResource MahApps.Brushes.Text}"/>
+                
+                <Grid Background="Transparent" 
+                      DockPanel.Dock="Bottom" 
+                      HorizontalAlignment="Center"
+                      Width="400"
+                      Opacity="1">
 
                 <Grid.RowDefinitions>
                     <!--0-->
@@ -143,44 +142,43 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <!--0-->
-                    <ColumnDefinition Width="*"/>
-                    <!--1-->
-                    <ColumnDefinition Width="*"/>
-                    <!--2-->
-                    <ColumnDefinition Width="*"/>
-                    <!--3-->
-                    <ColumnDefinition Width="*"/>
-                    <!--4-->
-                    <ColumnDefinition Width="*"/>
-                    <!--5-->
-                    <ColumnDefinition Width="*"/>
+                    <Grid.ColumnDefinitions>
+                        <!--0-->
+                        <ColumnDefinition Width="*"/>
+                        <!--1-->
+                        <ColumnDefinition Width="*"/>
+                        <!--2-->
+                        <ColumnDefinition Width="*"/>
+                        <!--3-->
+                        <ColumnDefinition Width="*"/>
+                        <!--4-->
+                        <ColumnDefinition Width="*"/>
+                        <!--5-->
+                        <ColumnDefinition Width="*"/>
 
-                </Grid.ColumnDefinitions>
-
-                <!--#region row 0 -->
+                    </Grid.ColumnDefinitions>
+                    <!--#region row 0 -->
 
                 <Slider Grid.Column="4"
-            Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Margin="0 10 0 10"
-                    Minimum="0.1" Maximum="1"
-                    TickFrequency="0.1"
-                    Width="10"
-                    Orientation="Vertical" 
-                    Value="{Binding SliderValue}"
-                    Style="{DynamicResource  MahApps.Styles.Slider.Flat}"/>
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Margin="0 10 0 10"
+                        Minimum="0.1" Maximum="1"
+                        TickFrequency="0.1"
+                        Width="10"
+                        Orientation="Vertical" 
+                        Value="{Binding SliderValue}"
+                        Style="{DynamicResource  MahApps.Styles.Slider.Flat}"/>
 
                 <!--#endregion-->
 
                 <!--#region row 1 -->
 
                 <Button Grid.Column="1"
-                    Grid.Row="0"
-                    Width="Auto"
-                    Height="Auto"
-                    Margin="5">
+                        Grid.Row="0"
+                        Width="Auto"
+                        Height="Auto"
+                        Margin="5">
 
                     <iconPacks:PackIconMaterial Width="Auto"
                                     Height="Auto"
@@ -470,7 +468,10 @@
                 </Button>
             </Grid>
 
-        </DockPanel>
+            </DockPanel>
+
+
+        </Grid>
 
 
         <!--#endregion-->
