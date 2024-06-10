@@ -12,7 +12,7 @@ namespace AdamController.Modules.ContentRegion.Views
     {
         #region Service
 
-        private readonly IWebSocketClientService mWebSocketClient;
+        //private readonly IWebSocketClientService mWebSocketClient;
         private readonly IVideoViewProvider mVideoViewProvider;
 
         #endregion
@@ -21,7 +21,7 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             InitializeComponent();
 
-            mWebSocketClient = webSocketClient;
+            //mWebSocketClient = webSocketClient;
             mVideoViewProvider = videoViewProvider;
 
             VideoView.Loaded += VideoViewLoaded;
@@ -61,11 +61,13 @@ namespace AdamController.Modules.ContentRegion.Views
             await VideoView.Close();
             mVideoViewProvider.ClearFrameRate();
         }
-        public string DownRightDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 1, \"z\": 0}}";
 
-        private void Button_KeyDown(object sender, KeyEventArgs e)
-        {
-            mWebSocketClient.SendTextAsync(DownRightDirection);
-        }
+        //?
+        //public string DownRightDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 1, \"z\": 0}}";
+
+        //private void Button_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    mWebSocketClient.SendTextAsync(DownRightDirection);
+        //}
     }
 }

@@ -188,13 +188,13 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandDown}"
+                                Command="{Binding DirectionButtonDownDelegateCommand}"
                                 CommandParameter="{Binding ForwardLeftDirection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                             <i:InvokeCommandAction
-                                Command="{Binding DirectionButtonCommandUp}"
+                                Command="{Binding DirectionButtonUpDelegateCommand}"
                                 CommandParameter="{Binding StopDirrection}" />
                         </i:EventTrigger>
 
@@ -216,13 +216,13 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding ForwardDirection}"/>
 
                         </i:EventTrigger>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
 
                         </i:EventTrigger>
@@ -245,12 +245,12 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction
-                    Command="{Binding DirectionButtonCommandDown}"
+                    Command="{Binding DirectionButtonDownDelegateCommand}"
                     CommandParameter="{Binding ForwardRightDirection}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                             <i:InvokeCommandAction
-                    Command="{Binding DirectionButtonCommandUp}"
+                    Command="{Binding DirectionButtonUpDelegateCommand}"
                     CommandParameter="{Binding StopDirrection}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -274,13 +274,13 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding LeftDirection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
 
                         </i:EventTrigger>
@@ -293,7 +293,7 @@
                         Width="Auto"
                         Height="Auto"
                         Margin="5"
-                        Command="{Binding ToZeroPositionCommand}">
+                        Command="{Binding ToZeroPositionDelegateCommand}">
 
                     <iconPacks:PackIconMaterial Width="Auto"
                                             Height="Auto"
@@ -315,13 +315,13 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding RightDirection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
 
                         </i:EventTrigger>
@@ -347,12 +347,12 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding RotateLeftDirrection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
                         </i:EventTrigger>
 
@@ -373,12 +373,12 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding BackLeftDirection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
                         </i:EventTrigger>
 
@@ -401,13 +401,13 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding BackDirection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
 
                         </i:EventTrigger>
@@ -428,13 +428,13 @@
                     <i:Interaction.Triggers>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding BackRightDirection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
 
                         </i:EventTrigger>
@@ -454,13 +454,13 @@
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandDown}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
                                                CommandParameter="{Binding RotateRightDirrection}" />
                         </i:EventTrigger>
 
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
 
-                            <i:InvokeCommandAction Command="{Binding DirectionButtonCommandUp}"
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
                                                CommandParameter="{Binding StopDirrection}" />
                         </i:EventTrigger>
 

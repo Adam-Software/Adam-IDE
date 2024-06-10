@@ -6,9 +6,9 @@ using AdamBlocklyLibrary.ToolboxSets;
 using AdamController.Controls.CustomControls.Services;
 using AdamController.Core;
 using AdamController.Core.Extensions;
+using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Core.Properties;
-using AdamController.Services;
 using AdamController.Services.Interfaces;
 using AdamController.Services.SystemDialogServiceDependency;
 using AdamController.Services.WebViewProviderDependency;
@@ -20,6 +20,7 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -37,7 +38,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         public DelegateCommand CleanExecuteEditorDelegateCommand { get; }
         public DelegateCommand RunPythonCodeDelegateCommand { get; }
         public DelegateCommand StopPythonCodeExecuteDelegateCommand { get; }
-        public DelegateCommand ToZeroPositionDelegateCommand { get; } 
+        public DelegateCommand ToZeroPositionDelegateCommand { get; }
+        public DelegateCommand<string> DirectionButtonDownDelegateCommand { get; }
+        public DelegateCommand<string> DirectionButtonUpDelegateCommand { get; }
 
         #endregion
 
@@ -121,6 +124,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             RunPythonCodeDelegateCommand = new DelegateCommand(RunPythonCode, RunPythonCodeCanExecute);
             StopPythonCodeExecuteDelegateCommand = new DelegateCommand(StopPythonCodeExecute, StopPythonCodeExecuteCanExecute);
             ToZeroPositionDelegateCommand = new DelegateCommand(ToZeroPosition, ToZeroPositionCanExecute);
+
+            DirectionButtonDownDelegateCommand = new DelegateCommand<string>(DirectionButtonDown, DirectionButtonDownCanExecute);
+            DirectionButtonUpDelegateCommand = new DelegateCommand<string>(DirectionButtonUp, DirectionButtonUpCanExecute);
 
             HighlightingDefinition = avalonEditService.GetDefinition(HighlightingName.AdamPython);
         }
@@ -258,6 +264,13 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             set => SetProperty(ref pythonVersion, value);
         }
 
+        private float sliderValue;
+        public float SliderValue
+        {
+            get => sliderValue;
+            set => SetProperty(ref sliderValue, value);
+        }
+
         /*private string pythonBinPath;
         public string PythonBinPath
         {
@@ -278,6 +291,24 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             get => highlightingDefinition;
             set => SetProperty(ref highlightingDefinition, value);
         }
+
+        public string StopDirrection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 0, \"z\": 0}}";
+
+        // left/right/up/down +
+        public string ForwardDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 1, \"z\": 0}}";
+        public string BackDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": -1, \"z\": 0}}";
+        public string LeftDirection { get; private set; } = "{\"move\":{\"x\": -1, \"y\": 0, \"z\": 0}}";
+        public string RightDirection { get; private set; } = "{\"move\":{\"x\": 1, \"y\": 0, \"z\": 0}}";
+
+        //
+        public string ForwardLeftDirection { get; private set; } = "{\"move\":{\"x\": -1, \"y\": 1, \"z\": 0}}";
+        public string ForwardRightDirection { get; private set; } = "{\"move\":{\"x\": 1, \"y\": 1, \"z\": 0}}";
+        public string BackLeftDirection { get; private set; } = "{\"move\":{\"x\": -1, \"y\": -1, \"z\": 0}}";
+        public string BackRightDirection { get; private set; } = "{\"move\":{\"x\": 1, \"y\": -1, \"z\": 0}}";
+
+        //rotate +
+        public string RotateRightDirrection { get; private set; } = "{\"move\":{\"x\": 0.0, \"y\": 0.0, \"z\": 1.0 }}";
+        public string RotateLeftDirrection { get; private set; } = "{\"move\":{\"x\": 0.0, \"y\": 0.0, \"z\": -1.0}}";
 
         #endregion
 
@@ -518,6 +549,69 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             return isTcpConnected && isPythonCodeNotExecute;
         }
 
+        private void DirectionButtonDown(string obj)
+        {
+            VectorModel vectorSource = JsonSerializer.Deserialize<VectorModel>(obj);
+
+            if (vectorSource == null)
+                return;
+
+            if (vectorSource.Move.X == 1)
+            {
+                vectorSource.Move.X = SliderValue;
+            }
+            else if (vectorSource.Move.X == -1)
+            {
+                vectorSource.Move.X = -SliderValue;
+            }
+
+            if (vectorSource.Move.Y == 1)
+            {
+                vectorSource.Move.Y = SliderValue;
+            }
+            else if (vectorSource.Move.Y == -1)
+            {
+                vectorSource.Move.Y = -SliderValue;
+            }
+
+            if (vectorSource.Move.Z == 1)
+            {
+                vectorSource.Move.Z = SliderValue;
+            }
+            else if (vectorSource.Move.Z == -1)
+            {
+                vectorSource.Move.Z = -SliderValue;
+            }
+
+            var json = JsonSerializer.Serialize(vectorSource);
+            mCommunicationProvider.WebSocketSendTextMessage(json);
+        }
+
+        private bool DirectionButtonDownCanExecute(string arg)
+        {
+            return true;
+        }
+
+        private void DirectionButtonUp(string obj)
+        {
+            VectorModel vector = new()
+            {
+                Move = new VectorItem
+                {
+                    X = 0,
+                    Y = 0,
+                    Z = 0
+                }
+            };
+
+            var json = JsonSerializer.Serialize(vector);
+            mCommunicationProvider.WebSocketSendTextMessage(json);
+        }
+
+        private bool DirectionButtonUpCanExecute(string arg)
+        {
+            return true;
+        }
 
         #endregion
 

@@ -1,23 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AdamController.Core.Model
 {
 
     public class VectorModel
     {
-        [JsonProperty("move")]
+        [JsonPropertyName("move")]
         public VectorItem Move { get; set; }
     }
 
     public class VectorItem
     {
-        [JsonProperty("x")]
+        [JsonPropertyName("x")]
         public float X { get; set; }
 
-        [JsonProperty("y")]
+        [JsonPropertyName("y")]
         public float Y { get; set; }
 
-        [JsonProperty("z")]
+        [JsonPropertyName("z")]
         public float Z { get; set; }
 
     }

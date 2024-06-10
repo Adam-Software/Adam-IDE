@@ -1,6 +1,5 @@
 ﻿using AdamController.Controls.CustomControls.Services;
 using AdamController.Core.Properties;
-using AdamController.Services;
 using AdamController.Services.Interfaces;
 using AdamController.Services.WebViewProviderDependency;
 using Microsoft.Web.WebView2.Core;
@@ -13,7 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Unosquare.FFME.Common;
-using Websocket.Client;
 
 namespace AdamController.Modules.ContentRegion.Views
 {
@@ -62,6 +60,7 @@ namespace AdamController.Modules.ContentRegion.Views
             /* service event */
             mControlHelper.RaiseBlocklyColumnWidthChangeEvent += RaiseBlocklyColumnWidthChangeEvent;
 
+            /* video */
             mWebSocketClient = webSocketClient;
             mVideoViewProvider = videoViewProvider;
 

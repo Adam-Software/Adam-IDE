@@ -1,10 +1,11 @@
 ﻿using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
-using Newtonsoft.Json;
+
 using Prism.Commands;
 using Prism.Regions;
 using System;
+using System.Text.Json;
 
 namespace AdamController.Modules.ContentRegion.ViewModels
 {
@@ -14,7 +15,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private readonly ICommunicationProviderService mCommunicationProvider;
         private readonly IWebApiService mWebApiService;
-        private readonly IVideoViewProvider mVideoViewProvider;
+        //private readonly IVideoViewProvider mVideoViewProvider;
 
         #endregion
 
@@ -32,7 +33,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             mCommunicationProvider = communicationProvider;
             mWebApiService = webApiService;
-            mVideoViewProvider = videoViewProvider;
+            //mVideoViewProvider = videoViewProvider;
         }
 
         #endregion
@@ -63,8 +64,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         /// </summary>
         public DelegateCommand<string> DirectionButtonCommandDown => directionButtonCommandDown ??= new DelegateCommand<string>(obj =>
         {
-            var vectorSource = JsonConvert.DeserializeObject<VectorModel>(obj);
-            
+            //var vectorSource = JsonConvert.DeserializeObject<VectorModel>(obj);
+            var vectorSource = JsonSerializer.Deserialize<VectorModel>(obj);
+
             if (vectorSource.Move.X == 1)
             {
                 vectorSource.Move.X = SliderValue;
@@ -91,8 +93,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 vectorSource.Move.Z = -SliderValue;
             }
-            
-            var json = JsonConvert.SerializeObject(vectorSource);
+
+            //var json = JsonConvert.SerializeObject(vectorSource);
+            var json = JsonSerializer.Serialize(vectorSource);
 
             mCommunicationProvider.WebSocketSendTextMessage(json);
         }, canExecute =>  mCommunicationProvider.IsTcpClientConnected);
@@ -112,7 +115,8 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 } 
             };
 
-            var json = JsonConvert.SerializeObject(vector);
+            //var json = JsonConvert.SerializeObject(vector);
+            var json = JsonSerializer.Serialize(vector);
             mCommunicationProvider.WebSocketSendTextMessage(json);
 
         }, canExecute => mCommunicationProvider.IsTcpClientConnected);
