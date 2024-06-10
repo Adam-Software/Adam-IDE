@@ -279,7 +279,7 @@
       <Value Profile="(Default)">0.7</Value>
     </Setting>
     <Setting Name="ShowVideo" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>
