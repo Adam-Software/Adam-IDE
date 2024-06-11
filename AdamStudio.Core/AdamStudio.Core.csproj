@@ -10,12 +10,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
-<!--  <ItemGroup>
-    <Compile Remove="Helpers\**" />
-    <EmbeddedResource Remove="Helpers\**" />
-    <None Remove="Helpers\**" />
-    <Page Remove="Helpers\**" />
-  </ItemGroup> -->
   <ItemGroup>
     <None Remove="Properties\AdamPython.xshd" />
     <None Remove="Properties\Icons\main_app_icon.ico" />
@@ -57,18 +51,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="LocalizationDictionary\DictonaryCollection\DebuggerMessages.en.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="LocalizationDictionary\DictonaryCollection\DebuggerMessages.ru.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="LocalizationDictionary\DictonaryCollection\ScratchControlView.en.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="LocalizationDictionary\en.xaml">
       <CopyToOutputDirectory></CopyToOutputDirectory>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="LocalizationDictionary\ru.xaml">
       <CopyToOutputDirectory></CopyToOutputDirectory>
