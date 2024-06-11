@@ -1,9 +1,9 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using System;
 using System.Threading.Tasks;
 using Websocket.Client;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class WebSocketClientService : IWebSocketClientService
     {

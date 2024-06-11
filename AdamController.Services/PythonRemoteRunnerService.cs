@@ -1,12 +1,12 @@
-﻿using AdamController.Services.Interfaces;
-using AdamController.Services.UdpClientServiceDependency;
+﻿using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.UdpClientServiceDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using AdamController.WebApi.Client.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public partial class PythonRemoteRunnerService : IPythonRemoteRunnerService
     {

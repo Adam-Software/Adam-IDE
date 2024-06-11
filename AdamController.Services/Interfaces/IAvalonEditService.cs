@@ -2,7 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     public interface IAvalonEditService : IDisposable
     {

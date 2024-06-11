@@ -1,10 +1,10 @@
-﻿using AdamController.Core;
-using AdamController.Modules.ContentRegion.Views;
+﻿using AdamStudio.Core;
+using AdamStudio.Modules.ContentRegion.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace AdamController.Modules.ContentRegion
+namespace AdamStudio.Modules.ContentRegion
 {
     public class ContentRegionModule : IModule
     {

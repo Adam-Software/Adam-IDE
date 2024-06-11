@@ -1,9 +1,9 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using ControlzEx.Theming;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class ThemeManagerService : IThemeManagerService
     {

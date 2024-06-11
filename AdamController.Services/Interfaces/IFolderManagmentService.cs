@@ -2,7 +2,7 @@
 
 using System;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     public interface IFolderManagmentService : IDisposable
     {

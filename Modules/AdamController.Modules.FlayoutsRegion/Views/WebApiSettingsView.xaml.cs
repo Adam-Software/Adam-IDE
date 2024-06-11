@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdamController.Modules.FlayoutsRegion.Views
+namespace AdamStudio.Modules.FlayoutsRegion.Views
 {
     /// <summary>
     /// Логика взаимодействия для WebApiSettingsView.xaml

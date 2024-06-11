@@ -1,24 +1,24 @@
-﻿using AdamController.Services.Interfaces;
-using AdamController.Services;
-using AdamController.Views;
+﻿using AdamStudio.Services.Interfaces;
+using AdamStudio.Services;
+using AdamStudio.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
 using System;
 using System.Windows;
-using AdamController.Controls.CustomControls.Services;
-using AdamController.Core.Properties;
-using AdamController.Services.TcpClientDependency;
+using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Core.Properties;
+using AdamStudio.Services.TcpClientDependency;
 using Prism.Regions;
 using System.Net;
-using AdamController.Controls.CustomControls.RegionAdapters;
+using AdamStudio.Controls.CustomControls.RegionAdapters;
 using MahApps.Metro.Controls;
-using AdamController.Modules.ContentRegion;
-using AdamController.Modules.FlayoutsRegion;
-using AdamController.Modules.MenuRegion;
-using AdamController.Modules.StatusBarRegion;
+using AdamStudio.Modules.ContentRegion;
+using AdamStudio.Modules.FlayoutsRegion;
+using AdamStudio.Modules.MenuRegion;
+using AdamStudio.Modules.StatusBarRegion;
 using Prism.Modularity;
 
-namespace AdamController
+namespace AdamStudio
 {
     internal class Bootstrapper : PrismBootstrapper, IDisposable
     {

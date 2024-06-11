@@ -1,4 +1,4 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class CultureProvider : BindableBase, ICultureProvider
     {
@@ -60,7 +60,7 @@ namespace AdamController.Services
 
         public void ChangeAppCulture(CultureInfo culture)
         {
-            string resourceName = $"pack://application:,,,/AdamController.Core;component/LocalizationDictionary/{culture.TwoLetterISOLanguageName}.xaml";
+            string resourceName = $"pack://application:,,,/AdamStudio.Core;component/LocalizationDictionary/{culture.TwoLetterISOLanguageName}.xaml";
             Uri uri = new(resourceName);
             ResourceDictionary resources = new()
             {

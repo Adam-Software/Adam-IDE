@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AdamController.Services\AdamController.Services.csproj" />
+    <ProjectReference Include="..\AdamController.Services\AdamStudio.Services.csproj" />
   </ItemGroup>
 
 </Project>

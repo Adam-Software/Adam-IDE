@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AdamController.Modules.MenuRegion.Views
+namespace AdamStudio.Modules.MenuRegion.Views
 {
     /// <summary>
     /// Interaction logic for ViewA.xaml

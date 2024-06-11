@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AdamController.Core.Dialog.Views
+namespace AdamStudio.Core.Dialog.Views
 {
     /// <summary>
     /// Логика взаимодействия для SettingsView.xaml

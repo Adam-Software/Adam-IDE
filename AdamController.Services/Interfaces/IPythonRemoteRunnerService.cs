@@ -1,7 +1,7 @@
 ﻿using AdamController.WebApi.Client.v1.ResponseModel;
 using System;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     #region Delegate
 

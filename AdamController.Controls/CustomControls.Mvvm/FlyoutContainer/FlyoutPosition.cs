@@ -1,4 +1,4 @@
-﻿namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
+﻿namespace AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer
 {
     /// <summary>
     /// Represents the Position of the Flyout within the (Metro) Window

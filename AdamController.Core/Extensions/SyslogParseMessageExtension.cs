@@ -1,8 +1,9 @@
-﻿using AdamController.Core.Model;
+﻿
+using AdamStudio.Core.Model;
 using System;
 using System.Text.RegularExpressions;
 
-namespace AdamController.Core.Extensions
+namespace AdamStudio.Core.Extensions
 {
     public static class SyslogParseMessageExtension
     {

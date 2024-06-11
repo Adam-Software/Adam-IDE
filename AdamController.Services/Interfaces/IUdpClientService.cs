@@ -1,7 +1,7 @@
-﻿using AdamController.Services.UdpClientServiceDependency;
+﻿using AdamStudio.Services.UdpClientServiceDependency;
 using System;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     #region Delegate
 

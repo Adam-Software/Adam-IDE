@@ -1,4 +1,4 @@
-﻿namespace damController.Services.SystemDialogServiceDependency
+﻿namespace AdamStudio.Services.SystemDialogServiceDependency
 {
     public class DialogParametrsKeysName
     {

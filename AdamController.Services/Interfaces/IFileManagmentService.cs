@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     public interface IFileManagmentService : IDisposable
     {

@@ -1,11 +1,11 @@
-﻿using AdamController.Services.Interfaces;
-using AdamController.Services.UdpClientServiceDependency;
+﻿using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.UdpClientServiceDependency;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class UdpClientService : NetCoreServer.UdpServer, IUdpClientService
     {

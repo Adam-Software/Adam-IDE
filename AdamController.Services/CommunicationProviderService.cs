@@ -1,10 +1,10 @@
-﻿using AdamController.Services.Interfaces;
-using AdamController.Services.UdpClientServiceDependency;
+﻿using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.UdpClientServiceDependency;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class CommunicationProviderService : ICommunicationProviderService
     {

@@ -3,7 +3,7 @@ using Prism.Regions;
 using System.Collections.Specialized;
 using System.Windows;
 
-namespace AdamController.Controls.CustomControls.RegionAdapters
+namespace AdamStudio.Controls.CustomControls.RegionAdapters
 {
     public class FlyoutsControlRegionAdapter : RegionAdapterBase<FlyoutsControl>
     {

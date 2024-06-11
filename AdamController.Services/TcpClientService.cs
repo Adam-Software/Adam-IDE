@@ -1,10 +1,10 @@
-﻿using AdamController.Services.Interfaces;
-using AdamController.Services.TcpClientDependency;
+﻿using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.TcpClientDependency;
 using System;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
 
     public class TcpClientService : NetCoreServer.TcpClient, ITcpClientService

@@ -1,11 +1,11 @@
-﻿using AdamController.Controls.CustomControls.Services;
-using AdamController.Controls.Enums;
-using AdamController.Core;
-using AdamController.Core.Extensions;
-using AdamController.Core.Model;
-using AdamController.Core.Mvvm;
-using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
+﻿using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Controls.Enums;
+using AdamStudio.Core;
+using AdamStudio.Core.Extensions;
+using AdamStudio.Core.Model;
+using AdamStudio.Core.Mvvm;
+using AdamStudio.Services.Interfaces;
+using AdamStudio.Core.Properties;
 using Prism.Commands;
 using Prism.Regions;
 using System;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 
-namespace AdamController.ViewModels
+namespace AdamStudio.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {

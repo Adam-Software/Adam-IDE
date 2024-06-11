@@ -1,6 +1,6 @@
-﻿using AdamController.Controls.Enums;
+﻿using AdamStudio.Controls.Enums;
 
-namespace AdamController.Controls.CustomControls.Services
+namespace AdamStudio.Controls.CustomControls.Services
 {
     #region Delegates
 

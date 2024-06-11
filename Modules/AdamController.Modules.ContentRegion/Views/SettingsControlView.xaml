@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="AdamController.Modules.ContentRegion.Views.SettingsControlView"
+﻿<UserControl x:Class="AdamStudio.Modules.ContentRegion.Views.SettingsControlView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
-             xmlns:properties="clr-namespace:AdamController.Core.Properties;assembly=AdamController.Core"
-             xmlns:converters="clr-namespace:AdamController.Core.Converters;assembly=AdamController.Core" 
+             xmlns:core="clr-namespace:AdamStudio.Core;assembly=AdamStudio.Core"
+             xmlns:properties="clr-namespace:AdamStudio.Core.Properties;assembly=AdamStudio.Core"
+             xmlns:converters="clr-namespace:AdamStudio.Core.Converters;assembly=AdamStudio.Core" 
              xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
 

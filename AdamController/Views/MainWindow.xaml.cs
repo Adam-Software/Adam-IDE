@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace AdamController.Views
+namespace AdamStudio.Views
 {
     public partial class MainWindow : MetroWindow
     {

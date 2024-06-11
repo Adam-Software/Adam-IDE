@@ -1,4 +1,4 @@
-﻿namespace AdamController.Core.Extensions
+﻿namespace AdamStudio.Core.Extensions
 {
     public static class DialogServiceExtensions
     {

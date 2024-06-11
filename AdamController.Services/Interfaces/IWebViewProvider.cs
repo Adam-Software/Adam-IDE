@@ -1,8 +1,8 @@
-﻿using AdamController.Services.WebViewProviderDependency;
+﻿using AdamStudio.Services.WebViewProviderDependency;
 using System;
 using System.Threading.Tasks;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     #region Delegate
 

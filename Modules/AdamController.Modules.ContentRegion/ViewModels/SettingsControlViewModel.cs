@@ -1,9 +1,9 @@
 ﻿using AdamBlocklyLibrary.Enum;
-using AdamController.Controls.CustomControls.Services;
-using AdamController.Core;
-using AdamController.Core.Mvvm;
-using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
+using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Core;
+using AdamStudio.Core.Mvvm;
+using AdamStudio.Core.Properties;
+using AdamStudio.Services.Interfaces;
 using ControlzEx.Theming;
 using Prism.Commands;
 using Prism.Regions;
@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Media;
 
-namespace AdamController.Modules.ContentRegion.ViewModels
+namespace AdamStudio.Modules.ContentRegion.ViewModels
 {
     public class SettingsControlViewModel : RegionViewModelBase 
     {

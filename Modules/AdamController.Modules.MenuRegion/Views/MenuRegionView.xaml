@@ -1,7 +1,7 @@
-﻿<UserControl x:Class="AdamController.Modules.MenuRegion.Views.MenuRegionView"
+﻿<UserControl x:Class="AdamStudio.Modules.MenuRegion.Views.MenuRegionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:core="clr-namespace:AdamController.Core;assembly=AdamController.Core"
+             xmlns:core="clr-namespace:AdamStudio.Core;assembly=AdamStudio.Core"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Height="25">

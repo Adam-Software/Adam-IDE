@@ -1,4 +1,4 @@
-﻿namespace AdamController.Services.SystemDialogServiceDependency
+﻿namespace AdamStudio.Services.SystemDialogServiceDependency
 {
     public class SaveFileDialogResult
     {

@@ -1,10 +1,10 @@
-﻿using AdamController.Core;
-using AdamController.Modules.MenuRegion.Views;
+﻿using AdamStudio.Core;
+using AdamStudio.Modules.MenuRegion.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace AdamController.Modules.MenuRegion
+namespace AdamStudio.Modules.MenuRegion
 {
     public class MenuRegionModule : IModule
     {

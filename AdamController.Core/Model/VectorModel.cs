@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AdamController.Core.Model
+namespace AdamStudio.Core.Model
 {
 
     public class VectorModel

@@ -1,11 +1,11 @@
-﻿using AdamController.Core;
-using AdamController.Core.Mvvm;
-using AdamController.Modules.ContentRegion.Views;
-using AdamController.Services.Interfaces;
+﻿using AdamStudio.Core;
+using AdamStudio.Core.Mvvm;
+using AdamStudio.Modules.ContentRegion.Views;
+using AdamStudio.Services.Interfaces;
 using Prism.Regions;
 using System;
 
-namespace AdamController.Modules.ContentRegion.ViewModels
+namespace AdamStudio.Modules.ContentRegion.ViewModels
 {
     public class ContentRegionViewModel : RegionViewModelBase
     {

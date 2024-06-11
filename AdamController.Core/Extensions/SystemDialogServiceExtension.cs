@@ -1,10 +1,10 @@
 ﻿using Prism.Services.Dialogs;
 using System.Threading.Tasks;
 using System;
-using AdamController.Services.SystemDialogServiceDependency;
-using AdamController.Services.Interfaces;
+using AdamStudio.Services.SystemDialogServiceDependency;
+using AdamStudio.Services.Interfaces;
 
-namespace AdamController.Core.Extensions
+namespace AdamStudio.Core.Extensions
 {
     public static class SystemDialogServiceExtension
     {
@@ -15,7 +15,6 @@ namespace AdamController.Core.Extensions
             try
             {
                 dialogService.ShowOpenFileDialog(parameters);
-                //dialogService.ShowDialog(nameof(OpenFileDialogView), parameters, task.SetResult);
             }
             catch (Exception ex)
             {

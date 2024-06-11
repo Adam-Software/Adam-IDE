@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 
-namespace AdamController.Services.UdpClientServiceDependency
+namespace AdamStudio.Services.UdpClientServiceDependency
 {
     public class ReceivedData : EventArgs
     {

@@ -1,11 +1,11 @@
 ﻿using AdamBlocklyLibrary.Properties;
-using AdamController.Services.Interfaces;
+using AdamStudio.Services.Interfaces;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System;
 using System.Collections.ObjectModel;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class AvalonEditService : IAvalonEditService
     {

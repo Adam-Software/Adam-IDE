@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AdamController.Modules.ContentRegion.Views
+namespace AdamStudio.Modules.ContentRegion.Views
 {
     public partial class ContentRegionView : UserControl
     {

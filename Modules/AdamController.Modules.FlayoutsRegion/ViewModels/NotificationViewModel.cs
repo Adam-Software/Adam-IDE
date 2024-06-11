@@ -1,13 +1,13 @@
-﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
-using AdamController.Controls.CustomControls.Services;
-using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
+﻿using AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer;
+using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Core.Properties;
+using AdamStudio.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using System.Drawing;
 using System.Windows;
 
-namespace AdamController.Modules.FlayoutsRegion.ViewModels
+namespace AdamStudio.Modules.FlayoutsRegion.ViewModels
 {
     public class NotificationViewModel : FlyoutBase
     {

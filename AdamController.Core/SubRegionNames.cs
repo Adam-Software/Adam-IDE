@@ -1,4 +1,4 @@
-﻿namespace AdamController.Core
+﻿namespace AdamStudio.Core
 {
     public class SubRegionNames
     {

@@ -1,11 +1,11 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class FileManagmentService : IFileManagmentService
     {

@@ -1,8 +1,8 @@
-﻿using AdamController.Services.Interfaces;
-using AdamController.Services.WebViewProviderDependency;
+﻿using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.WebViewProviderDependency;
 using System.Threading.Tasks;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class WebViewProvider : IWebViewProvider
     {

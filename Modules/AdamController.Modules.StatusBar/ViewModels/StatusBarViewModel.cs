@@ -1,14 +1,14 @@
-﻿using AdamController.Controls.CustomControls.Services;
-using AdamController.Controls.Enums;
-using AdamController.Core;
-using AdamController.Core.Mvvm;
-using AdamController.Services.Interfaces;
+﻿using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Controls.Enums;
+using AdamStudio.Core;
+using AdamStudio.Core.Mvvm;
+using AdamStudio.Services.Interfaces;
 using MahApps.Metro.IconPacks;
 using Prism.Commands;
 using Prism.Regions;
 using System;
 
-namespace AdamController.Modules.StatusBarRegion.ViewModels
+namespace AdamStudio.Modules.StatusBarRegion.ViewModels
 {
     public class StatusBarViewModel : RegionViewModelBase
     {

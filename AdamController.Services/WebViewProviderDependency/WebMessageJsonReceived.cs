@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace AdamController.Services.WebViewProviderDependency
+namespace AdamStudio.Services.WebViewProviderDependency
 {
     public class WebMessageJsonReceived : EventArgs
     {

@@ -1,4 +1,4 @@
-﻿namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
+﻿namespace AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer
 {
     /// <summary>
     /// Event arguments passed with the OnOpened, OnClosed and OnOpenChanged event delegates.

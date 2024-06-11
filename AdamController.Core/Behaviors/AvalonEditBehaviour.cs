@@ -3,7 +3,7 @@ using Microsoft.Xaml.Behaviors;
 using System;
 using System.Windows;
 
-namespace AdamController.Core.Behaviors
+namespace AdamStudio.Core.Behaviors
 {
     public class AvalonEditBehaviour : Behavior<TextEditor>
     {

@@ -1,10 +1,10 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class FolderManagmentService : IFolderManagmentService
     {

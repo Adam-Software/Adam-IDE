@@ -3,17 +3,16 @@ using AdamBlocklyLibrary.Enum;
 using AdamBlocklyLibrary.Struct;
 using AdamBlocklyLibrary.Toolbox;
 using AdamBlocklyLibrary.ToolboxSets;
-using AdamController.Controls.CustomControls.Services;
-using AdamController.Core;
-using AdamController.Core.Extensions;
-using AdamController.Core.Model;
-using AdamController.Core.Mvvm;
-using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
-using AdamController.Services.SystemDialogServiceDependency;
-using AdamController.Services.WebViewProviderDependency;
+using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Core;
+using AdamStudio.Core.Extensions;
+using AdamStudio.Core.Model;
+using AdamStudio.Core.Mvvm;
+using AdamStudio.Core.Properties;
+using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.SystemDialogServiceDependency;
+using AdamStudio.Services.WebViewProviderDependency;
 using AdamController.WebApi.Client.v1.ResponseModel;
-using damController.Services.SystemDialogServiceDependency;
 using ICSharpCode.AvalonEdit.Highlighting;
 using Prism.Commands;
 using Prism.Regions;
@@ -25,7 +24,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace AdamController.Modules.ContentRegion.ViewModels
+namespace AdamStudio.Modules.ContentRegion.ViewModels
 {
     public class ScratchControlViewModel : RegionViewModelBase 
     {
@@ -479,7 +478,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             {
                 ClearResultText();
 
-                var command = new WebApi.Client.v1.RequestModel.PythonCommandModel
+                var command = new AdamController.WebApi.Client.v1.RequestModel.PythonCommandModel
                 {
                     Command = source
                 };

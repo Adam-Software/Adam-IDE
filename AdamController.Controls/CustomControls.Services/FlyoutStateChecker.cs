@@ -1,5 +1,5 @@
 ﻿
-namespace AdamController.Controls.CustomControls.Services
+namespace AdamStudio.Controls.CustomControls.Services
 {
     public class FlyoutStateChecker : IFlyoutStateChecker
     {

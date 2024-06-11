@@ -1,8 +1,8 @@
-﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
-using AdamController.Services.Interfaces;
+﻿using AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer;
+using AdamStudio.Services.Interfaces;
 using System.Windows;
 
-namespace AdamController.Modules.FlayoutsRegion.ViewModels
+namespace AdamStudio.Modules.FlayoutsRegion.ViewModels
 {
     public class PortSettingsViewModel : FlyoutBase
     {

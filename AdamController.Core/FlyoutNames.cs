@@ -1,4 +1,4 @@
-﻿namespace AdamController.Core
+﻿namespace AdamStudio.Core
 {
     /// <summary>
     /// The flyout name must match the view

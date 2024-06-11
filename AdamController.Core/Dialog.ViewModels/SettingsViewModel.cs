@@ -1,6 +1,6 @@
-﻿using AdamController.Core.Mvvm;
+﻿using AdamStudio.Core.Mvvm;
 
-namespace AdamController.Core.Dialog.ViewModels
+namespace AdamStudio.Core.Dialog.ViewModels
 {
     /// <summary>
     /// The template for calling a dialog box through a service

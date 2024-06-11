@@ -1,6 +1,7 @@
-﻿using AdamController.Core.Properties;
+﻿
+using AdamStudio.Core.Properties;
 
-namespace AdamController.Core
+namespace AdamStudio.Core
 {
     public class HighlightingName
     {

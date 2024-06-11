@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AdamController.Services.UdpClientServiceDependency
+namespace AdamStudio.Services.UdpClientServiceDependency
 {
     public class QueueWithEvent<T>
     {

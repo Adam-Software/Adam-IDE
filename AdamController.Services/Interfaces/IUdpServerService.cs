@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
 
     #region Delegate

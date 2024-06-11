@@ -2,7 +2,7 @@
 using System;
 
 
-namespace AdamController.Core.Mvvm
+namespace AdamStudio.Core.Mvvm
 {
     public class RegionViewModelBase : ViewModelBase, INavigationAware, IConfirmNavigationRequest
     {

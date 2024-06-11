@@ -1,12 +1,11 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using System.IO;
 using Prism.Services.Dialogs;
 using Microsoft.Win32;
-using AdamController.Services.SystemDialogServiceDependency;
-using damController.Services.SystemDialogServiceDependency;
+using AdamStudio.Services.SystemDialogServiceDependency;
 
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class SystemDialogService : ISystemDialogService
     {

@@ -1,8 +1,8 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using Prism.Mvvm;
 
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class StatusBarNotificationDeliveryService : BindableBase, IStatusBarNotificationDeliveryService
     {

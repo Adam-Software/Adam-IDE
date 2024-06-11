@@ -1,13 +1,13 @@
-﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
-using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
-using AdamController.Services.SystemDialogServiceDependency;
-using damController.Services.SystemDialogServiceDependency;
+﻿using AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer;
+using AdamStudio.Core.Properties;
+using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.SystemDialogServiceDependency;
+using AdamStudio.Services.SystemDialogServiceDependency;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using System.Windows;
 
-namespace AdamController.Modules.FlayoutsRegion.ViewModels
+namespace AdamStudio.Modules.FlayoutsRegion.ViewModels
 {
     public class UserFoldersSettingsViewModel : FlyoutBase
     {

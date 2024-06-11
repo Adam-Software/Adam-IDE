@@ -15,20 +15,6 @@ using DryIoc;
 
 #endregion
 
-#region innerhit
-
-using AdamController.Views;
-using AdamController.Modules.MenuRegion;
-using AdamController.Modules.ContentRegion;
-using AdamController.Services;
-using AdamController.Modules.StatusBarRegion;
-using AdamController.Modules.FlayoutsRegion;
-using AdamController.Services.Interfaces;
-using AdamController.Controls.CustomControls.Services;
-using AdamController.Controls.CustomControls.RegionAdapters;
-
-#endregion
-
 #region mahapps
 
 using MahApps.Metro.Controls;
@@ -37,20 +23,14 @@ using MahApps.Metro.Controls;
 
 #region other
 
-using AdamController.Core.Properties;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Net;
-using AdamController.Services.TcpClientDependency;
 using System.ComponentModel;
-using AdamController.Core.Dialog.ViewModels;
-using AdamController.Core.Dialog.Views;
-using Microsoft.Win32;
-using System.IO;
+using AdamStudio.Core.Properties;
 
 #endregion
 
-namespace AdamController
+namespace AdamStudio
 {
     public partial class App : Application
     {

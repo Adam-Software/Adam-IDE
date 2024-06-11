@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Input;
 
-namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
+namespace AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer
 {
     public interface IFlyout
     {

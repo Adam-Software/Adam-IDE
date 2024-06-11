@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
+namespace AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer
 {
     /// <summary>
     /// A collection of parameters that are passed from objects requesting the Flyout to open to the IFlyout ViewModel that controls

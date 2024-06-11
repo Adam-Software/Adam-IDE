@@ -1,12 +1,12 @@
-﻿using AdamController.Core.Model;
-using AdamController.Core.Mvvm;
-using AdamController.Services.Interfaces;
+﻿using AdamStudio.Core.Model;
+using AdamStudio.Core.Mvvm;
+using AdamStudio.Services.Interfaces;
 using Prism.Commands;
 using Prism.Regions;
 using System;
 using System.Text.Json;
 
-namespace AdamController.Modules.ContentRegion.ViewModels
+namespace AdamStudio.Modules.ContentRegion.ViewModels
 {
     public class ComputerVisionControlViewModel : RegionViewModelBase
     {

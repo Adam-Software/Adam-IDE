@@ -1,12 +1,12 @@
-﻿using AdamController.Core;
-using AdamController.Core.Mvvm;
+﻿using AdamStudio.Core;
+using AdamStudio.Core.Mvvm;
 using Prism.Commands;
 using Prism.Regions;
 using System.Windows;
 using System;
-using AdamController.Services.Interfaces;
+using AdamStudio.Services.Interfaces;
 
-namespace AdamController.Modules.MenuRegion.ViewModels
+namespace AdamStudio.Modules.MenuRegion.ViewModels
 {
     public class MenuRegionViewModel : RegionViewModelBase
     {

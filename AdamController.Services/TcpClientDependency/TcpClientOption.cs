@@ -1,4 +1,4 @@
-﻿namespace AdamController.Services.TcpClientDependency
+﻿namespace AdamStudio.Services.TcpClientDependency
 {
     public class TcpClientOption
     {

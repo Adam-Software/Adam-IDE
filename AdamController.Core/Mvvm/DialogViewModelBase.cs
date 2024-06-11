@@ -1,10 +1,10 @@
-﻿using damController.Services.SystemDialogServiceDependency;
+﻿
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 
-namespace AdamController.Core.Mvvm
+namespace AdamStudio.Core.Mvvm
 {
     public class DialogViewModelBase : BindableBase, IDialogAware
     {

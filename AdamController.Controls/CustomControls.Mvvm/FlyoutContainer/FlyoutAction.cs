@@ -1,4 +1,4 @@
-﻿namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
+﻿namespace AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer
 {
     /// <summary>
     /// Represents the ongoing direction of change of a Flyout

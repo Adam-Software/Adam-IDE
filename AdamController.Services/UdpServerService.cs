@@ -1,8 +1,8 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using NetCoreServer;
 using System.Net;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class UdpServerService : UdpServer, IUdpServerService
     {

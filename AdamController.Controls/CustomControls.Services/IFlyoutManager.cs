@@ -1,8 +1,8 @@
-﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
+﻿using AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer;
 using Prism.Regions;
 using System.Windows;
 
-namespace AdamController.Controls.CustomControls.Services
+namespace AdamStudio.Controls.CustomControls.Services
 {
     public interface IFlyoutManager
     {

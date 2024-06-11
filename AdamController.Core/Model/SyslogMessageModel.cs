@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace AdamController.Core.Model
+namespace AdamStudio.Core.Model
 {
     public class SyslogMessageModel
     {

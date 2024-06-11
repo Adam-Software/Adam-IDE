@@ -1,10 +1,10 @@
-﻿using AdamController.Controls.CustomControls.Services;
-using AdamController.Core;
-using AdamController.Modules.FlayoutsRegion.Views;
+﻿using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Core;
+using AdamStudio.Modules.FlayoutsRegion.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 
-namespace AdamController.Modules.FlayoutsRegion
+namespace AdamStudio.Modules.FlayoutsRegion
 {
     public class FlayoutsRegionModule : IModule
     {

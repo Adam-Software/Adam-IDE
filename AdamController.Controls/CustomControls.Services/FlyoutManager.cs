@@ -1,9 +1,9 @@
-﻿using AdamController.Controls.CustomControls.Mvvm.FlyoutContainer;
+﻿using AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer;
 using DryIoc;
 using Prism.Regions;
 using System.Windows;
 
-namespace AdamController.Controls.CustomControls.Services
+namespace AdamStudio.Controls.CustomControls.Services
 {
     /// <summary>
     /// Manages a collection of Flyouts, registering them with specified regions and creating their views and viewmodels.

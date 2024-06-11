@@ -1,11 +1,11 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Unosquare.FFME.Common;
 
-namespace AdamController.Modules.ContentRegion.Views
+namespace AdamStudio.Modules.ContentRegion.Views
 {
 
     public partial class ComputerVisionControlView : UserControl

@@ -1,11 +1,11 @@
-﻿using AdamController.Services.Interfaces;
+﻿using AdamStudio.Services.Interfaces;
 using AdamController.WebApi.Client;
 using AdamController.WebApi.Client.v1.RequestModel;
 using AdamController.WebApi.Client.v1.ResponseModel;
 using System;
 using System.Threading.Tasks;
 
-namespace AdamController.Services
+namespace AdamStudio.Services
 {
     public class WebApiService : IWebApiService
     {

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 
-namespace AdamController.Controls.CustomControls.Mvvm.FlyoutContainer
+namespace AdamStudio.Controls.CustomControls.Mvvm.FlyoutContainer
 {
     /// <summary>
     /// Base class that provides and implementation of IFlyout.

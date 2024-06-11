@@ -1,7 +1,7 @@
-﻿using AdamController.Controls.Enums;
+﻿using AdamStudio.Controls.Enums;
 using Prism.Mvvm;
 
-namespace AdamController.Controls.CustomControls.Services
+namespace AdamStudio.Controls.CustomControls.Services
 {
     public class ControlHelper : BindableBase, IControlHelper
     {

@@ -3,7 +3,7 @@ using AdamController.WebApi.Client.v1.ResponseModel;
 using System;
 using System.Threading.Tasks;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     public interface IWebApiService : IDisposable
     {

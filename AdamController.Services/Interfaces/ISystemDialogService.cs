@@ -1,8 +1,8 @@
-﻿using AdamController.Services.SystemDialogServiceDependency;
+﻿using AdamStudio.Services.SystemDialogServiceDependency;
 using Prism.Services.Dialogs;
 using System;
 
-namespace AdamController.Services.Interfaces
+namespace AdamStudio.Services.Interfaces
 {
     public interface ISystemDialogService : IDisposable
     {

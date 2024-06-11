@@ -1,7 +1,7 @@
-﻿using AdamController.Controls.CustomControls.Services;
-using AdamController.Core.Properties;
-using AdamController.Services.Interfaces;
-using AdamController.Services.WebViewProviderDependency;
+﻿using AdamStudio.Controls.CustomControls.Services;
+using AdamStudio.Core.Properties;
+using AdamStudio.Services.Interfaces;
+using AdamStudio.Services.WebViewProviderDependency;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.IO;
@@ -13,7 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using Unosquare.FFME.Common;
 
-namespace AdamController.Modules.ContentRegion.Views
+namespace AdamStudio.Modules.ContentRegion.Views
 {
     public partial class ScratchControlView : UserControl
     {

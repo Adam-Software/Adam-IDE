@@ -1,4 +1,4 @@
-﻿namespace AdamController.Controls.CustomControls.Services
+﻿namespace AdamStudio.Controls.CustomControls.Services
 {
     public delegate void IsNotificationFlyoutOpenedStateChangeEventHandler(object sender);
 
