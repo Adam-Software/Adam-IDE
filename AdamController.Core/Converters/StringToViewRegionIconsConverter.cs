@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.IconPacks;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -6,19 +7,22 @@ using System.Windows.Data;
 namespace AdamController.Core.Converters
 {
     [ValueConversion(typeof(bool?), typeof(Visibility))]
-    public class BoolToVisibilityConverter : IValueConverter
+    public class StringToViewRegionIconsConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? booleanNulableValue = null;
+            string stringValue = string.Empty;
 
             if (value != null)
-                booleanNulableValue = (bool)value;
-            
-            if (booleanNulableValue == true)
-                return Visibility.Visible;
+                stringValue = (string)value;
 
-            return Visibility.Collapsed;
+            if (stringValue == SubRegionNames.SubRegionVisualSettings)
+                return PackIconSimpleIconsKind.Scratch;
+
+            if (stringValue == SubRegionNames.SubRegionScratch)
+                return PackIconFeatherIconsKind.Settings;
+
+            return PackIconSimpleIconsKind.AbbRobotStudio;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -8,6 +8,7 @@ using AdamController.Core.Properties;
 using AdamController.Services.Interfaces;
 using Prism.Commands;
 using Prism.Regions;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -18,16 +19,20 @@ namespace AdamController.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         #region DelegateCommands
-
-        public DelegateCommand<string> ShowRegionCommand { get; private set; }
-        public DelegateCommand<string> MoveSplitterDelegateCommand { get; private set; }
+        
+        public DelegateCommand<string> ShowRegionCommand { get; }
+        public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
+        public DelegateCommand SwitchToVideoDelegateCommand { get; }
+        public DelegateCommand SwitchToSettingsViewDelegateCommand { get; }
 
         #endregion
 
         #region Services
 
-        public IRegionManager RegionManager { get; }
-        private readonly ISubRegionChangeAwareService mSubRegionChangeAwareService;
+        public ISubRegionChangeAwareService SubRegionChangeAwareService { get; }
+        public IControlHelper ControlHelper { get; }
+
+        private readonly IRegionManager mRegionManager;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
         private readonly ICommunicationProviderService mCommunicationProviderService;
         private readonly IFolderManagmentService mFolderManagment;
@@ -35,8 +40,7 @@ namespace AdamController.ViewModels
         private readonly IAvalonEditService mAvalonEditService;
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
-        private readonly IControlHelper mControlHelper;
-        private readonly IVideoViewProvider mVideoViewProvider;
+
         #endregion
 
         #region ~
@@ -44,22 +48,26 @@ namespace AdamController.ViewModels
         public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
                     ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
                     IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, 
-                    IControlHelper controlHelper, IVideoViewProvider videoViewProvider) 
+                    IControlHelper controlHelper) 
         {
-            RegionManager = regionManager;
+            mRegionManager = regionManager;
             mWebApiService = webApiService;
-            mSubRegionChangeAwareService = subRegionChangeAwareService;
+            SubRegionChangeAwareService = subRegionChangeAwareService;
             mStatusBarNotification = statusBarNotification;
             mCommunicationProviderService = communicationProviderService;
             mFolderManagment = folderManagment;
             mAvalonEditService = avalonEditService;
             mThemeManager = themeManager;
             mCultureProvider = cultureProvider;
-            mControlHelper = controlHelper;
-            mVideoViewProvider = videoViewProvider;
+            ControlHelper = controlHelper;
 
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
+
+            SwitchToVideoDelegateCommand = new DelegateCommand(SwitchToVideo, SwitchToVideoCanExecute);
+            SwitchToSettingsViewDelegateCommand = new DelegateCommand(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
+
+            RestroreLastSelectedView();
 
             Subscribe();
         }
@@ -70,43 +78,6 @@ namespace AdamController.ViewModels
 
         public string WindowTitle => $"AdamStudio {Assembly.GetExecutingAssembly().GetName().Version}";
 
-        /// <summary>
-        /// -1 is not selected
-        /// </summary>
-        private int hamburgerMenuSelectedIndex = -1;
-        public int HamburgerMenuSelectedIndex 
-        { 
-            get { return hamburgerMenuSelectedIndex; }
-            set
-            {
-                bool isNewValue = SetProperty(ref hamburgerMenuSelectedIndex, value);
-                
-                if(isNewValue)
-                    MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
-            } 
-        }
-
-        /// <summary>
-        /// -1 is not selected
-        /// </summary>
-        private int hamburgerMenuSelectedOptionsIndex = -1;
-
-        public int HamburgerMenuSelectedOptionsIndex
-        {
-            get { return hamburgerMenuSelectedOptionsIndex; }
-
-            set
-            {
-                SetProperty(ref hamburgerMenuSelectedOptionsIndex, value);
-            }
-        }
-
-        private string videoFrameRate;
-        public string VideoFrameRate
-        {
-            get { return videoFrameRate; }
-            set {  SetProperty(ref videoFrameRate, value); }
-        }
 
         #endregion
 
@@ -114,66 +85,95 @@ namespace AdamController.ViewModels
 
         private void MoveSplitter(string commandArg)
         {
-            BlocklyViewMode currentViewMode = mControlHelper.CurrentBlocklyViewMode;
+            BlocklyViewMode currentViewMode = ControlHelper.CurrentBlocklyViewMode;
 
             if (commandArg == "Left")
             {
                 if (currentViewMode == BlocklyViewMode.FullScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
 
                 if (currentViewMode == BlocklyViewMode.MiddleScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.Hidden;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.Hidden;
             }
 
             if (commandArg == "Right")
             {
                 if (currentViewMode == BlocklyViewMode.Hidden)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.MiddleScreen;
 
                 if (currentViewMode == BlocklyViewMode.MiddleScreen)
-                    mControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
+                    ControlHelper.CurrentBlocklyViewMode = BlocklyViewMode.FullScreen;
             }
         }
 
         private bool MoveSplitterCanExecute(string arg)
         {
-            return HamburgerMenuSelectedIndex == 0;
+            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            return regionName == SubRegionNames.SubRegionScratch;
+        }
+
+        private void SwitchToVideo()
+        {
+            if (ControlHelper.IsShowVideo)
+            {
+                ControlHelper.IsShowVideo = false;
+                return;
+            }
+                
+            ControlHelper.IsShowVideo = true;
+            return;
+        }
+
+        private bool SwitchToVideoCanExecute()
+        {
+            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            return regionName == SubRegionNames.SubRegionScratch;
+        }
+
+        private void SwitchToSettingsView()
+        {
+            
+            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            
+            if (regionName == SubRegionNames.SubRegionScratch)
+            {
+                ShowRegion(SubRegionNames.SubRegionVisualSettings);
+                return;
+            }
+            
+            if(regionName == SubRegionNames.SubRegionVisualSettings)
+            {
+                ShowRegion(SubRegionNames.SubRegionScratch);
+                return;
+            }    
+        }
+
+        private bool SwitchToSettingsViewCanExecute()
+        {
+            return true;
         }
 
         #endregion
 
         #region Private methods
 
-        private void ChangeSelectedIndexByRegionName(string subRegionName)
-        {
-            switch (subRegionName)
-            {
-                case SubRegionNames.SubRegionScratch:
-                    HamburgerMenuSelectedIndex = 0;
-                    break;
-                case SubRegionNames.SubRegionComputerVisionControl:
-                    HamburgerMenuSelectedIndex = 1;
-                    break;
-                case SubRegionNames.SubRegionVisualSettings:
-                    HamburgerMenuSelectedOptionsIndex = 0;
-                    break;
-            }
-        }
-
         private void ShowRegion(string subRegionName)
         {
             switch (subRegionName)
             {
                 case SubRegionNames.SubRegionScratch:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
                     break;
                 case SubRegionNames.SubRegionComputerVisionControl:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
                     break;
                 case SubRegionNames.SubRegionVisualSettings:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
                     break;
             }
+
+            MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
+            SwitchToVideoDelegateCommand.RaiseCanExecuteChanged(); 
         }
 
         /// <summary>
@@ -203,6 +203,11 @@ namespace AdamController.ViewModels
             {
                 // If you couldn't read the message, it's okay, no one needs to know about it.
             }
+        }
+
+        private void RestroreLastSelectedView()
+        {
+            //mControlHelper.IsShowVideo = Settings.Default.ShowVideo;
         }
 
         /// <summary>
@@ -236,12 +241,15 @@ namespace AdamController.ViewModels
         /// </summary>
         private void Subscribe()
         {
-            mSubRegionChangeAwareService.RaiseSubRegionChangeEvent += RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
-            mVideoViewProvider.RaiseFrameRateUpdateEvent += RaiseFrameRateUpdateEvent;
 
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
+        }
+
+        private void IsVideoShowChangeEvent(object sender)
+        {
+            SwitchToVideo();
         }
 
         /// <summary>
@@ -249,10 +257,9 @@ namespace AdamController.ViewModels
         /// </summary>
         private void Unsubscribe()
         {
-            mSubRegionChangeAwareService.RaiseSubRegionChangeEvent -= RaiseSubRegionChangeEvent;
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
-            mVideoViewProvider.RaiseFrameRateUpdateEvent -= RaiseFrameRateUpdateEvent;
+
             Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }
 
@@ -285,15 +292,6 @@ namespace AdamController.ViewModels
         }
 
         /// <summary>
-        /// Changes the selected section in the hamburger menu
-        /// </summary>
-        private void RaiseSubRegionChangeEvent(object sender)
-        {
-            var changeRegionName = mSubRegionChangeAwareService.InsideRegionNavigationRequestName;
-            ChangeSelectedIndexByRegionName(changeRegionName);
-        }
-
-        /// <summary>
         /// It is not clear where to put this, so it will not get lost here.
         /// 
         /// Stops a remotely executed script that may have been executing before the connection was lost.
@@ -306,19 +304,6 @@ namespace AdamController.ViewModels
         private void RaiseUdpServiceServerReceivedEvent(object sender, string message)
         {
             ParseSyslogMessage(message);
-        }
-
-        private void RaiseFrameRateUpdateEvent(object sender)
-        {
-            double rate = double.Round(mVideoViewProvider.FrameRate, 2);
-
-            if (double.IsNaN(rate))
-            {
-                VideoFrameRate = string.Empty;
-                return;
-            }
-                
-            VideoFrameRate = $"{rate} FPS";
         }
 
         #endregion

@@ -12,7 +12,7 @@ namespace AdamController.Modules.ContentRegion.Views
     {
         #region Service
 
-        private readonly IWebSocketClientService mWebSocketClient;
+        //private readonly IWebSocketClientService mWebSocketClient;
         private readonly IVideoViewProvider mVideoViewProvider;
 
         #endregion
@@ -21,7 +21,7 @@ namespace AdamController.Modules.ContentRegion.Views
         {
             InitializeComponent();
 
-            mWebSocketClient = webSocketClient;
+            //mWebSocketClient = webSocketClient;
             mVideoViewProvider = videoViewProvider;
 
             VideoView.Loaded += VideoViewLoaded;
@@ -32,24 +32,15 @@ namespace AdamController.Modules.ContentRegion.Views
 
         private void VideoViewVideoFrameDecoded(object sender, FrameDecodedEventArgs e)
         {
-            //double rate = VideoView.VideoFrameRate;
             mVideoViewProvider.FrameRate = VideoView.VideoFrameRate;
         }
 
         private void VideoViewMediaOpening(object sender, MediaOpeningEventArgs e)
         {
-            //var isStream = VideoView.IsNetworkStream;
-            
-
             e.Options.IsTimeSyncDisabled = true;
             e.Options.IsAudioDisabled = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
-
             e.Options.DecoderParams.EnableFastDecoding = true;
-
-            
-            //e.Options.DecoderParams.EnableLowDelayDecoding = true;
-            //e.Options.VideoForcedFps = 30;
         }
 
         private async void VideoViewLoaded(object sender, RoutedEventArgs e)
@@ -63,10 +54,6 @@ namespace AdamController.Modules.ContentRegion.Views
             //var uri = new Uri($"{docPath}");
 
             await VideoView.Open(uri);
-
-            //mMediaPlayer.EnableHardwareDecoding = true;
-            //mMediaPlayer.NetworkCaching = 1000;
-            //mMediaPlayer.Scale = 0.72f;
         }
 
         private async void UserControlUnloaded(object sender, RoutedEventArgs e)
@@ -74,11 +61,13 @@ namespace AdamController.Modules.ContentRegion.Views
             await VideoView.Close();
             mVideoViewProvider.ClearFrameRate();
         }
-        public string DownRightDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 1, \"z\": 0}}";
 
-        private void Button_KeyDown(object sender, KeyEventArgs e)
-        {
-            mWebSocketClient.SendTextAsync(DownRightDirection);
-        }
+        //?
+        //public string DownRightDirection { get; private set; } = "{\"move\":{\"x\": 0, \"y\": 1, \"z\": 0}}";
+
+        //private void Button_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    mWebSocketClient.SendTextAsync(DownRightDirection);
+        //}
     }
 }
