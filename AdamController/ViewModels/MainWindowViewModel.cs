@@ -67,8 +67,6 @@ namespace AdamController.ViewModels
             SwitchToVideoDelegateCommand = new DelegateCommand(SwitchToVideo, SwitchToVideoCanExecute);
             SwitchToSettingsViewDelegateCommand = new DelegateCommand(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
 
-            RestroreLastSelectedView();
-
             Subscribe();
         }
 
@@ -205,11 +203,6 @@ namespace AdamController.ViewModels
             }
         }
 
-        private void RestroreLastSelectedView()
-        {
-            //mControlHelper.IsShowVideo = Settings.Default.ShowVideo;
-        }
-
         /// <summary>
         /// Register highlighting for AvalonEdit. You need to call before loading the regions
         /// </summary>
@@ -245,11 +238,7 @@ namespace AdamController.ViewModels
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
 
             Application.Current.MainWindow.Loaded += MainWindowLoaded;
-        }
-
-        private void IsVideoShowChangeEvent(object sender)
-        {
-            SwitchToVideo();
+            Application.Current.MainWindow.Closed += MainWindowClosed; 
         }
 
         /// <summary>
@@ -259,8 +248,6 @@ namespace AdamController.ViewModels
         {
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent -= RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent -= RaiseUdpServiceServerReceivedEvent;
-
-            Application.Current.MainWindow.Loaded -= MainWindowLoaded;
         }
 
         #endregion
@@ -289,6 +276,12 @@ namespace AdamController.ViewModels
 
             if (Settings.Default.AutoStartTcpConnect)
                 mCommunicationProviderService.ConnectAllAsync();
+        }
+
+
+        private void MainWindowClosed(object sender, EventArgs e)
+        {
+            Unsubscribe();
         }
 
         /// <summary>
