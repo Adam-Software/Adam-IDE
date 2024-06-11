@@ -3,29 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio", "AdamController\AdamStudio.csproj", "{0D918664-5F27-4525-ABE4-0D1A1FB22761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio", "AdamStudio\AdamStudio.csproj", "{0D918664-5F27-4525-ABE4-0D1A1FB22761}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{BF38E868-9FEB-4645-9B2B-15AC47844075}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.ContentRegion", "Modules\AdamController.Modules.ContentRegion\AdamStudio.Modules.ContentRegion.csproj", "{8EF23718-8FE0-4711-BB00-04411C6B4787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.ContentRegion", "Modules\AdamStudio.Modules.ContentRegion\AdamStudio.Modules.ContentRegion.csproj", "{8EF23718-8FE0-4711-BB00-04411C6B4787}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.MenuRegion", "Modules\AdamController.Modules.MenuRegion\AdamStudio.Modules.MenuRegion.csproj", "{6F12ECFD-3891-40AE-A18D-B3362C6A2946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.MenuRegion", "Modules\AdamStudio.Modules.MenuRegion\AdamStudio.Modules.MenuRegion.csproj", "{6F12ECFD-3891-40AE-A18D-B3362C6A2946}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy", "Legacy", "{511F4919-C2FC-4775-92A4-C446E51B49DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.StatusBarRegion", "Modules\AdamController.Modules.StatusBar\AdamStudio.Modules.StatusBarRegion.csproj", "{05913116-D1EA-49C3-92C4-B4316E7C0A9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.StatusBarRegion", "Modules\AdamStudio.Modules.StatusBar\AdamStudio.Modules.StatusBarRegion.csproj", "{05913116-D1EA-49C3-92C4-B4316E7C0A9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Services", "AdamController.Services\AdamStudio.Services.csproj", "{C6EEA5FC-E4F2-4334-B134-C4A9B7D2A49A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Services", "AdamStudio.Services\AdamStudio.Services.csproj", "{C6EEA5FC-E4F2-4334-B134-C4A9B7D2A49A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.FlayoutsRegion", "Modules\AdamController.Modules.FlayoutsRegion\AdamStudio.Modules.FlayoutsRegion.csproj", "{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Modules.FlayoutsRegion", "Modules\AdamStudio.Modules.FlayoutsRegion\AdamStudio.Modules.FlayoutsRegion.csproj", "{D17BE826-5C86-4EAC-8424-534F9CF3DFE0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Core", "AdamController.Core\AdamStudio.Core.csproj", "{F6817FD0-DE3E-4636-8443-A26F46507A6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Core", "AdamStudio.Core\AdamStudio.Core.csproj", "{F6817FD0-DE3E-4636-8443-A26F46507A6F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamBlocklyLibrary", "Legacy\AdamBlocklyLibrary\AdamBlocklyLibrary.csproj", "{941A4E7D-6A53-44F8-876C-6B33AAEDDA89}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamController.WebApi.Client", "Legacy\AdamController.WebApi.Client\AdamController.WebApi.Client.csproj", "{771220FE-2F25-441B-815E-7DD63918BA95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Controls", "AdamController.Controls\AdamStudio.Controls.csproj", "{1BADFDB1-D66E-4580-8EAF-CAEE37761640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdamStudio.Controls", "AdamStudio.Controls\AdamStudio.Controls.csproj", "{1BADFDB1-D66E-4580-8EAF-CAEE37761640}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

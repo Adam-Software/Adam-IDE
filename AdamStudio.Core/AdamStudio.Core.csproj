@@ -10,12 +10,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
-  <ItemGroup>
+<!--  <ItemGroup>
     <Compile Remove="Helpers\**" />
     <EmbeddedResource Remove="Helpers\**" />
     <None Remove="Helpers\**" />
     <Page Remove="Helpers\**" />
-  </ItemGroup>
+  </ItemGroup> -->
   <ItemGroup>
     <None Remove="Properties\AdamPython.xshd" />
     <None Remove="Properties\Icons\main_app_icon.ico" />
@@ -26,8 +26,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdamController.Controls\AdamStudio.Controls.csproj" />
-    <ProjectReference Include="..\AdamController.Services\AdamStudio.Services.csproj" />
+    <ProjectReference Include="..\AdamStudio.Controls\AdamStudio.Controls.csproj" />
+    <ProjectReference Include="..\AdamStudio.Services\AdamStudio.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Properties\Icons\main_app_icon.ico" />

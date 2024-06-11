@@ -20,7 +20,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>AdamStudio.App</StartupObject>
-    <ApplicationIcon>..\AdamController.Core\Properties\Icons\main_app_icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\AdamStudio.Core\Properties\Icons\main_app_icon.ico</ApplicationIcon>
     <PackageProjectUrl>https://github.com/Adam-Software/AdamStudio</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Adam-Software/AdamStudio</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -32,16 +32,18 @@
     <NoWarn>1701;1702;CA1416</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdamController.Core\AdamStudio.Core.csproj" />
-    <ProjectReference Include="..\Modules\AdamController.Modules.ContentRegion\AdamStudio.Modules.ContentRegion.csproj" />
-    <ProjectReference Include="..\Modules\AdamController.Modules.FlayoutsRegion\AdamStudio.Modules.FlayoutsRegion.csproj" />
-    <ProjectReference Include="..\Modules\AdamController.Modules.MenuRegion\AdamStudio.Modules.MenuRegion.csproj" />
-    <ProjectReference Include="..\Modules\AdamController.Modules.StatusBar\AdamStudio.Modules.StatusBarRegion.csproj" />
+    <ProjectReference Include="..\AdamStudio.Core\AdamStudio.Core.csproj" />
+    <ProjectReference Include="..\Modules\AdamStudio.Modules.ContentRegion\AdamStudio.Modules.ContentRegion.csproj" />
+    <ProjectReference Include="..\Modules\AdamStudio.Modules.FlayoutsRegion\AdamStudio.Modules.FlayoutsRegion.csproj" />
+    <ProjectReference Include="..\Modules\AdamStudio.Modules.MenuRegion\AdamStudio.Modules.MenuRegion.csproj" />
+    <ProjectReference Include="..\Modules\AdamStudio.Modules.StatusBar\AdamStudio.Modules.StatusBarRegion.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
+<!--  
+<ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+</ItemGroup>
+-->
 </Project>
