@@ -1,7 +1,6 @@
 ﻿using AdamController.Core.Model;
 using AdamController.Core.Mvvm;
 using AdamController.Services.Interfaces;
-
 using Prism.Commands;
 using Prism.Regions;
 using System;
@@ -15,8 +14,7 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         private readonly ICommunicationProviderService mCommunicationProvider;
         private readonly IWebApiService mWebApiService;
-        //private readonly IVideoViewProvider mVideoViewProvider;
-
+        
         #endregion
 
         #region private var
@@ -33,7 +31,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         {
             mCommunicationProvider = communicationProvider;
             mWebApiService = webApiService;
-            //mVideoViewProvider = videoViewProvider;
         }
 
         #endregion
@@ -50,9 +47,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             base.OnNavigatedTo(navigationContext);
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void Destroy()
         {
-            base.OnNavigatedFrom(navigationContext);
+            base.Destroy();
         }
 
         #endregion
@@ -64,7 +61,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
         /// </summary>
         public DelegateCommand<string> DirectionButtonCommandDown => directionButtonCommandDown ??= new DelegateCommand<string>(obj =>
         {
-            //var vectorSource = JsonConvert.DeserializeObject<VectorModel>(obj);
             var vectorSource = JsonSerializer.Deserialize<VectorModel>(obj);
 
             if (vectorSource.Move.X == 1)
@@ -94,7 +90,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 vectorSource.Move.Z = -SliderValue;
             }
 
-            //var json = JsonConvert.SerializeObject(vectorSource);
             var json = JsonSerializer.Serialize(vectorSource);
 
             mCommunicationProvider.WebSocketSendTextMessage(json);
@@ -115,7 +110,6 @@ namespace AdamController.Modules.ContentRegion.ViewModels
                 } 
             };
 
-            //var json = JsonConvert.SerializeObject(vector);
             var json = JsonSerializer.Serialize(vector);
             mCommunicationProvider.WebSocketSendTextMessage(json);
 

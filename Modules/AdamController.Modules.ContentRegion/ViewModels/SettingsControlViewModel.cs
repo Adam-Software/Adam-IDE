@@ -122,9 +122,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             SelectedLanguageApp = mCultureProvider.CurrentAppCulture;
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void Destroy()
         {
-            base.OnNavigatedFrom(navigationContext);
+            base.Destroy();
         }
 
         #endregion

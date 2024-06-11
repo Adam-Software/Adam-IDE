@@ -46,11 +46,9 @@ namespace AdamController.Modules.MenuRegion.ViewModels
             base.OnNavigatedTo(navigationContext);
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void Destroy()
         {
             Unsubscribe();
-
-            base.OnNavigatedFrom(navigationContext);
         }
 
         #endregion

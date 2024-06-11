@@ -37,9 +37,9 @@ namespace AdamController.Modules.ContentRegion.ViewModels
 
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void Destroy()
         {
-            base.OnNavigatedFrom(navigationContext);
+            base.Destroy();
         }
 
         #endregion

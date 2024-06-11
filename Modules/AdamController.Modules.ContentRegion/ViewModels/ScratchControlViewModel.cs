@@ -151,11 +151,11 @@ namespace AdamController.Modules.ContentRegion.ViewModels
             base.OnNavigatedTo(navigationContext);
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void Destroy()
         {
             Unsubscribe();
 
-            base.OnNavigatedFrom(navigationContext);
+            base.Destroy();
         }
 
         #endregion
