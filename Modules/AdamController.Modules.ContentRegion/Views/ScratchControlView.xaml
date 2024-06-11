@@ -10,11 +10,14 @@
              xmlns:behaviors="clr-namespace:AdamController.Core.Behaviors;assembly=AdamController.Core"
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:prism="http://prismlibrary.com/" 
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win">
 
     <UserControl.Resources>
         <converters:GridLengthConverter x:Key="GridLengthConverter" />
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToVisibilityReConverter x:Key="BoolToVisibilityReConverter"/>
     </UserControl.Resources>
 
     <Grid x:Name="MainGrid">
@@ -49,49 +52,429 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="BlocklyColumn" Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, 
-                    Converter={StaticResource GridLengthConverter}, Source={x:Static properties:Settings.Default }}"/>
+                <ColumnDefinition x:Name="BlocklyColumn" 
+                                  Width="{Binding Path=BlocklyEditorWidth, Mode=TwoWay, 
+                                                  Converter={StaticResource GridLengthConverter}, 
+                                                  Source={x:Static properties:Settings.Default }}"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!--#endregion-->
 
-            <!--#region  web view -->
+        <!--#region  web view -->
+            
+        <DockPanel Grid.Column="0"
+                   Grid.Row="1"
+                   Margin="2 7 0 0"
+                   LastChildFill="True"
+                   Visibility="{Binding IsShowVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-            <DockPanel Grid.Column="0"
-                       Grid.Row="1"
-                       Margin="2 7 0 0"
-                       LastChildFill="True">
+            <DockPanel Margin="5 0 0 5" DockPanel.Dock="Top">
 
-                <DockPanel Margin="5 0 0 5" DockPanel.Dock="Top">
+                    
+                <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}" 
+                        CommandParameter="Workspace">
+                        
+                    <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
+                    
+                </Button>
+                
+                
+                <Button Padding="2" Margin="3 0 7 0" 
+                        Command="{Binding ShowSaveFileDialogDelegateCommand}"        
+                        CommandParameter="Workspace">
+                        
+                    <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
+                    
+                </Button>
 
-                    <Button Padding="2" Command="{Binding ShowOpenFileDialogDelegateCommand}" 
-                            CommandParameter="Workspace">
-                        <iconPacks:PackIconMaterial Padding="2" Kind="FolderOpen" />
-                    </Button>
-                    <Button Padding="2" Margin="3 0 7 0" 
-                            Command="{Binding ShowSaveFileDialogDelegateCommand}"
-                            CommandParameter="Workspace">
-                        <iconPacks:PackIconMaterial  Padding="2" Kind="ContentSave" />
-                    </Button>
                 <Button Padding="2" HorizontalAlignment="Left" Command="{Binding ReloadWebViewDelegateCommand}" >
                     <iconPacks:PackIconMaterial  Padding="2"  Kind="Reload" />
                 </Button>
-                    
+
             </DockPanel>
 
             <Border DockPanel.Dock="Top"  Margin="-1 0 0 0" BorderThickness="0 1 0 0"/>
 
-            <webControl:WebView2  DockPanel.Dock="Top"
+                <webControl:WebView2  DockPanel.Dock="Top"
                                       Name="WebView"
                                       DefaultBackgroundColor="Transparent"
-                                       
                                       ZoomFactor="{Binding WebViewZoomFactor, Mode=TwoWay, Source={x:Static properties:Settings.Default }}"
                                       Margin="0"/>
+            
+        </DockPanel>
+        
+        <!--#endregion-->
+
+        <!-- #region VideoView -->
+        
+        <Grid Grid.Column="0"
+              Grid.Row="1"
+              Margin="2 7 0 0"
+              Visibility="{Binding IsShowVideo, Converter={StaticResource BoolToVisibilityReConverter}}">
+
+            <ffme:MediaElement IsDesignPreviewEnabled="False"
+                               x:Name="VideoView"
+                               LoadedBehavior="Play"
+                               UnloadedBehavior="Manual"/>
+
+            <DockPanel LastChildFill="False">
+
+                <TextBlock DockPanel.Dock="Top"
+                           Margin="10 0 10 0"
+                           HorizontalAlignment="Right"
+                           Text="{Binding VideoFrameRate}"
+                           Foreground="{DynamicResource MahApps.Brushes.Text}"/>
+                
+                <Grid Background="Transparent" 
+                      DockPanel.Dock="Bottom" 
+                      HorizontalAlignment="Center"
+                      Width="400"
+                      Opacity="1">
+
+                <Grid.RowDefinitions>
+                    <!--0-->
+                    <RowDefinition Height="*" />
+                    <!--1-->
+                    <RowDefinition Height="*" />
+                    <!--2-->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <!--0-->
+                        <ColumnDefinition Width="*"/>
+                        <!--1-->
+                        <ColumnDefinition Width="*"/>
+                        <!--2-->
+                        <ColumnDefinition Width="*"/>
+                        <!--3-->
+                        <ColumnDefinition Width="*"/>
+                        <!--4-->
+                        <ColumnDefinition Width="*"/>
+                        <!--5-->
+                        <ColumnDefinition Width="*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <!--#region row 0 -->
+
+                <Slider Grid.Column="4"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Margin="0 10 0 10"
+                        Minimum="0.1" Maximum="1"
+                        TickFrequency="0.1"
+                        Width="10"
+                        Orientation="Vertical" 
+                        Value="{Binding SliderValue}"
+                        Style="{DynamicResource  MahApps.Styles.Slider.Flat}"/>
+
+                <!--#endregion-->
+
+                <!--#region row 1 -->
+
+                <Button Grid.Column="1"
+                        Grid.Row="0"
+                        Width="Auto"
+                        Height="Auto"
+                        Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                    Height="Auto"
+                                    Kind="ArrowTopLeft"
+                                    Margin="5"/>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction
+                                Command="{Binding DirectionButtonDownDelegateCommand}"
+                                CommandParameter="{Binding ForwardLeftDirection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction
+                                Command="{Binding DirectionButtonUpDelegateCommand}"
+                                CommandParameter="{Binding StopDirrection}" />
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <Button Grid.Column="2"
+                    Grid.Row="0"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5"
+                    Style="{DynamicResource MahApps.Styles.Button}">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                            Height="Auto"
+                                            Kind="ArrowUp"
+                                            Margin="5"/>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding ForwardDirection}"/>
+
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
+                </Button>
+
+
+                <Button Grid.Column="3"
+                    Grid.Row="0"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                    Height="Auto"
+                                    Kind="ArrowTopRight"
+                                    Margin="5"/>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction
+                    Command="{Binding DirectionButtonDownDelegateCommand}"
+                    CommandParameter="{Binding ForwardRightDirection}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction
+                    Command="{Binding DirectionButtonUpDelegateCommand}"
+                    CommandParameter="{Binding StopDirrection}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <!--#endregion-->
+
+                <!--#region row 2 -->
+
+                <Button Grid.Column="1"
+                    Grid.Row="1"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                            Height="Auto"
+                                            Kind="ArrowLeft"
+                                            Margin="5"/>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding LeftDirection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+
+                <Button Grid.Column="2"
+                        Grid.Row="1"
+                        Width="Auto"
+                        Height="Auto"
+                        Margin="5"
+                        Command="{Binding ToZeroPositionDelegateCommand}">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                            Height="Auto"
+                                            Kind="HomeFloor0"
+                                            Margin="5"/>
+                </Button>
+
+                <Button Grid.Column="3"
+                    Grid.Row="1"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                    Height="Auto"
+                                    Kind="ArrowRight"
+                                    Margin="5"/>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding RightDirection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <!--#endregion-->
+
+                <!--#region row 3 -->
+
+                <Button Grid.Column="0"
+                    Grid.Row="2"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                            Height="Auto"
+                                            Kind="RotateLeft"
+                                            Margin="5"/>
+
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding RotateLeftDirrection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <Button Grid.Column="1"
+                    Grid.Row="2"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                    Height="Auto"
+                                    Kind="ArrowBottomLeft"
+                                    Margin="5"/>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding BackLeftDirection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <Button Grid.Column="2"
+                    Grid.Row="2"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5"
+                    Style="{DynamicResource MahApps.Styles.Button}">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                    Height="Auto"
+                                    Kind="ArrowDown"
+                                    Margin="5"/>
+
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding BackDirection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+
+                <Button Grid.Column="3"
+            Grid.Row="2"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                            Height="Auto"
+                                            Kind="ArrowBottomRight"
+                                            Margin="5"/>
+                    <i:Interaction.Triggers>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding BackRightDirection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <Button Grid.Column="4"
+                    Grid.Row="2"
+                    Width="Auto"
+                    Height="Auto"
+                    Margin="5">
+
+                    <iconPacks:PackIconMaterial Width="Auto"
+                                    Height="Auto"
+                                    Kind="RotateRight"
+                                    Margin="5"/>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonDownDelegateCommand}"
+                                               CommandParameter="{Binding RotateRightDirrection}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+
+                                <i:InvokeCommandAction Command="{Binding DirectionButtonUpDelegateCommand}"
+                                               CommandParameter="{Binding StopDirrection}" />
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
+                </Button>
+            </Grid>
+
             </DockPanel>
 
-            <!--#endregion-->
+
+        </Grid>
+
+
+        <!--#endregion-->
 
             <!--#region vertical splitter -->
 

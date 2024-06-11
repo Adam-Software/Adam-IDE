@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Unosquare.FFME.Common;
 
 namespace AdamController.Modules.ContentRegion.Views
 {
@@ -21,6 +22,8 @@ namespace AdamController.Modules.ContentRegion.Views
         private readonly IWebViewProvider mWebViewProvider;
         private readonly IStatusBarNotificationDeliveryService mStatusBarNotification;
         private readonly IControlHelper mControlHelper;
+        private readonly IWebSocketClientService mWebSocketClient;
+        private readonly IVideoViewProvider mVideoViewProvider;
 
         #endregion
 
@@ -30,7 +33,8 @@ namespace AdamController.Modules.ContentRegion.Views
 
         #endregion
 
-        public ScratchControlView(IWebViewProvider webViewProvider, IStatusBarNotificationDeliveryService statusBarNotification, IFolderManagmentService folderManagment, IControlHelper controlHelper)
+        public ScratchControlView(IWebViewProvider webViewProvider, IStatusBarNotificationDeliveryService statusBarNotification, 
+                        IFolderManagmentService folderManagment, IControlHelper controlHelper, IWebSocketClientService webSocketClient, IVideoViewProvider videoViewProvider)
         {
             InitializeComponent();
             InitializeWebViewCore();
@@ -55,6 +59,49 @@ namespace AdamController.Modules.ContentRegion.Views
 
             /* service event */
             mControlHelper.RaiseBlocklyColumnWidthChangeEvent += RaiseBlocklyColumnWidthChangeEvent;
+
+            /* video */
+            mWebSocketClient = webSocketClient;
+            mVideoViewProvider = videoViewProvider;
+
+            VideoView.MediaOpening += VideoViewMediaOpening;
+            VideoView.VideoFrameDecoded += VideoViewVideoFrameDecoded;
+            VideoView.IsVisibleChanged += VideoViewIsVisibleChanged;
+        }
+
+        private async void VideoViewIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (VideoView.IsVisible)
+            {
+
+                string ip = Settings.Default.ServerIP;
+                string port = Settings.Default.VideoDataExchangePort;
+
+                var uri = new Uri($"http://{ip}:{port}/stream/0.mjpeg");
+                //var docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\test.avi";
+                //var uri = new Uri($"{docPath}");
+
+                await VideoView.Open(uri);
+                return;
+            }
+
+            await VideoView.Close();
+            mVideoViewProvider.ClearFrameRate();
+        }
+
+        private void VideoViewVideoFrameDecoded(object sender, FrameDecodedEventArgs e)
+        {
+            mVideoViewProvider.FrameRate = VideoView.VideoFrameRate;
+        }
+
+        private void VideoViewMediaOpening(object sender, MediaOpeningEventArgs e)
+        {
+
+            e.Options.IsTimeSyncDisabled = true;
+            e.Options.IsAudioDisabled = true;
+            e.Options.MinimumPlaybackBufferPercent = 0;
+
+            e.Options.DecoderParams.EnableFastDecoding = true;
         }
 
         private void RaiseBlocklyColumnWidthChangeEvent(object sender)
