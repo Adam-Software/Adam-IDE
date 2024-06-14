@@ -29,9 +29,8 @@ namespace AdamStudio
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterSingleton<ISingleInstanceService, SingleInstanceService>();
             containerRegistry.RegisterSingleton<IFlyoutStateChecker, FlyoutStateChecker>();
-
             containerRegistry.RegisterSingleton<ICultureProvider, CultureProvider>();
             containerRegistry.RegisterSingleton<IFileManagmentService, FileManagmentService>();
             containerRegistry.RegisterSingleton<IFolderManagmentService, FolderManagmentService>();

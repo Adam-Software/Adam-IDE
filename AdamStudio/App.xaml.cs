@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using AdamStudio.Core.Properties;
+using AdamStudio.Services.Interfaces;
 
 #endregion
 
@@ -45,9 +46,12 @@ namespace AdamStudio
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            mBootstrapper.Run();
+            //mBootstrapper.Container.Resolve<ISingleInstanceService>().Make(Current, "AdamStudio");
+
             base.OnStartup(e);
             
-            mBootstrapper.Run();
+            
         }
 
         protected override void OnExit(ExitEventArgs e)
