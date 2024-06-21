@@ -86,13 +86,13 @@ namespace AdamStudio.Modules.MenuRegion.ViewModels
 
             switch (selectedSubRegionName)
             {
-                case SubRegionNames.SubRegionScratch:
+                case RegionNames.ScratchRegion:
                     IsCheckedScratchMenuItem = true;
                     break;
-                case SubRegionNames.SubRegionComputerVisionControl:
-                    IsCheckedComputerVisionMenuItem = true;
-                    break;
-                case SubRegionNames.SubRegionVisualSettings:    
+                //case SubRegionNames.SubRegionComputerVisionControl:
+                //    IsCheckedComputerVisionMenuItem = true;
+                //    break;
+                case RegionNames.SettingsRegion:    
                     IsCheckedVisualSettingsMenuItem = true;
                     break;
             }
@@ -136,14 +136,14 @@ namespace AdamStudio.Modules.MenuRegion.ViewModels
         {
             switch (subRegionName)
             {
-                case SubRegionNames.SubRegionScratch:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
+                case RegionNames.ScratchRegion:
+                    RegionManager.RequestNavigate(RegionNames.ContentRegion, RegionNames.ScratchRegion);
                     break;
-                case SubRegionNames.SubRegionComputerVisionControl:
+                /*case SubRegionNames.SubRegionComputerVisionControl:
                     RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
-                    break;
-                case SubRegionNames.SubRegionVisualSettings:
-                    RegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
+                    break;*/
+                case RegionNames.SettingsRegion:
+                    RegionManager.RequestNavigate(RegionNames.ContentRegion, RegionNames.SettingsRegion);
                     break;
             }
         }

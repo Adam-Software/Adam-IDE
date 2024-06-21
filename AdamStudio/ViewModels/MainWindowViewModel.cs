@@ -13,13 +13,18 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.ComponentModel.DataAnnotations;
+using System.Windows.Controls.Primitives;
+using AdamStudio.Modules.ContentRegion.Views;
+using Prism.Ioc;
+using System.Windows.Forms;
 
 namespace AdamStudio.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
         #region DelegateCommands
-        
+        public DelegateCommand DeactivateViewDelegateCommand { get; }
         public DelegateCommand<string> ShowRegionCommand { get; }
         public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
         public DelegateCommand SwitchToVideoDelegateCommand { get; }
@@ -40,16 +45,18 @@ namespace AdamStudio.ViewModels
         private readonly IAvalonEditService mAvalonEditService;
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
+        IContainerExtension _container;
 
         #endregion
 
         #region ~
 
-        public MainWindowViewModel(IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
+        public MainWindowViewModel(IContainerExtension container, IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
                     ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
                     IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, 
                     IControlHelper controlHelper) 
         {
+            _container = container;
             mRegionManager = regionManager;
             mWebApiService = webApiService;
             SubRegionChangeAwareService = subRegionChangeAwareService;
@@ -61,6 +68,7 @@ namespace AdamStudio.ViewModels
             mCultureProvider = cultureProvider;
             ControlHelper = controlHelper;
 
+            DeactivateViewDelegateCommand = new DelegateCommand(DeactivateView);
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
 
@@ -68,6 +76,32 @@ namespace AdamStudio.ViewModels
             SwitchToSettingsViewDelegateCommand = new DelegateCommand(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
 
             Subscribe();
+        }
+
+        private void DeactivateView()
+        {
+            //IRegion region = mRegionManager.Regions[SubRegionNames.InsideConentRegion];
+
+            ScratchControlView view = _container.Resolve<ScratchControlView>();
+            SettingsControlView settings = _container.Resolve<SettingsControlView>();
+            
+            //bool isActive = region.ActiveViews.FirstOrDefault() != null;
+
+            //var cratch = region.GetView(nameof(ScratchControlView));
+            //var settings = region.GetView(nameof(SettingsControlView));
+
+            //object menu = region.Views.ToList();
+            // (nameof(ScratchControlView));
+
+            /*if (true)
+            {
+                region.Deactivate(view);
+                region.Activate(settings);
+            }
+            else
+            {
+                
+            } */           
         }
 
         #endregion
@@ -107,7 +141,7 @@ namespace AdamStudio.ViewModels
         private bool MoveSplitterCanExecute(string arg)
         {
             var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
-            return regionName == SubRegionNames.SubRegionScratch;
+            return regionName == RegionNames.ScratchRegion;
         }
 
         private void SwitchToVideo()
@@ -125,13 +159,13 @@ namespace AdamStudio.ViewModels
         private bool SwitchToVideoCanExecute()
         {
             var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
-            return regionName == SubRegionNames.SubRegionScratch;
+            return regionName == RegionNames.ScratchRegion;
         }
 
         private void SwitchToSettingsView()
         {
             
-            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            /*var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
             
             if (regionName == SubRegionNames.SubRegionScratch)
             {
@@ -143,7 +177,7 @@ namespace AdamStudio.ViewModels
             {
                 ShowRegion(SubRegionNames.SubRegionScratch);
                 return;
-            }    
+            } */   
         }
 
         private bool SwitchToSettingsViewCanExecute()
@@ -159,14 +193,14 @@ namespace AdamStudio.ViewModels
         {
             switch (subRegionName)
             {
-                case SubRegionNames.SubRegionScratch:
-                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionScratch);
+                case RegionNames.ScratchRegion:
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, RegionNames.ScratchRegion);
                     break;
-                case SubRegionNames.SubRegionComputerVisionControl:
-                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
-                    break;
-                case SubRegionNames.SubRegionVisualSettings:
-                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionVisualSettings);
+                //case SubRegionNames.SubRegionComputerVisionControl:
+                //    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
+                //    break;
+                case RegionNames.SettingsRegion:
+                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, RegionNames.SettingsRegion);
                     break;
             }
 
@@ -237,8 +271,8 @@ namespace AdamStudio.ViewModels
             mCommunicationProviderService.RaiseTcpServiceCientConnectedEvent += RaiseTcpServiceCientConnectedEvent;
             mCommunicationProviderService.RaiseUdpServiceServerReceivedEvent += RaiseUdpServiceServerReceivedEvent;
 
-            Application.Current.MainWindow.Loaded += MainWindowLoaded;
-            Application.Current.MainWindow.Closed += MainWindowClosed; 
+            System.Windows.Application.Current.MainWindow.Loaded += MainWindowLoaded;
+            System.Windows.Application.Current.MainWindow.Closed += MainWindowClosed; 
         }
 
         /// <summary>
@@ -272,7 +306,7 @@ namespace AdamStudio.ViewModels
             LoadCustomAvalonEditHighlighting();
             LoadAppTheme();
 
-            ShowRegionCommand.Execute(SubRegionNames.SubRegionScratch);
+            ShowRegionCommand.Execute(RegionNames.ScratchRegion);
 
             if (Settings.Default.AutoStartTcpConnect)
                 mCommunicationProviderService.ConnectAllAsync();

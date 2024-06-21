@@ -84,8 +84,9 @@
                     <iconPacks:PackIconModern Padding="0 3 0 3" Kind="ChevronRight" />
                 </Button>
 
+                <!-- SwitchToVideoDelegateCommand-->
                 <Button Margin="20 0 5 0"
-                        Command="{Binding SwitchToVideoDelegateCommand}"
+                        Command="{Binding DeactivateViewDelegateCommand}"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
 
                     <iconPacks:PackIconControl Kind="{Binding ControlHelper.IsShowVideo, 
