@@ -4,27 +4,23 @@ using AdamStudio.Core;
 using AdamStudio.Core.Extensions;
 using AdamStudio.Core.Model;
 using AdamStudio.Core.Mvvm;
-using AdamStudio.Services.Interfaces;
 using AdamStudio.Core.Properties;
+using AdamStudio.Services.Interfaces;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Regions;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using System.ComponentModel.DataAnnotations;
-using System.Windows.Controls.Primitives;
-using AdamStudio.Modules.ContentRegion.Views;
-using Prism.Ioc;
-using System.Windows.Forms;
 
 namespace AdamStudio.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
         #region DelegateCommands
-        public DelegateCommand DeactivateViewDelegateCommand { get; }
+        //public DelegateCommand DeactivateViewDelegateCommand { get; }
         public DelegateCommand<string> ShowRegionCommand { get; }
         public DelegateCommand<string> MoveSplitterDelegateCommand { get; }
         public DelegateCommand SwitchToVideoDelegateCommand { get; }
@@ -68,7 +64,7 @@ namespace AdamStudio.ViewModels
             mCultureProvider = cultureProvider;
             ControlHelper = controlHelper;
 
-            DeactivateViewDelegateCommand = new DelegateCommand(DeactivateView);
+            //DeactivateViewDelegateCommand = new DelegateCommand(DeactivateView);
             ShowRegionCommand = new DelegateCommand<string>(ShowRegion);
             MoveSplitterDelegateCommand = new DelegateCommand<string>(MoveSplitter, MoveSplitterCanExecute);
 
@@ -76,9 +72,13 @@ namespace AdamStudio.ViewModels
             SwitchToSettingsViewDelegateCommand = new DelegateCommand(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
 
             Subscribe();
+
+            SubRegionChangeAwareService.InsideRegionNavigationRequestName = RegionNames.SettingsRegion;
         }
 
-        private void DeactivateView()
+
+        /*Test*/
+        /*private void DeactivateView()
         {
             //IRegion region = mRegionManager.Regions[SubRegionNames.InsideConentRegion];
 
@@ -102,7 +102,7 @@ namespace AdamStudio.ViewModels
             {
                 
             } */           
-        }
+        //}
 
         #endregion
 
@@ -165,19 +165,19 @@ namespace AdamStudio.ViewModels
         private void SwitchToSettingsView()
         {
             
-            /*var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
             
-            if (regionName == SubRegionNames.SubRegionScratch)
+            if (regionName == RegionNames.SettingsRegion)
             {
-                ShowRegion(SubRegionNames.SubRegionVisualSettings);
+                ShowRegion(RegionNames.SettingsRegion);
                 return;
             }
             
-            if(regionName == SubRegionNames.SubRegionVisualSettings)
+            if(regionName == RegionNames.ScratchRegion)
             {
-                ShowRegion(SubRegionNames.SubRegionScratch);
+                ShowRegion(RegionNames.ScratchRegion);
                 return;
-            } */   
+            }   
         }
 
         private bool SwitchToSettingsViewCanExecute()

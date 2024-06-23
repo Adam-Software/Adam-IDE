@@ -22,7 +22,7 @@ namespace AdamStudio.Modules.StatusBarRegion
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<StatusBarView>();
+            //containerRegistry.RegisterForNavigation<StatusBarView>();
 
             containerRegistry.RegisterForNavigation<StatusBarView>(nameof(StatusBarView));
         }

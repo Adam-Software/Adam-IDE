@@ -22,7 +22,7 @@ namespace AdamStudio.Modules.MenuRegion
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<MenuRegionView>();
+            //containerRegistry.RegisterForNavigation<MenuRegionView>();
 
             containerRegistry.RegisterForNavigation<MenuRegionView>(nameof(MenuRegionView));
         }
