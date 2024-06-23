@@ -55,6 +55,7 @@ namespace AdamStudio.Modules.ContentRegion.ViewModels
         private readonly ISystemDialogService mSystemDialog;
         private readonly IControlHelper mControlHelper;
         private readonly IVideoViewProvider mVideoViewProvider;
+        private readonly ISubRegionChangeAwareService mRegionChangeAwareService;
 
         #endregion
 
@@ -100,7 +101,7 @@ namespace AdamStudio.Modules.ContentRegion.ViewModels
                         IStatusBarNotificationDeliveryService statusBarNotificationDelivery, IWebViewProvider webViewProvider,
                         IFileManagmentService fileManagment, IWebApiService webApiService, IAvalonEditService avalonEditService,
                         ICultureProvider cultureProvider, ISystemDialogService systemDialogService, IControlHelper controlHelper,
-                        IVideoViewProvider videoViewProvider) : base(regionManager)
+                        IVideoViewProvider videoViewProvider, ISubRegionChangeAwareService regionChangeAwareService) : base(regionManager)
         {
             
             mCommunicationProvider = communicationProvider;
@@ -113,6 +114,7 @@ namespace AdamStudio.Modules.ContentRegion.ViewModels
             mSystemDialog = systemDialogService;
             mControlHelper = controlHelper;
             mVideoViewProvider = videoViewProvider;
+            mRegionChangeAwareService = regionChangeAwareService;
 
             ShowSaveFileDialogDelegateCommand = new DelegateCommand<string>(ShowSaveFileDialog, ShowSaveFileDialogCanExecute);
             ShowOpenFileDialogDelegateCommand = new DelegateCommand<string>(ShowOpenFileDialog, ShowOpenFileDialogCanExecute);
@@ -141,11 +143,15 @@ namespace AdamStudio.Modules.ContentRegion.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
+            mRegionChangeAwareService.InsideRegionNavigationRequestName = RegionNames.ScratchRegion;
+
             Subscribe();
             LoadResources();
             UpdateIsShowVideo(Settings.Default.ShowVideo);
 
             mWebViewProvider.ReloadWebView();
+
+            
 
             base.OnNavigatedTo(navigationContext);
         }

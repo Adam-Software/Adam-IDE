@@ -72,8 +72,6 @@ namespace AdamStudio.ViewModels
             SwitchToSettingsViewDelegateCommand = new DelegateCommand(SwitchToSettingsView, SwitchToSettingsViewCanExecute);
 
             Subscribe();
-
-            SubRegionChangeAwareService.InsideRegionNavigationRequestName = RegionNames.SettingsRegion;
         }
 
 
@@ -169,13 +167,13 @@ namespace AdamStudio.ViewModels
             
             if (regionName == RegionNames.SettingsRegion)
             {
-                ShowRegion(RegionNames.SettingsRegion);
+                ShowRegion(RegionNames.ScratchRegion);
                 return;
             }
             
             if(regionName == RegionNames.ScratchRegion)
             {
-                ShowRegion(RegionNames.ScratchRegion);
+                ShowRegion(RegionNames.SettingsRegion);
                 return;
             }   
         }
