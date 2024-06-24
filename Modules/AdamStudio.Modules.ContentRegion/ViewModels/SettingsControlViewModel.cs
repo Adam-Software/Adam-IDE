@@ -32,7 +32,7 @@ namespace AdamStudio.Modules.ContentRegion.ViewModels
         private readonly IThemeManagerService mThemeManager;
         private readonly ICultureProvider mCultureProvider;
         private readonly IWebViewProvider mWebViewProvider;
-        private readonly ISubRegionChangeAwareService mRegionChangeAwareService;
+        private readonly IRegionChangeAwareService mRegionChangeAwareService;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace AdamStudio.Modules.ContentRegion.ViewModels
         #region ~
 
         public SettingsControlViewModel(IRegionManager regionManager, IFlyoutManager flyoutManager, 
-            IThemeManagerService themeManager, ICultureProvider cultureProvider, IWebViewProvider webViewProvider, ISubRegionChangeAwareService subRegionChangeAwareService) : base(regionManager)
+            IThemeManagerService themeManager, ICultureProvider cultureProvider, IWebViewProvider webViewProvider, IRegionChangeAwareService subRegionChangeAwareService) : base(regionManager)
         {
             mFlyoutManager = flyoutManager;
             mThemeManager = themeManager;
@@ -115,7 +115,7 @@ namespace AdamStudio.Modules.ContentRegion.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            mRegionChangeAwareService.InsideRegionNavigationRequestName = RegionNames.SettingsRegion;
+            mRegionChangeAwareService.RegionNavigationTargetName = RegionNames.SettingsRegion;
 
             ThemesCollection = mThemeManager.AppThemesCollection;
             SelectedTheme = mThemeManager.GetCurrentAppTheme();

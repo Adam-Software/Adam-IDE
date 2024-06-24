@@ -43,7 +43,7 @@ namespace AdamStudio
             });
 
             containerRegistry.RegisterSingleton<IWebViewProvider, WebViewProvider>();
-            containerRegistry.RegisterSingleton<ISubRegionChangeAwareService, SubRegionChangeAwareService>();
+            containerRegistry.RegisterSingleton<IRegionChangeAwareService, RegionChangeAwareService>();
             containerRegistry.RegisterSingleton<IStatusBarNotificationDeliveryService, StatusBarNotificationDeliveryService>();
 
             containerRegistry.RegisterSingleton<IFlyoutManager>(containerRegistry =>
@@ -221,7 +221,7 @@ namespace AdamStudio
             Container.Resolve<IFolderManagmentService>().Dispose();
             Container.Resolve<IAvalonEditService>().Dispose();
 
-            Container.Resolve<ISubRegionChangeAwareService>().Dispose();
+            Container.Resolve<IRegionChangeAwareService>().Dispose();
             Container.Resolve<IStatusBarNotificationDeliveryService>().Dispose();
             Container.Resolve<IWebViewProvider>().Dispose();
             Container.Resolve<ISystemDialogService>().Dispose();

@@ -98,7 +98,7 @@
                         Command="{Binding SwitchToSettingsViewDelegateCommand}"
                         Style="{DynamicResource  MahApps.Styles.Button.Chromeless}">
 
-                    <iconPacks:PackIconControl Kind="{Binding SubRegionChangeAwareService.InsideRegionNavigationRequestName, 
+                    <iconPacks:PackIconControl Kind="{Binding RegionChangeAwareService.RegionNavigationTargetName, 
                                                Converter={StaticResource StringToViewRegionIconsConverter}}"/>
 
                 </Button>

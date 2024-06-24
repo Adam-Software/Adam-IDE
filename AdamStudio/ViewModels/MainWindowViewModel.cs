@@ -30,7 +30,7 @@ namespace AdamStudio.ViewModels
 
         #region Services
 
-        public ISubRegionChangeAwareService SubRegionChangeAwareService { get; }
+        public IRegionChangeAwareService RegionChangeAwareService { get; }
         public IControlHelper ControlHelper { get; }
 
         private readonly IRegionManager mRegionManager;
@@ -47,7 +47,7 @@ namespace AdamStudio.ViewModels
 
         #region ~
 
-        public MainWindowViewModel(IContainerExtension container, IRegionManager regionManager, ISubRegionChangeAwareService subRegionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
+        public MainWindowViewModel(IContainerExtension container, IRegionManager regionManager, IRegionChangeAwareService regionChangeAwareService, IStatusBarNotificationDeliveryService statusBarNotification, 
                     ICommunicationProviderService communicationProviderService, IFolderManagmentService folderManagment, IWebApiService webApiService, 
                     IAvalonEditService avalonEditService, IThemeManagerService themeManager, ICultureProvider cultureProvider, 
                     IControlHelper controlHelper) 
@@ -55,7 +55,7 @@ namespace AdamStudio.ViewModels
             _container = container;
             mRegionManager = regionManager;
             mWebApiService = webApiService;
-            SubRegionChangeAwareService = subRegionChangeAwareService;
+            RegionChangeAwareService = regionChangeAwareService;
             mStatusBarNotification = statusBarNotification;
             mCommunicationProviderService = communicationProviderService;
             mFolderManagment = folderManagment;
@@ -138,7 +138,7 @@ namespace AdamStudio.ViewModels
 
         private bool MoveSplitterCanExecute(string arg)
         {
-            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            var regionName = RegionChangeAwareService.RegionNavigationTargetName;
             return regionName == RegionNames.ScratchRegion;
         }
 
@@ -156,14 +156,14 @@ namespace AdamStudio.ViewModels
 
         private bool SwitchToVideoCanExecute()
         {
-            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            var regionName = RegionChangeAwareService.RegionNavigationTargetName;
             return regionName == RegionNames.ScratchRegion;
         }
 
         private void SwitchToSettingsView()
         {
             
-            var regionName = SubRegionChangeAwareService.InsideRegionNavigationRequestName;
+            var regionName = RegionChangeAwareService.RegionNavigationTargetName;
             
             if (regionName == RegionNames.SettingsRegion)
             {
@@ -187,21 +187,9 @@ namespace AdamStudio.ViewModels
 
         #region Private methods
 
-        private void ShowRegion(string subRegionName)
+        private void ShowRegion(string regionName)
         {
-            switch (subRegionName)
-            {
-                case RegionNames.ScratchRegion:
-                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, RegionNames.ScratchRegion);
-                    break;
-                //case SubRegionNames.SubRegionComputerVisionControl:
-                //    mRegionManager.RequestNavigate(RegionNames.ContentRegion, SubRegionNames.SubRegionComputerVisionControl);
-                //    break;
-                case RegionNames.SettingsRegion:
-                    mRegionManager.RequestNavigate(RegionNames.ContentRegion, RegionNames.SettingsRegion);
-                    break;
-            }
-
+            mRegionManager.RequestNavigate(RegionNames.ContentRegion, regionName);
             MoveSplitterDelegateCommand.RaiseCanExecuteChanged();
             SwitchToVideoDelegateCommand.RaiseCanExecuteChanged(); 
         }
